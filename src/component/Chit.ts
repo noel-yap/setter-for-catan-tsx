@@ -1,4 +1,4 @@
-export module Chits {
+// export module Chits {
   export class Chits {
     constructor(public values: number[]) {}
 
@@ -39,4 +39,4 @@ export module Chits {
       .concat(new Array(2).fill(CHITS_9))
       .concat(new Array(2).fill(CHITS_6))
       .concat(new Array(2).fill(CHITS_8));
-}
+// }

@@ -1,5 +1,5 @@
-export module Tiles {
-  export const enum Type {
+// export module Tiles {
+  export enum Type {
     ANY_PORT,
     BRICK_PORT,
     ORE_PORT,
@@ -81,4 +81,4 @@ export module Tiles {
         SHEEP_PORT,
         BRICK_PORT,
         ORE_PORT]);
-}
+// }

@@ -1,8 +1,8 @@
-import {Chits} from "./Chit";
-import {Coordinates} from "./Coordinates";
-import {Tiles} from "./Tiles";
+import * as Chits from "./Chit";
+import * as Coordinates from "./Coordinates";
+import * as Tiles from "./Tiles";
 
-export module Configurations {
+// export module Configurations {
   export class TileChitBag {
     constructor(public tiles: Tiles.Tile[], public chits: Chits.Chits[] = []) {
       if (this.chits.length === 0) {
@@ -23,13 +23,13 @@ export module Configurations {
           return coordinate.positions.length !== configuration[0][0].positions.length;
         });
       })) {
-        throw new Error('Invalid configuration: Mixed coordinate types.');
+        throw new Error(`Invalid configuration: Mixed coordinate types. configurations = ${JSON.stringify(configurations, null, 2)}`);
       }
 
       if (configurations.some((configuration) => {
-        return configuration[0].length !== configuration[1].length;
+        return configuration[0].length !== configuration[1].reduce((sum, tcb) => sum + tcb.tiles.length, 0);
       })) {
-        throw new Error('Invalid configuration: Number of coordinates do not match number of tiles/chits.');
+        throw new Error(`Invalid configuration: Number of coordinates do not match number of tiles/chits. configurations = ${JSON.stringify(configurations, null, 2)}`);
       }
 
       if (configurations.some((configuration) => {
@@ -37,7 +37,7 @@ export module Configurations {
           return tc.tiles.length !== tc.chits.length;
         })
       })) {
-        throw new Error('Invalid configuration: Number of tiles do not match number of chits.');
+        throw new Error(`Invalid configuration: Number of tiles do not match number of chits. configurations = ${JSON.stringify(configurations, null, 2)}`);
       }
     }
   }
@@ -48,4 +48,4 @@ export module Configurations {
       new TileChitBag(Tiles.BASE_PRODUCING_TERRAIN_TILES, Chits.BASE_CHIT_SET)]],
     [Coordinates.BASE_PORT_COORDINATES, [
       new TileChitBag(Tiles.BASE_PORT_TILE_SET)]]]);
-}
+// }

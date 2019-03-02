@@ -1,4 +1,4 @@
-export module Coordinates {
+// export module Coordinates {
   enum EdgePosition {
     TOP_RIGHT,
     RIGHT,
@@ -67,4 +67,4 @@ export module Coordinates {
     new Coordinate(3, 5, [RIGHT, TOP_RIGHT]),
     new Coordinate(6, 6, [TOP_LEFT, TOP_RIGHT]),
   ];
-}
+// }

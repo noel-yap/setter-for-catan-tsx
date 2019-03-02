@@ -1,24 +1,29 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
+import * as Boards from "./component/Boards";
+import * as Configurations from "./component/Configurations";
+
 class App extends Component {
+  state = {
+    boardGenerator: new Boards.BoardGenerator(Configurations.BASE_CONFIGURATION),
+    board: null
+  };
+
   render() {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+              style={{fontSize: 36}}
+              onClick={() => this.setState({
+                board: this.state.boardGenerator.generateBoard()
+              })}
           >
-            Learn React
-          </a>
+            Generate Board
+          </button>
+          {/* TODO: Use canvas to display the board setup. */}
+          {JSON.stringify(this.state.board, null, 2)}
         </header>
       </div>
     );
