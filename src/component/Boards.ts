@@ -6,9 +6,9 @@ import * as Coordinates from "./Coordinates";
 
 // export module Boards {
   export class Board {
-    private terrainTilesLayout: ConfiguredTiles.ConfiguredTile[] = [];
-    private portTilesLayout: ConfiguredTiles.ConfiguredTile[] = [];
-    private fisheryTilesLayout: ConfiguredTiles.ConfiguredTile[] = [];
+    private _terrainTilesLayout: ConfiguredTiles.ConfiguredTile[] = [];
+    private _portTilesLayout: ConfiguredTiles.ConfiguredTile[] = [];
+    private _fisheryTilesLayout: ConfiguredTiles.ConfiguredTile[] = [];
 
     constructor(settings: ConfiguredTiles.ConfiguredTile[]) {
       console.log(`Boards.Board.constructor: settings = ${JSON.stringify(settings)}`);
@@ -16,9 +16,13 @@ import * as Coordinates from "./Coordinates";
       const groupedSettings = _.groupBy(settings, (setting) => setting.coordinate.positions.length);
       console.log(`Boards.Board.constructor: groupedSettings = ${JSON.stringify(groupedSettings)}`);
 
-      this.portTilesLayout = groupedSettings['1'];
-      this.fisheryTilesLayout = groupedSettings['2'];
-      this.terrainTilesLayout = groupedSettings['6'];
+      this._portTilesLayout = groupedSettings['1'] || [];
+      this._fisheryTilesLayout = groupedSettings['2'] || [];
+      this._terrainTilesLayout = groupedSettings['6'] || [];
+    }
+
+    get terrainTilesLayout(): ConfiguredTiles.ConfiguredTile[] {
+      return this._terrainTilesLayout;
     }
   }
 
@@ -35,11 +39,14 @@ import * as Coordinates from "./Coordinates";
             })));
           }).map(([coordinate, [tile, chits]]) => {
             console.log(`Boards.BoardGenerator.generateBoard: tile = ${JSON.stringify(tile)}, coordinate = ${JSON.stringify(coordinate)}, chits = ${JSON.stringify(chits)}`);
-            return new ConfiguredTiles.ConfiguredTile(tile.type, coordinate, chits);
+            return new ConfiguredTiles.ConfiguredTile(tile, coordinate, chits);
           }));
     }
   }
-  //
+
+  // 1: [0, 6]
+  // 2: [3, 9]
+  // 3: [6, 12]
   // export class BoardVerifier {
   //   constructor(public board: Board) {}
   //

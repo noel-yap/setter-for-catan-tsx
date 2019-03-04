@@ -20,37 +20,36 @@
     PASTURE
   }
 
-  export function numberOfEdges(type: Type): number {
-    switch (type) {
-      case Type.ANY_PORT:
-      case Type.BRICK_PORT:
-      case Type.ORE_PORT:
-      case Type.SHEEP_PORT:
-      case Type.WHEAT_PORT:
-      case Type.WOOD_PORT: {
-        return 1;
-      }
-
-      case Type.FISHERY: {
-        return 2;
-      }
-
-      case Type.SEA:
-      case Type.LAKE:
-      case Type.DESERT:
-      case Type.FIELD:
-      case Type.FOREST:
-      case Type.GOLD:
-      case Type.HILL:
-      case Type.MOUNTAIN:
-      case Type.PASTURE: {
-        return 6;
-      }
-    }
-  }
-
   export class Tile {
-    constructor(public type: Type) {
+    constructor(public type: Type) {}
+
+    edgeCount(): number {
+      switch (this.type) {
+        case Type.ANY_PORT:
+        case Type.BRICK_PORT:
+        case Type.ORE_PORT:
+        case Type.SHEEP_PORT:
+        case Type.WHEAT_PORT:
+        case Type.WOOD_PORT: {
+          return 1;
+        }
+
+        case Type.FISHERY: {
+          return 2;
+        }
+
+        case Type.SEA:
+        case Type.LAKE:
+        case Type.DESERT:
+        case Type.FIELD:
+        case Type.FOREST:
+        case Type.GOLD:
+        case Type.HILL:
+        case Type.MOUNTAIN:
+        case Type.PASTURE: {
+          return 6;
+        }
+      }
     }
   }
 
