@@ -67,6 +67,8 @@
   export const HILL_TERRAIN = new Tile(Type.HILL);
   export const MOUNTAIN_TERRAIN = new Tile(Type.MOUNTAIN);
 
+  export const LAKE = new Tile(Type.LAKE);
+
   export const BASE_PRODUCING_TERRAIN_TILES = new Array(4).fill(FIELD_TERRAIN)
       .concat(new Array(4).fill(FOREST_TERRAIN))
       .concat(new Array(4).fill(PASTURE_TERRAIN))

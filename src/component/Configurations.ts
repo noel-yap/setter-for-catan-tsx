@@ -42,6 +42,9 @@ import * as Tiles from "./Tiles";
     }
   }
 
+  export const BASE_LAKE_TILE_CHIT_BAG = new TileChitBag(
+      [Tiles.LAKE], [new Chits.Chits([2, 3, 11, 12])]);
+
   export const BASE_CONFIGURATION = new Configuration([
     [Coordinates.BASE_TERRAIN_COORDINATES, [
       new TileChitBag([Tiles.DESERT_TERRAIN]),

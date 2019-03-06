@@ -24,6 +24,10 @@ import * as Coordinates from "./Coordinates";
     get terrainTilesLayout(): ConfiguredTiles.ConfiguredTile[] {
       return this._terrainTilesLayout;
     }
+
+    get portTilesLayout(): ConfiguredTiles.ConfiguredTile[] {
+      return this._portTilesLayout;
+    }
   }
 
   export class BoardGenerator {
