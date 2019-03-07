@@ -38,28 +38,118 @@ import * as Coordinates from "./Coordinates";
     constructor(public configuration: Configurations.Configuration) {}
 
     generateBoard(): Board {
-      return new Board(
-          this.configuration.settings.flatMap((configuration: [Coordinates.Coordinate[], Configurations.TileChitBag[]]) => {
-            return _.zip(_.shuffle(configuration[0]), _.shuffle(configuration[1].flatMap((tcb: Configurations.TileChitBag) => {
-              console.log(`Boards.BoardGenerator.generateBoard: tiles = ${JSON.stringify(tcb.tiles)}, chits = ${JSON.stringify(tcb.chits)}`);
+      let result;
+      let count = 0;
+      let validBoard;
 
-              return _.zip(_.shuffle(tcb.tiles), _.shuffle(tcb.chits));
-            })));
-          }).map(([coordinate, [tile, chits]]) => {
-            console.log(`Boards.BoardGenerator.generateBoard: tile = ${JSON.stringify(tile)}, coordinate = ${JSON.stringify(coordinate)}, chits = ${JSON.stringify(chits)}`);
-            return new ConfiguredTiles.ConfiguredTile(tile, coordinate, chits);
-          }));
+      do {
+        result = new Board(
+            this.configuration.settings.flatMap((configuration: [Coordinates.Coordinate[], Configurations.TileChitBag[]]) => {
+              return _.zip(_.shuffle(configuration[0]), _.shuffle(configuration[1].flatMap((tcb: Configurations.TileChitBag) => {
+                console.log(`Boards.BoardGenerator.generateBoard: tiles = ${JSON.stringify(tcb.tiles)}, chits = ${JSON.stringify(tcb.chits)}`);
+
+                return _.zip(_.shuffle(tcb.tiles), _.shuffle(tcb.chits));
+              })));
+            }).map(([coordinate, [tile, chits]]) => {
+              console.log(`Boards.BoardGenerator.generateBoard: tile = ${JSON.stringify(tile)}, coordinate = ${JSON.stringify(coordinate)}, chits = ${JSON.stringify(chits)}`);
+              return new ConfiguredTiles.ConfiguredTile(tile, coordinate, chits);
+            }));
+
+        validBoard = BoardGenerator.verifyBoard(
+            result,
+            count < 216 / 2
+                ? [
+                  [0, 6],
+                  [3, 9],
+                  [6, 12]]
+                : [
+                  [0, 6],
+                  [2, 10],
+                  [5, 13]]);
+
+        console.log(`Boards.BoardGenerator.generateBoard: count = ${count}, validBoard = ${validBoard}`);
+      } while (!validBoard && ++count < 216);
+
+      return result;
+    }
+
+    static verifyBoard(board: Board, validRanges: number[][]): boolean {
+      function key(x: number, y: number): string {
+        return `(${x},${y})`;
+      }
+      function odds(contributingTiles: ConfiguredTiles.ConfiguredTile[], vertex: number): number {
+        return contributingTiles
+            .filter((ct) => {
+              return ct.coordinate.positions.some((p) => {
+                return p === vertex || p === (vertex + 5) % 6;
+              });
+            })
+            .reduce((sum, ct) => {
+              return ct.chits.odds();
+            }, 0);
+      }
+      function oddsWithinValidRange(contributors: [ConfiguredTiles.ConfiguredTile[], number][]) {
+        if (contributors.length === 0) {
+          return true;
+        }
+        const validRange = validRanges[contributors.length - 1];
+
+        const o = contributors
+            .reduce((sum, c) => sum + odds(c[0], c[1]), 0);
+
+        console.log(`Boards.BoardGenerator.verifyBoard: contributors = ${JSON.stringify(contributors)}, odds = ${o}, validRange = ${JSON.stringify(validRange)}`);
+
+        return validRange[0] <= o && o <= validRange[1];
+      }
+
+      const producingConfiguredTiles = board.terrainTilesLayout.concat(board.fisheryTilesLayout);
+      const coordinatesMap = _.groupBy(
+          producingConfiguredTiles,
+          (ct) => key(ct.coordinate.x, ct.coordinate.y));
+
+      const xs: number[] = Object.keys(coordinatesMap)
+          .map((c) => {
+            return Number(c
+                .substr(1, c.length - 1)
+                .replace(/,.*/, ''));
+          });
+      const minX = Math.min(...xs);
+      const maxX = Math.max(...xs);
+
+      const ys: number[] = Object.keys(coordinatesMap)
+          .map((c) => {
+            return Number(c
+                .substr(1, c.length - 2)
+                .replace(/.*,/, ''));
+          });
+      const minY = Math.min(...ys);
+      const maxY = Math.max(...ys);
+
+      console.log(`Boards.BoardGenerator.verifyBoard: x ∈ [${minX}, ${maxX}], y ∈ [${minY}, ${maxY}]`);
+
+      for (let x = minX - 1; x < maxX + 2; ++x) {
+        for (let y = minY - 2; y < maxY + 1; ++y) {
+          const topVertexContributors = <[ConfiguredTiles.ConfiguredTile[], number][]>[
+            [coordinatesMap[key(x, y)], 0],
+            [coordinatesMap[key(x - 1, y - 1)], 2],
+            [coordinatesMap[key(x + 1, y - 1)], 4]]
+              .filter((elt) => elt[0] !== undefined);
+          if (!oddsWithinValidRange(topVertexContributors)) {
+            return false;
+          }
+
+          const topRightVertexContributors = <[ConfiguredTiles.ConfiguredTile[], number][]>[
+            [coordinatesMap[key(x, y)], 1],
+            [coordinatesMap[key(x + 1, y - 1)], 3],
+            [coordinatesMap[key(x + 2, y)], 5]]
+              .filter((elt) => elt[0] !== undefined);
+          if (!oddsWithinValidRange(topRightVertexContributors)) {
+            return false;
+          }
+        }
+      }
+
+      return true;
     }
   }
-
-  // 1: [0, 6]
-  // 2: [3, 9]
-  // 3: [6, 12]
-  // export class BoardVerifier {
-  //   constructor(public board: Board) {}
-  //
-  //   verifyBoard() {
-  //
-  //   }
-  // }
 // }

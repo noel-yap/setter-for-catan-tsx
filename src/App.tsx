@@ -263,6 +263,7 @@ class App extends React.Component<AppProps, AppState> {
     super(props);
 
     this.state = {
+      // boardGenerator: new Boards.BoardGenerator(Configurations.BASE_CONFIGURATION),
       boardGenerator: new Boards.BoardGenerator(Configurations.BASE_FISHERMEN_CONFIGURATION),
       board: new Boards.Board([])
     };
