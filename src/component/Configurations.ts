@@ -48,7 +48,16 @@ import * as Tiles from "./Tiles";
   export const BASE_CONFIGURATION = new Configuration([
     [Coordinates.BASE_TERRAIN_COORDINATES, [
       new TileChitBag([Tiles.DESERT_TERRAIN]),
-      new TileChitBag(Tiles.BASE_PRODUCING_TERRAIN_TILES, Chits.BASE_CHIT_SET)]],
+      new TileChitBag(Tiles.BASE_PRODUCING_TERRAIN_TILES, Chits.BASE_PRODUCING_TERRAIN_CHIT_SET)]],
     [Coordinates.BASE_PORT_COORDINATES, [
       new TileChitBag(Tiles.BASE_PORT_TILE_SET)]]]);
+  export const BASE_FISHERMEN_CONFIGURATION = new Configuration([
+    [Coordinates.BASE_TERRAIN_COORDINATES, [
+      BASE_LAKE_TILE_CHIT_BAG,
+      new TileChitBag(Tiles.BASE_PRODUCING_TERRAIN_TILES, Chits.BASE_PRODUCING_TERRAIN_CHIT_SET)]],
+    [Coordinates.BASE_PORT_COORDINATES, [
+      new TileChitBag(Tiles.BASE_PORT_TILE_SET)]],
+    [Coordinates.BASE_FISHERY_COORDINATES, [
+      new TileChitBag(Tiles.BASE_FISHERY_TILE_SET, Chits.BASE_FISHERY_CHIT_SET)
+    ]]]);
 // }

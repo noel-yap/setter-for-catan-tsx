@@ -30,7 +30,7 @@
 
   const CHITS_2_3_11_12 = new Chits([2, 3, 11, 12]);
 
-  export const BASE_CHIT_SET = [CHITS_2, CHITS_12]
+  export const BASE_PRODUCING_TERRAIN_CHIT_SET = [CHITS_2, CHITS_12]
       .concat(new Array(2).fill(CHITS_3))
       .concat(new Array(2).fill(CHITS_11))
       .concat(new Array(2).fill(CHITS_4))
@@ -39,4 +39,6 @@
       .concat(new Array(2).fill(CHITS_9))
       .concat(new Array(2).fill(CHITS_6))
       .concat(new Array(2).fill(CHITS_8));
+
+  export const BASE_FISHERY_CHIT_SET = [CHITS_4, CHITS_5, CHITS_6, CHITS_8, CHITS_9, CHITS_10];
 // }

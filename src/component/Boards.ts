@@ -28,6 +28,10 @@ import * as Coordinates from "./Coordinates";
     get portTilesLayout(): ConfiguredTiles.ConfiguredTile[] {
       return this._portTilesLayout;
     }
+
+    get fisheryTilesLayout(): ConfiguredTiles.ConfiguredTile[] {
+      return this._fisheryTilesLayout;
+    }
   }
 
   export class BoardGenerator {
