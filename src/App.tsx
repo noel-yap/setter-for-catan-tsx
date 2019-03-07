@@ -112,6 +112,13 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
       hexCenter,
       vertex0,
       vertex1]);
+
+    const offset = vertex1.translate(vertex0.diff(vertex1).scale(.5)).diff(hexCenter).scale(.6875);
+    GeneratedBoard.renderText(
+        display,
+        options.fg,
+        hexCenter.translate(offset),
+        configuredTile.tile === Tiles.ANY_PORT ? '3:1' : '2:1');
   }
 
   static renderFishery(display: ROT.Display, configuredTile: ConfiguredTile, inside: boolean) {
