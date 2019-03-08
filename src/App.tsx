@@ -118,7 +118,7 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
         display,
         options.fg,
         hexCenter.translate(offset),
-        configuredTile.tile === Tiles.ANY_PORT ? '3:1' : '2:1');
+        configuredTile.tile === Tiles.GENERIC_HARBOR ? '3:1' : '2:1');
   }
 
   static renderFishery(display: ROT.Display, configuredTile: ConfiguredTile, inside: boolean) {
@@ -208,31 +208,31 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
 
   static tileColor(tile: Tiles.Tile): string {
     switch (tile.type) {
-      case Tiles.Type.ANY_PORT: {
+      case Tiles.Type.GENERIC_HARBOR: {
         return "gold";
       }
 
-      case Tiles.Type.BRICK_PORT:
+      case Tiles.Type.BRICK_HARBOR:
       case Tiles.Type.HILL: {
         return "firebrick";
       }
 
-      case Tiles.Type.ORE_PORT:
+      case Tiles.Type.ORE_HARBOR:
       case Tiles.Type.MOUNTAIN: {
         return "slategray";
       }
 
-      case Tiles.Type.SHEEP_PORT:
+      case Tiles.Type.WOOL_HARBOR:
       case Tiles.Type.PASTURE: {
         return "lawngreen";
       }
 
-      case Tiles.Type.WHEAT_PORT:
+      case Tiles.Type.GRAIN_HARBOR:
       case Tiles.Type.FIELD: {
         return "wheat";
       }
 
-      case Tiles.Type.WOOD_PORT:
+      case Tiles.Type.LUMBER_HARBOR:
       case Tiles.Type.FOREST: {
         return "forestgreen";
       }
@@ -270,8 +270,10 @@ class App extends React.Component<AppProps, AppState> {
     super(props);
 
     this.state = {
-      // boardGenerator: new Boards.BoardGenerator(Configurations.BASE_CONFIGURATION),
-      boardGenerator: new Boards.BoardGenerator(Configurations.BASE_FISHERMEN_CONFIGURATION),
+      // boardGenerator: new Boards.BoardGenerator(Configurations.CONFIGURATION_3_4),
+      // boardGenerator: new Boards.BoardGenerator(Configurations.CONFIGURATION_3_4_FISHERMEN),
+      // boardGenerator: new Boards.BoardGenerator(Configurations.CONFIGURATION_5_6),
+      boardGenerator: new Boards.BoardGenerator(Configurations.CONFIGURATION_5_6_FISHERMEN),
       board: new Boards.Board([])
     };
   }

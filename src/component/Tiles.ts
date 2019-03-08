@@ -1,11 +1,11 @@
 // export module Tiles {
   export enum Type {
-    ANY_PORT,
-    BRICK_PORT,
-    ORE_PORT,
-    SHEEP_PORT,
-    WHEAT_PORT,
-    WOOD_PORT,
+    GENERIC_HARBOR,
+    BRICK_HARBOR,
+    GRAIN_HARBOR,
+    LUMBER_HARBOR,
+    ORE_HARBOR,
+    WOOL_HARBOR,
 
     SEA = 8,
     LAKE,
@@ -25,12 +25,12 @@
 
     edgeCount(): number {
       switch (this.type) {
-        case Type.ANY_PORT:
-        case Type.BRICK_PORT:
-        case Type.ORE_PORT:
-        case Type.SHEEP_PORT:
-        case Type.WHEAT_PORT:
-        case Type.WOOD_PORT: {
+        case Type.GENERIC_HARBOR:
+        case Type.BRICK_HARBOR:
+        case Type.ORE_HARBOR:
+        case Type.GRAIN_HARBOR:
+        case Type.LUMBER_HARBOR:
+        case Type.WOOL_HARBOR: {
           return 1;
         }
 
@@ -53,12 +53,12 @@
     }
   }
 
-  export const ANY_PORT = new Tile(Type.ANY_PORT);
-  export const BRICK_PORT = new Tile(Type.BRICK_PORT);
-  export const ORE_PORT = new Tile(Type.ORE_PORT);
-  export const SHEEP_PORT = new Tile(Type.SHEEP_PORT);
-  export const WHEAT_PORT = new Tile(Type.WHEAT_PORT);
-  export const WOOD_PORT = new Tile(Type.WOOD_PORT);
+  export const GENERIC_HARBOR = new Tile(Type.GENERIC_HARBOR);
+  export const BRICK_HARBOR = new Tile(Type.BRICK_HARBOR);
+  export const GRAIN_HARBOR = new Tile(Type.GRAIN_HARBOR);
+  export const LUMBER_HARBOR = new Tile(Type.LUMBER_HARBOR);
+  export const ORE_HARBOR = new Tile(Type.ORE_HARBOR);
+  export const WOOL_HARBOR = new Tile(Type.WOOL_HARBOR);
 
   export const DESERT_TERRAIN = new Tile(Type.DESERT);
   export const FIELD_TERRAIN = new Tile(Type.FIELD);
@@ -75,14 +75,23 @@
       .concat(new Array(4).fill(PASTURE_TERRAIN))
       .concat(new Array(3).fill(HILL_TERRAIN))
       .concat(new Array(3).fill(MOUNTAIN_TERRAIN));
+  export const EXTENSION_5_6_PRODUCING_TERRAIN_TILES = BASE_PRODUCING_TERRAIN_TILES
+      .concat(new Array(2).fill(FIELD_TERRAIN))
+      .concat(new Array(2).fill(FOREST_TERRAIN))
+      .concat(new Array(2).fill(PASTURE_TERRAIN))
+      .concat(new Array(2).fill(HILL_TERRAIN))
+      .concat(new Array(2).fill(MOUNTAIN_TERRAIN));
 
-  export const BASE_PORT_TILE_SET = new Array(4).fill(ANY_PORT)
+  export const BASE_HARBOR_TILE_SET = new Array(4).fill(GENERIC_HARBOR)
       .concat([
-        WHEAT_PORT,
-        WOOD_PORT,
-        SHEEP_PORT,
-        BRICK_PORT,
-        ORE_PORT]);
+        GRAIN_HARBOR,
+        LUMBER_HARBOR,
+        WOOL_HARBOR,
+        BRICK_HARBOR,
+        ORE_HARBOR]);
+  export const EXTENSION_5_6_HARBOR_TILE_SET = BASE_HARBOR_TILE_SET
+      .concat([GENERIC_HARBOR, WOOL_HARBOR]);
 
   export const BASE_FISHERY_TILE_SET = new Array(6).fill(FISHERY);
+  export const EXTENSION_5_6_FISHERY_TILE_SET = new Array(8).fill(FISHERY);
 // }

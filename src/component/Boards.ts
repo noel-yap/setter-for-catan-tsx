@@ -52,28 +52,34 @@ import * as Coordinates from "./Coordinates";
               })));
             }).map(([coordinate, [tile, chits]]) => {
               console.log(`Boards.BoardGenerator.generateBoard: tile = ${JSON.stringify(tile)}, coordinate = ${JSON.stringify(coordinate)}, chits = ${JSON.stringify(chits)}`);
+
               return new ConfiguredTiles.ConfiguredTile(tile, coordinate, chits);
             }));
 
-        validBoard = BoardGenerator.verifyBoard(
+        validBoard = BoardGenerator.validateBoard(
             result,
             count < 216 / 2
                 ? [
                   [0, 6],
                   [3, 9],
                   [6, 12]]
+                : count < 216
+                ? [
+                  [0, 6],
+                  [2, 10],
+                  [5, 13]]
                 : [
                   [0, 6],
                   [2, 10],
-                  [5, 13]]);
+                  [4, 14]]);
 
         console.log(`Boards.BoardGenerator.generateBoard: count = ${count}, validBoard = ${validBoard}`);
-      } while (!validBoard && ++count < 216);
+      } while (!validBoard && ++count < 2 * 216);
 
       return result;
     }
 
-    static verifyBoard(board: Board, validRanges: number[][]): boolean {
+    static validateBoard(board: Board, validRanges: number[][]): boolean {
       function key(x: number, y: number): string {
         return `(${x},${y})`;
       }

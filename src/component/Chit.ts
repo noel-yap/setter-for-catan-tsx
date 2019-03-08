@@ -39,6 +39,10 @@
       .concat(new Array(2).fill(CHITS_9))
       .concat(new Array(2).fill(CHITS_6))
       .concat(new Array(2).fill(CHITS_8));
+  export const EXTENSION_5_6_PRODUCING_TERRAIN_CHIT_SET = BASE_PRODUCING_TERRAIN_CHIT_SET
+      .concat([CHITS_2, CHITS_3, CHITS_4, CHITS_5, CHITS_6, CHITS_8, CHITS_9, CHITS_10, CHITS_11, CHITS_12]);
 
   export const BASE_FISHERY_CHIT_SET = [CHITS_4, CHITS_5, CHITS_6, CHITS_8, CHITS_9, CHITS_10];
+  export const EXTENSION_5_6_FISHERY_CHIT_SET = BASE_FISHERY_CHIT_SET
+      .concat([CHITS_5, CHITS_10]);
 // }

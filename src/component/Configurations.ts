@@ -27,7 +27,12 @@ import * as Tiles from "./Tiles";
       }
 
       if (configurations.some((configuration) => {
-        return configuration[0].length !== configuration[1].reduce((sum, tcb) => sum + tcb.tiles.length, 0);
+        const lhs = configuration[0].length;
+        const rhs = configuration[1].reduce((sum, tcb) => sum + tcb.tiles.length, 0);
+
+        console.log(`Configurations.Configuration.validateConfiguration: lhs = ${lhs}, rhs = ${rhs}`);
+
+        return lhs !== rhs;
       })) {
         throw new Error(`Invalid configuration: Number of coordinates do not match number of tiles/chits. configurations = ${JSON.stringify(configurations, null, 2)}`);
       }
@@ -44,20 +49,39 @@ import * as Tiles from "./Tiles";
 
   export const BASE_LAKE_TILE_CHIT_BAG = new TileChitBag(
       [Tiles.LAKE], [new Chits.Chits([2, 3, 11, 12])]);
+  export const EXTENSION_5_6_LAKE_TILE_CHIT_BAG = new TileChitBag(
+      new Array(2).fill(Tiles.LAKE),
+      [new Chits.Chits([2, 3, 11, 12]), new Chits.Chits([4, 10])]);
 
-  export const BASE_CONFIGURATION = new Configuration([
+  export const CONFIGURATION_3_4 = new Configuration([
     [Coordinates.BASE_TERRAIN_COORDINATES, [
       new TileChitBag([Tiles.DESERT_TERRAIN]),
       new TileChitBag(Tiles.BASE_PRODUCING_TERRAIN_TILES, Chits.BASE_PRODUCING_TERRAIN_CHIT_SET)]],
-    [Coordinates.BASE_PORT_COORDINATES, [
-      new TileChitBag(Tiles.BASE_PORT_TILE_SET)]]]);
-  export const BASE_FISHERMEN_CONFIGURATION = new Configuration([
+    [Coordinates.BASE_HARBOR_COORDINATES, [
+      new TileChitBag(Tiles.BASE_HARBOR_TILE_SET)]]]);
+  export const CONFIGURATION_3_4_FISHERMEN = new Configuration([
     [Coordinates.BASE_TERRAIN_COORDINATES, [
       BASE_LAKE_TILE_CHIT_BAG,
       new TileChitBag(Tiles.BASE_PRODUCING_TERRAIN_TILES, Chits.BASE_PRODUCING_TERRAIN_CHIT_SET)]],
-    [Coordinates.BASE_PORT_COORDINATES, [
-      new TileChitBag(Tiles.BASE_PORT_TILE_SET)]],
+    [Coordinates.BASE_HARBOR_COORDINATES, [
+      new TileChitBag(Tiles.BASE_HARBOR_TILE_SET)]],
     [Coordinates.BASE_FISHERY_COORDINATES, [
       new TileChitBag(Tiles.BASE_FISHERY_TILE_SET, Chits.BASE_FISHERY_CHIT_SET)
     ]]]);
+
+  export const CONFIGURATION_5_6 = new Configuration([
+      [Coordinates.EXTENSION_5_6_COORDINATES, [
+          new TileChitBag(new Array(2).fill(Tiles.DESERT_TERRAIN)),
+          new TileChitBag(Tiles.EXTENSION_5_6_PRODUCING_TERRAIN_TILES, Chits.EXTENSION_5_6_PRODUCING_TERRAIN_CHIT_SET)]],
+      [Coordinates.EXTENSION_5_6_HARBOR_COORDINATES, [
+          new TileChitBag(Tiles.EXTENSION_5_6_HARBOR_TILE_SET)]]]);
+  export const CONFIGURATION_5_6_FISHERMEN = new Configuration([
+      [Coordinates.EXTENSION_5_6_COORDINATES, [
+        EXTENSION_5_6_LAKE_TILE_CHIT_BAG,
+          new TileChitBag(Tiles.EXTENSION_5_6_PRODUCING_TERRAIN_TILES, Chits.EXTENSION_5_6_PRODUCING_TERRAIN_CHIT_SET)]],
+      [Coordinates.EXTENSION_5_6_HARBOR_COORDINATES, [
+          new TileChitBag(Tiles.EXTENSION_5_6_HARBOR_TILE_SET)]],
+      [Coordinates.EXTENSION_5_6_FISHERY_COORDINATES, [
+        new TileChitBag(Tiles.EXTENSION_5_6_FISHERY_TILE_SET, Chits.EXTENSION_5_6_FISHERY_CHIT_SET)
+      ]]]);
 // }
