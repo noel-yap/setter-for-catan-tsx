@@ -56,30 +56,35 @@ import * as Coordinates from "./Coordinates";
               return new ConfiguredTiles.ConfiguredTile(tile, coordinate, chits);
             }));
 
-        validBoard = BoardGenerator.validateBoard(
+        validBoard = BoardGenerator.verifyBoard(
             result,
-            count < 216 / 2
+            count < 216
                 ? [
                   [0, 6],
                   [3, 9],
                   [6, 12]]
-                : count < 216
+                : count < 2 * 216
                 ? [
                   [0, 6],
                   [2, 10],
                   [5, 13]]
-                : [
+                : count < 4 * 216
+                ? [
                   [0, 6],
                   [2, 10],
-                  [4, 14]]);
+                  [4, 14]]
+                : [
+                  [0, 6],
+                  [1, 11],
+                  [3, 15]]);
 
         console.log(`Boards.BoardGenerator.generateBoard: count = ${count}, validBoard = ${validBoard}`);
-      } while (!validBoard && ++count < 2 * 216);
+      } while (!validBoard && ++count < 6 * 216);
 
       return result;
     }
 
-    static validateBoard(board: Board, validRanges: number[][]): boolean {
+    static verifyBoard(board: Board, validOddsRanges: number[][]): boolean {
       function key(x: number, y: number): string {
         return `(${x},${y})`;
       }
@@ -98,7 +103,7 @@ import * as Coordinates from "./Coordinates";
         if (contributors.length === 0) {
           return true;
         }
-        const validRange = validRanges[contributors.length - 1];
+        const validRange = validOddsRanges[contributors.length - 1];
 
         const o = contributors
             .reduce((sum, c) => sum + odds(c[0], c[1]), 0);

@@ -89,10 +89,13 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
   static renderTerrain(display: ROT.Display, configuredTile: ConfiguredTile) {
     const options = display._options;
 
+    const label = configuredTile.tile === Tiles.UNKNOWN
+       ? '?'
+       : GeneratedBoard.chitsToString(configuredTile.chits);
     display.draw(
         configuredTile.coordinate.x,
         configuredTile.coordinate.y,
-        GeneratedBoard.chitsToString(configuredTile.chits),
+        label,
         options.fg,
         GeneratedBoard.tileColor(configuredTile.tile));
   }
@@ -208,50 +211,57 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
 
   static tileColor(tile: Tiles.Tile): string {
     switch (tile.type) {
+      case Tiles.Type.UNKNOWN: {
+        return 'white';
+      }
+      
       case Tiles.Type.GENERIC_HARBOR: {
-        return "gold";
+        return 'gold';
       }
 
       case Tiles.Type.BRICK_HARBOR:
-      case Tiles.Type.HILL: {
-        return "firebrick";
+      case Tiles.Type.HILL:
+      case Tiles.Type.QUARRY: {
+        return 'firebrick';
       }
 
       case Tiles.Type.ORE_HARBOR:
       case Tiles.Type.MOUNTAIN: {
-        return "slategray";
+        return 'slategray';
       }
 
       case Tiles.Type.WOOL_HARBOR:
-      case Tiles.Type.PASTURE: {
-        return "lawngreen";
+      case Tiles.Type.PASTURE:
+      case Tiles.Type.CASTLE: {
+        return 'lawngreen';
       }
 
       case Tiles.Type.GRAIN_HARBOR:
       case Tiles.Type.FIELD: {
-        return "wheat";
+        return 'wheat';
       }
 
       case Tiles.Type.LUMBER_HARBOR:
-      case Tiles.Type.FOREST: {
-        return "forestgreen";
+      case Tiles.Type.FOREST:
+      case Tiles.Type.GLASSWORKS: {
+        return 'forestgreen';
       }
 
       case Tiles.Type.FISHERY:
       case Tiles.Type.LAKE: {
-        return "aqua";
+        return 'aqua';
       }
 
       case Tiles.Type.SEA: {
-        return "navy";
+        return 'navy';
       }
 
       case Tiles.Type.DESERT: {
-        return "sandybrown";
+        return 'sandybrown';
       }
 
       case Tiles.Type.GOLD: {
-        return "gold";
+        return 'gold';
       }
     }
   }
@@ -273,7 +283,12 @@ class App extends React.Component<AppProps, AppState> {
       // boardGenerator: new Boards.BoardGenerator(Configurations.CONFIGURATION_3_4),
       // boardGenerator: new Boards.BoardGenerator(Configurations.CONFIGURATION_3_4_FISHERMEN),
       // boardGenerator: new Boards.BoardGenerator(Configurations.CONFIGURATION_5_6),
-      boardGenerator: new Boards.BoardGenerator(Configurations.CONFIGURATION_5_6_FISHERMEN),
+      // boardGenerator: new Boards.BoardGenerator(Configurations.CONFIGURATION_EXTENSION_5_6_FISHERMEN),
+      // boardGenerator: new Boards.BoardGenerator(Configurations.CONFIGURATION_BASE_EXPANSION_TB_SCENARIO_TB),
+      // boardGenerator: new Boards.BoardGenerator(Configurations.CONFIGURATION_3_4_EXPANSION_TB_SCENARIO_TB_FISHERMEN),
+      // boardGenerator: new Boards.BoardGenerator(Configurations.CONFIGURATION_5_6_EXPANSION_TB_SCENARIO_TB),
+      boardGenerator: new Boards.BoardGenerator(Configurations.CONFIGURATION_5_6_EXPANSION_TB_SCENARIO_TB_FISHERMEN),
+      // boardGenerator: new Boards.BoardGenerator(Configurations.CONFIGURATION_7_8),
       board: new Boards.Board([])
     };
   }

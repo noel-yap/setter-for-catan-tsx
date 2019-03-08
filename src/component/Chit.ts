@@ -41,6 +41,17 @@
       .concat(new Array(2).fill(CHITS_8));
   export const EXTENSION_5_6_PRODUCING_TERRAIN_CHIT_SET = BASE_PRODUCING_TERRAIN_CHIT_SET
       .concat([CHITS_2, CHITS_3, CHITS_4, CHITS_5, CHITS_6, CHITS_8, CHITS_9, CHITS_10, CHITS_11, CHITS_12]);
+  export const EXTENSION_7_8_PRODUCING_TERRAIN_CHIT_SET = BASE_PRODUCING_TERRAIN_CHIT_SET
+      .concat(BASE_PRODUCING_TERRAIN_CHIT_SET);
+
+  export const BASE_EXPANSION_TB_SCENARIO_TB_TERRAIN_CHIT_SET = new Array(2).fill(CHITS_3)
+      .concat(new Array(2).fill(CHITS_11))
+      .concat(new Array(2).fill(CHITS_4))
+      .concat(new Array(2).fill(CHITS_10))
+      .concat(new Array(2).fill(CHITS_5))
+      .concat(new Array(2).fill(CHITS_9))
+      .concat(new Array(2).fill(CHITS_6))
+      .concat(new Array(2).fill(CHITS_8));
 
   export const BASE_FISHERY_CHIT_SET = [CHITS_4, CHITS_5, CHITS_6, CHITS_8, CHITS_9, CHITS_10];
   export const EXTENSION_5_6_FISHERY_CHIT_SET = BASE_FISHERY_CHIT_SET
