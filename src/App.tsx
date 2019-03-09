@@ -1,12 +1,15 @@
 import _ from 'underscore';
 import React from 'react';
 import Button from '@material-ui/core/Button';
+import FormLabel from '@material-ui/core/FormLabel';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
 import Switch from '@material-ui/core/Switch';
 import Tooltip from '@material-ui/core/Tooltip';
-import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
+import {createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
 
 import './App.css';
 
@@ -278,12 +281,18 @@ interface AppProps {}
 
 interface AppState {
   openMenu: boolean,
-  menuItemIndex: number,
+  playerCount: string,
 
   useFishermenOfCatanVariant: boolean,
-  boardConfiguration: string,
+  scenario: string,
   boardGenerator: Boards.BoardGenerator,
   board: Boards.Board
+}
+
+interface BoardConfigurations {
+  [key: string]: {
+    [key: string]: Configurations.Configuration[]
+  }
 }
 
 class App extends React.Component<AppProps, AppState> {
@@ -292,10 +301,10 @@ class App extends React.Component<AppProps, AppState> {
 
     this.state = {
       openMenu: false,
-      menuItemIndex: 0,
+      playerCount: '3∨4',
 
       useFishermenOfCatanVariant: false,
-      boardConfiguration: '3 to 4 Player',
+      scenario: 'Base/Extension',
       boardGenerator: new Boards.BoardGenerator(Configurations.CONFIGURATION_3_4),
       board: new Boards.Board([])
     };
@@ -311,35 +320,54 @@ class App extends React.Component<AppProps, AppState> {
       }
     });
 
-    const boardConfigurations = [
-      ['3 to 4 Player', Configurations.CONFIGURATION_3_4, Configurations.CONFIGURATION_3_4_FISHERMEN],
-      ['5 to 6 Player', Configurations.CONFIGURATION_5_6, Configurations.CONFIGURATION_5_6_FISHERMEN],
-      ['7 to 8 Player', Configurations.CONFIGURATION_7_8, Configurations.CONFIGURATION_7_8_FISHERMEN],
-      ['3 to 4 Player Traders and Barbarians', Configurations.CONFIGURATION_3_4_EXPANSION_TB_SCENARIO_TB, Configurations.CONFIGURATION_3_4_EXPANSION_TB_SCENARIO_TB_FISHERMEN],
-      ['5 to 6 Player Traders and Barbarians', Configurations.CONFIGURATION_5_6_EXPANSION_TB_SCENARIO_TB, Configurations.CONFIGURATION_5_6_EXPANSION_TB_SCENARIO_TB_FISHERMEN]
-    ] as [string, Configurations.Configuration, Configurations.Configuration][];
+    const boardConfigurations: BoardConfigurations = {
+      'Base/Extension': {
+        '3∨4': [Configurations.CONFIGURATION_3_4, Configurations.CONFIGURATION_3_4_FISHERMEN],
+        '5∨6': [Configurations.CONFIGURATION_5_6, Configurations.CONFIGURATION_5_6_FISHERMEN],
+        '7∨8': [Configurations.CONFIGURATION_7_8, Configurations.CONFIGURATION_7_8_FISHERMEN]
+      },
+      'Traders and Barbarians Expansion': {
+        '3∨4': [Configurations.CONFIGURATION_3_4_EXPANSION_TB_SCENARIO_TB, Configurations.CONFIGURATION_3_4_EXPANSION_TB_SCENARIO_TB_FISHERMEN],
+        '5∨6': [Configurations.CONFIGURATION_5_6_EXPANSION_TB_SCENARIO_TB, Configurations.CONFIGURATION_5_6_EXPANSION_TB_SCENARIO_TB_FISHERMEN]
+      }
+    };
+    const scenarios = Object.keys(boardConfigurations);
+    const playerCounts = Object.keys(boardConfigurations['Base/Extension']);
 
     return (
         <div className="App">
           <header className="App-header">
             <MuiThemeProvider theme={theme}>
+              <FormLabel>Number of Players</FormLabel>
+              <RadioGroup
+                  id="player-counts"
+                  aria-label="number-of-players"
+                  name="number-of-players"
+                  value={this.state.playerCount}
+                  onChange={(event: any) => {
+                    this.generateBoard(boardConfigurations, this.state.scenario, event.target.value, this.state.useFishermenOfCatanVariant);
+                  }}
+                  row
+              >
+                {playerCounts.map((playerCount) => {
+                  return (
+                      <FormControlLabel
+                          value={playerCount}
+                          label={playerCount}
+                          disabled={playerCount === '7∨8' && this.state.scenario === 'Traders and Barbarians Expansion'}
+                          control={<Radio color="primary"/>}
+                      />
+                  );
+                })}
+              </RadioGroup>
+              <FormLabel>Variants</FormLabel>
               <FormControlLabel
-                  label="Use Fishermen of Catan Variant."
+                  label="Fishermen of Catan"
                   control={
                     <Switch
                         checked={this.state.useFishermenOfCatanVariant}
                         onChange={() => {
-                          const useFishermenOfCatanVariant = !this.state.useFishermenOfCatanVariant;
-                          const boardGenerator = new Boards.BoardGenerator(boardConfigurations[this.state.menuItemIndex][useFishermenOfCatanVariant
-                              ? 2
-                              : 1]);
-
-                          this.setState({
-                            openMenu: false,
-                            useFishermenOfCatanVariant: useFishermenOfCatanVariant,
-                            boardGenerator: boardGenerator,
-                            board: boardGenerator.generateBoard()
-                          });
+                          this.generateBoard(boardConfigurations, this.state.scenario, this.state.playerCount, !this.state.useFishermenOfCatanVariant);
                         }}
                     />
                   }
@@ -361,32 +389,28 @@ class App extends React.Component<AppProps, AppState> {
                       });
                     }}
                 >
-                  Generate {this.state.boardConfiguration}
+                  Generate {this.state.scenario}
                 </Button>
               </Tooltip>
               <Menu
-                  id="board-configurations"
+                  id="scenarios"
                   anchorEl={document.getElementById('generate-board-button')}
-                  open={this.state.openMenu}>
+                  open={this.state.openMenu}
+                  onClose={() => {
+                    this.setState({
+                      openMenu: false
+                    });
+                  }}>
                 {
-                  boardConfigurations.map((bc) => bc[0]).map((boardConfiguration, index) => (
+                  scenarios.map((scenario, index) => (
                       <MenuItem
-                          key={boardConfiguration}
+                          key={scenario}
+                          disabled={scenario === 'Traders and Barbarians Expansion' && this.state.playerCount === '7∨8'}
                           onClick={(event) => {
-                            const boardGenerator = new Boards.BoardGenerator(boardConfigurations[index][this.state.useFishermenOfCatanVariant
-                                ? 2
-                                : 1]);
-
-                            this.setState({
-                              openMenu: false,
-                              menuItemIndex: index,
-                              boardConfiguration: boardConfiguration,
-                              boardGenerator: boardGenerator,
-                              board: boardGenerator.generateBoard()
-                            });
+                            this.generateBoard(boardConfigurations, scenario, this.state.playerCount, this.state.useFishermenOfCatanVariant);
                           }}
                       >
-                        {boardConfiguration}
+                        {scenario}
                       </MenuItem>
                   ))
                 }
@@ -396,6 +420,21 @@ class App extends React.Component<AppProps, AppState> {
           </header>
         </div>
     );
+  }
+
+  generateBoard(boardConfigurations: BoardConfigurations, scenario: string, playerCount: string, useFishermenOfCatanVariant: boolean) {
+    const boardGenerator = new Boards.BoardGenerator(
+        boardConfigurations[scenario][playerCount][useFishermenOfCatanVariant ? 1 : 0]);
+
+    this.setState({
+      openMenu: false,
+
+      scenario: scenario,
+      playerCount: playerCount,
+      useFishermenOfCatanVariant: useFishermenOfCatanVariant,
+      boardGenerator: boardGenerator,
+      board: !this.state.board.isEmpty() ? boardGenerator.generateBoard() : this.state.board
+    });
   }
 }
 

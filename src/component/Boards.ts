@@ -32,6 +32,10 @@ import * as Coordinates from "./Coordinates";
     get fisheryTilesLayout(): ConfiguredTiles.ConfiguredTile[] {
       return this._fisheryTilesLayout;
     }
+
+    isEmpty(): boolean {
+      return this._terrainTilesLayout.length === 0 && this._portTilesLayout.length === 0 && this._fisheryTilesLayout.length === 0;
+    }
   }
 
   export class BoardGenerator {

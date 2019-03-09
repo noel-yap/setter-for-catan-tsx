@@ -145,12 +145,13 @@
     new Coordinate(3, 1, [RIGHT]),
     new Coordinate(2, 2, [BOTTOM_RIGHT]),
     new Coordinate(14, 2, [LEFT]),
+    new Coordinate(15, 3, [BOTTOM_LEFT]),
     new Coordinate(0, 4, [RIGHT]),
     new Coordinate(15, 5, [LEFT]),
-    new Coordinate(2, 6, [RIGHT]),
-    new Coordinate(4, 8, [TOP_RIGHT]),
+    new Coordinate(3, 7, [TOP_RIGHT]),
     new Coordinate(6, 8, [TOP_LEFT]),
-    new Coordinate(10, 8, [TOP_LEFT])];
+    new Coordinate(8, 8, [TOP_RIGHT]),
+    new Coordinate(12, 8, [TOP_LEFT])];
 
   export const BASE_3_4_FISHERY_COORDINATES = [
     new Coordinate(5, 0, [BOTTOM_RIGHT, BOTTOM_LEFT]),
@@ -168,6 +169,15 @@
     new Coordinate(10, 6, [RIGHT, BOTTOM_RIGHT]),
     new Coordinate(3, 7, [TOP_RIGHT, RIGHT]),
     new Coordinate(6, 8, [TOP_LEFT, TOP_RIGHT])];
+  export const EXTENSION_7_8_EXPANSION_TB_SCENARIO_TB_FISHERY_COORDINATES = [
+    new Coordinate(10, 0, [BOTTOM_RIGHT, BOTTOM_LEFT]),
+    new Coordinate(5, 1, [TOP_LEFT, TOP_RIGHT]),
+    new Coordinate(1, 3, [RIGHT, BOTTOM_RIGHT]),
+    new Coordinate(13, 3, [TOP_RIGHT, RIGHT]),
+    new Coordinate(3, 5, [BOTTOM_LEFT, LEFT]),
+    new Coordinate(14, 6, [LEFT, TOP_LEFT]),
+    new Coordinate(5, 7, [BOTTOM_LEFT, LEFT]),
+    new Coordinate(10, 8, [TOP_LEFT, TOP_RIGHT])];
 
   export const BASE_3_4_EXPANSION_TB_SCENARIO_TB_NON_TRADE_TERRAIN_COORDINATES = [
     new Coordinate(4, 1),
