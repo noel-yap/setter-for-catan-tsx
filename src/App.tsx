@@ -1,18 +1,22 @@
 import _ from 'underscore';
 import React from 'react';
+import Button from '@material-ui/core/Button';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import './App.css';
 
-import * as ROT from "rot-js";
-import {DisplayOptions} from "rot-js/lib/display/types";
+import * as ROT from 'rot-js';
+import Hex from 'rot-js/lib/display/hex';
+import {DisplayOptions} from 'rot-js/lib/display/types';
 
-import * as Boards from "./component/Boards";
-import * as Chits from "./component/Chit";
-import * as Coordinates from "./component/Coordinates";
-import * as Configurations from "./component/Configurations";
-import * as Tiles from "./component/Tiles";
-import {ConfiguredTile} from "./component/ConfiguredTiles";
-import Hex from "rot-js/lib/display/hex";
+import * as Boards from './component/Boards';
+import * as Chits from './component/Chit';
+import * as Coordinates from './component/Coordinates';
+import * as Configurations from './component/Configurations';
+import * as Tiles from './component/Tiles';
+import {ConfiguredTile} from './component/ConfiguredTiles';
 
 class Cartesian2D {
   constructor(public x: number, public y: number) {}
@@ -267,10 +271,12 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
   }
 }
 
-interface AppProps {
-}
+interface AppProps {}
 
 interface AppState {
+  openMenu: boolean,
+
+  boardConfiguration: string,
   boardGenerator: Boards.BoardGenerator,
   board: Boards.Board
 }
@@ -280,33 +286,73 @@ class App extends React.Component<AppProps, AppState> {
     super(props);
 
     this.state = {
-      // boardGenerator: new Boards.BoardGenerator(Configurations.CONFIGURATION_3_4),
-      // boardGenerator: new Boards.BoardGenerator(Configurations.CONFIGURATION_3_4_FISHERMEN),
-      // boardGenerator: new Boards.BoardGenerator(Configurations.CONFIGURATION_5_6),
-      // boardGenerator: new Boards.BoardGenerator(Configurations.CONFIGURATION_EXTENSION_5_6_FISHERMEN),
-      // boardGenerator: new Boards.BoardGenerator(Configurations.CONFIGURATION_BASE_EXPANSION_TB_SCENARIO_TB),
-      // boardGenerator: new Boards.BoardGenerator(Configurations.CONFIGURATION_3_4_EXPANSION_TB_SCENARIO_TB_FISHERMEN),
-      // boardGenerator: new Boards.BoardGenerator(Configurations.CONFIGURATION_5_6_EXPANSION_TB_SCENARIO_TB),
-      boardGenerator: new Boards.BoardGenerator(Configurations.CONFIGURATION_5_6_EXPANSION_TB_SCENARIO_TB_FISHERMEN),
-      // boardGenerator: new Boards.BoardGenerator(Configurations.CONFIGURATION_7_8),
+      openMenu: false,
+
+      boardConfiguration: '3 to 4 Player',
+      boardGenerator: new Boards.BoardGenerator(Configurations.CONFIGURATION_3_4),
       board: new Boards.Board([])
     };
   }
-
   render(): JSX.Element {
+    // TODO: Create a checkbox to select/deselect Fishermen of Catan option.
+
+    const boardConfigurations = [
+      ['3 to 4 Player', Configurations.CONFIGURATION_3_4],
+      ['3 to 4 Player with Fishermen of Catan', Configurations.CONFIGURATION_3_4_FISHERMEN],
+      ['5 to 6 Player', Configurations.CONFIGURATION_5_6],
+      ['5 to 6 Player with Fishermen of Catan', Configurations.CONFIGURATION_5_6_FISHERMEN],
+      ['7 to 8 Player', Configurations.CONFIGURATION_7_8],
+      ['7 to 8 Player with Fishermen of Catan', Configurations.CONFIGURATION_7_8_FISHERMEN], // FIXME, Create this configuration
+      ['3 to 4 Player Traders and Barbarians', Configurations.CONFIGURATION_3_4_EXPANSION_TB_SCENARIO_TB],
+      ['3 to 4 Player Traders and Barbarians with Fishermen of Catan', Configurations.CONFIGURATION_3_4_EXPANSION_TB_SCENARIO_TB_FISHERMEN],
+      ['5 to 6 Player Traders and Barbarians', Configurations.CONFIGURATION_5_6_EXPANSION_TB_SCENARIO_TB],
+      ['5 to 6 Player Traders and Barbarians with Fishermen of Catan', Configurations.CONFIGURATION_5_6_EXPANSION_TB_SCENARIO_TB_FISHERMEN]
+    ] as [string, Configurations.Configuration][];
+
     return (
         <div className="App">
           <header className="App-header">
-            <button
-                style={{fontSize: 36}}
-                onClick={() => {
-                  this.setState({
-                    board: this.state.boardGenerator.generateBoard()
-                  });
-                }}
-            >
-              Generate Board
-            </button>
+            <Tooltip title="Right click to change configuration.">
+              <Button
+                  id="generate-board-button"
+                  style={{fontSize: 24}}
+                  variant="contained"
+                  onClick={() => {
+                    this.setState({
+                      board: this.state.boardGenerator.generateBoard()
+                    });
+                  }}
+                  onContextMenu={(event) => {
+                    event.preventDefault();
+                    this.setState({
+                      openMenu: true
+                    });
+                  }}
+              >
+                Generate {this.state.boardConfiguration}
+              </Button>
+            </Tooltip>
+            <Menu anchorEl={document.getElementById('generate-board-button')} id="board-configurations" open={this.state.openMenu}>
+              {
+                boardConfigurations.map((bc) => bc[0]).map((boardConfiguration, index) => (
+                    <MenuItem
+                        key={boardConfiguration}
+                        onClick={(event) => {
+                          const boardGenerator = new Boards.BoardGenerator(boardConfigurations[index][1]);
+
+                          this.setState({
+                            openMenu: false,
+                            boardConfiguration: boardConfiguration,
+                            boardGenerator: boardGenerator,
+                            board: boardGenerator.generateBoard()
+                          });
+                        }}
+                    >
+                      {boardConfiguration}
+                    </MenuItem>
+                ))
+              }
+            </Menu>
             <GeneratedBoard board={this.state.board}/>
           </header>
         </div>
