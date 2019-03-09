@@ -1,9 +1,12 @@
 import _ from 'underscore';
 import React from 'react';
 import Button from '@material-ui/core/Button';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import Switch from '@material-ui/core/Switch';
 import Tooltip from '@material-ui/core/Tooltip';
+import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 
 import './App.css';
 
@@ -94,8 +97,8 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
     const options = display._options;
 
     const label = configuredTile.tile === Tiles.UNKNOWN
-       ? '?'
-       : GeneratedBoard.chitsToString(configuredTile.chits);
+        ? '?'
+        : GeneratedBoard.chitsToString(configuredTile.chits);
     display.draw(
         configuredTile.coordinate.x,
         configuredTile.coordinate.y,
@@ -218,7 +221,7 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
       case Tiles.Type.UNKNOWN: {
         return 'white';
       }
-      
+
       case Tiles.Type.GENERIC_HARBOR: {
         return 'gold';
       }
@@ -275,7 +278,9 @@ interface AppProps {}
 
 interface AppState {
   openMenu: boolean,
+  menuItemIndex: number,
 
+  useFishermenOfCatanVariant: boolean,
   boardConfiguration: string,
   boardGenerator: Boards.BoardGenerator,
   board: Boards.Board
@@ -287,73 +292,107 @@ class App extends React.Component<AppProps, AppState> {
 
     this.state = {
       openMenu: false,
+      menuItemIndex: 0,
 
+      useFishermenOfCatanVariant: false,
       boardConfiguration: '3 to 4 Player',
       boardGenerator: new Boards.BoardGenerator(Configurations.CONFIGURATION_3_4),
       board: new Boards.Board([])
     };
   }
+
   render(): JSX.Element {
-    // TODO: Create a checkbox to select/deselect Fishermen of Catan option.
+    const theme = createMuiTheme({
+      palette: {
+        type: 'dark',
+      },
+      typography: {
+        useNextVariants: true
+      }
+    });
 
     const boardConfigurations = [
-      ['3 to 4 Player', Configurations.CONFIGURATION_3_4],
-      ['3 to 4 Player with Fishermen of Catan', Configurations.CONFIGURATION_3_4_FISHERMEN],
-      ['5 to 6 Player', Configurations.CONFIGURATION_5_6],
-      ['5 to 6 Player with Fishermen of Catan', Configurations.CONFIGURATION_5_6_FISHERMEN],
-      ['7 to 8 Player', Configurations.CONFIGURATION_7_8],
-      ['7 to 8 Player with Fishermen of Catan', Configurations.CONFIGURATION_7_8_FISHERMEN], // FIXME, Create this configuration
-      ['3 to 4 Player Traders and Barbarians', Configurations.CONFIGURATION_3_4_EXPANSION_TB_SCENARIO_TB],
-      ['3 to 4 Player Traders and Barbarians with Fishermen of Catan', Configurations.CONFIGURATION_3_4_EXPANSION_TB_SCENARIO_TB_FISHERMEN],
-      ['5 to 6 Player Traders and Barbarians', Configurations.CONFIGURATION_5_6_EXPANSION_TB_SCENARIO_TB],
-      ['5 to 6 Player Traders and Barbarians with Fishermen of Catan', Configurations.CONFIGURATION_5_6_EXPANSION_TB_SCENARIO_TB_FISHERMEN]
-    ] as [string, Configurations.Configuration][];
+      ['3 to 4 Player', Configurations.CONFIGURATION_3_4, Configurations.CONFIGURATION_3_4_FISHERMEN],
+      ['5 to 6 Player', Configurations.CONFIGURATION_5_6, Configurations.CONFIGURATION_5_6_FISHERMEN],
+      ['7 to 8 Player', Configurations.CONFIGURATION_7_8, Configurations.CONFIGURATION_7_8_FISHERMEN],
+      ['3 to 4 Player Traders and Barbarians', Configurations.CONFIGURATION_3_4_EXPANSION_TB_SCENARIO_TB, Configurations.CONFIGURATION_3_4_EXPANSION_TB_SCENARIO_TB_FISHERMEN],
+      ['5 to 6 Player Traders and Barbarians', Configurations.CONFIGURATION_5_6_EXPANSION_TB_SCENARIO_TB, Configurations.CONFIGURATION_5_6_EXPANSION_TB_SCENARIO_TB_FISHERMEN]
+    ] as [string, Configurations.Configuration, Configurations.Configuration][];
 
     return (
         <div className="App">
           <header className="App-header">
-            <Tooltip title="Right click to change configuration.">
-              <Button
-                  id="generate-board-button"
-                  style={{fontSize: 24}}
-                  variant="contained"
-                  onClick={() => {
-                    this.setState({
-                      board: this.state.boardGenerator.generateBoard()
-                    });
-                  }}
-                  onContextMenu={(event) => {
-                    event.preventDefault();
-                    this.setState({
-                      openMenu: true
-                    });
-                  }}
-              >
-                Generate {this.state.boardConfiguration}
-              </Button>
-            </Tooltip>
-            <Menu anchorEl={document.getElementById('generate-board-button')} id="board-configurations" open={this.state.openMenu}>
-              {
-                boardConfigurations.map((bc) => bc[0]).map((boardConfiguration, index) => (
-                    <MenuItem
-                        key={boardConfiguration}
-                        onClick={(event) => {
-                          const boardGenerator = new Boards.BoardGenerator(boardConfigurations[index][1]);
+            <MuiThemeProvider theme={theme}>
+              <FormControlLabel
+                  label="Use Fishermen of Catan Variant."
+                  control={
+                    <Switch
+                        checked={this.state.useFishermenOfCatanVariant}
+                        onChange={() => {
+                          const useFishermenOfCatanVariant = !this.state.useFishermenOfCatanVariant;
+                          const boardGenerator = new Boards.BoardGenerator(boardConfigurations[this.state.menuItemIndex][useFishermenOfCatanVariant
+                              ? 2
+                              : 1]);
 
                           this.setState({
                             openMenu: false,
-                            boardConfiguration: boardConfiguration,
+                            useFishermenOfCatanVariant: useFishermenOfCatanVariant,
                             boardGenerator: boardGenerator,
                             board: boardGenerator.generateBoard()
                           });
                         }}
-                    >
-                      {boardConfiguration}
-                    </MenuItem>
-                ))
-              }
-            </Menu>
-            <GeneratedBoard board={this.state.board}/>
+                    />
+                  }
+              />
+              <Tooltip title="Right click to change configuration.">
+                <Button
+                    id="generate-board-button"
+                    style={{fontSize: 24}}
+                    variant="contained"
+                    onClick={() => {
+                      this.setState({
+                        board: this.state.boardGenerator.generateBoard()
+                      });
+                    }}
+                    onContextMenu={(event) => {
+                      event.preventDefault();
+                      this.setState({
+                        openMenu: true
+                      });
+                    }}
+                >
+                  Generate {this.state.boardConfiguration}
+                </Button>
+              </Tooltip>
+              <Menu
+                  id="board-configurations"
+                  anchorEl={document.getElementById('generate-board-button')}
+                  open={this.state.openMenu}>
+                {
+                  boardConfigurations.map((bc) => bc[0]).map((boardConfiguration, index) => (
+                      <MenuItem
+                          key={boardConfiguration}
+                          onClick={(event) => {
+                            const boardGenerator = new Boards.BoardGenerator(boardConfigurations[index][this.state.useFishermenOfCatanVariant
+                                ? 2
+                                : 1]);
+
+                            this.setState({
+                              openMenu: false,
+                              menuItemIndex: index,
+                              boardConfiguration: boardConfiguration,
+                              boardGenerator: boardGenerator,
+                              board: boardGenerator.generateBoard()
+                            });
+                          }}
+                      >
+                        {boardConfiguration}
+                      </MenuItem>
+                  ))
+                }
+              </Menu>
+              <GeneratedBoard board={this.state.board}/>
+            </MuiThemeProvider>
           </header>
         </div>
     );
