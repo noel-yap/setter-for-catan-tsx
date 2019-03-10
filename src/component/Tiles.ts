@@ -79,10 +79,13 @@
   export const HILL_TERRAIN = new Tile(Type.HILL);
   export const MOUNTAIN_TERRAIN = new Tile(Type.MOUNTAIN);
 
+  export const GOLD_TERRAIN = new Tile(Type.GOLD);
+
   export const CASTLE_TERRAIN = new Tile(Type.CASTLE);
   export const GLASSWORKS_TERRAIN = new Tile(Type.GLASSWORKS);
   export const QUARRY_TERRAIN = new Tile(Type.QUARRY);
 
+  export const SEA = new Tile(Type.SEA);
   export const LAKE = new Tile(Type.LAKE);
   export const FISHERY = new Tile(Type.FISHERY);
 

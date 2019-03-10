@@ -63,6 +63,7 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
   renderBoard(): HTMLCanvasElement {
     const displayOptions = {
       layout: 'hex',
+      fontSize: 16,
       fg: 'black',
       bg: 'navy',
       width: 30,
@@ -106,7 +107,7 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
         configuredTile.coordinate.x,
         configuredTile.coordinate.y,
         label,
-        options.fg,
+        GeneratedBoard.chitColor(configuredTile.tile, configuredTile.chits, options.fg),
         GeneratedBoard.tileColor(configuredTile.tile));
   }
 
@@ -159,7 +160,7 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
 
     GeneratedBoard.renderText(
         display,
-        options.fg,
+        GeneratedBoard.chitColor(configuredTile.tile, configuredTile.chits, options.fg),
         vertex1.translate(offset.scale(.5 + (inside ? .0625 : -.0625))),
         GeneratedBoard.chitsToString(configuredTile.chits));
   }
@@ -219,12 +220,40 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
         * ([Coordinates.TOP_RIGHT, Coordinates.BOTTOM_LEFT].some((p) => p === edgePosition) ? 1 : .5) * hexSize + border));
   }
 
+  static chitColor(tile: Tiles.Tile, chits: Chits.Chits, primaryColor: string) {
+    function secondaryColor(backgroundColor: string) {
+      switch (backgroundColor) {
+        case 'firebrick': {
+          return '#FF8C8C';
+        }
+
+        case 'forestgreen':
+        case 'slategray': {
+          return '#FFD3D3';
+        }
+
+        case 'sandybrown': {
+          return '#C70000';
+        }
+
+        default: {
+          return 'crimson';
+        }
+      }
+    }
+
+    return chits.odds() < 5
+        ? primaryColor
+        : secondaryColor(GeneratedBoard.tileColor(tile));
+  }
+
   static tileColor(tile: Tiles.Tile): string {
     switch (tile.type) {
       case Tiles.Type.UNKNOWN: {
         return 'white';
       }
 
+      case Tiles.Type.GOLD:
       case Tiles.Type.GENERIC_HARBOR: {
         return 'gold';
       }
@@ -268,10 +297,6 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
 
       case Tiles.Type.DESERT: {
         return 'sandybrown';
-      }
-
-      case Tiles.Type.GOLD: {
-        return 'gold';
       }
     }
   }
@@ -352,6 +377,7 @@ class App extends React.Component<AppProps, AppState> {
                 {playerCounts.map((playerCount) => {
                   return (
                       <FormControlLabel
+                          key={playerCount}
                           value={playerCount}
                           label={playerCount}
                           disabled={playerCount === '7∨8' && this.state.scenario === 'Traders and Barbarians Expansion'}
