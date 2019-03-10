@@ -1,13 +1,13 @@
 import _ from 'underscore';
 import React from 'react';
 import Button from '@material-ui/core/Button';
+import Chip from '@material-ui/core/Chip';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import Switch from '@material-ui/core/Switch';
 import Tooltip from '@material-ui/core/Tooltip';
 import {createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
 
@@ -360,23 +360,21 @@ class App extends React.Component<AppProps, AppState> {
                   );
                 })}
               </RadioGroup>
-              <FormLabel>Variants</FormLabel>
-              <FormControlLabel
+              <Chip
+                  variant={this.state.useFishermenOfCatanVariant ? "default" : "outlined"}
                   label="Fishermen of Catan"
-                  control={
-                    <Switch
-                        checked={this.state.useFishermenOfCatanVariant}
-                        onChange={() => {
-                          this.generateBoard(boardConfigurations, this.state.scenario, this.state.playerCount, !this.state.useFishermenOfCatanVariant);
-                        }}
-                    />
-                  }
+                  color={this.state.useFishermenOfCatanVariant ? "primary" : "secondary"}
+                  onClick={() => {
+                    this.generateBoard(boardConfigurations, this.state.scenario, this.state.playerCount, !this.state.useFishermenOfCatanVariant)
+                  }}
               />
+              <br/>
               <Tooltip title="Right click to change configuration.">
                 <Button
+                    variant="contained"
                     id="generate-board-button"
                     style={{fontSize: 24}}
-                    variant="contained"
+                    color="primary"
                     onClick={() => {
                       this.setState({
                         board: this.state.boardGenerator.generateBoard()
