@@ -3,6 +3,7 @@ import * as _ from 'underscore';
 import * as Configurations from "./Configurations";
 import * as ConfiguredTiles from "./ConfiguredTiles";
 import * as Coordinates from "./Coordinates";
+import * as Tiles from "./Tiles";
 
 // export module Boards {
   export class Board {
@@ -117,7 +118,11 @@ import * as Coordinates from "./Coordinates";
         return validRange[0] <= o && o <= validRange[1];
       }
 
-      const producingConfiguredTiles = board.terrainTilesLayout.concat(board.fisheryTilesLayout);
+      const producingConfiguredTiles = board.terrainTilesLayout
+          .filter((ct) => {
+            return ct.tile !== Tiles.SEA
+          })
+          .concat(board.fisheryTilesLayout);
       const coordinatesMap = _.groupBy(
           producingConfiguredTiles,
           (ct) => key(ct.coordinate.x, ct.coordinate.y));

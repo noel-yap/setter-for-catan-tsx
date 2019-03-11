@@ -18,7 +18,7 @@ import Hex from 'rot-js/lib/display/hex';
 import {DisplayOptions} from 'rot-js/lib/display/types';
 
 import * as Boards from './component/Boards';
-import * as Chits from './component/Chit';
+import * as Chits from './component/Chits';
 import * as Coordinates from './component/Coordinates';
 import * as Configurations from './component/Configurations';
 import * as Tiles from './component/Tiles';
@@ -326,10 +326,10 @@ class App extends React.Component<AppProps, AppState> {
 
     this.state = {
       openMenu: false,
-      playerCount: '3∨4',
+      playerCount: '3',
 
       useFishermenOfCatanVariant: false,
-      scenario: 'Base/Extension',
+      scenario: 'Base',
       boardGenerator: new Boards.BoardGenerator(Configurations.CONFIGURATION_3_4),
       board: new Boards.Board([])
     };
@@ -346,18 +346,23 @@ class App extends React.Component<AppProps, AppState> {
     });
 
     const boardConfigurations: BoardConfigurations = {
-      'Base/Extension': {
-        '3∨4': [Configurations.CONFIGURATION_3_4, Configurations.CONFIGURATION_3_4_FISHERMEN],
+      'Base': {
+        '3': [Configurations.CONFIGURATION_3_4, Configurations.CONFIGURATION_3_4_FISHERMEN],
+        '4': [Configurations.CONFIGURATION_3_4, Configurations.CONFIGURATION_3_4_FISHERMEN],
         '5∨6': [Configurations.CONFIGURATION_5_6, Configurations.CONFIGURATION_5_6_FISHERMEN],
         '7∨8': [Configurations.CONFIGURATION_7_8, Configurations.CONFIGURATION_7_8_FISHERMEN]
       },
-      'Traders and Barbarians Expansion': {
-        '3∨4': [Configurations.CONFIGURATION_3_4_EXPANSION_TB_SCENARIO_TB, Configurations.CONFIGURATION_3_4_EXPANSION_TB_SCENARIO_TB_FISHERMEN],
+      'Seafarers: Head to New Shores': {
+        '3': [Configurations.CONFIGURATION_3_EXPANSION_SEA_SCENARIO_HFNS, Configurations.CONFIGURATION_3_EXPANSION_SEA_SCENARIO_HFNS_FISHERMEN]
+      },
+      'Traders and Barbarians: Traders and Barbarians': {
+        '3': [Configurations.CONFIGURATION_3_4_EXPANSION_TB_SCENARIO_TB, Configurations.CONFIGURATION_3_4_EXPANSION_TB_SCENARIO_TB_FISHERMEN],
+        '4': [Configurations.CONFIGURATION_3_4_EXPANSION_TB_SCENARIO_TB, Configurations.CONFIGURATION_3_4_EXPANSION_TB_SCENARIO_TB_FISHERMEN],
         '5∨6': [Configurations.CONFIGURATION_5_6_EXPANSION_TB_SCENARIO_TB, Configurations.CONFIGURATION_5_6_EXPANSION_TB_SCENARIO_TB_FISHERMEN]
       }
     };
     const scenarios = Object.keys(boardConfigurations);
-    const playerCounts = Object.keys(boardConfigurations['Base/Extension']);
+    const playerCounts = Object.keys(boardConfigurations['Base']);
 
     return (
         <div className="App">
@@ -380,7 +385,7 @@ class App extends React.Component<AppProps, AppState> {
                           key={playerCount}
                           value={playerCount}
                           label={playerCount}
-                          disabled={playerCount === '7∨8' && this.state.scenario === 'Traders and Barbarians Expansion'}
+                          disabled={!boardConfigurations[this.state.scenario].hasOwnProperty(playerCount)}
                           control={<Radio color="primary"/>}
                       />
                   );
@@ -429,7 +434,7 @@ class App extends React.Component<AppProps, AppState> {
                   scenarios.map((scenario, index) => (
                       <MenuItem
                           key={scenario}
-                          disabled={scenario === 'Traders and Barbarians Expansion' && this.state.playerCount === '7∨8'}
+                          disabled={!boardConfigurations[scenario].hasOwnProperty(this.state.playerCount)}
                           onClick={(event) => {
                             this.generateBoard(boardConfigurations, scenario, this.state.playerCount, this.state.useFishermenOfCatanVariant);
                           }}

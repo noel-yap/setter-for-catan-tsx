@@ -89,20 +89,11 @@
   export const LAKE = new Tile(Type.LAKE);
   export const FISHERY = new Tile(Type.FISHERY);
 
-  export const BASE_3_4_PRODUCING_TERRAIN_TILES = new Array(4).fill(FIELD_TERRAIN)
+  export const BASE_3_4_PRODUCING_TERRAIN_TILE_SET = new Array(4).fill(FIELD_TERRAIN)
       .concat(new Array(4).fill(FOREST_TERRAIN))
       .concat(new Array(4).fill(PASTURE_TERRAIN))
       .concat(new Array(3).fill(HILL_TERRAIN))
       .concat(new Array(3).fill(MOUNTAIN_TERRAIN));
-  export const EXTENSION_5_6_PRODUCING_TERRAIN_TILES = BASE_3_4_PRODUCING_TERRAIN_TILES
-      .concat(new Array(2).fill(FIELD_TERRAIN))
-      .concat(new Array(2).fill(FOREST_TERRAIN))
-      .concat(new Array(2).fill(PASTURE_TERRAIN))
-      .concat(new Array(2).fill(HILL_TERRAIN))
-      .concat(new Array(2).fill(MOUNTAIN_TERRAIN));
-  export const EXTENSIONS_7_8_PRODUCING_TERRAIN_TILES = BASE_3_4_PRODUCING_TERRAIN_TILES
-      .concat(BASE_3_4_PRODUCING_TERRAIN_TILES);
-
   export const BASE_3_4_HARBOR_TILE_SET = new Array(4).fill(GENERIC_HARBOR)
       .concat([
         GRAIN_HARBOR,
@@ -110,19 +101,46 @@
         WOOL_HARBOR,
         BRICK_HARBOR,
         ORE_HARBOR]);
+  export const BASE_FISHERY_TILE_SET = new Array(6).fill(FISHERY);
+
+  export const EXTENSION_5_6_PRODUCING_TERRAIN_TILE_SET = BASE_3_4_PRODUCING_TERRAIN_TILE_SET
+      .concat(new Array(2).fill(FIELD_TERRAIN))
+      .concat(new Array(2).fill(FOREST_TERRAIN))
+      .concat(new Array(2).fill(PASTURE_TERRAIN))
+      .concat(new Array(2).fill(HILL_TERRAIN))
+      .concat(new Array(2).fill(MOUNTAIN_TERRAIN));
   export const EXTENSION_5_6_HARBOR_TILE_SET = BASE_3_4_HARBOR_TILE_SET
       .concat([GENERIC_HARBOR, WOOL_HARBOR]);
+  export const EXTENSION_5_6_FISHERY_TILE_SET = new Array(8).fill(FISHERY);
+
+  export const EXTENSIONS_7_8_PRODUCING_TERRAIN_TILE_SET = BASE_3_4_PRODUCING_TERRAIN_TILE_SET
+      .concat(BASE_3_4_PRODUCING_TERRAIN_TILE_SET);
   export const EXTENSION_7_8_HARBOR_TILE_SET = BASE_3_4_HARBOR_TILE_SET
       .concat([GRAIN_HARBOR, LUMBER_HARBOR, WOOL_HARBOR]);
+export const EXTENSION_7_8_FISHERY_TILE_SET = EXTENSION_5_6_FISHERY_TILE_SET;
+
+  export const BASE_3_EXPANSION_SEA_SCENARIO_HFNS_BIG_ISLAND_PRODUCING_TERRAIN_TILE_SET = new Array(3).fill(FIELD_TERRAIN)
+      .concat(new Array(3).fill(FOREST_TERRAIN))
+      .concat(new Array(4).fill(PASTURE_TERRAIN))
+      .concat(new Array(2).fill(HILL_TERRAIN))
+      .concat(new Array(2).fill(MOUNTAIN_TERRAIN));
+  export const BASE_3_EXPANSION_SEA_SCENARIO_HFNS_BIG_ISLAND_HARBOR_TILE_SET = new Array(3).fill(GENERIC_HARBOR)
+      .concat([
+        GRAIN_HARBOR,
+        LUMBER_HARBOR,
+        WOOL_HARBOR,
+        BRICK_HARBOR,
+        ORE_HARBOR]);
+  export const BASE_3_EXPANSION_SEA_SCENARIO_HFNS_BIG_ISLAND_FISHERY_TILE_SET = new Array(4).fill(FISHERY);
+  export const BASE_3_EXPANSION_SEA_SCENARIO_HFNS_SMALL_ISLANDS_PRODUCING_TERRAIN_TILE_SET = [FIELD_TERRAIN, PASTURE_TERRAIN]
+      .concat(new Array(2).fill(GOLD_TERRAIN))
+      .concat(new Array(2).fill(HILL_TERRAIN))
+      .concat(new Array(2).fill(MOUNTAIN_TERRAIN));
 
   export const BASE_3_4_EXPANSION_TB_SCENARIO_TB_NON_TRADE_TERRAIN_TILE_SET = new Array(3).fill(FIELD_TERRAIN)
       .concat(new Array(4).fill(FOREST_TERRAIN))
       .concat(new Array(3).fill(PASTURE_TERRAIN))
       .concat(new Array(3).fill(HILL_TERRAIN))
       .concat(new Array(3).fill(MOUNTAIN_TERRAIN));
-  export const BASE_EXPANSION_TB_SCENARIO_TB_TRADE_TERRAIN_TILE_SET = [CASTLE_TERRAIN, GLASSWORKS_TERRAIN, QUARRY_TERRAIN];
-  export const EXTENSION_5_6_EXPANSION_TB_SCENARIO_TB_PRODUCING_TERRAIN_TILE_SET = EXTENSIONS_7_8_PRODUCING_TERRAIN_TILES;
-
-  export const BASE_FISHERY_TILE_SET = new Array(6).fill(FISHERY);
-  export const EXTENSION_5_6_FISHERY_TILE_SET = new Array(8).fill(FISHERY);
+  export const BASE_3_4_EXPANSION_TB_SCENARIO_TB_TRADE_TERRAIN_TILE_SET = [CASTLE_TERRAIN, GLASSWORKS_TERRAIN, QUARRY_TERRAIN];
 // }

@@ -1,4 +1,4 @@
-import * as Chits from "./Chit";
+import * as Chits from "./Chits";
 import * as Coordinates from "./Coordinates";
 import * as Tiles from "./Tiles";
 
