@@ -1,5 +1,4 @@
 // export module Coordinates {
-  import {FIELD_TERRAIN} from "./Tiles";
 
 export enum EdgePosition {
     TOP_RIGHT,
@@ -224,6 +223,21 @@ export enum EdgePosition {
     new Coordinate(6, 7),
     new Coordinate(8, 7),
     new Coordinate(10, 7)];
+
+  export const BASE_4_EXPANSION_SEA_SCENARIO_HFNS_SMALL_ISLAND_TERRAIN_COORDINATES = [
+    new Coordinate(12, 1),
+    new Coordinate(13, 2),
+    new Coordinate(14, 3),
+    new Coordinate(13, 4),
+    new Coordinate(15, 4),
+    new Coordinate(14, 5),
+    new Coordinate(16, 5),
+    new Coordinate(13, 6),
+    new Coordinate(15, 6),
+    new Coordinate(6, 7),
+    new Coordinate(8, 7),
+    new Coordinate(10, 7),
+    new Coordinate(12, 7)];
 
   export const BASE_3_4_EXPANSION_TB_SCENARIO_TB_NON_TRADE_TERRAIN_COORDINATES = [
     new Coordinate(4, 1),

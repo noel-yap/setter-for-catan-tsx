@@ -353,7 +353,8 @@ class App extends React.Component<AppProps, AppState> {
         '7∨8': [Configurations.CONFIGURATION_7_8, Configurations.CONFIGURATION_7_8_FISHERMEN]
       },
       'Seafarers: Head to New Shores': {
-        '3': [Configurations.CONFIGURATION_3_EXPANSION_SEA_SCENARIO_HFNS, Configurations.CONFIGURATION_3_EXPANSION_SEA_SCENARIO_HFNS_FISHERMEN]
+        '3': [Configurations.CONFIGURATION_3_EXPANSION_SEA_SCENARIO_HFNS, Configurations.CONFIGURATION_3_EXPANSION_SEA_SCENARIO_HFNS_FISHERMEN],
+        '4': [Configurations.CONFIGURATION_4_EXPANSION_SEA_SCENARIO_HFNS, Configurations.CONFIGURATION_4_EXPANSION_SEA_SCENARIO_HFNS_FISHERMEN]
       },
       'Traders and Barbarians: Traders and Barbarians': {
         '3': [Configurations.CONFIGURATION_3_4_EXPANSION_TB_SCENARIO_TB, Configurations.CONFIGURATION_3_4_EXPANSION_TB_SCENARIO_TB_FISHERMEN],
@@ -431,11 +432,11 @@ class App extends React.Component<AppProps, AppState> {
                     });
                   }}>
                 {
-                  scenarios.map((scenario, index) => (
+                  scenarios.map((scenario) => (
                       <MenuItem
                           key={scenario}
                           disabled={!boardConfigurations[scenario].hasOwnProperty(this.state.playerCount)}
-                          onClick={(event) => {
+                          onClick={() => {
                             this.generateBoard(boardConfigurations, scenario, this.state.playerCount, this.state.useFishermenOfCatanVariant);
                           }}
                       >

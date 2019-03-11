@@ -1,5 +1,4 @@
 // export module Chits {
-  import {FIELD_TERRAIN, PASTURE_TERRAIN} from "./Tiles";
 
 export class Chits {
     constructor(public values: number[]) {}
@@ -61,6 +60,17 @@ export class Chits {
   export const BASE_3_EXPANSION_SEA_SCENARIO_HFNS_FISHERY_CHIT_SET = [CHITS_4, CHITS_5, CHITS_9, CHITS_10];
   export const BASE_3_EXPANSION_SEA_SCENARIO_HFNS_SMALL_ISLANDS_PRODUCING_TERRAIN_CHIT_SET = [CHITS_3, CHITS_5, CHITS_8, CHITS_9, CHITS_10, CHITS_12]
       .concat(new Array(2).fill(CHITS_4));
+
+  export const BASE_4_EXPANSION_SEA_SCENARIO_HFNS_SMALL_ISLANDS_PRODUCING_TERRAIN_CHIT_SET = [
+    CHITS_2,
+    CHITS_3,
+    CHITS_4,
+    CHITS_5,
+    CHITS_6,
+    CHITS_8,
+    CHITS_9,
+    CHITS_10,
+    CHITS_11];
 
   export const BASE_EXPANSION_TB_SCENARIO_TB_TERRAIN_CHIT_SET = new Array(2).fill(CHITS_3)
       .concat(new Array(2).fill(CHITS_11))
