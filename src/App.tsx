@@ -2,6 +2,7 @@ import _ from 'underscore';
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Menu from '@material-ui/core/Menu';
@@ -352,7 +353,7 @@ class App extends React.Component<AppProps, AppState> {
         '5∨6': [Configurations.CONFIGURATION_5_6, Configurations.CONFIGURATION_5_6_FISHERMEN],
         '7∨8': [Configurations.CONFIGURATION_7_8, Configurations.CONFIGURATION_7_8_FISHERMEN]
       },
-      'Seafarers: Head to New Shores': {
+      'Seafarers: Heading for New Shores': {
         '3': [Configurations.CONFIGURATION_3_EXPANSION_SEA_SCENARIO_HFNS, Configurations.CONFIGURATION_3_EXPANSION_SEA_SCENARIO_HFNS_FISHERMEN],
         '4': [Configurations.CONFIGURATION_4_EXPANSION_SEA_SCENARIO_HFNS, Configurations.CONFIGURATION_4_EXPANSION_SEA_SCENARIO_HFNS_FISHERMEN]
       },
@@ -369,6 +370,7 @@ class App extends React.Component<AppProps, AppState> {
         <div className="App">
           <header className="App-header">
             <MuiThemeProvider theme={theme}>
+              <DialogTitle><h1>Setter for Catan</h1></DialogTitle>
               <FormLabel>Number of Players</FormLabel>
               <RadioGroup
                   id="player-counts"
@@ -446,6 +448,7 @@ class App extends React.Component<AppProps, AppState> {
                 }
               </Menu>
               <GeneratedBoard board={this.state.board}/>
+              <DialogTitle><h1/></DialogTitle>
             </MuiThemeProvider>
           </header>
         </div>

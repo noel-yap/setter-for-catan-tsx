@@ -152,8 +152,8 @@ import * as Tiles from "./Tiles";
       new TileChitBag(new Array(3).fill(Tiles.GLASSWORKS_TERRAIN))]],
     [Coordinates.EXTENSION_5_6_EXPANSION_TB_SCENARIO_TB_QUARRY_TERRAIN_COORDINATES, [
       new TileChitBag(new Array(3).fill(Tiles.QUARRY_TERRAIN))]],
-    [Coordinates.EXTENSION_7_8_HARBOR_COORDINATES, [
-      new TileChitBag(Tiles.EXTENSION_7_8_HARBOR_TILE_SET)]]]));
+    [Coordinates.EXTENSION_5_6_EXPANSION_TB_SCENARIO_TB_HARBOR_COORDINATES, [
+      new TileChitBag(Tiles.EXTENSION_5_6_HARBOR_TILE_SET)]]]));
   export const CONFIGURATION_5_6_EXPANSION_TB_SCENARIO_TB_FISHERMEN = new Configuration(([
     [Coordinates.EXTENSION_5_6_EXPANSION_TB_SCENARIO_TB_NON_TRADE_TERRAIN_COORDINATES, [
       EXTENSION_5_6_LAKE_TILE_CHIT_BAG,
@@ -164,8 +164,8 @@ import * as Tiles from "./Tiles";
       new TileChitBag(new Array(3).fill(Tiles.GLASSWORKS_TERRAIN))]],
     [Coordinates.EXTENSION_5_6_EXPANSION_TB_SCENARIO_TB_QUARRY_TERRAIN_COORDINATES, [
       new TileChitBag(new Array(3).fill(Tiles.QUARRY_TERRAIN))]],
-    [Coordinates.EXTENSION_7_8_HARBOR_COORDINATES, [
-      new TileChitBag(Tiles.EXTENSION_7_8_HARBOR_TILE_SET)]],
+    [Coordinates.EXTENSION_5_6_EXPANSION_TB_SCENARIO_TB_HARBOR_COORDINATES, [
+      new TileChitBag(Tiles.EXTENSION_5_6_HARBOR_TILE_SET)]],
     [Coordinates.EXTENSION_5_6_EXPANSION_TB_SCENARIO_TB_FISHERY_COORDINATES, [
       new TileChitBag(Tiles.EXTENSION_5_6_FISHERY_TILE_SET, Chits.EXTENSION_5_6_FISHERY_CHIT_SET)]]]));
 // }

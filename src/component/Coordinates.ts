@@ -302,13 +302,25 @@ export enum EdgePosition {
     new Coordinate(14, 4),
     new Coordinate(5, 7)];
 
+  export const EXTENSION_5_6_EXPANSION_TB_SCENARIO_TB_HARBOR_COORDINATES = [
+    new Coordinate(6, 0, [BOTTOM_RIGHT]),
+    new Coordinate(12, 0, [BOTTOM_LEFT]),
+    new Coordinate(3, 1, [RIGHT]),
+    new Coordinate(2, 2, [BOTTOM_RIGHT]),
+    new Coordinate(14, 2, [LEFT]),
+    new Coordinate(0, 4, [RIGHT]),
+    new Coordinate(15, 5, [LEFT]),
+    new Coordinate(2, 6, [RIGHT]),
+    new Coordinate(4, 8, [TOP_RIGHT]),
+    new Coordinate(6, 8, [TOP_LEFT]),
+    new Coordinate(10, 8, [TOP_LEFT])];
   export const EXTENSION_5_6_EXPANSION_TB_SCENARIO_TB_FISHERY_COORDINATES = [
     new Coordinate(10, 0, [BOTTOM_RIGHT, BOTTOM_LEFT]),
     new Coordinate(5, 1, [TOP_LEFT, TOP_RIGHT]),
     new Coordinate(13, 1, [BOTTOM_LEFT, LEFT]),
     new Coordinate(1, 3, [RIGHT, BOTTOM_RIGHT]),
     new Coordinate(14, 4, [TOP_RIGHT, RIGHT]),
-    new Coordinate(1, 5, [TOP_RIGHT, RIGHT]),
-    new Coordinate(12, 6, [RIGHT, BOTTOM_RIGHT]),
-    new Coordinate(11, 7, [BOTTOM_RIGHT, BOTTOM_LEFT])];
+    new Coordinate(3, 5, [BOTTOM_LEFT, LEFT]),
+    new Coordinate(13, 7, [LEFT, TOP_LEFT]),
+    new Coordinate(7, 7, [BOTTOM_RIGHT, BOTTOM_LEFT])];
 // }

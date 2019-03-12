@@ -61,29 +61,28 @@ import * as Tiles from "./Tiles";
               return new ConfiguredTiles.ConfiguredTile(tile, coordinate, chits);
             }));
 
-        validBoard = BoardGenerator.verifyBoard(
-            result,
-            count < 216
-                ? [
-                  [0, 6],
-                  [3, 9],
-                  [6, 12]]
-                : count < 2 * 216
-                ? [
-                  [0, 6],
-                  [2, 10],
-                  [5, 13]]
-                : count < 4 * 216
-                ? [
-                  [0, 6],
-                  [2, 10],
-                  [4, 14]]
-                : [
-                  [0, 6],
-                  [1, 11],
-                  [3, 15]]);
+        const validOddsRanges = count < 216
+            ? [
+              [0, 6],
+              [3, 9],
+              [6, 12]]
+            : count < 2 * 216
+            ? [
+              [0, 6],
+              [2, 10],
+              [5, 13]]
+            : count < 4 * 216
+            ? [
+              [0, 6],
+              [2, 10],
+              [4, 14]]
+            : [
+              [0, 6],
+              [1, 11],
+              [3, 15]];
+        validBoard = BoardGenerator.verifyBoard(result, validOddsRanges);
 
-        console.log(`Boards.BoardGenerator.generateBoard: count = ${count}, validBoard = ${validBoard}`);
+        console.log(`Boards.BoardGenerator.generateBoard: count = ${count}, validOddsRange = ${JSON.stringify(validOddsRanges)}, validBoard = ${validBoard}`);
       } while (!validBoard && ++count < 6 * 216);
 
       return result;
