@@ -239,6 +239,51 @@ export enum EdgePosition {
     new Coordinate(10, 7),
     new Coordinate(12, 7)];
 
+  export const BASE_3_EXPANSION_SEA_SCENARIO_FI_FACE_UP_PRODUCING_TERRAIN_COORDINATES = [
+    new Coordinate(5, 1),
+    new Coordinate(4, 2),
+    new Coordinate(6, 2),
+    new Coordinate(3, 3),
+    new Coordinate(5, 3),
+    new Coordinate(2, 4),
+    new Coordinate(4, 4),
+    new Coordinate(12, 4),
+    new Coordinate(11, 5),
+    new Coordinate(13, 5),
+    new Coordinate(10, 6),
+    new Coordinate(12, 6),
+    new Coordinate(9, 7),
+    new Coordinate(11, 7)];
+  export const BASE_3_EXPANSION_SEA_SCENARIO_FI_FACE_DOWN_PRODUCING_TERRAIN_COORDINATES = [
+    new Coordinate(9, 1),
+    new Coordinate(11, 1),
+    new Coordinate(10, 2),
+    new Coordinate(12, 2),
+    new Coordinate(9, 3),
+    new Coordinate(8, 4),
+    new Coordinate(7, 5),
+    new Coordinate(2, 6),
+    new Coordinate(4, 6),
+    new Coordinate(6, 6),
+    new Coordinate(3, 7),
+    new Coordinate(5, 7)];
+  export const BASE_3_EXPANSION_SEA_SCENARIO_FI_HARBOR_COORDINATES = [
+    new Coordinate(3, 1, [RIGHT]),
+    new Coordinate(7, 1, [BOTTOM_LEFT]),
+    new Coordinate(2, 2, [BOTTOM_RIGHT]),
+    new Coordinate(1, 3, [BOTTOM_RIGHT]),
+    new Coordinate(14, 4, [LEFT]),
+    new Coordinate(14, 6, [TOP_LEFT]),
+    new Coordinate(13, 7, [LEFT]),
+    new Coordinate(10, 8, [TOP_LEFT])];
+  export const BASE_EXPANSION_SEA_SCENARIOS_FI_FISHERY_COORDINATES = [
+    new Coordinate(10, 0, [BOTTOM_RIGHT, BOTTOM_LEFT]),
+    new Coordinate(13, 1, [BOTTOM_LEFT, LEFT]),
+    new Coordinate(4, 2, [LEFT, TOP_LEFT]),
+    new Coordinate(12, 6, [RIGHT, BOTTOM_RIGHT]),
+    new Coordinate(1, 7, [TOP_RIGHT, RIGHT]),
+    new Coordinate(4, 8, [TOP_LEFT, TOP_RIGHT])];
+
   export const BASE_3_4_EXPANSION_TB_SCENARIO_TB_NON_TRADE_TERRAIN_COORDINATES = [
     new Coordinate(4, 1),
     new Coordinate(6, 1),

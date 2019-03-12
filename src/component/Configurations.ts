@@ -47,7 +47,8 @@ import * as Tiles from "./Tiles";
     }
   }
 
-  export const BASE_LAKE_TILE_CHIT_BAG = new TileChitBag(
+  export const BASE_3_4_FISHERY_TILE_CHIT_BAG = new TileChitBag(Tiles.BASE_3_4_FISHERY_TILE_SET, Chits.BASE_3_4_FISHERY_CHIT_SET);
+  export const BASE_3_4_LAKE_TILE_CHIT_BAG = new TileChitBag(
       [Tiles.LAKE], [Chits.CHITS_2_3_11_12]);
   export const EXTENSION_5_6_LAKE_TILE_CHIT_BAG = new TileChitBag(
       new Array(2).fill(Tiles.LAKE),
@@ -61,13 +62,11 @@ import * as Tiles from "./Tiles";
       new TileChitBag(Tiles.BASE_3_4_HARBOR_TILE_SET)]]]);
   export const CONFIGURATION_3_4_FISHERMEN = new Configuration([
     [Coordinates.BASE_3_4_TERRAIN_COORDINATES, [
-      BASE_LAKE_TILE_CHIT_BAG,
+      BASE_3_4_LAKE_TILE_CHIT_BAG,
       new TileChitBag(Tiles.BASE_3_4_PRODUCING_TERRAIN_TILE_SET, Chits.BASE_PRODUCING_TERRAIN_CHIT_SET)]],
     [Coordinates.BASE_3_4_HARBOR_COORDINATES, [
       new TileChitBag(Tiles.BASE_3_4_HARBOR_TILE_SET)]],
-    [Coordinates.BASE_3_4_FISHERY_COORDINATES, [
-      new TileChitBag(Tiles.BASE_FISHERY_TILE_SET, Chits.BASE_FISHERY_CHIT_SET)
-    ]]]);
+    [Coordinates.BASE_3_4_FISHERY_COORDINATES, [BASE_3_4_FISHERY_TILE_CHIT_BAG]]]);
 
   export const CONFIGURATION_5_6 = new Configuration([
     [Coordinates.EXTENSION_5_6_TERRAIN_COORDINATES, [
@@ -75,15 +74,14 @@ import * as Tiles from "./Tiles";
       new TileChitBag(Tiles.EXTENSION_5_6_PRODUCING_TERRAIN_TILE_SET, Chits.EXTENSION_5_6_PRODUCING_TERRAIN_CHIT_SET)]],
     [Coordinates.EXTENSION_5_6_HARBOR_COORDINATES, [
       new TileChitBag(Tiles.EXTENSION_5_6_HARBOR_TILE_SET)]]]);
-  export const CONFIGURATION_5_6_FISHERMEN = new Configuration([
+const EXTENSION_5_6_FISHERY_TILE_CHIT_BAG = new TileChitBag(Tiles.EXTENSION_5_6_FISHERY_TILE_SET, Chits.EXTENSION_5_6_FISHERY_CHIT_SET);
+export const CONFIGURATION_5_6_FISHERMEN = new Configuration([
     [Coordinates.EXTENSION_5_6_TERRAIN_COORDINATES, [
       EXTENSION_5_6_LAKE_TILE_CHIT_BAG,
       new TileChitBag(Tiles.EXTENSION_5_6_PRODUCING_TERRAIN_TILE_SET, Chits.EXTENSION_5_6_PRODUCING_TERRAIN_CHIT_SET)]],
     [Coordinates.EXTENSION_5_6_HARBOR_COORDINATES, [
       new TileChitBag(Tiles.EXTENSION_5_6_HARBOR_TILE_SET)]],
-    [Coordinates.EXTENSION_5_6_FISHERY_COORDINATES, [
-      new TileChitBag(Tiles.EXTENSION_5_6_FISHERY_TILE_SET, Chits.EXTENSION_5_6_FISHERY_CHIT_SET)
-    ]]]);
+    [Coordinates.EXTENSION_5_6_FISHERY_COORDINATES, [EXTENSION_5_6_FISHERY_TILE_CHIT_BAG]]]);
 
   export const CONFIGURATION_7_8 = new Configuration([
     [Coordinates.EXTENSION_7_8_TERRAIN_COORDINATES, [
@@ -93,7 +91,7 @@ import * as Tiles from "./Tiles";
       new TileChitBag(Tiles.EXTENSION_7_8_HARBOR_TILE_SET)]]]);
   export const CONFIGURATION_7_8_FISHERMEN = new Configuration([
     [Coordinates.EXTENSION_7_8_TERRAIN_COORDINATES, [
-      BASE_LAKE_TILE_CHIT_BAG,
+      BASE_3_4_LAKE_TILE_CHIT_BAG,
       new TileChitBag(Tiles.EXTENSIONS_7_8_PRODUCING_TERRAIN_TILE_SET, Chits.EXTENSION_7_8_PRODUCING_TERRAIN_CHIT_SET)]],
     [Coordinates.EXTENSION_7_8_HARBOR_COORDINATES, [
       new TileChitBag(Tiles.EXTENSION_7_8_HARBOR_TILE_SET)]],
@@ -126,6 +124,17 @@ import * as Tiles from "./Tiles";
           new TileChitBag(new Array(4).fill(Tiles.SEA))]]
       ]));
 
+  export const CONFIGURATION_3_EXPANSION_SEA_SCENARIO_FI = new Configuration([
+    [Coordinates.BASE_3_EXPANSION_SEA_SCENARIO_FI_FACE_UP_PRODUCING_TERRAIN_COORDINATES,
+      [new TileChitBag(Tiles.BASE_3_EXPANSION_SEA_SCENARIO_FI_FACE_UP_PRODUCING_TERRAIN_TILE_SET, Chits.BASE_3_EXPANSION_SEA_SCENARIO_FI_FACE_UP_PRODUCING_TERRAIN_CHIT_SET)]],
+    [Coordinates.BASE_3_EXPANSION_SEA_SCENARIO_FI_FACE_DOWN_PRODUCING_TERRAIN_COORDINATES,
+      [new TileChitBag(new Array(12).fill(Tiles.UNKNOWN))]],
+    [Coordinates.BASE_3_EXPANSION_SEA_SCENARIO_FI_HARBOR_COORDINATES,
+      [new TileChitBag(Tiles.BASE_3_EXPANSION_SEA_SCENARIO_FI_HARBOR_TILE_SET)]]]);
+  export const CONFIGURATION_3_EXPANSION_SEA_SCENARIO_FI_FISHERMEN = new Configuration(CONFIGURATION_3_EXPANSION_SEA_SCENARIO_FI.settings
+      .concat([
+        [Coordinates.BASE_EXPANSION_SEA_SCENARIOS_FI_FISHERY_COORDINATES, [BASE_3_4_FISHERY_TILE_CHIT_BAG]]]));
+
   export const CONFIGURATION_3_4_EXPANSION_TB_SCENARIO_TB = new Configuration([
     [Coordinates.BASE_3_4_EXPANSION_TB_SCENARIO_TB_NON_TRADE_TERRAIN_COORDINATES, [
       new TileChitBag(Tiles.BASE_3_4_EXPANSION_TB_SCENARIO_TB_NON_TRADE_TERRAIN_TILE_SET, Chits.BASE_EXPANSION_TB_SCENARIO_TB_TERRAIN_CHIT_SET)]],
@@ -140,8 +149,7 @@ import * as Tiles from "./Tiles";
       new TileChitBag(Tiles.BASE_3_4_EXPANSION_TB_SCENARIO_TB_TRADE_TERRAIN_TILE_SET)]],
     [Coordinates.BASE_3_4_HARBOR_COORDINATES, [
       new TileChitBag(Tiles.BASE_3_4_HARBOR_TILE_SET)]],
-    [Coordinates.BASE_3_4_FISHERY_COORDINATES, [
-      new TileChitBag(Tiles.BASE_FISHERY_TILE_SET, Chits.BASE_FISHERY_CHIT_SET)]]]);
+    [Coordinates.BASE_3_4_FISHERY_COORDINATES, [BASE_3_4_FISHERY_TILE_CHIT_BAG]]]);
   export const CONFIGURATION_5_6_EXPANSION_TB_SCENARIO_TB = new Configuration(([
     [Coordinates.EXTENSION_5_6_EXPANSION_TB_SCENARIO_TB_NON_TRADE_TERRAIN_COORDINATES, [
       new TileChitBag(new Array(2).fill(Tiles.DESERT_TERRAIN)),
@@ -166,6 +174,5 @@ import * as Tiles from "./Tiles";
       new TileChitBag(new Array(3).fill(Tiles.QUARRY_TERRAIN))]],
     [Coordinates.EXTENSION_5_6_EXPANSION_TB_SCENARIO_TB_HARBOR_COORDINATES, [
       new TileChitBag(Tiles.EXTENSION_5_6_HARBOR_TILE_SET)]],
-    [Coordinates.EXTENSION_5_6_EXPANSION_TB_SCENARIO_TB_FISHERY_COORDINATES, [
-      new TileChitBag(Tiles.EXTENSION_5_6_FISHERY_TILE_SET, Chits.EXTENSION_5_6_FISHERY_CHIT_SET)]]]));
+    [Coordinates.EXTENSION_5_6_EXPANSION_TB_SCENARIO_TB_FISHERY_COORDINATES, [EXTENSION_5_6_FISHERY_TILE_CHIT_BAG]]]));
 // }

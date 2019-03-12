@@ -357,6 +357,9 @@ class App extends React.Component<AppProps, AppState> {
         '3': [Configurations.CONFIGURATION_3_EXPANSION_SEA_SCENARIO_HFNS, Configurations.CONFIGURATION_3_EXPANSION_SEA_SCENARIO_HFNS_FISHERMEN],
         '4': [Configurations.CONFIGURATION_4_EXPANSION_SEA_SCENARIO_HFNS, Configurations.CONFIGURATION_4_EXPANSION_SEA_SCENARIO_HFNS_FISHERMEN]
       },
+      'Seafarers: The Fog Islands': {
+        '3': [Configurations.CONFIGURATION_3_EXPANSION_SEA_SCENARIO_FI, Configurations.CONFIGURATION_3_EXPANSION_SEA_SCENARIO_FI_FISHERMEN]
+      },
       'Traders and Barbarians: Traders and Barbarians': {
         '3': [Configurations.CONFIGURATION_3_4_EXPANSION_TB_SCENARIO_TB, Configurations.CONFIGURATION_3_4_EXPANSION_TB_SCENARIO_TB_FISHERMEN],
         '4': [Configurations.CONFIGURATION_3_4_EXPANSION_TB_SCENARIO_TB, Configurations.CONFIGURATION_3_4_EXPANSION_TB_SCENARIO_TB_FISHERMEN],

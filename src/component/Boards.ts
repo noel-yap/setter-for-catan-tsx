@@ -119,7 +119,7 @@ import * as Tiles from "./Tiles";
 
       const producingConfiguredTiles = board.terrainTilesLayout
           .filter((ct) => {
-            return ct.tile !== Tiles.SEA
+            return ![Tiles.SEA, Tiles.UNKNOWN].some((t) => t !== ct.tile);
           })
           .concat(board.fisheryTilesLayout);
       const coordinatesMap = _.groupBy(
