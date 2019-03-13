@@ -3,6 +3,8 @@ plugins {
   id 'nebula.rpm' version '6.1.1'
 }
 
+buildDir='.gradle/build'
+
 task npmRunBuild {
   doFirst {
     mkdir "${buildDir}/npm"
