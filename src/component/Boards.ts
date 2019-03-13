@@ -76,10 +76,15 @@ import * as Tiles from "./Tiles";
               [0, 6],
               [2, 10],
               [4, 14]]
-            : [
+            : count < 5 * 216
+            ? [
               [0, 6],
               [1, 11],
-              [3, 15]];
+              [3, 15]]
+            : [
+              [0, 6],
+              [0, 12],
+              [1, 17]];
         validBoard = BoardGenerator.verifyBoard(result, validOddsRanges);
 
         console.log(`Boards.BoardGenerator.generateBoard: count = ${count}, validOddsRange = ${JSON.stringify(validOddsRanges)}, validBoard = ${validBoard}`);

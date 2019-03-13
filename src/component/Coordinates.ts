@@ -66,18 +66,6 @@ export enum EdgePosition {
     new Coordinate(2, 5, [TOP_RIGHT, RIGHT]),
     new Coordinate(5, 6, [TOP_LEFT, TOP_RIGHT])];
 
-  export const EXTENSION_5_6_HARBOR_COORDINATES = [
-    new Coordinate(4, 0, [BOTTOM_RIGHT]),
-    new Coordinate(8, 0, [BOTTOM_LEFT]),
-    new Coordinate(11, 1, [BOTTOM_LEFT]),
-    new Coordinate(1, 3, [RIGHT]),
-    new Coordinate(14, 4, [LEFT]),
-    new Coordinate(1, 5, [TOP_RIGHT]),
-    new Coordinate(2, 6, [RIGHT]),
-    new Coordinate(12, 6, [TOP_LEFT]),
-    new Coordinate(11, 7, [LEFT]),
-    new Coordinate(8, 8, [TOP_LEFT]),
-    new Coordinate(4, 8, [TOP_RIGHT])];
   export const EXTENSION_5_6_TERRAIN_COORDINATES = [
     new Coordinate(5, 1),
     new Coordinate(7, 1),
@@ -109,6 +97,18 @@ export enum EdgePosition {
     new Coordinate(5, 7),
     new Coordinate(7, 7),
     new Coordinate(9, 7)];
+  export const EXTENSION_5_6_HARBOR_COORDINATES = [
+    new Coordinate(4, 0, [BOTTOM_RIGHT]),
+    new Coordinate(8, 0, [BOTTOM_LEFT]),
+    new Coordinate(11, 1, [BOTTOM_LEFT]),
+    new Coordinate(1, 3, [RIGHT]),
+    new Coordinate(14, 4, [LEFT]),
+    new Coordinate(1, 5, [TOP_RIGHT]),
+    new Coordinate(2, 6, [RIGHT]),
+    new Coordinate(12, 6, [TOP_LEFT]),
+    new Coordinate(11, 7, [LEFT]),
+    new Coordinate(8, 8, [TOP_LEFT]),
+    new Coordinate(4, 8, [TOP_RIGHT])];
   export const EXTENSION_5_6_FISHERY_COORDINATES = [
     new Coordinate(6, 0, [BOTTOM_RIGHT, BOTTOM_LEFT]),
     new Coordinate(4, 2, [LEFT, TOP_LEFT]),
@@ -238,6 +238,45 @@ export enum EdgePosition {
     new Coordinate(8, 7),
     new Coordinate(10, 7),
     new Coordinate(12, 7)];
+
+  export const EXTENSION_5_6_EXPANSION_SEA_SCENARIO_HFNS_BIG_ISLAND_TERRAIN_COORDINATES = EXTENSION_5_6_TERRAIN_COORDINATES
+      .map((c) => new Coordinate(c.x + 2, c.y, c.positions));
+  export const EXTENSION_5_6_EXPANSION_SEA_SCENARIO_HFNS_BIG_ISLAND_HARBOR_COORDINATES = [
+    new Coordinate(6, 0, [BOTTOM_RIGHT]),
+    new Coordinate(10, 0, [BOTTOM_LEFT]),
+    new Coordinate(13, 1, [BOTTOM_LEFT]),
+    new Coordinate(4, 2, [RIGHT]),
+    new Coordinate(3, 3, [BOTTOM_RIGHT]),
+    new Coordinate(15, 3, [BOTTOM_LEFT]),
+    new Coordinate(3, 5, [RIGHT]),
+    new Coordinate(15, 5, [LEFT]),
+    new Coordinate(5, 7, [TOP_RIGHT]),
+    new Coordinate(13, 7, [TOP_LEFT]),
+    new Coordinate(8, 8, [TOP_RIGHT])];
+  export const EXTENSION_5_6_EXPANSION_SEA_SCENARIO_HFNS_BIG_ISLAND_FISHERY_COORDINATES = [
+    new Coordinate(5, 1, [RIGHT, BOTTOM_RIGHT]),
+    new Coordinate(14, 2, [BOTTOM_LEFT, LEFT]),
+    new Coordinate(5, 3, [LEFT, TOP_LEFT]),
+    new Coordinate(4, 4, [BOTTOM_LEFT, LEFT]),
+    new Coordinate(14, 4, [RIGHT, BOTTOM_RIGHT]),
+    new Coordinate(14, 6, [LEFT, TOP_LEFT]),
+    new Coordinate(4, 6, [TOP_RIGHT, RIGHT]),
+    new Coordinate(11, 7, [RIGHT, BOTTOM_RIGHT])];
+  export const EXTENSION_5_6_EXPANSION_SEA_SCENARIO_HFNS_SMALL_ISLAND_TERRAIN_COORDINATES = [
+    new Coordinate(3, 1),
+    new Coordinate(15, 1),
+    new Coordinate(2, 2),
+    new Coordinate(16, 2),
+    new Coordinate(1, 3),
+    new Coordinate(17, 3),
+    new Coordinate(0, 4),
+    new Coordinate(18, 4),
+    new Coordinate(1, 5),
+    new Coordinate(17, 5),
+    new Coordinate(2, 6),
+    new Coordinate(16, 6),
+    new Coordinate(3, 7),
+    new Coordinate(15, 7)];
 
   export const BASE_3_EXPANSION_SEA_SCENARIO_FI_FACE_UP_PRODUCING_TERRAIN_COORDINATES = [
     new Coordinate(5, 1),
