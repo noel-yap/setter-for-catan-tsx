@@ -1,0 +1,39 @@
+plugins {
+  id 'nebula.release' version '6.3.5'
+  id 'nebula.rpm' version '6.1.1'
+}
+
+task npmRunBuild {
+  doFirst {
+    mkdir "${buildDir}/npm"
+  }
+  doLast {
+    exec {
+      executable 'npm'
+      args = ['install']
+    }
+    exec {
+      workingDir "${buildDir}/npm"
+      executable 'npm'
+      args = ['run', 'build']
+    }
+  }
+}
+
+task generateRpm(type: Rpm) {
+  dependsOn npmRunBuild
+
+  packageName 'setter-for-catan'
+  arch I386
+  os LINUX
+
+  postInstall file('scripts/rpm/post-install.sh')
+
+  into '/opt/setter-for-catan'
+
+  from(buildDir)
+  from('root') {
+    into '/'
+    fileMode 0550
+  }
+}

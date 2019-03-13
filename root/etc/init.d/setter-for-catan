@@ -1,0 +1,3 @@
+#!/bin/bash
+
+serve -n -s /opt/setter-for-catan -l 46656
