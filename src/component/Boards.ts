@@ -107,19 +107,20 @@ import * as Tiles from "./Tiles";
         if (contributors.length === 0) {
           return true;
         }
+
         const validRange = validOddsRanges[contributors.length - 1];
 
-        const o = contributors
+        const totalOdds = contributors
             .reduce((sum, c) => sum + odds(c[0], c[1]), 0);
 
-        console.log(`Boards.BoardGenerator.verifyBoard: contributors = ${JSON.stringify(contributors)}, odds = ${o}, validRange = ${JSON.stringify(validRange)}`);
+        console.log(`Boards.BoardGenerator.verifyBoard: contributors = ${JSON.stringify(contributors)}, odds = ${totalOdds}, validRange = ${JSON.stringify(validRange)}`);
 
-        return validRange[0] <= o && o <= validRange[1];
+        return validRange[0] <= totalOdds && totalOdds <= validRange[1];
       }
 
       const producingConfiguredTiles = board.terrainTilesLayout
           .filter((ct) => {
-            return ![Tiles.SEA, Tiles.UNKNOWN].some((t) => t !== ct.tile);
+            return [Tiles.SEA, Tiles.UNKNOWN].every((t) => t !== ct.tile);
           })
           .concat(board.fisheryTilesLayout);
       const coordinatesMap = _.groupBy(
@@ -151,18 +152,32 @@ import * as Tiles from "./Tiles";
           const topVertexContributors = <[ConfiguredTiles.ConfiguredTile[], number][]>[
             [coordinatesMap[key(x, y)], 0],
             [coordinatesMap[key(x - 1, y - 1)], 2],
-            [coordinatesMap[key(x + 1, y - 1)], 4]]
-              .filter((elt) => elt[0] !== undefined);
-          if (!oddsWithinValidRange(topVertexContributors)) {
-            return false;
-          }
-
+            [coordinatesMap[key(x + 1, y - 1)], 4]];
           const topRightVertexContributors = <[ConfiguredTiles.ConfiguredTile[], number][]>[
             [coordinatesMap[key(x, y)], 1],
             [coordinatesMap[key(x + 1, y - 1)], 3],
-            [coordinatesMap[key(x + 2, y)], 5]]
-              .filter((elt) => elt[0] !== undefined);
-          if (!oddsWithinValidRange(topRightVertexContributors)) {
+            [coordinatesMap[key(x + 2, y)], 5]];
+
+          const invalid = [topVertexContributors, topRightVertexContributors].some((contributors) => {
+            const eligibleContributors = contributors
+                .filter((elt) => elt[0] !== undefined)
+                .map((elt) => {
+                  const eligibleConfiguredTiles = elt[0]
+                      .filter((ct) => {
+                        return ct.coordinate.positions.some((p) => {
+                          console.log(`############# ${p} in [${elt[1]}, ${(elt[1] + 5) % 6}]`);
+                          return p === elt[1] || p === (elt[1] + 5) % 6;
+                        });
+                      });
+                  return [eligibleConfiguredTiles, elt[1]] as [ConfiguredTiles.ConfiguredTile[], number];
+                })
+                .filter((elt) => {
+                  return elt[0].length > 0;
+                });
+
+            return !oddsWithinValidRange(eligibleContributors);
+          });
+          if (invalid) {
             return false;
           }
         }
