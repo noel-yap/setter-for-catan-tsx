@@ -2,7 +2,7 @@
   text-align: center;
 }
 
-.App-header {
+.App-body {
   background-color: navy;
   display: flex;
   flex-direction: column;
@@ -10,6 +10,12 @@
   justify-content: center;
 }
 
-#generate-board-button {
+#title {
+  margin-top: .25em;
+  margin-bottom: .25em;
+}
+
+#generated-board-div {
+  margin-top: 1em;
   margin-bottom: 1em;
 }

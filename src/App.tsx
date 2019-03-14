@@ -58,7 +58,7 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
       canvasDiv.appendChild(this.renderBoard());
     }
 
-    return (<div ref={this.canvasDivRef}/>);
+    return (<div id="generated-board-div" ref={this.canvasDivRef}/>);
   }
 
   renderBoard(): HTMLCanvasElement {
@@ -374,9 +374,9 @@ class App extends React.Component<AppProps, AppState> {
 
     return (
         <div className="App">
-          <header className="App-header">
+          <header className="App-body">
             <MuiThemeProvider theme={theme}>
-              <Typography variant="h3">Setter for Catan</Typography>
+              <Typography id="title" variant="h3">Setter for Catan</Typography>
               <FormLabel>Number of Players</FormLabel>
               <RadioGroup
                   id="player-counts"
