@@ -156,6 +156,12 @@
   export const BASE_3_EXPANSION_SEA_SCENARIO_FI_HARBOR_TILE_SET = new Array(3).fill(GENERIC_HARBOR)
       .concat(BRICK_HARBOR, GRAIN_HARBOR, LUMBER_HARBOR, ORE_HARBOR, WOOL_HARBOR);
 
+  export const BASE_4_EXPANSION_SEA_SCENARIO_FI_FACE_UP_PRODUCING_TERRAIN_TILE_SET = new Array(3).fill(FIELD_TERRAIN)
+      .concat(new Array(3).fill(HILL_TERRAIN))
+      .concat(new Array(3).fill(MOUNTAIN_TERRAIN))
+      .concat(new Array(4).fill(PASTURE_TERRAIN))
+      .concat(new Array(4).fill(FOREST_TERRAIN));
+
   export const BASE_3_4_EXPANSION_TB_SCENARIO_TB_NON_TRADE_TERRAIN_TILE_SET = new Array(3).fill(FIELD_TERRAIN)
       .concat(new Array(4).fill(FOREST_TERRAIN))
       .concat(new Array(3).fill(PASTURE_TERRAIN))
