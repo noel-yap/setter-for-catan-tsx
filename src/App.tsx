@@ -2,7 +2,6 @@ import _ from 'underscore';
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Menu from '@material-ui/core/Menu';
@@ -10,6 +9,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Tooltip from '@material-ui/core/Tooltip';
+import Typography from '@material-ui/core/Typography';
 import {createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
 
 import './App.css';
@@ -350,13 +350,14 @@ class App extends React.Component<AppProps, AppState> {
       'Base': {
         '3': [Configurations.CONFIGURATION_3_4, Configurations.CONFIGURATION_3_4_FISHERMEN],
         '4': [Configurations.CONFIGURATION_3_4, Configurations.CONFIGURATION_3_4_FISHERMEN],
-        '5∨6': [Configurations.CONFIGURATION_5_6, Configurations.CONFIGURATION_5_6_FISHERMEN],
-        '7∨8': [Configurations.CONFIGURATION_7_8, Configurations.CONFIGURATION_7_8_FISHERMEN]
+        '5-6': [Configurations.CONFIGURATION_5_6, Configurations.CONFIGURATION_5_6_FISHERMEN],
+        '7-8': [Configurations.CONFIGURATION_7_8, Configurations.CONFIGURATION_7_8_FISHERMEN]
       },
       'Seafarers: Heading for New Shores': {
         '3': [Configurations.CONFIGURATION_3_EXPANSION_SEA_SCENARIO_HFNS, Configurations.CONFIGURATION_3_EXPANSION_SEA_SCENARIO_HFNS_FISHERMEN],
         '4': [Configurations.CONFIGURATION_4_EXPANSION_SEA_SCENARIO_HFNS, Configurations.CONFIGURATION_4_EXPANSION_SEA_SCENARIO_HFNS_FISHERMEN],
-        '5∨6': [Configurations.CONFIGURATION_5_6_EXPANSION_SEA_SCENARIO_HFNS, Configurations.CONFIGURATION_5_6_EXPANSION_SEA_SCENARIO_HFNS_FISHERMEN]
+        '5-6': [Configurations.CONFIGURATION_5_6_EXPANSION_SEA_SCENARIO_HFNS, Configurations.CONFIGURATION_5_6_EXPANSION_SEA_SCENARIO_HFNS_FISHERMEN],
+        '7-8': [Configurations.CONFIGURATION_7_8_EXPANSION_SEA_SCENARIO_HFNS, Configurations.CONFIGURATION_7_8_EXPANSION_SEA_SCENARIO_HFNS_FISHERMEN]
       },
       'Seafarers: The Fog Islands': {
         '3': [Configurations.CONFIGURATION_3_EXPANSION_SEA_SCENARIO_FI, Configurations.CONFIGURATION_3_EXPANSION_SEA_SCENARIO_FI_FISHERMEN]
@@ -364,7 +365,7 @@ class App extends React.Component<AppProps, AppState> {
       'Traders and Barbarians: Traders and Barbarians': {
         '3': [Configurations.CONFIGURATION_3_4_EXPANSION_TB_SCENARIO_TB, Configurations.CONFIGURATION_3_4_EXPANSION_TB_SCENARIO_TB_FISHERMEN],
         '4': [Configurations.CONFIGURATION_3_4_EXPANSION_TB_SCENARIO_TB, Configurations.CONFIGURATION_3_4_EXPANSION_TB_SCENARIO_TB_FISHERMEN],
-        '5∨6': [Configurations.CONFIGURATION_5_6_EXPANSION_TB_SCENARIO_TB, Configurations.CONFIGURATION_5_6_EXPANSION_TB_SCENARIO_TB_FISHERMEN]
+        '5-6': [Configurations.CONFIGURATION_5_6_EXPANSION_TB_SCENARIO_TB, Configurations.CONFIGURATION_5_6_EXPANSION_TB_SCENARIO_TB_FISHERMEN]
       }
     };
     const scenarios = Object.keys(boardConfigurations);
@@ -374,7 +375,7 @@ class App extends React.Component<AppProps, AppState> {
         <div className="App">
           <header className="App-header">
             <MuiThemeProvider theme={theme}>
-              <DialogTitle><h1>Setter for Catan</h1></DialogTitle>
+              <Typography variant="h3">Setter for Catan</Typography>
               <FormLabel>Number of Players</FormLabel>
               <RadioGroup
                   id="player-counts"
@@ -409,9 +410,8 @@ class App extends React.Component<AppProps, AppState> {
               <br/>
               <Tooltip title="Right click to change configuration.">
                 <Button
-                    variant="contained"
                     id="generate-board-button"
-                    style={{fontSize: 24}}
+                    variant="contained"
                     color="primary"
                     onClick={() => {
                       this.setState({
@@ -425,7 +425,7 @@ class App extends React.Component<AppProps, AppState> {
                       });
                     }}
                 >
-                  Generate {this.state.scenario}
+                  <Typography variant="h4">Generate {this.state.scenario}</Typography>
                 </Button>
               </Tooltip>
               <Menu
@@ -452,7 +452,6 @@ class App extends React.Component<AppProps, AppState> {
                 }
               </Menu>
               <GeneratedBoard board={this.state.board}/>
-              <DialogTitle><h1/></DialogTitle>
             </MuiThemeProvider>
           </header>
         </div>

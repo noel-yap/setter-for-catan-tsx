@@ -9,3 +9,7 @@
   align-items: center;
   justify-content: center;
 }
+
+#generate-board-button {
+  margin-bottom: 1em;
+}

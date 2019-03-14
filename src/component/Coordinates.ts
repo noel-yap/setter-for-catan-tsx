@@ -278,6 +278,44 @@ export enum EdgePosition {
     new Coordinate(3, 7),
     new Coordinate(15, 7)];
 
+  export const EXTENSION_7_8_EXPANSION_SEA_SCENARIO_HFNS_BIG_ISLAND_TERRAIN_COORDINATES = EXTENSION_7_8_TERRAIN_COORDINATES
+      .map((c) => new Coordinate(c.x + 2, c.y + 1, c.positions));
+  export const EXTENSION_7_8_EXPANSION_SEA_SCENARIO_HFNS_BIG_ISLAND_HARBOR_COORDINATES = EXTENSION_7_8_HARBOR_COORDINATES
+      .map((c) => new Coordinate(c.x + 2, c.y + 1, c.positions));
+  export const EXTENSION_7_8_EXPANSION_SEA_SCENARIO_HFNS_BIG_ISLAND_FISHERY_COORDINATES = EXTENSION_7_8_FISHERY_COORDINATES
+      .map((c) => new Coordinate(c.x + 2, c.y + 1, c.positions));
+  export const EXTENSION_7_8_EXPANSION_SEA_SCENARIO_HFNS_SMALL_ISLAND_TERRAIN_COORDINATES = [
+    new Coordinate(5, 0),
+    new Coordinate(7, 0),
+    new Coordinate(9, 0),
+    new Coordinate(11, 0),
+    new Coordinate(13, 0),
+    new Coordinate(15, 0),
+    new Coordinate(4, 1),
+    new Coordinate(16, 1),
+    new Coordinate(3, 2),
+    new Coordinate(17, 2),
+    new Coordinate(2, 3),
+    new Coordinate(18, 3),
+    new Coordinate(1, 4),
+    new Coordinate(19, 4),
+    new Coordinate(0, 5),
+    new Coordinate(20, 5),
+    new Coordinate(1, 6),
+    new Coordinate(19, 6),
+    new Coordinate(2, 7),
+    new Coordinate(18, 7),
+    new Coordinate(3, 8),
+    new Coordinate(17, 8),
+    new Coordinate(4, 9),
+    new Coordinate(16, 9),
+    new Coordinate(5, 10),
+    new Coordinate(7, 10),
+    new Coordinate(9, 10),
+    new Coordinate(11, 10),
+    new Coordinate(13, 10),
+    new Coordinate(15, 10)];
+
   export const BASE_3_EXPANSION_SEA_SCENARIO_FI_FACE_UP_PRODUCING_TERRAIN_COORDINATES = [
     new Coordinate(5, 1),
     new Coordinate(4, 2),
