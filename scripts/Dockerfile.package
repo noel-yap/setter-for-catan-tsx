@@ -1,0 +1,6 @@
+FROM baker.node
+
+ARG version
+RUN git clone https://github.com/november-yankee/setter-for-catan-tsx.git --branch v${version} --single-branch /home/root/setter-for-catan
+RUN cd /home/root/setter-for-catan && scripts/build.sh
+RUN cd /home/root/setter-for-catan && scripts/package.sh
