@@ -254,9 +254,8 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
         return 'white';
       }
 
-      case Tiles.Type.GOLD:
-      case Tiles.Type.GENERIC_HARBOR: {
-        return 'gold';
+      case Tiles.Type.DESERT: {
+        return 'sandybrown';
       }
 
       case Tiles.Type.BRICK_HARBOR:
@@ -287,17 +286,26 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
         return 'forestgreen';
       }
 
-      case Tiles.Type.FISHERY:
-      case Tiles.Type.LAKE: {
-        return 'aqua';
+      case Tiles.Type.GOLD:
+      case Tiles.Type.GENERIC_HARBOR: {
+        return 'gold';
       }
 
       case Tiles.Type.SEA: {
         return 'navy';
       }
 
-      case Tiles.Type.DESERT: {
-        return 'sandybrown';
+      case Tiles.Type.FISHERY:
+      case Tiles.Type.LAKE: {
+        return 'aqua';
+      }
+
+      case Tiles.Type.SWAMP: {
+        return 'darkkhaki';
+      }
+
+      default: {
+        return 'black';
       }
     }
   }

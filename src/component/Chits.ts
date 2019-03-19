@@ -25,6 +25,7 @@ export class Chits {
   export const CHITS_11 = new Chits([11]);
   export const CHITS_12 = new Chits([12]);
 
+  export const CHITS_2_12 = new Chits([2, 12]);
   export const CHITS_4_9 = new Chits([4, 9]);
 
   export const CHITS_2_3_11_12 = new Chits([2, 3, 11, 12]);

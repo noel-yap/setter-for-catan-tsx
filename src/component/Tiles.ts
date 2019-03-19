@@ -1,3 +1,5 @@
+import * as Coordinates from "./Coordinates";
+
 // export module Tiles {
   export enum Type {
     UNKNOWN,
@@ -21,13 +23,14 @@
     FISHERY,
 
     GOLD = 32,
+    SWAMP,
     CASTLE,
     GLASSWORKS,
     QUARRY
   }
 
   export class Tile {
-    constructor(public type: Type) {}
+    constructor(public type: Type, public river: Coordinates.EdgePosition[] = []) {}
 
     edgeCount(): number {
       switch (this.type) {
@@ -54,6 +57,7 @@
         case Type.HILL:
         case Type.MOUNTAIN:
         case Type.PASTURE:
+        case Type.SWAMP:
         case Type.CASTLE:
         case Type.GLASSWORKS:
         case Type.QUARRY: {
