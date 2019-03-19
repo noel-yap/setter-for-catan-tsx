@@ -21,7 +21,7 @@ import {DisplayOptions} from 'rot-js/lib/display/types';
 import * as Boards from './component/Boards';
 import * as Chits from './component/Chits';
 import * as Coordinates from './component/Coordinates';
-import * as Configurations from './component/Configurations';
+import * as Specifications from './component/Specifications';
 import * as Tiles from './component/Tiles';
 import {ConfiguredTile} from './component/ConfiguredTiles';
 
@@ -315,9 +315,9 @@ interface AppState {
   board: Boards.Board
 }
 
-interface BoardConfigurations {
+interface BoardSpecifications {
   [key: string]: {
-    [key: string]: Configurations.Configuration[]
+    [key: string]: Specifications.Specification[]
   }
 }
 
@@ -331,7 +331,7 @@ class App extends React.Component<AppProps, AppState> {
 
       useFishermenOfCatanVariant: false,
       scenario: 'Base',
-      boardGenerator: new Boards.BoardGenerator(Configurations.CONFIGURATION_3_4),
+      boardGenerator: new Boards.BoardGenerator(Specifications.SPECIFICATION_3_4),
       board: new Boards.Board([])
     };
   }
@@ -346,31 +346,32 @@ class App extends React.Component<AppProps, AppState> {
       }
     });
 
-    const boardConfigurations: BoardConfigurations = {
+    const boardSpecifications: BoardSpecifications = {
       'Base': {
-        '3': [Configurations.CONFIGURATION_3_4, Configurations.CONFIGURATION_3_4_FISHERMEN],
-        '4': [Configurations.CONFIGURATION_3_4, Configurations.CONFIGURATION_3_4_FISHERMEN],
-        '5-6': [Configurations.CONFIGURATION_5_6, Configurations.CONFIGURATION_5_6_FISHERMEN],
-        '7-8': [Configurations.CONFIGURATION_7_8, Configurations.CONFIGURATION_7_8_FISHERMEN]
+        '3': [Specifications.SPECIFICATION_3_4, Specifications.SPECIFICATION_3_4_FISHERMEN],
+        '4': [Specifications.SPECIFICATION_3_4, Specifications.SPECIFICATION_3_4_FISHERMEN],
+        '5-6': [Specifications.SPECIFICATION_5_6, Specifications.SPECIFICATION_5_6_FISHERMEN],
+        '7-8': [Specifications.SPECIFICATION_7_8, Specifications.SPECIFICATION_7_8_FISHERMEN]
       },
       'Seafarers: Heading for New Shores': {
-        '3': [Configurations.CONFIGURATION_3_EXPANSION_SEA_SCENARIO_HFNS, Configurations.CONFIGURATION_3_EXPANSION_SEA_SCENARIO_HFNS_FISHERMEN],
-        '4': [Configurations.CONFIGURATION_4_EXPANSION_SEA_SCENARIO_HFNS, Configurations.CONFIGURATION_4_EXPANSION_SEA_SCENARIO_HFNS_FISHERMEN],
-        '5-6': [Configurations.CONFIGURATION_5_6_EXPANSION_SEA_SCENARIO_HFNS, Configurations.CONFIGURATION_5_6_EXPANSION_SEA_SCENARIO_HFNS_FISHERMEN],
-        '7-8': [Configurations.CONFIGURATION_7_8_EXPANSION_SEA_SCENARIO_HFNS, Configurations.CONFIGURATION_7_8_EXPANSION_SEA_SCENARIO_HFNS_FISHERMEN]
+        '3': [Specifications.SPECIFICATION_3_EXPANSION_SEA_SCENARIO_HFNS, Specifications.SPECIFICATION_3_EXPANSION_SEA_SCENARIO_HFNS_FISHERMEN],
+        '4': [Specifications.SPECIFICATION_4_EXPANSION_SEA_SCENARIO_HFNS, Specifications.SPECIFICATION_4_EXPANSION_SEA_SCENARIO_HFNS_FISHERMEN],
+        '5-6': [Specifications.SPECIFICATION_5_6_EXPANSION_SEA_SCENARIO_HFNS, Specifications.SPECIFICATION_5_6_EXPANSION_SEA_SCENARIO_HFNS_FISHERMEN],
+        '7-8': [Specifications.SPECIFICATION_7_8_EXPANSION_SEA_SCENARIO_HFNS, Specifications.SPECIFICATION_7_8_EXPANSION_SEA_SCENARIO_HFNS_FISHERMEN]
       },
       'Seafarers: The Fog Islands': {
-        '3': [Configurations.CONFIGURATION_3_EXPANSION_SEA_SCENARIO_FI, Configurations.CONFIGURATION_3_EXPANSION_SEA_SCENARIO_FI_FISHERMEN],
-        '4': [Configurations.CONFIGURATION_4_EXPANSION_SEA_SCENARIO_FI, Configurations.CONFIGURATION_4_EXPANSION_SEA_SCENARIO_FI_FISHERMEN]
+        '3': [Specifications.SPECIFICATION_3_EXPANSION_SEA_SCENARIO_FI, Specifications.SPECIFICATION_3_EXPANSION_SEA_SCENARIO_FI_FISHERMEN],
+        '4': [Specifications.SPECIFICATION_4_EXPANSION_SEA_SCENARIO_FI, Specifications.SPECIFICATION_4_EXPANSION_SEA_SCENARIO_FI_FISHERMEN],
+        '5-6': [Specifications.SPECIFICATION_5_6_EXPANSION_SEA_SCENARIO_FI, Specifications.SPECIFICATION_5_6_EXPANSION_SEA_SCENARIO_FI_FISHERMEN]
       },
       'Traders and Barbarians: Traders and Barbarians': {
-        '3': [Configurations.CONFIGURATION_3_4_EXPANSION_TB_SCENARIO_TB, Configurations.CONFIGURATION_3_4_EXPANSION_TB_SCENARIO_TB_FISHERMEN],
-        '4': [Configurations.CONFIGURATION_3_4_EXPANSION_TB_SCENARIO_TB, Configurations.CONFIGURATION_3_4_EXPANSION_TB_SCENARIO_TB_FISHERMEN],
-        '5-6': [Configurations.CONFIGURATION_5_6_EXPANSION_TB_SCENARIO_TB, Configurations.CONFIGURATION_5_6_EXPANSION_TB_SCENARIO_TB_FISHERMEN]
+        '3': [Specifications.SPECIFICATION_3_4_EXPANSION_TB_SCENARIO_TB, Specifications.SPECIFICATION_3_4_EXPANSION_TB_SCENARIO_TB_FISHERMEN],
+        '4': [Specifications.SPECIFICATION_3_4_EXPANSION_TB_SCENARIO_TB, Specifications.SPECIFICATION_3_4_EXPANSION_TB_SCENARIO_TB_FISHERMEN],
+        '5-6': [Specifications.SPECIFICATION_5_6_EXPANSION_TB_SCENARIO_TB, Specifications.SPECIFICATION_5_6_EXPANSION_TB_SCENARIO_TB_FISHERMEN]
       }
     };
-    const scenarios = Object.keys(boardConfigurations);
-    const playerCounts = Object.keys(boardConfigurations['Base']);
+    const scenarios = Object.keys(boardSpecifications);
+    const playerCounts = Object.keys(boardSpecifications['Base']);
 
     return (
         <div className="App">
@@ -384,7 +385,7 @@ class App extends React.Component<AppProps, AppState> {
                   name="number-of-players"
                   value={this.state.playerCount}
                   onChange={(event: any) => {
-                    this.generateBoard(boardConfigurations, this.state.scenario, event.target.value, this.state.useFishermenOfCatanVariant);
+                    this.generateBoard(boardSpecifications, this.state.scenario, event.target.value, this.state.useFishermenOfCatanVariant);
                   }}
                   row
               >
@@ -394,7 +395,7 @@ class App extends React.Component<AppProps, AppState> {
                           key={playerCount}
                           value={playerCount}
                           label={playerCount}
-                          disabled={!boardConfigurations[this.state.scenario].hasOwnProperty(playerCount)}
+                          disabled={!boardSpecifications[this.state.scenario].hasOwnProperty(playerCount)}
                           control={<Radio color="primary"/>}
                       />
                   );
@@ -405,7 +406,7 @@ class App extends React.Component<AppProps, AppState> {
                   label="Fishermen of Catan"
                   color={this.state.useFishermenOfCatanVariant ? "primary" : "secondary"}
                   onClick={() => {
-                    this.generateBoard(boardConfigurations, this.state.scenario, this.state.playerCount, !this.state.useFishermenOfCatanVariant)
+                    this.generateBoard(boardSpecifications, this.state.scenario, this.state.playerCount, !this.state.useFishermenOfCatanVariant)
                   }}
               />
               <br/>
@@ -442,9 +443,9 @@ class App extends React.Component<AppProps, AppState> {
                   scenarios.map((scenario) => (
                       <MenuItem
                           key={scenario}
-                          disabled={!boardConfigurations[scenario].hasOwnProperty(this.state.playerCount)}
+                          disabled={!boardSpecifications[scenario].hasOwnProperty(this.state.playerCount)}
                           onClick={() => {
-                            this.generateBoard(boardConfigurations, scenario, this.state.playerCount, this.state.useFishermenOfCatanVariant);
+                            this.generateBoard(boardSpecifications, scenario, this.state.playerCount, this.state.useFishermenOfCatanVariant);
                           }}
                       >
                         {scenario}
@@ -459,9 +460,9 @@ class App extends React.Component<AppProps, AppState> {
     );
   }
 
-  generateBoard(boardConfigurations: BoardConfigurations, scenario: string, playerCount: string, useFishermenOfCatanVariant: boolean) {
+  generateBoard(boardSpecifications: BoardSpecifications, scenario: string, playerCount: string, useFishermenOfCatanVariant: boolean) {
     const boardGenerator = new Boards.BoardGenerator(
-        boardConfigurations[scenario][playerCount][useFishermenOfCatanVariant ? 1 : 0]);
+        boardSpecifications[scenario][playerCount][useFishermenOfCatanVariant ? 1 : 0]);
 
     this.setState({
       openMenu: false,

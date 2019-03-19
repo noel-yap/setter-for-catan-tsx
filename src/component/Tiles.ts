@@ -162,6 +162,12 @@
       .concat(new Array(4).fill(PASTURE_TERRAIN))
       .concat(new Array(4).fill(FOREST_TERRAIN));
 
+  export const BASE_5_6_EXPANSION_SEA_SCENARIO_FI_FACE_UP_PRODUCING_TERRAIN_TILE_SET = new Array(4).fill(PASTURE_TERRAIN)
+      .concat(new Array(4).fill(FOREST_TERRAIN))
+      .concat(new Array(5).fill(FIELD_TERRAIN))
+      .concat(new Array(5).fill(HILL_TERRAIN))
+      .concat(new Array(5).fill(MOUNTAIN_TERRAIN));
+
   export const BASE_3_4_EXPANSION_TB_SCENARIO_TB_NON_TRADE_TERRAIN_TILE_SET = new Array(3).fill(FIELD_TERRAIN)
       .concat(new Array(4).fill(FOREST_TERRAIN))
       .concat(new Array(3).fill(PASTURE_TERRAIN))

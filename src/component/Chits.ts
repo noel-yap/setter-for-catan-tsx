@@ -92,6 +92,18 @@ export class Chits {
       .concat(new Array(2).fill(CHITS_9))
       .concat(new Array(2).fill(CHITS_10));
 
+  export const BASE_5_6_EXPANSION_SEA_SCENARIO_FI_FACE_UP_PRODUCING_TERRAIN_CHIT_SET = [CHITS_2]
+      .concat(new Array(2).fill(CHITS_4))
+      .concat(new Array(2).fill(CHITS_5))
+      .concat(new Array(2).fill(CHITS_9))
+      .concat(new Array(2).fill(CHITS_10))
+      .concat(new Array(2).fill(CHITS_12))
+      .concat(new Array(3).fill(CHITS_3))
+      .concat(new Array(3).fill(CHITS_6))
+      .concat(new Array(3).fill(CHITS_8))
+      .concat(new Array(3).fill(CHITS_11));
+  export const BASE_5_6_EXPANSION_SEA_SCENARIO_FI_GOLD_TERRAIN_CHIT_SET = [CHITS_4, CHITS_10];
+
   export const BASE_EXPANSION_TB_SCENARIO_TB_TERRAIN_CHIT_SET = new Array(2).fill(CHITS_3)
       .concat(new Array(2).fill(CHITS_11))
       .concat(new Array(2).fill(CHITS_4))
