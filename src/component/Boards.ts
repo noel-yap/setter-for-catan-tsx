@@ -1,6 +1,6 @@
 import * as _ from 'underscore';
 
-import * as Configurations from "./Configurations";
+import * as Specifications from "./Specifications";
 import * as ConfiguredTiles from "./ConfiguredTiles";
 import * as Coordinates from "./Coordinates";
 import * as Tiles from "./Tiles";
@@ -40,7 +40,7 @@ import * as Tiles from "./Tiles";
   }
 
   export class BoardGenerator {
-    constructor(public configuration: Configurations.Configuration) {}
+    constructor(public configuration: Specifications.Specification) {}
 
     generateBoard(): Board {
       let result;
@@ -49,8 +49,8 @@ import * as Tiles from "./Tiles";
 
       do {
         result = new Board(
-            this.configuration.settings.flatMap((configuration: [Coordinates.Coordinate[], Configurations.TileChitBag[]]) => {
-              return _.zip(_.shuffle(configuration[0]), _.shuffle(configuration[1].flatMap((tcb: Configurations.TileChitBag) => {
+            this.configuration.settings.flatMap((configuration: [Coordinates.Coordinate[], Specifications.TileChitBag[]]) => {
+              return _.zip(_.shuffle(configuration[0]), _.shuffle(configuration[1].flatMap((tcb: Specifications.TileChitBag) => {
                 console.log(`Boards.BoardGenerator.generateBoard: tiles = ${JSON.stringify(tcb.tiles)}, chits = ${JSON.stringify(tcb.chits)}`);
 
                 return _.zip(_.shuffle(tcb.tiles), _.shuffle(tcb.chits));
@@ -108,12 +108,13 @@ import * as Tiles from "./Tiles";
           return true;
         }
 
-        const validRange = validOddsRanges[contributors.length - 1];
+        const contributorCount = contributors.reduce((sum, c) => sum + c[0].length, 0);
+        const validRange = validOddsRanges[contributorCount - 1];
 
         const totalOdds = contributors
             .reduce((sum, c) => sum + odds(c[0], c[1]), 0);
 
-        console.log(`Boards.BoardGenerator.verifyBoard: contributors = ${JSON.stringify(contributors)}, odds = ${totalOdds}, validRange = ${JSON.stringify(validRange)}`);
+        console.log(`Boards.BoardGenerator.verifyBoard: contributors = ${JSON.stringify(contributors)}, odds = ${totalOdds}, contributorCount = ${contributorCount}, validRange = ${JSON.stringify(validRange)}`);
 
         return validRange[0] <= totalOdds && totalOdds <= validRange[1];
       }
