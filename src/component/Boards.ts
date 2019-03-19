@@ -108,12 +108,13 @@ import * as Tiles from "./Tiles";
           return true;
         }
 
-        const validRange = validOddsRanges[contributors.length - 1];
+        const contributorCount = contributors.reduce((sum, c) => sum + c[0].length, 0);
+        const validRange = validOddsRanges[contributorCount - 1];
 
         const totalOdds = contributors
             .reduce((sum, c) => sum + odds(c[0], c[1]), 0);
 
-        console.log(`Boards.BoardGenerator.verifyBoard: contributors = ${JSON.stringify(contributors)}, odds = ${totalOdds}, validRange = ${JSON.stringify(validRange)}`);
+        console.log(`Boards.BoardGenerator.verifyBoard: contributors = ${JSON.stringify(contributors)}, odds = ${totalOdds}, contributorCount = ${contributorCount}, validRange = ${JSON.stringify(validRange)}`);
 
         return validRange[0] <= totalOdds && totalOdds <= validRange[1];
       }
