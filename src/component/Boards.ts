@@ -1,17 +1,17 @@
 import * as _ from 'underscore';
 
 import * as Specifications from "./Specifications";
-import * as ConfiguredTiles from "./ConfiguredTiles";
-import * as Coordinates from "./Coordinates";
+import * as Configuration from "./Configuration";
 import * as Tiles from "./Tiles";
+import {CoordinateTileChitBag} from "./Specifications";
 
 // export module Boards {
   export class Board {
-    private _terrainTilesLayout: ConfiguredTiles.ConfiguredTile[] = [];
-    private _portTilesLayout: ConfiguredTiles.ConfiguredTile[] = [];
-    private _fisheryTilesLayout: ConfiguredTiles.ConfiguredTile[] = [];
+    private _terrainTilesLayout: Configuration.Configuration[] = [];
+    private _portTilesLayout: Configuration.Configuration[] = [];
+    private _fisheryTilesLayout: Configuration.Configuration[] = [];
 
-    constructor(settings: ConfiguredTiles.ConfiguredTile[]) {
+    constructor(settings: Configuration.Configuration[]) {
       console.log(`Boards.Board.constructor: settings = ${JSON.stringify(settings)}`);
 
       const groupedSettings = _.groupBy(settings, (setting) => setting.coordinate.positions.length);
@@ -22,15 +22,15 @@ import * as Tiles from "./Tiles";
       this._terrainTilesLayout = groupedSettings['6'] || [];
     }
 
-    get terrainTilesLayout(): ConfiguredTiles.ConfiguredTile[] {
+    get terrainTilesLayout(): Configuration.Configuration[] {
       return this._terrainTilesLayout;
     }
 
-    get portTilesLayout(): ConfiguredTiles.ConfiguredTile[] {
+    get portTilesLayout(): Configuration.Configuration[] {
       return this._portTilesLayout;
     }
 
-    get fisheryTilesLayout(): ConfiguredTiles.ConfiguredTile[] {
+    get fisheryTilesLayout(): Configuration.Configuration[] {
       return this._fisheryTilesLayout;
     }
 
@@ -40,7 +40,7 @@ import * as Tiles from "./Tiles";
   }
 
   export class BoardGenerator {
-    constructor(public configuration: Specifications.Specification) {}
+    constructor(public specification: Specifications.Specification) {}
 
     generateBoard(): Board {
       let result;
@@ -48,18 +48,7 @@ import * as Tiles from "./Tiles";
       let validBoard;
 
       do {
-        result = new Board(
-            this.configuration.settings.flatMap((configuration: [Coordinates.Coordinate[], Specifications.TileChitBag[]]) => {
-              return _.zip(_.shuffle(configuration[0]), _.shuffle(configuration[1].flatMap((tcb: Specifications.TileChitBag) => {
-                console.log(`Boards.BoardGenerator.generateBoard: tiles = ${JSON.stringify(tcb.tiles)}, chits = ${JSON.stringify(tcb.chits)}`);
-
-                return _.zip(_.shuffle(tcb.tiles), _.shuffle(tcb.chits));
-              })));
-            }).map(([coordinate, [tile, chits]]) => {
-              console.log(`Boards.BoardGenerator.generateBoard: tile = ${JSON.stringify(tile)}, coordinate = ${JSON.stringify(coordinate)}, chits = ${JSON.stringify(chits)}`);
-
-              return new ConfiguredTiles.ConfiguredTile(tile, coordinate, chits);
-            }));
+        result = new Board(this.specification.settings.flatMap((setting) => setting.toConfiguration()));
 
         const validOddsRanges = count < 216
             ? [
@@ -92,7 +81,7 @@ import * as Tiles from "./Tiles";
       function key(x: number, y: number): string {
         return `(${x},${y})`;
       }
-      function odds(contributingTiles: ConfiguredTiles.ConfiguredTile[], vertex: number): number {
+      function odds(contributingTiles: Configuration.Configuration[], vertex: number): number {
         return contributingTiles
             .filter((ct) => {
               return ct.coordinate.positions.some((p) => {
@@ -103,7 +92,7 @@ import * as Tiles from "./Tiles";
               return ct.chits.odds();
             }, 0);
       }
-      function oddsWithinValidRange(contributors: [ConfiguredTiles.ConfiguredTile[], number][]) {
+      function oddsWithinValidRange(contributors: [Configuration.Configuration[], number][]) {
         if (contributors.length === 0) {
           return true;
         }
@@ -119,10 +108,10 @@ import * as Tiles from "./Tiles";
         return validRange[0] <= totalOdds && totalOdds <= validRange[1];
       }
 
-      const producingConfiguredTiles = board.terrainTilesLayout
+      const producingConfiguration = board.terrainTilesLayout
           .concat(board.fisheryTilesLayout);
       const coordinatesMap = _.groupBy(
-          producingConfiguredTiles,
+          producingConfiguration,
           (ct) => key(ct.coordinate.x, ct.coordinate.y));
 
       const xs: number[] = Object.keys(coordinatesMap)
@@ -147,11 +136,11 @@ import * as Tiles from "./Tiles";
 
       for (let x = minX - 1; x < maxX + 2; ++x) {
         for (let y = minY - 2; y < maxY + 1; ++y) {
-          const topVertexContributors = <[ConfiguredTiles.ConfiguredTile[], number][]>[
+          const topVertexContributors = <[Configuration.Configuration[], number][]>[
             [coordinatesMap[key(x, y)], 0],
             [coordinatesMap[key(x - 1, y - 1)], 2],
             [coordinatesMap[key(x + 1, y - 1)], 4]];
-          const topRightVertexContributors = <[ConfiguredTiles.ConfiguredTile[], number][]>[
+          const topRightVertexContributors = <[Configuration.Configuration[], number][]>[
             [coordinatesMap[key(x, y)], 1],
             [coordinatesMap[key(x + 1, y - 1)], 3],
             [coordinatesMap[key(x + 2, y)], 5]];
@@ -160,14 +149,14 @@ import * as Tiles from "./Tiles";
             const eligibleContributors = contributors
                 .filter((elt) => elt[0] !== undefined)
                 .map((elt) => {
-                  const eligibleConfiguredTiles = elt[0]
+                  const eligibleConfiguration = elt[0]
                       .filter((ct) => {
                         return [Tiles.SEA, Tiles.UNKNOWN].every((t) => t !== ct.tile)
                             && ct.coordinate.positions.some((p) => {
                               return p === elt[1] || p === (elt[1] + 5) % 6;
                             });
                       });
-                  return [eligibleConfiguredTiles, elt[1]] as [ConfiguredTiles.ConfiguredTile[], number];
+                  return [eligibleConfiguration, elt[1]] as [Configuration.Configuration[], number];
                 })
                 .filter((elt) => {
                   return elt[0].length > 0;

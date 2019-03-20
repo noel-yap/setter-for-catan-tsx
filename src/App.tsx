@@ -23,7 +23,7 @@ import * as Chits from './component/Chits';
 import * as Coordinates from './component/Coordinates';
 import * as Specifications from './component/Specifications';
 import * as Tiles from './component/Tiles';
-import {ConfiguredTile} from './component/ConfiguredTiles';
+import {Configuration} from './component/Configuration';
 
 class Cartesian2D {
   constructor(public x: number, public y: number) {}
@@ -98,7 +98,7 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
     return display.getContainer() as HTMLCanvasElement;
   }
 
-  static renderTerrain(display: ROT.Display, configuredTile: ConfiguredTile) {
+  static renderTerrain(display: ROT.Display, configuredTile: Configuration) {
     const options = display._options;
 
     const label = configuredTile.tile === Tiles.UNKNOWN
@@ -112,7 +112,7 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
         GeneratedBoard.tileColor(configuredTile.tile));
   }
 
-  static renderPort(display: ROT.Display, configuredTile: ConfiguredTile): void {
+  static renderPort(display: ROT.Display, configuredTile: Configuration): void {
     const options = display._options;
 
     const hexSize = (display._backend as Hex)._hexSize;
@@ -136,7 +136,7 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
         configuredTile.tile === Tiles.GENERIC_HARBOR ? '3:1' : '2:1');
   }
 
-  static renderFishery(display: ROT.Display, configuredTile: ConfiguredTile, inside: boolean) {
+  static renderFishery(display: ROT.Display, configuredTile: Configuration, inside: boolean) {
     const options = display._options;
 
     // These calculations copied from rot.js to help ensure consistency.
