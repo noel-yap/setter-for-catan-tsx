@@ -347,7 +347,7 @@
     new Coordinate(12, 6, [RIGHT, BOTTOM_RIGHT]),
     new Coordinate(1, 7, [TOP_RIGHT, RIGHT]),
     new Coordinate(4, 8, [TOP_LEFT, TOP_RIGHT])];
-  export const BASE_3_EXPANSION_SEA_SCENARIO_FI_FACE_DOWN_PRODUCING_TERRAIN_COORDINATES = [
+  export const BASE_3_EXPANSION_SEA_SCENARIO_FI_FACE_DOWN_COORDINATES = [
     new Coordinate(9, 1),
     new Coordinate(11, 1),
     new Coordinate(10, 2),
@@ -396,7 +396,7 @@
     new Coordinate(12, 6, [RIGHT, BOTTOM_RIGHT]),
     new Coordinate(2, 6, [BOTTOM_LEFT, LEFT]),
     new Coordinate(3, 7, [BOTTOM_RIGHT, BOTTOM_LEFT])];
-  export const BASE_4_EXPANSION_SEA_SCENARIO_FI_FACE_DOWN_PRODUCING_TERRAIN_COORDINATES = [
+  export const BASE_4_EXPANSION_SEA_SCENARIO_FI_FACE_DOWN_COORDINATES = [
     new Coordinate(9, 1),
     new Coordinate(11, 1),
     new Coordinate(8, 2),
@@ -457,7 +457,7 @@
   export const EXTENSION_5_6_EXPANSION_SEA_SCENARIO_FI_GOLD_TERRAIN_COORDINATES = [
     new Coordinate(3, 1),
     new Coordinate(17, 1)];
-  export const EXTENSION_5_6_EXPANSION_SEA_SCENARIO_FI_UNKNOWN_COORDINATES = [
+  export const EXTENSION_5_6_EXPANSION_SEA_SCENARIO_FI_FACE_DOWN_COORDINATES = [
     new Coordinate(5, 1),
     new Coordinate(7, 1),
     new Coordinate(9, 1),

@@ -3,7 +3,6 @@ import * as _ from 'underscore';
 import * as Specifications from "./Specifications";
 import * as Configuration from "./Configuration";
 import * as Tiles from "./Tiles";
-import {CoordinateTileChitBag} from "./Specifications";
 
 // export module Boards {
   export class Board {
@@ -48,7 +47,7 @@ import {CoordinateTileChitBag} from "./Specifications";
       let validBoard;
 
       do {
-        result = new Board(this.specification.settings.flatMap((setting) => setting.toConfiguration()));
+        result = new Board(this.specification.toConfiguration());
 
         const validOddsRanges = count < 216
             ? [
@@ -71,7 +70,7 @@ import {CoordinateTileChitBag} from "./Specifications";
               [3, 15]];
         validBoard = BoardGenerator.verifyBoard(result, validOddsRanges);
 
-        console.log(`Boards.BoardGenerator.generateBoard: count = ${count}, validOddsRange = ${JSON.stringify(validOddsRanges)}, validBoard = ${validBoard}`);
+        console.log(`count = ${count}, validOddsRange = ${JSON.stringify(validOddsRanges)}, validBoard = ${validBoard}`);
       } while (!validBoard && ++count < 6 * 216);
 
       return result;
@@ -89,6 +88,8 @@ import {CoordinateTileChitBag} from "./Specifications";
               });
             })
             .reduce((sum, ct) => {
+              console.log(`ct = ${JSON.stringify(ct)}`);
+
               return ct.chits.odds();
             }, 0);
       }
@@ -100,10 +101,14 @@ import {CoordinateTileChitBag} from "./Specifications";
         const contributorCount = contributors.reduce((sum, c) => sum + c[0].length, 0);
         const validRange = validOddsRanges[contributorCount - 1];
 
+        if (validRange === undefined) {
+          throw new Error(`Invalid configuration: ${contributorCount} tiles contributing to coordinate. contributors = ${JSON.stringify(contributors)}`);
+        }
+
         const totalOdds = contributors
             .reduce((sum, c) => sum + odds(c[0], c[1]), 0);
 
-        console.log(`Boards.BoardGenerator.verifyBoard: contributors = ${JSON.stringify(contributors)}, odds = ${totalOdds}, contributorCount = ${contributorCount}, validRange = ${JSON.stringify(validRange)}`);
+        console.log(`contributors = ${JSON.stringify(contributors)}, odds = ${totalOdds}, contributorCount = ${contributorCount}, validRange = ${JSON.stringify(validRange)}`);
 
         return validRange[0] <= totalOdds && totalOdds <= validRange[1];
       }
@@ -132,7 +137,7 @@ import {CoordinateTileChitBag} from "./Specifications";
       const minY = Math.min(...ys);
       const maxY = Math.max(...ys);
 
-      console.log(`Boards.BoardGenerator.verifyBoard: x ∈ [${minX}, ${maxX}], y ∈ [${minY}, ${maxY}]`);
+      console.log(`x ∈ [${minX}, ${maxX}], y ∈ [${minY}, ${maxY}]`);
 
       for (let x = minX - 1; x < maxX + 2; ++x) {
         for (let y = minY - 2; y < maxY + 1; ++y) {
