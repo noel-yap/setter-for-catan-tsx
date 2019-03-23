@@ -16,51 +16,47 @@ import * as Tiles from "./Tiles";
       this.validate();
     }
 
-    // TODO: Optimize runtime.
-    // TODO: Refactor common code.
     validate() {
-      // TODO: Ensure all tiles are mapped to coordinates.
-      // TODO: Ensure all coordinates are mentioned in coordinatesTilesMap.
-      (function (self) {
-        if (Object.keys(self.coordinatesTilesMap).some((coordinatesName: string) => {
-          console.log(`coordinatesName = ${coordinatesName}`);
+      const checkForNotReferencedErrors = (artifact: string, artifacts: {[artifactName: string]: (Coordinates.Coordinate | Chits.Chits)[]}, artifactsTilesMap: {[artifactName: string]: string[]}) => {
+        const artifactsKeys = Object.keys(artifacts);
+        const artifactsTilesMapKeys = Object.keys(artifactsTilesMap);
 
-          const coordinatesCount = self.coordinates[coordinatesName].length;
-          const tilesNames = self.coordinatesTilesMap[coordinatesName];
-          const tilesCount = tilesNames.reduce((count, tilesName) => {
-            console.log(`tilesName = ${tilesName}`);
-
-            return count + self.tiles[tilesName].length
-          }, 0);
-
-          console.log(`coordinatesName = ${coordinatesName}, coordinatesCount = ${coordinatesCount}, tilesNames = ${tilesNames}, tilesCount = ${tilesCount}`);
-
-          return coordinatesCount !== tilesCount;
-        })) {
-          throw new Error(`Invalid configuration: Number of coordinates do not match number of tiles.`);
+        const missingFromArtifactsTilesMap = artifactsKeys
+            .filter((key) => artifactsTilesMapKeys.indexOf(key) === -1);
+        if (missingFromArtifactsTilesMap.length !== 0) {
+          throw new Error(`Invalid specification: ${missingFromArtifactsTilesMap} not referenced in ${artifact}TilesMap.`);
         }
-      })(this);
 
-      // TODO: Ensure all chits are mentioned in chitsTilesMap.
-      (function (self) {
-        if (Object.keys(self.chitsTilesMap).some((chitsName: string) => {
-          console.log(`chitsName = ${chitsName}`);
-
-          const chitsCount = self.chits[chitsName].length;
-          const tilesNames = self.chitsTilesMap[chitsName];
-          const tilesCount = tilesNames.reduce((count, tilesName) => {
-            console.log(`tilesName = ${tilesName}`);
-
-            return count + self.tiles[tilesName].length
-          }, 0);
-
-          console.log(`chitsName = ${chitsName}, chitsCount = ${chitsCount}, tilesNames = ${tilesNames}, tilesCount = ${tilesCount}`);
-
-          return chitsCount !== tilesCount;
-        })) {
-          throw new Error(`Invalid configuration: Number of chits do not match number of tiles.`);
+        const missingFromArtifacts = artifactsKeys
+            .filter((key) => artifactsKeys.indexOf(key) === -1);
+        if (missingFromArtifacts.length !== 0) {
+          throw new Error(`Invalid specification: ${missingFromArtifacts} not referenced in ${artifact}.`);
         }
-      })(this);
+      };
+      checkForNotReferencedErrors('coordinates', this.coordinates, this.coordinatesTilesMap);
+      checkForNotReferencedErrors('chits', this.chits, this.chitsTilesMap);
+
+      // TODO: Ensure all tiles are mapped exactly once to coordinates.
+
+      const mismatchError = (artifact: string, artifacts: {[artifactName: string]: (Coordinates.Coordinate | Chits.Chits)[]}, artifactsTilesMap: {[artifactName: string]: string[]}) => {
+        return Object.keys(artifactsTilesMap)
+            .map((artifactsName) => {
+              const artifactsCount = artifacts[artifactsName].length;
+              const tilesNames = artifactsTilesMap[artifactsName];
+              const tilesCount = tilesNames.reduce((count, tilesName) => count + this.tiles[tilesName].length, 0);
+
+              return [artifactsName, artifactsCount, tilesNames, tilesCount];
+            })
+            .filter(([artifactsName, artifactsCount, tilesNames, tilesCount]) => artifactsCount !== tilesCount)
+            .map(([artifactsName, artifactsCount, tilesNames, tilesCount]) => {
+              return `Invalid specification: ${artifactsCount} ${artifact} do not match ${tilesCount} tiles. ${artifact}Name = ${artifactsName}; tilesNames = ${tilesNames}`;
+            });
+      };
+      const mismatchErrors = mismatchError('coordinates', this.coordinates, this.coordinatesTilesMap)
+          .concat(mismatchError('chits', this.chits, this.chitsTilesMap));
+      if (mismatchErrors.length !== 0) {
+        throw new Error(mismatchErrors.join('.\n'));
+      }
     }
 
     toConfiguration(): Configuration.Configuration[] {
@@ -437,7 +433,6 @@ import * as Tiles from "./Tiles";
         'fishery': Coordinates.BASE_3_EXPANSION_SEA_SCENARIOS_FI_FISHERY_COORDINATES
       }),
       Object.assign({...SPECIFICATION_3_EXPANSION_SEA_SCENARIO_FI.chits}, {
-        'lake': [Chits.CHITS_2_3_11_12],
         'fishery': Chits.BASE_3_4_FISHERY_CHIT_SET
       }),
       Object.assign({...SPECIFICATION_3_EXPANSION_SEA_SCENARIO_FI.coordinatesTilesMap}, {
@@ -477,7 +472,6 @@ import * as Tiles from "./Tiles";
         'fishery': Coordinates.BASE_4_EXPANSION_SEA_SCENARIOS_FI_FISHERY_COORDINATES
       }),
       Object.assign({...SPECIFICATION_4_EXPANSION_SEA_SCENARIO_FI.chits}, {
-        'lake': [Chits.CHITS_2_3_11_12],
         'fishery': Chits.BASE_3_4_FISHERY_CHIT_SET
       }),
       Object.assign({...SPECIFICATION_4_EXPANSION_SEA_SCENARIO_FI.coordinatesTilesMap}, {
@@ -523,7 +517,6 @@ import * as Tiles from "./Tiles";
         'fishery': Coordinates.EXTENSION_5_6_EXPANSION_SEA_SCENARIOS_FI_FISHERY_COORDINATES
       }),
       Object.assign({...SPECIFICATION_5_6_EXPANSION_SEA_SCENARIO_FI.chits}, {
-        'lake': [Chits.CHITS_2_3_11_12],
         'fishery': Chits.EXTENSION_5_6_FISHERY_CHIT_SET
       }),
       Object.assign({...SPECIFICATION_5_6_EXPANSION_SEA_SCENARIO_FI.coordinatesTilesMap}, {
