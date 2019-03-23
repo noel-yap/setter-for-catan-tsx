@@ -131,7 +131,15 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
       const midpoint = vertex0.translate(vertex1.diff(vertex0).scale(.5));
 
       const color = GeneratedBoard.tileColor(Tiles.LAKE);
-      GeneratedBoard.renderPolygon(display, [hexCenter, midpoint], color, color);
+      GeneratedBoard.renderPolygon(
+          display,
+          [
+            configuredTile.chits.values.length === 0
+                ? hexCenter
+                : hexCenter.translate(midpoint.diff(hexCenter).scale(.5)),
+            midpoint],
+          color,
+          color);
     });
   }
 
