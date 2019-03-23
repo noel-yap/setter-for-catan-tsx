@@ -105,7 +105,7 @@ export class Chits {
       .concat(new Array(3).fill(CHITS_11));
   export const EXTENSION_5_6_EXPANSION_SEA_SCENARIO_FI_GOLD_TERRAIN_CHIT_SET = [CHITS_4, CHITS_10];
 
-  export const BASE_3_4_EXPANSION_TB_SCENARIO_ROC_NON_RIVER_TERRAIN_CHIT_SET = [CHITS_2_12]
+  export const BASE_3_4_EXPANSION_TB_SCENARIO_ROC_PRODUCING_TERRAIN_CHIT_SET = [CHITS_2_12]
     .concat(new Array(2).fill(CHITS_3))
     .concat(new Array(2).fill(CHITS_11))
     .concat(new Array(2).fill(CHITS_4))

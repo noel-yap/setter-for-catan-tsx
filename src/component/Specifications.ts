@@ -97,6 +97,10 @@ import * as Tiles from "./Tiles";
     }
   }
 
+  function oneToOne(...names: string[]): any {
+    return names.reduce((result, name) => Object.assign(result, {[name]: [name]}), {});
+  }
+
   export const SPECIFICATION_3_4 = new Specification(
       {
         'producing-terrain': Tiles.BASE_3_4_PRODUCING_TERRAIN_TILE_SET,
@@ -110,13 +114,10 @@ import * as Tiles from "./Tiles";
       {
         'producing-terrain': Chits.BASE_3_4_PRODUCING_TERRAIN_CHIT_SET
       },
-      {
-        'terrain': ['producing-terrain', 'desert'],
-        'harbor': ['harbor']
-      },
-      {
-        'producing-terrain': ['producing-terrain']
-      });
+      Object.assign(oneToOne('harbor'), {
+        'terrain': ['producing-terrain', 'desert']
+      }),
+      oneToOne('producing-terrain'));
   export const SPECIFICATION_3_4_FISHERMEN = new Specification(
       Object.assign({..._.omit(SPECIFICATION_3_4.tiles, 'desert')}, {
         'lake': [Tiles.LAKE],
@@ -129,14 +130,12 @@ import * as Tiles from "./Tiles";
         'lake': [Chits.CHITS_2_3_11_12],
         'fishery': Chits.BASE_3_4_FISHERY_CHIT_SET
       }),
-      Object.assign({...SPECIFICATION_3_4.coordinatesTilesMap}, {
-        'terrain': ['producing-terrain', 'lake'],
-        'fishery': ['fishery']
-      }),
-      Object.assign({...SPECIFICATION_3_4.chitsTilesMap}, {
-        'lake': ['lake'],
-        'fishery': ['fishery']
-      }));
+      Object.assign({...SPECIFICATION_3_4.coordinatesTilesMap},
+          oneToOne('fishery'), {
+            'terrain': ['producing-terrain', 'lake']
+          }),
+      Object.assign({...SPECIFICATION_3_4.chitsTilesMap},
+          oneToOne('lake', 'fishery')));
 
   export const SPECIFICATION_5_6 = new Specification(
       {
@@ -151,13 +150,10 @@ import * as Tiles from "./Tiles";
       {
         'producing-terrain': Chits.EXTENSION_5_6_PRODUCING_TERRAIN_CHIT_SET
       },
-      {
-        'terrain': ['producing-terrain', 'desert'],
-        'harbor': ['harbor']
-      },
-      {
-        'producing-terrain': ['producing-terrain']
-      });
+      Object.assign(oneToOne('harbor'), {
+        'terrain': ['producing-terrain', 'desert']
+      }),
+      oneToOne('producing-terrain'));
   export const SPECIFICATION_5_6_FISHERMEN = new Specification(
       Object.assign({..._.omit(SPECIFICATION_5_6.tiles, 'desert')}, {
         'lake': new Array(2).fill(Tiles.LAKE),
@@ -170,14 +166,12 @@ import * as Tiles from "./Tiles";
         'lake': [Chits.CHITS_2_3_11_12, Chits.CHITS_4_9],
         'fishery': Chits.EXTENSION_5_6_FISHERY_CHIT_SET
       }),
-      Object.assign({...SPECIFICATION_5_6.coordinatesTilesMap}, {
-        'terrain': ['producing-terrain', 'lake'],
-        'fishery': ['fishery']
-      }),
-      Object.assign({...SPECIFICATION_5_6.chitsTilesMap}, {
-        'lake': ['lake'],
-        'fishery': ['fishery']
-      }));
+      Object.assign({...SPECIFICATION_5_6.coordinatesTilesMap},
+          oneToOne('fishery'), {
+            'terrain': ['producing-terrain', 'lake']
+          }),
+      Object.assign({...SPECIFICATION_5_6.chitsTilesMap},
+          oneToOne('lake', 'fishery')));
 
   export const SPECIFICATION_7_8 = new Specification(
       {
@@ -192,13 +186,10 @@ import * as Tiles from "./Tiles";
       {
         'producing-terrain': Chits.EXTENSION_7_8_PRODUCING_TERRAIN_CHIT_SET
       },
-      {
-        'terrain': ['producing-terrain', 'desert'],
-        'harbor': ['harbor']
-      },
-      {
-        'producing-terrain': ['producing-terrain']
-      });
+      Object.assign(oneToOne('harbor'), {
+        'terrain': ['producing-terrain', 'desert']
+      }),
+      oneToOne('producing-terrain'));
   export const SPECIFICATION_7_8_FISHERMEN = new Specification(
       Object.assign({..._.omit(SPECIFICATION_7_8.tiles, 'desert')}, {
         'lake': [Tiles.LAKE],
@@ -211,18 +202,16 @@ import * as Tiles from "./Tiles";
         'lake': [Chits.CHITS_2_3_11_12],
         'fishery': Chits.EXTENSION_7_8_FISHERY_CHIT_SET
       }),
-      Object.assign({...SPECIFICATION_7_8.coordinatesTilesMap}, {
-        'terrain': ['producing-terrain', 'lake'],
-        'fishery': ['fishery']
-      }),
-      Object.assign({...SPECIFICATION_7_8.chitsTilesMap}, {
-        'lake': ['lake'],
-        'fishery': ['fishery']
-      }));
+      Object.assign({...SPECIFICATION_7_8.coordinatesTilesMap},
+          oneToOne('fishery'), {
+            'terrain': ['producing-terrain', 'lake']
+          }),
+      Object.assign({...SPECIFICATION_7_8.chitsTilesMap},
+          oneToOne('lake', 'fishery')));
 
   export const SPECIFICATION_3_EXPANSION_SEA_SCENARIO_HFNS = new Specification(
     {
-      'big-island-producing-terrain': Tiles.BASE_3_EXPANSION_SEA_SCENARIO_HFNS_BIG_ISLAND_PRODUCING_TERRAIN_TILE_SET,
+      'big-island-terrain': Tiles.BASE_3_EXPANSION_SEA_SCENARIO_HFNS_BIG_ISLAND_PRODUCING_TERRAIN_TILE_SET,
       'small-island-producing-terrain': Tiles.BASE_3_EXPANSION_SEA_SCENARIO_HFNS_SMALL_ISLANDS_PRODUCING_TERRAIN_TILE_SET,
       'sea': new Array(5).fill(Tiles.SEA),
       'harbor': Tiles.BASE_3_EXPANSION_SEA_SCENARIO_HFNS_BIG_ISLAND_HARBOR_TILE_SET
@@ -233,18 +222,13 @@ import * as Tiles from "./Tiles";
       'harbor': Coordinates.BASE_3_EXPANSION_SEA_SCENARIO_HFNS_BIG_ISLAND_HARBOR_COORDINATES
     },
     {
-      'big-island-producing-terrain': Chits.BASE_3_EXPANSION_SEA_SCENARIO_HFNS_PRODUCING_TERRAIN_CHIT_SET,
+      'big-island-terrain': Chits.BASE_3_EXPANSION_SEA_SCENARIO_HFNS_PRODUCING_TERRAIN_CHIT_SET,
       'small-island-producing-terrain': Chits.BASE_3_EXPANSION_SEA_SCENARIO_HFNS_SMALL_ISLANDS_PRODUCING_TERRAIN_CHIT_SET
     },
-    {
-      'big-island-terrain': ['big-island-producing-terrain'],
-      'small-island-terrain': ['small-island-producing-terrain', 'sea'],
-      'harbor': ['harbor']
-    },
-    {
-      'big-island-producing-terrain': ['big-island-producing-terrain'],
-      'small-island-producing-terrain': ['small-island-producing-terrain']
-    });
+    Object.assign(oneToOne('big-island-terrain', 'harbor'), {
+      'small-island-terrain': ['small-island-producing-terrain', 'sea']
+    }),
+    oneToOne('big-island-terrain', 'small-island-producing-terrain'));
   export const SPECIFICATION_3_EXPANSION_SEA_SCENARIO_HFNS_FISHERMEN = new Specification(
       Object.assign({...SPECIFICATION_3_EXPANSION_SEA_SCENARIO_HFNS.tiles}, {
         'fishery': Tiles.BASE_3_EXPANSION_SEA_SCENARIO_HFNS_BIG_ISLAND_FISHERY_TILE_SET
@@ -255,12 +239,10 @@ import * as Tiles from "./Tiles";
       Object.assign({...SPECIFICATION_3_EXPANSION_SEA_SCENARIO_HFNS.chits}, {
         'fishery': Chits.BASE_3_EXPANSION_SEA_SCENARIO_HFNS_FISHERY_CHIT_SET
       }),
-      Object.assign({...SPECIFICATION_3_EXPANSION_SEA_SCENARIO_HFNS.coordinatesTilesMap}, {
-        'fishery': ['fishery']
-      }),
-      Object.assign({...SPECIFICATION_3_EXPANSION_SEA_SCENARIO_HFNS.chitsTilesMap}, {
-        'fishery': ['fishery']
-      }));
+      Object.assign({...SPECIFICATION_3_EXPANSION_SEA_SCENARIO_HFNS.coordinatesTilesMap},
+          oneToOne('fishery')),
+      Object.assign({...SPECIFICATION_3_EXPANSION_SEA_SCENARIO_HFNS.chitsTilesMap},
+          oneToOne('fishery')));
 
   export const SPECIFICATION_4_EXPANSION_SEA_SCENARIO_HFNS = new Specification(
       {
@@ -279,15 +261,11 @@ import * as Tiles from "./Tiles";
         'big-island-producing-terrain': Chits.BASE_3_4_PRODUCING_TERRAIN_CHIT_SET,
         'small-island-producing-terrain': Chits.BASE_4_EXPANSION_SEA_SCENARIO_HFNS_SMALL_ISLANDS_PRODUCING_TERRAIN_CHIT_SET
       },
-      {
+      Object.assign(oneToOne('harbor'), {
         'big-island-terrain': ['big-island-producing-terrain', 'desert'],
-        'small-island-terrain': ['small-island-producing-terrain', 'sea'],
-        'harbor': ['harbor']
-      },
-      {
-        'big-island-producing-terrain': ['big-island-producing-terrain'],
-        'small-island-producing-terrain': ['small-island-producing-terrain']
-      });
+        'small-island-terrain': ['small-island-producing-terrain', 'sea']
+      }),
+      oneToOne('big-island-producing-terrain', 'small-island-producing-terrain'));
   export const SPECIFICATION_4_EXPANSION_SEA_SCENARIO_HFNS_FISHERMEN = new Specification(
       Object.assign({..._.omit(SPECIFICATION_4_EXPANSION_SEA_SCENARIO_HFNS.tiles, 'desert')}, {
         'lake': [Tiles.LAKE],
@@ -300,14 +278,12 @@ import * as Tiles from "./Tiles";
         'lake': [Chits.CHITS_2_3_11_12],
         'fishery': Chits.BASE_3_4_FISHERY_CHIT_SET
       }),
-      Object.assign({...SPECIFICATION_4_EXPANSION_SEA_SCENARIO_HFNS.coordinatesTilesMap}, {
-        'big-island-terrain': ['big-island-producing-terrain', 'lake'],
-        'fishery': ['fishery']
+      Object.assign({...SPECIFICATION_4_EXPANSION_SEA_SCENARIO_HFNS.coordinatesTilesMap},
+          oneToOne('fishery'), {
+        'big-island-terrain': ['big-island-producing-terrain', 'lake']
       }),
-      Object.assign({...SPECIFICATION_4_EXPANSION_SEA_SCENARIO_HFNS.chitsTilesMap}, {
-        'lake': ['lake'],
-        'fishery': ['fishery']
-      }));
+      Object.assign({...SPECIFICATION_4_EXPANSION_SEA_SCENARIO_HFNS.chitsTilesMap},
+          oneToOne('lake', 'fishery')));
 
   export const SPECIFICATION_5_6_EXPANSION_SEA_SCENARIO_HFNS = new Specification(
       {
@@ -326,15 +302,11 @@ import * as Tiles from "./Tiles";
         'big-island-producing-terrain': Chits.EXTENSION_5_6_PRODUCING_TERRAIN_CHIT_SET,
         'small-island-producing-terrain': Chits.EXTENSION_5_6_EXPANSION_SEA_SCENARIO_HFNS_SMALL_ISLANDS_PRODUCING_TERRAIN_CHIT_SET
       },
-      {
+      Object.assign(oneToOne('harbor'), {
         'big-island-terrain': ['big-island-producing-terrain', 'desert'],
-        'small-island-terrain': ['small-island-producing-terrain', 'sea'],
-        'harbor': ['harbor']
-      },
-      {
-        'big-island-producing-terrain': ['big-island-producing-terrain'],
-        'small-island-producing-terrain': ['small-island-producing-terrain']
-      });
+        'small-island-terrain': ['small-island-producing-terrain', 'sea']
+      }),
+      oneToOne('big-island-producing-terrain', 'small-island-producing-terrain'));
   export const SPECIFICATION_5_6_EXPANSION_SEA_SCENARIO_HFNS_FISHERMEN = new Specification(
       Object.assign({..._.omit(SPECIFICATION_5_6_EXPANSION_SEA_SCENARIO_HFNS.tiles, 'desert')}, {
         'lake': new Array(2).fill(Tiles.LAKE),
@@ -347,14 +319,12 @@ import * as Tiles from "./Tiles";
         'lake': [Chits.CHITS_2_3_11_12, Chits.CHITS_4_9],
         'fishery': Chits.EXTENSION_5_6_FISHERY_CHIT_SET
       }),
-      Object.assign({...SPECIFICATION_5_6_EXPANSION_SEA_SCENARIO_HFNS.coordinatesTilesMap}, {
-        'big-island-terrain': ['big-island-producing-terrain', 'lake'],
-        'fishery': ['fishery']
-      }),
-      Object.assign({...SPECIFICATION_5_6_EXPANSION_SEA_SCENARIO_HFNS.chitsTilesMap}, {
-        'lake': ['lake'],
-        'fishery': ['fishery']
-      }));
+      Object.assign({...SPECIFICATION_5_6_EXPANSION_SEA_SCENARIO_HFNS.coordinatesTilesMap},
+          oneToOne('fishery'), {
+            'big-island-terrain': ['big-island-producing-terrain', 'lake']
+          }),
+      Object.assign({...SPECIFICATION_5_6_EXPANSION_SEA_SCENARIO_HFNS.chitsTilesMap},
+          oneToOne('lake', 'fishery')));
 
   export const SPECIFICATION_7_8_EXPANSION_SEA_SCENARIO_HFNS = new Specification(
       {
@@ -373,15 +343,11 @@ import * as Tiles from "./Tiles";
         'big-island-producing-terrain': Chits.EXTENSION_7_8_PRODUCING_TERRAIN_CHIT_SET,
         'small-island-producing-terrain': Chits.EXTENSION_7_8_EXPANSION_SEA_SCENARIO_HFNS_SMALL_ISLANDS_PRODUCING_TERRAIN_CHIT_SET
       },
-      {
+      Object.assign(oneToOne('harbor'), {
         'big-island-terrain': ['big-island-producing-terrain', 'desert'],
-        'small-island-terrain': ['small-island-producing-terrain', 'sea'],
-        'harbor': ['harbor']
-      },
-      {
-        'big-island-producing-terrain': ['big-island-producing-terrain'],
-        'small-island-producing-terrain': ['small-island-producing-terrain']
-      });
+        'small-island-terrain': ['small-island-producing-terrain', 'sea']
+      }),
+      oneToOne('big-island-producing-terrain', 'small-island-producing-terrain'));
   export const SPECIFICATION_7_8_EXPANSION_SEA_SCENARIO_HFNS_FISHERMEN = new Specification(
       Object.assign({..._.omit(SPECIFICATION_7_8_EXPANSION_SEA_SCENARIO_HFNS.tiles, 'desert')}, {
         'lake': [Tiles.LAKE],
@@ -394,14 +360,12 @@ import * as Tiles from "./Tiles";
         'lake': [Chits.CHITS_2_3_11_12],
         'fishery': Chits.EXTENSION_7_8_FISHERY_CHIT_SET
       }),
-      Object.assign({...SPECIFICATION_7_8_EXPANSION_SEA_SCENARIO_HFNS.coordinatesTilesMap}, {
-        'big-island-terrain': ['big-island-producing-terrain', 'lake'],
-        'fishery': ['fishery']
-      }),
-      Object.assign({...SPECIFICATION_7_8_EXPANSION_SEA_SCENARIO_HFNS.chitsTilesMap}, {
-        'lake': ['lake'],
-        'fishery': ['fishery']
-      }));
+      Object.assign({...SPECIFICATION_7_8_EXPANSION_SEA_SCENARIO_HFNS.coordinatesTilesMap},
+          oneToOne('fishery'), {
+            'big-island-terrain': ['big-island-producing-terrain', 'lake']
+          }),
+      Object.assign({...SPECIFICATION_7_8_EXPANSION_SEA_SCENARIO_HFNS.chitsTilesMap},
+          oneToOne('lake', 'fishery')));
 
   export const SPECIFICATION_3_EXPANSION_SEA_SCENARIO_FI = new Specification(
       {
@@ -417,14 +381,8 @@ import * as Tiles from "./Tiles";
       {
         'face-up-terrain': Chits.BASE_3_EXPANSION_SEA_SCENARIO_FI_FACE_UP_PRODUCING_TERRAIN_CHIT_SET
       },
-      {
-        'face-up-terrain': ['face-up-terrain'],
-        'face-down-terrain': ['face-down-terrain'],
-        'harbor': ['harbor']
-      },
-      {
-        'face-up-terrain': ['face-up-terrain']
-      });
+      oneToOne('face-up-terrain', 'face-down-terrain', 'harbor'),
+      oneToOne('face-up-terrain'));
   export const SPECIFICATION_3_EXPANSION_SEA_SCENARIO_FI_FISHERMEN = new Specification(
       Object.assign({...SPECIFICATION_3_EXPANSION_SEA_SCENARIO_FI.tiles}, {
         'fishery': Tiles.BASE_3_4_FISHERY_TILE_SET
@@ -435,12 +393,10 @@ import * as Tiles from "./Tiles";
       Object.assign({...SPECIFICATION_3_EXPANSION_SEA_SCENARIO_FI.chits}, {
         'fishery': Chits.BASE_3_4_FISHERY_CHIT_SET
       }),
-      Object.assign({...SPECIFICATION_3_EXPANSION_SEA_SCENARIO_FI.coordinatesTilesMap}, {
-        'fishery': ['fishery']
-      }),
-      Object.assign({...SPECIFICATION_3_EXPANSION_SEA_SCENARIO_FI.chitsTilesMap}, {
-        'fishery': ['fishery']
-      }));
+      Object.assign({...SPECIFICATION_3_EXPANSION_SEA_SCENARIO_FI.coordinatesTilesMap},
+          oneToOne('fishery')),
+      Object.assign({...SPECIFICATION_3_EXPANSION_SEA_SCENARIO_FI.chitsTilesMap},
+          oneToOne('fishery')));
 
   export const SPECIFICATION_4_EXPANSION_SEA_SCENARIO_FI = new Specification(
       {
@@ -456,14 +412,8 @@ import * as Tiles from "./Tiles";
       {
         'face-up-terrain': Chits.BASE_4_EXPANSION_SEA_SCENARIO_FI_FACE_UP_PRODUCING_TERRAIN_CHIT_SET
       },
-      {
-        'face-up-terrain': ['face-up-terrain'],
-        'face-down-terrain': ['face-down-terrain'],
-        'harbor': ['harbor']
-      },
-      {
-        'face-up-terrain': ['face-up-terrain']
-      });
+      oneToOne('face-up-terrain', 'face-down-terrain', 'harbor'),
+      oneToOne('face-up-terrain'));
   export const SPECIFICATION_4_EXPANSION_SEA_SCENARIO_FI_FISHERMEN = new Specification(
       Object.assign({...SPECIFICATION_4_EXPANSION_SEA_SCENARIO_FI.tiles}, {
         'fishery': Tiles.BASE_3_4_FISHERY_TILE_SET
@@ -474,12 +424,10 @@ import * as Tiles from "./Tiles";
       Object.assign({...SPECIFICATION_4_EXPANSION_SEA_SCENARIO_FI.chits}, {
         'fishery': Chits.BASE_3_4_FISHERY_CHIT_SET
       }),
-      Object.assign({...SPECIFICATION_4_EXPANSION_SEA_SCENARIO_FI.coordinatesTilesMap}, {
-        'fishery': ['fishery']
-      }),
-      Object.assign({...SPECIFICATION_4_EXPANSION_SEA_SCENARIO_FI.chitsTilesMap}, {
-        'fishery': ['fishery']
-      }));
+      Object.assign({...SPECIFICATION_4_EXPANSION_SEA_SCENARIO_FI.coordinatesTilesMap},
+          oneToOne('fishery')),
+      Object.assign({...SPECIFICATION_4_EXPANSION_SEA_SCENARIO_FI.chitsTilesMap},
+          oneToOne('fishery')));
 
   export const SPECIFICATION_5_6_EXPANSION_SEA_SCENARIO_FI = new Specification(
       {
@@ -499,16 +447,10 @@ import * as Tiles from "./Tiles";
         'face-up-terrain': Chits.EXTENSION_5_6_EXPANSION_SEA_SCENARIO_FI_FACE_UP_PRODUCING_TERRAIN_CHIT_SET,
         'gold': Chits.EXTENSION_5_6_EXPANSION_SEA_SCENARIO_FI_GOLD_TERRAIN_CHIT_SET
       },
-      {
-        'face-up-terrain': ['face-up-terrain', 'desert'],
-        'face-down-terrain': ['face-down-terrain'],
-        'gold': ['gold'],
-        'harbor': ['harbor']
-      },
-      {
-        'face-up-terrain': ['face-up-terrain'],
-        'gold': ['gold']
-      });
+      Object.assign(oneToOne('face-down-terrain', 'gold', 'harbor'), {
+        'face-up-terrain': ['face-up-terrain', 'desert']
+      }),
+      oneToOne('face-up-terrain', 'gold'));
   export const SPECIFICATION_5_6_EXPANSION_SEA_SCENARIO_FI_FISHERMEN = new Specification(
       Object.assign({...SPECIFICATION_5_6_EXPANSION_SEA_SCENARIO_FI.tiles}, {
         'fishery': Tiles.EXTENSION_5_6_FISHERY_TILE_SET
@@ -519,12 +461,59 @@ import * as Tiles from "./Tiles";
       Object.assign({...SPECIFICATION_5_6_EXPANSION_SEA_SCENARIO_FI.chits}, {
         'fishery': Chits.EXTENSION_5_6_FISHERY_CHIT_SET
       }),
-      Object.assign({...SPECIFICATION_5_6_EXPANSION_SEA_SCENARIO_FI.coordinatesTilesMap}, {
-        'fishery': ['fishery']
+      Object.assign({...SPECIFICATION_5_6_EXPANSION_SEA_SCENARIO_FI.coordinatesTilesMap},
+          oneToOne('fishery')),
+      Object.assign({...SPECIFICATION_5_6_EXPANSION_SEA_SCENARIO_FI.chitsTilesMap},
+          oneToOne('fishery')));
+
+  export const SPECIFICATION_3_4_EXPANSION_TB_SCENARIO_ROC = new Specification(
+      {
+        'non-river-terrain': Tiles.BASE_3_4_EXPANSION_TB_SCENARIO_ROC_NON_RIVER_TERRAIN_TILE_SET,
+        'river-mountain': new Array(2).fill(new Tiles.Tile(Tiles.Type.MOUNTAIN, [Coordinates.LEFT])),
+        'river-hill': new Array(2).fill(new Tiles.Tile(Tiles.Type.HILL, [Coordinates.RIGHT, Coordinates.LEFT])),
+        'river-pasture': [new Tiles.Tile(Tiles.Type.PASTURE, [Coordinates.RIGHT, Coordinates.LEFT])],
+        'northern-swamp': [new Tiles.Tile(Tiles.Type.SWAMP, [Coordinates.RIGHT, Coordinates.TOP_LEFT])],
+        'southern-swamp': [new Tiles.Tile(Tiles.Type.SWAMP, [Coordinates.RIGHT, Coordinates.BOTTOM_LEFT])],
+        'harbor': Tiles.BASE_3_4_HARBOR_TILE_SET
+      },
+      {
+        'non-river-terrain': Coordinates.BASE_3_4_EXPANSION_TB_SCENARIO_ROC_NON_RIVER_TERRAIN_COORDINATES,
+        'river-mountain': Coordinates.BASE_3_4_EXPANSION_TB_SCENARIO_ROC_RIVER_MOUNTAIN_TERRAIN_COORDINATES,
+        'river-hill': Coordinates.BASE_3_4_EXPANSION_TB_SCENARIO_ROC_RIVER_HILL_TERRAIN_COORDINATES,
+        'river-pasture': Coordinates.BASE_3_4_EXPANSION_TB_SCENARIO_ROC_RIVER_PASTURE_TERRAIN_COORDINATES,
+        'northern-swamp': Coordinates.BASE_3_4_EXPANSION_TB_SCENARIO_ROC_NORTHERN_SWAMP_TERRAIN_COORDINATES,
+        'southern-swamp': Coordinates.BASE_3_4_EXPANSION_TB_SCENARIO_ROC_SOUTHERN_SWAMP_TERRAIN_COORDINATES,
+        'harbor': Coordinates.BASE_3_4_HARBOR_COORDINATES
+      },
+      {
+        'producing-terrain': Chits.BASE_3_4_EXPANSION_TB_SCENARIO_ROC_PRODUCING_TERRAIN_CHIT_SET
+      },
+      oneToOne(
+          'non-river-terrain',
+          'river-mountain',
+          'river-hill',
+          'river-pasture',
+          'northern-swamp',
+          'southern-swamp',
+          'harbor'),
+      {
+        'producing-terrain': ['non-river-terrain', 'river-mountain', 'river-hill', 'river-pasture']
+      }
+  );
+  export const SPECIFICATION_3_4_EXPANSION_TB_SCENARIO_ROC_FISHERMEN = new Specification(
+      Object.assign({...SPECIFICATION_3_4_EXPANSION_TB_SCENARIO_ROC.tiles}, {
+        'fishery': Tiles.BASE_3_4_FISHERY_TILE_SET
       }),
-      Object.assign({...SPECIFICATION_5_6_EXPANSION_SEA_SCENARIO_FI.chitsTilesMap}, {
-        'fishery': ['fishery']
-      }));
+      Object.assign({...SPECIFICATION_3_4_EXPANSION_TB_SCENARIO_ROC.coordinates}, {
+        'fishery': Coordinates.BASE_3_4_FISHERY_COORDINATES
+      }),
+      Object.assign({...SPECIFICATION_3_4_EXPANSION_TB_SCENARIO_ROC.chits}, {
+        'fishery': Chits.BASE_3_4_FISHERY_CHIT_SET
+      }),
+      Object.assign({...SPECIFICATION_3_4_EXPANSION_TB_SCENARIO_ROC.coordinatesTilesMap},
+          oneToOne('fishery')),
+      Object.assign({...SPECIFICATION_3_4_EXPANSION_TB_SCENARIO_ROC.chitsTilesMap},
+          oneToOne('fishery')));
 
   export const SPECIFICATION_3_4_EXPANSION_TB_SCENARIO_TB = new Specification(
       {
@@ -540,14 +529,8 @@ import * as Tiles from "./Tiles";
       {
         'non-trade-terrain': Chits.BASE_EXPANSION_TB_SCENARIO_TB_TERRAIN_CHIT_SET
       },
-      {
-        'non-trade-terrain': ['non-trade-terrain'],
-        'trade-terrain': ['trade-terrain'],
-        'harbor': ['harbor']
-      },
-      {
-        'non-trade-terrain': ['non-trade-terrain']
-      }
+      oneToOne('non-trade-terrain', 'trade-terrain', 'harbor'),
+      oneToOne('non-trade-terrain')
   );
   export const SPECIFICATION_3_4_EXPANSION_TB_SCENARIO_TB_FISHERMEN = new Specification(
       Object.assign({...SPECIFICATION_3_4_EXPANSION_TB_SCENARIO_TB.tiles}, {
@@ -559,12 +542,10 @@ import * as Tiles from "./Tiles";
       Object.assign({...SPECIFICATION_3_4_EXPANSION_TB_SCENARIO_TB.chits}, {
         'fishery': Chits.BASE_3_4_FISHERY_CHIT_SET
       }),
-      Object.assign({...SPECIFICATION_3_4_EXPANSION_TB_SCENARIO_TB.coordinatesTilesMap}, {
-        'fishery': ['fishery']
-      }),
-      Object.assign({...SPECIFICATION_3_4_EXPANSION_TB_SCENARIO_TB.chitsTilesMap}, {
-        'fishery': ['fishery']
-      }));
+      Object.assign({...SPECIFICATION_3_4_EXPANSION_TB_SCENARIO_TB.coordinatesTilesMap},
+          oneToOne('fishery')),
+      Object.assign({...SPECIFICATION_3_4_EXPANSION_TB_SCENARIO_TB.chitsTilesMap},
+          oneToOne('fishery')));
 
   export const SPECIFICATION_5_6_EXPANSION_TB_SCENARIO_TB = new Specification(
       {
@@ -585,17 +566,10 @@ import * as Tiles from "./Tiles";
       {
         'producing-terrain': Chits.EXTENSION_5_6_PRODUCING_TERRAIN_CHIT_SET
       },
-      {
-        'non-trade-terrain': ['producing-terrain', 'desert'],
-        'castle': ['castle'],
-        'glassworks': ['glassworks'],
-        'quarry': ['quarry'],
-        'harbor': ['harbor']
-      },
-      {
-        'producing-terrain': ['producing-terrain']
-      }
-  );
+      Object.assign(oneToOne('castle', 'glassworks', 'quarry', 'harbor'), {
+        'non-trade-terrain': ['producing-terrain', 'desert']
+      }),
+      oneToOne('producing-terrain'));
   export const SPECIFICATION_5_6_EXPANSION_TB_SCENARIO_TB_FISHERMEN = new Specification(
       Object.assign({..._.omit(SPECIFICATION_5_6_EXPANSION_TB_SCENARIO_TB.tiles, 'desert')}, {
         'lake': new Array(2).fill(Tiles.LAKE),
@@ -608,12 +582,10 @@ import * as Tiles from "./Tiles";
         'lake': [Chits.CHITS_2_3_11_12, Chits.CHITS_4_9],
         'fishery': Chits.EXTENSION_5_6_FISHERY_CHIT_SET
       }),
-      Object.assign({...SPECIFICATION_5_6_EXPANSION_TB_SCENARIO_TB.coordinatesTilesMap}, {
-        'non-trade-terrain': ['producing-terrain', 'lake'],
-        'fishery': ['fishery']
-      }),
-      Object.assign({...SPECIFICATION_5_6_EXPANSION_TB_SCENARIO_TB.chitsTilesMap}, {
-        'lake': ['lake'],
-        'fishery': ['fishery']
-      }));
+      Object.assign({...SPECIFICATION_5_6_EXPANSION_TB_SCENARIO_TB.coordinatesTilesMap},
+          oneToOne('fishery'), {
+            'non-trade-terrain': ['producing-terrain', 'lake']
+          }),
+      Object.assign({...SPECIFICATION_5_6_EXPANSION_TB_SCENARIO_TB.chitsTilesMap},
+          oneToOne('lake', 'fishery')));
 // }

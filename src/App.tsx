@@ -110,6 +110,29 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
         label,
         GeneratedBoard.chitColor(configuredTile.tile, configuredTile.chits, options.fg),
         GeneratedBoard.tileColor(configuredTile.tile));
+
+    window.requestAnimationFrame(() => {
+      GeneratedBoard.renderRiver(display, configuredTile);
+    });
+  }
+
+  static renderRiver(display: ROT.Display, configuredTile: Configuration) {
+    const options = display._options;
+
+    const hexSize = (display._backend as Hex)._hexSize;
+    const hexCenter = GeneratedBoard.hexCenter(hexSize, configuredTile.coordinate.x, configuredTile.coordinate.y);
+
+    const edgePositionStartPoint = _.partial(GeneratedBoard.edgePositionStartPoint, _, hexCenter, hexSize, options.border);
+
+    configuredTile.tile.river.forEach((position) => {
+      const vertex0 = edgePositionStartPoint(position);
+      const vertex1 = edgePositionStartPoint((position + 1) % 6);
+
+      const midpoint = vertex0.translate(vertex1.diff(vertex0).scale(.5));
+
+      const color = GeneratedBoard.tileColor(Tiles.LAKE);
+      GeneratedBoard.renderPolygon(display, [hexCenter, midpoint], color, color);
+    });
   }
 
   static renderPort(display: ROT.Display, configuredTile: Configuration): void {
@@ -123,10 +146,10 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
     const vertex0 = edgePositionStartPoint(configuredTile.coordinate.positions[0]);
     const vertex1 = edgePositionStartPoint((configuredTile.coordinate.positions[0] + 1) % 6);
 
-    GeneratedBoard.renderPolygon(display, GeneratedBoard.tileColor(configuredTile.tile), [
+    GeneratedBoard.renderPolygon(display, [
       hexCenter,
       vertex0,
-      vertex1]);
+      vertex1], GeneratedBoard.tileColor(configuredTile.tile));
 
     const offset = vertex1.translate(vertex0.diff(vertex1).scale(.5)).diff(hexCenter).scale(.6875);
     GeneratedBoard.renderText(
@@ -150,14 +173,14 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
     const vertex2 = edgePositionStartPoint((configuredTile.coordinate.positions[1] + 1) % 6);
     const offset = vertex1.diff(hexCenter).scale(inside ? -.5 : .5);
 
-    GeneratedBoard.renderPolygon(display, GeneratedBoard.tileColor(configuredTile.tile), [
+    GeneratedBoard.renderPolygon(display, [
       vertex0,
       vertex1,
       vertex2,
       vertex2.translate(offset),
       vertex1.translate(offset),
       vertex0.translate(offset)
-    ]);
+    ], GeneratedBoard.tileColor(configuredTile.tile));
 
     GeneratedBoard.renderText(
         display,
@@ -172,13 +195,13 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
         (y * 1.5 + 1) * hexSize);
   }
 
-  static renderPolygon(display: ROT.Display, color: string, points: Cartesian2D[]): void {
+  static renderPolygon(display: ROT.Display, points: Cartesian2D[], fillColor: string, strokeColor ?: string): void {
     const canvas = display.getContainer() as HTMLCanvasElement;
     const context = canvas.getContext('2d') || new CanvasRenderingContext2D();
     const options = display._options;
 
-    context.strokeStyle = options.fg;
-    context.fillStyle = color;
+    context.strokeStyle = strokeColor || options.fg;
+    context.fillStyle = fillColor;
     context.lineWidth = 1;
 
     context.beginPath();
@@ -371,6 +394,10 @@ class App extends React.Component<AppProps, AppState> {
         '3': [Specifications.SPECIFICATION_3_EXPANSION_SEA_SCENARIO_FI, Specifications.SPECIFICATION_3_EXPANSION_SEA_SCENARIO_FI_FISHERMEN],
         '4': [Specifications.SPECIFICATION_4_EXPANSION_SEA_SCENARIO_FI, Specifications.SPECIFICATION_4_EXPANSION_SEA_SCENARIO_FI_FISHERMEN],
         '5-6': [Specifications.SPECIFICATION_5_6_EXPANSION_SEA_SCENARIO_FI, Specifications.SPECIFICATION_5_6_EXPANSION_SEA_SCENARIO_FI_FISHERMEN]
+      },
+      'Traders and Barbarians: Rivers of Catan': {
+        '3': [Specifications.SPECIFICATION_3_4_EXPANSION_TB_SCENARIO_ROC, Specifications.SPECIFICATION_3_4_EXPANSION_TB_SCENARIO_ROC_FISHERMEN],
+        '4': [Specifications.SPECIFICATION_3_4_EXPANSION_TB_SCENARIO_ROC, Specifications.SPECIFICATION_3_4_EXPANSION_TB_SCENARIO_ROC_FISHERMEN]
       },
       'Traders and Barbarians: Traders and Barbarians': {
         '3': [Specifications.SPECIFICATION_3_4_EXPANSION_TB_SCENARIO_TB, Specifications.SPECIFICATION_3_4_EXPANSION_TB_SCENARIO_TB_FISHERMEN],
