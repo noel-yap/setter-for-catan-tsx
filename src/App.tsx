@@ -90,9 +90,20 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
             display,
             layout,
             !this.props.board.terrainTilesLayout.some((tl) => {
-              return tl.coordinate.x === layout.coordinate.x && tl.coordinate.y === layout.coordinate.y
+              return tl.coordinate.x === layout.coordinate.x && tl.coordinate.y === layout.coordinate.y;
             }));
       })
+    });
+
+    window.requestAnimationFrame(() => {
+      this.props.board.riverLayout.forEach((layout) => {
+        GeneratedBoard.renderRiver(
+            display,
+            layout,
+            this.props.board.terrainTilesLayout.some((tl) => {
+              return tl.coordinate.x === layout.coordinate.x && tl.coordinate.y === layout.coordinate.y && tl.chits.odds() !== 0;
+            }));
+      });
     });
 
     return display.getContainer() as HTMLCanvasElement;
@@ -110,37 +121,6 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
         label,
         GeneratedBoard.chitColor(configuredTile.tile, configuredTile.chits, options.fg),
         GeneratedBoard.tileColor(configuredTile.tile));
-
-    window.requestAnimationFrame(() => {
-      GeneratedBoard.renderRiver(display, configuredTile);
-    });
-  }
-
-  static renderRiver(display: ROT.Display, configuredTile: Configuration) {
-    const options = display._options;
-
-    const hexSize = (display._backend as Hex)._hexSize;
-    const hexCenter = GeneratedBoard.hexCenter(hexSize, configuredTile.coordinate.x, configuredTile.coordinate.y);
-
-    const edgePositionStartPoint = _.partial(GeneratedBoard.edgePositionStartPoint, _, hexCenter, hexSize, options.border);
-
-    configuredTile.tile.river.forEach((position) => {
-      const vertex0 = edgePositionStartPoint(position);
-      const vertex1 = edgePositionStartPoint((position + 1) % 6);
-
-      const midpoint = vertex0.translate(vertex1.diff(vertex0).scale(.5));
-
-      const color = GeneratedBoard.tileColor(Tiles.LAKE);
-      GeneratedBoard.renderPolygon(
-          display,
-          [
-            configuredTile.chits.values.length === 0
-                ? hexCenter
-                : hexCenter.translate(midpoint.diff(hexCenter).scale(.5)),
-            midpoint],
-          color,
-          color);
-    });
   }
 
   static renderPort(display: ROT.Display, configuredTile: Configuration): void {
@@ -195,6 +175,33 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
         GeneratedBoard.chitColor(configuredTile.tile, configuredTile.chits, options.fg),
         vertex1.translate(offset.scale(.5 + (inside ? .0625 : -.0625))),
         GeneratedBoard.chitsToString(configuredTile.chits));
+  }
+
+  static renderRiver(display: ROT.Display, configuredTile: Configuration, chitsExist: boolean) {
+    const options = display._options;
+
+    const hexSize = (display._backend as Hex)._hexSize;
+    const hexCenter = GeneratedBoard.hexCenter(hexSize, configuredTile.coordinate.x, configuredTile.coordinate.y);
+
+    const edgePositionStartPoint = _.partial(GeneratedBoard.edgePositionStartPoint, _, hexCenter, hexSize, options.border);
+
+    configuredTile.coordinate.positions.forEach((position) => {
+      const vertex0 = edgePositionStartPoint(position);
+      const vertex1 = edgePositionStartPoint((position + 1) % 6);
+
+      const midpoint = vertex0.translate(vertex1.diff(vertex0).scale(.5));
+
+      const color = GeneratedBoard.tileColor(Tiles.LAKE);
+      GeneratedBoard.renderPolygon(
+          display,
+          [
+            chitsExist
+                ? hexCenter.translate(midpoint.diff(hexCenter).scale(.5))
+                : hexCenter,
+            midpoint],
+          color,
+          color);
+    });
   }
 
   static hexCenter(hexSize: number, x: number, y: number) {

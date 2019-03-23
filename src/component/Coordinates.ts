@@ -497,11 +497,21 @@
     new Coordinate(4, 5),
     new Coordinate(6, 5),
     new Coordinate(8, 5)];
-  export const BASE_3_4_EXPANSION_TB_SCENARIO_ROC_RIVER_MOUNTAIN_TERRAIN_COORDINATES = [new Coordinate(9, 2), new Coordinate(7, 4)];
-  export const BASE_3_4_EXPANSION_TB_SCENARIO_ROC_RIVER_HILL_TERRAIN_COORDINATES = [new Coordinate(7, 2), new Coordinate(5, 4)];
+  export const BASE_3_4_EXPANSION_TB_SCENARIO_ROC_RIVER_COORDINATES = [
+    new Coordinate(9, 2, [LEFT]),
+    new Coordinate(7, 4, [LEFT]),
+    new Coordinate(7, 2, [RIGHT, LEFT]),
+    new Coordinate(5, 4, [RIGHT, LEFT]),
+    new Coordinate(5, 2, [RIGHT, LEFT]),
+    new Coordinate(3, 2, [RIGHT, TOP_LEFT]),
+    new Coordinate(3, 4, [RIGHT, BOTTOM_LEFT])];
+  export const BASE_3_4_EXPANSION_TB_SCENARIO_ROC_RIVER_MOUNTAIN_TERRAIN_COORDINATES = [
+      new Coordinate(9, 2), new Coordinate(7, 4)];
+  export const BASE_3_4_EXPANSION_TB_SCENARIO_ROC_RIVER_HILL_TERRAIN_COORDINATES = [
+      new Coordinate(7, 2), new Coordinate(5, 4)];
   export const BASE_3_4_EXPANSION_TB_SCENARIO_ROC_RIVER_PASTURE_TERRAIN_COORDINATES = [new Coordinate(5, 2)];
-  export const BASE_3_4_EXPANSION_TB_SCENARIO_ROC_NORTHERN_SWAMP_TERRAIN_COORDINATES = [new Coordinate(3, 2)];
-  export const BASE_3_4_EXPANSION_TB_SCENARIO_ROC_SOUTHERN_SWAMP_TERRAIN_COORDINATES = [new Coordinate(3, 4)];
+  export const BASE_3_4_EXPANSION_TB_SCENARIO_ROC_RIVER_SWAMP_TERRAIN_COORDINATES = [
+      new Coordinate(3, 2), new Coordinate(3, 4)];
 
   export const BASE_3_4_EXPANSION_TB_SCENARIO_TB_NON_TRADE_TERRAIN_COORDINATES = [
     new Coordinate(4, 1),

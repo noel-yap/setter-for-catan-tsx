@@ -9,16 +9,18 @@ import * as Tiles from "./Tiles";
     private _terrainTilesLayout: Configuration.Configuration[] = [];
     private _portTilesLayout: Configuration.Configuration[] = [];
     private _fisheryTilesLayout: Configuration.Configuration[] = [];
+    private _riverLayout: Configuration.Configuration[] = [];
 
-    constructor(settings: Configuration.Configuration[]) {
-      console.log(`Boards.Board.constructor: settings = ${JSON.stringify(settings)}`);
+    constructor(configurations: Configuration.Configuration[]) {
+      console.log(`configuration = ${JSON.stringify(configurations)}`);
 
-      const groupedSettings = _.groupBy(settings, (setting) => setting.coordinate.positions.length);
-      console.log(`Boards.Board.constructor: groupedSettings = ${JSON.stringify(groupedSettings)}`);
+      const riverNotRiver = _.groupBy(configurations, (configuration) => configuration.tile.type === Tiles.Type.RIVER ? 0 : 1);
+      const groupedSettings = _.groupBy(riverNotRiver[1], (configuration) => configuration.coordinate.positions.length);
 
       this._portTilesLayout = groupedSettings['1'] || [];
       this._fisheryTilesLayout = groupedSettings['2'] || [];
       this._terrainTilesLayout = groupedSettings['6'] || [];
+      this._riverLayout = riverNotRiver[0] || [];
     }
 
     get terrainTilesLayout(): Configuration.Configuration[] {
@@ -31,6 +33,10 @@ import * as Tiles from "./Tiles";
 
     get fisheryTilesLayout(): Configuration.Configuration[] {
       return this._fisheryTilesLayout;
+    }
+
+    get riverLayout(): Configuration.Configuration[] {
+      return this._riverLayout;
     }
 
     isEmpty(): boolean {

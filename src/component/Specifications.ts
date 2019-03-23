@@ -469,21 +469,21 @@ import * as Tiles from "./Tiles";
   export const SPECIFICATION_3_4_EXPANSION_TB_SCENARIO_ROC = new Specification(
       {
         'non-river-terrain': Tiles.BASE_3_4_EXPANSION_TB_SCENARIO_ROC_NON_RIVER_TERRAIN_TILE_SET,
-        'river-mountain': new Array(2).fill(new Tiles.Tile(Tiles.Type.MOUNTAIN, [Coordinates.LEFT])),
-        'river-hill': new Array(2).fill(new Tiles.Tile(Tiles.Type.HILL, [Coordinates.RIGHT, Coordinates.LEFT])),
-        'river-pasture': [new Tiles.Tile(Tiles.Type.PASTURE, [Coordinates.RIGHT, Coordinates.LEFT])],
-        'northern-swamp': [new Tiles.Tile(Tiles.Type.SWAMP, [Coordinates.RIGHT, Coordinates.TOP_LEFT])],
-        'southern-swamp': [new Tiles.Tile(Tiles.Type.SWAMP, [Coordinates.RIGHT, Coordinates.BOTTOM_LEFT])],
-        'harbor': Tiles.BASE_3_4_HARBOR_TILE_SET
+        'river-mountain': new Array(2).fill(Tiles.MOUNTAIN_TERRAIN),
+        'river-hill': new Array(2).fill(Tiles.HILL_TERRAIN),
+        'river-pasture': [Tiles.PASTURE_TERRAIN],
+        'river-swamp': new Array(2).fill(Tiles.SWAMP_TERRAIN),
+        'harbor': Tiles.BASE_3_4_HARBOR_TILE_SET,
+        'river': new Array(7).fill(Tiles.RIVER)
       },
       {
         'non-river-terrain': Coordinates.BASE_3_4_EXPANSION_TB_SCENARIO_ROC_NON_RIVER_TERRAIN_COORDINATES,
         'river-mountain': Coordinates.BASE_3_4_EXPANSION_TB_SCENARIO_ROC_RIVER_MOUNTAIN_TERRAIN_COORDINATES,
         'river-hill': Coordinates.BASE_3_4_EXPANSION_TB_SCENARIO_ROC_RIVER_HILL_TERRAIN_COORDINATES,
         'river-pasture': Coordinates.BASE_3_4_EXPANSION_TB_SCENARIO_ROC_RIVER_PASTURE_TERRAIN_COORDINATES,
-        'northern-swamp': Coordinates.BASE_3_4_EXPANSION_TB_SCENARIO_ROC_NORTHERN_SWAMP_TERRAIN_COORDINATES,
-        'southern-swamp': Coordinates.BASE_3_4_EXPANSION_TB_SCENARIO_ROC_SOUTHERN_SWAMP_TERRAIN_COORDINATES,
-        'harbor': Coordinates.BASE_3_4_HARBOR_COORDINATES
+        'river-swamp': Coordinates.BASE_3_4_EXPANSION_TB_SCENARIO_ROC_RIVER_SWAMP_TERRAIN_COORDINATES,
+        'harbor': Coordinates.BASE_3_4_HARBOR_COORDINATES,
+        'river': Coordinates.BASE_3_4_EXPANSION_TB_SCENARIO_ROC_RIVER_COORDINATES
       },
       {
         'producing-terrain': Chits.BASE_3_4_EXPANSION_TB_SCENARIO_ROC_PRODUCING_TERRAIN_CHIT_SET
@@ -493,9 +493,9 @@ import * as Tiles from "./Tiles";
           'river-mountain',
           'river-hill',
           'river-pasture',
-          'northern-swamp',
-          'southern-swamp',
-          'harbor'),
+          'river-swamp',
+          'harbor',
+          'river'),
       {
         'producing-terrain': ['non-river-terrain', 'river-mountain', 'river-hill', 'river-pasture']
       }

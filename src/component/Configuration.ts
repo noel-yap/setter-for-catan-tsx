@@ -11,7 +11,8 @@ import * as Tiles from "./Tiles";
     validateConfiguration(tile: Tiles.Tile, coordinate: Coordinates.Coordinate, chits: Chits.Chits) {
       console.log(`tile = ${JSON.stringify(tile)}, coordinate = ${JSON.stringify(coordinate)}, chits = ${JSON.stringify(chits)}`);
 
-      if (tile.edgeCount() !== coordinate.positions.length) {
+      const tileEdgeCount = tile.edgeCount();
+      if (coordinate.positions.length < tileEdgeCount[0] || tileEdgeCount[1] < coordinate.positions.length) {
         throw new Error(`Invalid configuration: Coordinate \`${JSON.stringify(coordinate)}\` is not appropriate for the tile \`${JSON.stringify(tile)}\` with edge count \`{tile.edgeCount()\``);
       }
     }

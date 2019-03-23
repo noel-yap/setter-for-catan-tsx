@@ -21,6 +21,7 @@ import * as Coordinates from "./Coordinates";
     SEA = 24,
     LAKE,
     FISHERY,
+    RIVER,
 
     GOLD = 32,
     SWAMP,
@@ -30,9 +31,9 @@ import * as Coordinates from "./Coordinates";
   }
 
   export class Tile {
-    constructor(public type: Type, public river: Coordinates.EdgePosition[] = []) {}
+    constructor(public type: Type) {}
 
-    edgeCount(): number {
+    edgeCount(): [number, number] {
       switch (this.type) {
         case Type.GENERIC_HARBOR:
         case Type.BRICK_HARBOR:
@@ -40,11 +41,11 @@ import * as Coordinates from "./Coordinates";
         case Type.GRAIN_HARBOR:
         case Type.LUMBER_HARBOR:
         case Type.WOOL_HARBOR: {
-          return 1;
+          return [1, 1];
         }
 
         case Type.FISHERY: {
-          return 2;
+          return [2, 2];
         }
 
         case Type.UNKNOWN:
@@ -61,7 +62,11 @@ import * as Coordinates from "./Coordinates";
         case Type.CASTLE:
         case Type.GLASSWORKS:
         case Type.QUARRY: {
-          return 6;
+          return [6, 6];
+        }
+
+        case Type.RIVER: {
+          return [1, 6];
         }
       }
     }
@@ -92,6 +97,8 @@ import * as Coordinates from "./Coordinates";
   export const SEA = new Tile(Type.SEA);
   export const LAKE = new Tile(Type.LAKE);
   export const FISHERY = new Tile(Type.FISHERY);
+  export const SWAMP_TERRAIN = new Tile(Type.SWAMP);
+  export const RIVER = new Tile(Type.RIVER);
 
   export const BASE_3_4_PRODUCING_TERRAIN_TILE_SET = new Array(4).fill(FIELD_TERRAIN)
       .concat(new Array(4).fill(FOREST_TERRAIN))
@@ -176,6 +183,12 @@ import * as Coordinates from "./Coordinates";
       .concat(new Array(4).fill(FIELD_TERRAIN))
       .concat(new Array(4).fill(FOREST_TERRAIN))
       .concat(new Array(2).fill(PASTURE_TERRAIN));
+
+  export const EXTENSION_5_6_EXPANSION_TB_SCENARIO_ROC_NON_RIVER_TERRAIN_TILE_SET = new Array(6).fill(FIELD_TERRAIN)
+      .concat(new Array(6).fill(FOREST_TERRAIN))
+      .concat(new Array(3).fill(PASTURE_TERRAIN))
+      .concat(new Array(3).fill(HILL_TERRAIN))
+      .concat(new Array(2).fill(MOUNTAIN_TERRAIN));
 
   export const BASE_3_4_EXPANSION_TB_SCENARIO_TB_NON_TRADE_TERRAIN_TILE_SET = new Array(3).fill(FIELD_TERRAIN)
       .concat(new Array(4).fill(FOREST_TERRAIN))
