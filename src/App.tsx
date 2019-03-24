@@ -356,7 +356,7 @@ interface AppState {
   playerCount: string,
 
   useFishermenOfCatanVariant: boolean,
-  scenario: string,
+  SCEN: string,
   boardGenerator: Boards.BoardGenerator,
   board: Boards.Board
 }
@@ -376,8 +376,8 @@ class App extends React.Component<AppProps, AppState> {
       playerCount: '3',
 
       useFishermenOfCatanVariant: false,
-      scenario: 'Base',
-      boardGenerator: new Boards.BoardGenerator(Specifications.SPECIFICATION_3_4),
+      SCEN: 'Base',
+      boardGenerator: new Boards.BoardGenerator(Specifications.SPEC_3_4),
       board: new Boards.Board([])
     };
   }
@@ -394,33 +394,34 @@ class App extends React.Component<AppProps, AppState> {
 
     const boardSpecifications: BoardSpecifications = {
       'Base': {
-        '3': [Specifications.SPECIFICATION_3_4, Specifications.SPECIFICATION_3_4_FISHERMEN],
-        '4': [Specifications.SPECIFICATION_3_4, Specifications.SPECIFICATION_3_4_FISHERMEN],
-        '5-6': [Specifications.SPECIFICATION_5_6, Specifications.SPECIFICATION_5_6_FISHERMEN],
-        '7-8': [Specifications.SPECIFICATION_7_8, Specifications.SPECIFICATION_7_8_FISHERMEN]
+        '3': [Specifications.SPEC_3_4, Specifications.SPEC_3_4_FISHERMEN],
+        '4': [Specifications.SPEC_3_4, Specifications.SPEC_3_4_FISHERMEN],
+        '5-6': [Specifications.SPEC_5_6, Specifications.SPEC_5_6_FISHERMEN],
+        '7-8': [Specifications.SPEC_7_8, Specifications.SPEC_7_8_FISHERMEN]
       },
       'Seafarers: Heading for New Shores': {
-        '3': [Specifications.SPECIFICATION_3_EXPANSION_SEA_SCENARIO_HFNS, Specifications.SPECIFICATION_3_EXPANSION_SEA_SCENARIO_HFNS_FISHERMEN],
-        '4': [Specifications.SPECIFICATION_4_EXPANSION_SEA_SCENARIO_HFNS, Specifications.SPECIFICATION_4_EXPANSION_SEA_SCENARIO_HFNS_FISHERMEN],
-        '5-6': [Specifications.SPECIFICATION_5_6_EXPANSION_SEA_SCENARIO_HFNS, Specifications.SPECIFICATION_5_6_EXPANSION_SEA_SCENARIO_HFNS_FISHERMEN],
-        '7-8': [Specifications.SPECIFICATION_7_8_EXPANSION_SEA_SCENARIO_HFNS, Specifications.SPECIFICATION_7_8_EXPANSION_SEA_SCENARIO_HFNS_FISHERMEN]
+        '3': [Specifications.SPEC_3_EXP_SEA_SCEN_HFNS, Specifications.SPEC_3_EXP_SEA_SCEN_HFNS_FISHERMEN],
+        '4': [Specifications.SPEC_4_EXP_SEA_SCEN_HFNS, Specifications.SPEC_4_EXP_SEA_SCEN_HFNS_FISHERMEN],
+        '5-6': [Specifications.SPEC_5_6_EXP_SEA_SCEN_HFNS, Specifications.SPEC_5_6_EXP_SEA_SCEN_HFNS_FISHERMEN],
+        '7-8': [Specifications.SPEC_7_8_EXP_SEA_SCEN_HFNS, Specifications.SPEC_7_8_EXP_SEA_SCEN_HFNS_FISHERMEN]
       },
       'Seafarers: The Fog Islands': {
-        '3': [Specifications.SPECIFICATION_3_EXPANSION_SEA_SCENARIO_FI, Specifications.SPECIFICATION_3_EXPANSION_SEA_SCENARIO_FI_FISHERMEN],
-        '4': [Specifications.SPECIFICATION_4_EXPANSION_SEA_SCENARIO_FI, Specifications.SPECIFICATION_4_EXPANSION_SEA_SCENARIO_FI_FISHERMEN],
-        '5-6': [Specifications.SPECIFICATION_5_6_EXPANSION_SEA_SCENARIO_FI, Specifications.SPECIFICATION_5_6_EXPANSION_SEA_SCENARIO_FI_FISHERMEN]
+        '3': [Specifications.SPEC_3_EXP_SEA_SCEN_FI, Specifications.SPEC_3_EXP_SEA_SCEN_FI_FISHERMEN],
+        '4': [Specifications.SPEC_4_EXP_SEA_SCEN_FI, Specifications.SPEC_4_EXP_SEA_SCEN_FI_FISHERMEN],
+        '5-6': [Specifications.SPEC_5_6_EXP_SEA_SCEN_FI, Specifications.SPEC_5_6_EXP_SEA_SCEN_FI_FISHERMEN]
       },
       'Traders and Barbarians: Rivers of Catan': {
-        '3': [Specifications.SPECIFICATION_3_4_EXPANSION_TB_SCENARIO_ROC, Specifications.SPECIFICATION_3_4_EXPANSION_TB_SCENARIO_ROC_FISHERMEN],
-        '4': [Specifications.SPECIFICATION_3_4_EXPANSION_TB_SCENARIO_ROC, Specifications.SPECIFICATION_3_4_EXPANSION_TB_SCENARIO_ROC_FISHERMEN]
+        '3': [Specifications.SPEC_3_4_EXP_TB_SCEN_ROC, Specifications.SPEC_3_4_EXP_TB_SCEN_ROC_FISHERMEN],
+        '4': [Specifications.SPEC_3_4_EXP_TB_SCEN_ROC, Specifications.SPEC_3_4_EXP_TB_SCEN_ROC_FISHERMEN],
+        '5-6': [Specifications.SPEC_5_6_EXP_TB_SCEN_ROC, Specifications.SPEC_5_6_EXP_TB_SCEN_ROC_FISHERMEN]
       },
       'Traders and Barbarians: Traders and Barbarians': {
-        '3': [Specifications.SPECIFICATION_3_4_EXPANSION_TB_SCENARIO_TB, Specifications.SPECIFICATION_3_4_EXPANSION_TB_SCENARIO_TB_FISHERMEN],
-        '4': [Specifications.SPECIFICATION_3_4_EXPANSION_TB_SCENARIO_TB, Specifications.SPECIFICATION_3_4_EXPANSION_TB_SCENARIO_TB_FISHERMEN],
-        '5-6': [Specifications.SPECIFICATION_5_6_EXPANSION_TB_SCENARIO_TB, Specifications.SPECIFICATION_5_6_EXPANSION_TB_SCENARIO_TB_FISHERMEN]
+        '3': [Specifications.SPEC_3_4_EXP_TB_SCEN_TB, Specifications.SPEC_3_4_EXP_TB_SCEN_TB_FISHERMEN],
+        '4': [Specifications.SPEC_3_4_EXP_TB_SCEN_TB, Specifications.SPEC_3_4_EXP_TB_SCEN_TB_FISHERMEN],
+        '5-6': [Specifications.SPEC_5_6_EXP_TB_SCEN_TB, Specifications.SPEC_5_6_EXP_TB_SCEN_TB_FISHERMEN]
       }
     };
-    const scenarios = Object.keys(boardSpecifications);
+    const SCENs = Object.keys(boardSpecifications);
     const playerCounts = Object.keys(boardSpecifications['Base']);
 
     return (
@@ -435,7 +436,7 @@ class App extends React.Component<AppProps, AppState> {
                   name="number-of-players"
                   value={this.state.playerCount}
                   onChange={(event: any) => {
-                    this.generateBoard(boardSpecifications, this.state.scenario, event.target.value, this.state.useFishermenOfCatanVariant);
+                    this.generateBoard(boardSpecifications, this.state.SCEN, event.target.value, this.state.useFishermenOfCatanVariant);
                   }}
                   row
               >
@@ -445,7 +446,7 @@ class App extends React.Component<AppProps, AppState> {
                           key={playerCount}
                           value={playerCount}
                           label={playerCount}
-                          disabled={!boardSpecifications[this.state.scenario].hasOwnProperty(playerCount)}
+                          disabled={!boardSpecifications[this.state.SCEN].hasOwnProperty(playerCount)}
                           control={<Radio color="primary"/>}
                       />
                   );
@@ -456,7 +457,7 @@ class App extends React.Component<AppProps, AppState> {
                   label="Fishermen of Catan"
                   color={this.state.useFishermenOfCatanVariant ? "primary" : "secondary"}
                   onClick={() => {
-                    this.generateBoard(boardSpecifications, this.state.scenario, this.state.playerCount, !this.state.useFishermenOfCatanVariant)
+                    this.generateBoard(boardSpecifications, this.state.SCEN, this.state.playerCount, !this.state.useFishermenOfCatanVariant)
                   }}
               />
               <br/>
@@ -477,11 +478,11 @@ class App extends React.Component<AppProps, AppState> {
                       });
                     }}
                 >
-                  <Typography variant="h4">Generate {this.state.scenario}</Typography>
+                  <Typography variant="h4">Generate {this.state.SCEN}</Typography>
                 </Button>
               </Tooltip>
               <Menu
-                  id="scenarios"
+                  id="SCENs"
                   anchorEl={document.getElementById('generate-board-button')}
                   open={this.state.openMenu}
                   onClose={() => {
@@ -490,15 +491,15 @@ class App extends React.Component<AppProps, AppState> {
                     });
                   }}>
                 {
-                  scenarios.map((scenario) => (
+                  SCENs.map((SCEN) => (
                       <MenuItem
-                          key={scenario}
-                          disabled={!boardSpecifications[scenario].hasOwnProperty(this.state.playerCount)}
+                          key={SCEN}
+                          disabled={!boardSpecifications[SCEN].hasOwnProperty(this.state.playerCount)}
                           onClick={() => {
-                            this.generateBoard(boardSpecifications, scenario, this.state.playerCount, this.state.useFishermenOfCatanVariant);
+                            this.generateBoard(boardSpecifications, SCEN, this.state.playerCount, this.state.useFishermenOfCatanVariant);
                           }}
                       >
-                        {scenario}
+                        {SCEN}
                       </MenuItem>
                   ))
                 }
@@ -510,14 +511,14 @@ class App extends React.Component<AppProps, AppState> {
     );
   }
 
-  generateBoard(boardSpecifications: BoardSpecifications, scenario: string, playerCount: string, useFishermenOfCatanVariant: boolean) {
+  generateBoard(boardSpecifications: BoardSpecifications, SCEN: string, playerCount: string, useFishermenOfCatanVariant: boolean) {
     const boardGenerator = new Boards.BoardGenerator(
-        boardSpecifications[scenario][playerCount][useFishermenOfCatanVariant ? 1 : 0]);
+        boardSpecifications[SCEN][playerCount][useFishermenOfCatanVariant ? 1 : 0]);
 
     this.setState({
       openMenu: false,
 
-      scenario: scenario,
+      SCEN: SCEN,
       playerCount: playerCount,
       useFishermenOfCatanVariant: useFishermenOfCatanVariant,
       boardGenerator: boardGenerator,
