@@ -564,6 +564,55 @@ import * as Tiles from "./Tiles";
       Object.assign({...SPEC_5_6_EXP_TB_SCEN_ROC.chitsTilesMap},
           oneToOne('fishery')));
 
+  export const SPEC_7_8_EXP_TB_SCEN_ROC = new Specification(
+      {
+        'non-river-terrain': Tiles.EXT_7_8_EXP_TB_SCEN_ROC_NON_RIVER_TERRAIN_TILE_SET,
+        'river-mountain': new Array(3).fill(Tiles.MOUNTAIN_TERRAIN),
+        'river-hill': new Array(2).fill(Tiles.HILL_TERRAIN),
+        'river-pasture': new Array(3).fill(Tiles.PASTURE_TERRAIN),
+        'river-swamp': new Array(2).fill(Tiles.SWAMP_TERRAIN),
+        'harbor': Tiles.EXT_7_8_HARBOR_TILE_SET,
+        'river': new Array(10).fill(Tiles.RIVER)
+      },
+      {
+        'non-river-terrain': Coordinates.EXT_7_8_EXP_TB_SCEN_ROC_NON_RIVER_TERRAIN_COORDINATES,
+        'river-mountain': Coordinates.EXT_7_8_EXP_TB_SCEN_ROC_RIVER_MOUNTAIN_TERRAIN_COORDINATES,
+        'river-hill': Coordinates.EXT_7_8_EXP_TB_SCEN_ROC_RIVER_HILL_TERRAIN_COORDINATES,
+        'river-pasture': Coordinates.EXT_7_8_EXP_TB_SCEN_ROC_RIVER_PASTURE_TERRAIN_COORDINATES,
+        'river-swamp': Coordinates.EXT_7_8_EXP_TB_SCEN_ROC_RIVER_SWAMP_TERRAIN_COORDINATES,
+        'harbor': Coordinates.EXT_7_8_HARBOR_COORDINATES,
+        'river': Coordinates.EXT_7_8_EXP_TB_SCEN_ROC_RIVER_COORDINATES
+      },
+      {
+        'producing-terrain': Chits.EXT_7_8_EXP_TB_SCEN_ROC_PRODUCING_TERRAIN_CHIT_SET
+      },
+      oneToOne(
+          'non-river-terrain',
+          'river-mountain',
+          'river-hill',
+          'river-pasture',
+          'river-swamp',
+          'harbor',
+          'river'),
+      {
+        'producing-terrain': ['non-river-terrain', 'river-mountain', 'river-hill', 'river-pasture']
+      }
+  );
+  export const SPEC_7_8_EXP_TB_SCEN_ROC_FISHERMEN = new Specification(
+      Object.assign({...SPEC_7_8_EXP_TB_SCEN_ROC.tiles}, {
+        'fishery': Tiles.EXT_7_8_FISHERY_TILE_SET
+      }),
+      Object.assign({...SPEC_7_8_EXP_TB_SCEN_ROC.coordinates}, {
+        'fishery': Coordinates.EXT_7_8_FISHERY_COORDINATES
+      }),
+      Object.assign({...SPEC_7_8_EXP_TB_SCEN_ROC.chits}, {
+        'fishery': Chits.EXT_7_8_FISHERY_CHIT_SET
+      }),
+      Object.assign({...SPEC_7_8_EXP_TB_SCEN_ROC.coordinatesTilesMap},
+          oneToOne('fishery')),
+      Object.assign({...SPEC_7_8_EXP_TB_SCEN_ROC.chitsTilesMap},
+          oneToOne('fishery')));
+
   export const SPEC_3_4_EXP_TB_SCEN_TB = new Specification(
       {
         'non-trade-terrain': Tiles.BASE_3_4_EXP_TB_SCEN_TB_NON_TRADE_TERRAIN_TILE_SET,

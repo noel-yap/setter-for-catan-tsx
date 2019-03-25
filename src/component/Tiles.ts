@@ -190,6 +190,12 @@ import * as Coordinates from "./Coordinates";
       .concat(new Array(3).fill(HILL_TERRAIN))
       .concat(new Array(2).fill(MOUNTAIN_TERRAIN));
 
+  export const EXT_7_8_EXP_TB_SCEN_ROC_NON_RIVER_TERRAIN_TILE_SET = new Array(7).fill(FIELD_TERRAIN)
+      .concat(new Array(8).fill(FOREST_TERRAIN))
+      .concat(new Array(5).fill(PASTURE_TERRAIN))
+      .concat(new Array(4).fill(HILL_TERRAIN))
+      .concat(new Array(3).fill(MOUNTAIN_TERRAIN));
+
   export const BASE_3_4_EXP_TB_SCEN_TB_NON_TRADE_TERRAIN_TILE_SET = new Array(3).fill(FIELD_TERRAIN)
       .concat(new Array(4).fill(FOREST_TERRAIN))
       .concat(new Array(3).fill(PASTURE_TERRAIN))

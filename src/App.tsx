@@ -1,4 +1,5 @@
 import _ from 'underscore';
+
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
@@ -23,7 +24,7 @@ import * as Chits from './component/Chits';
 import * as Coordinates from './component/Coordinates';
 import * as Specifications from './component/Specifications';
 import * as Tiles from './component/Tiles';
-import {Configuration} from './component/Configuration';
+import * as Configuration from './component/Configuration';
 
 class Cartesian2D {
   constructor(public x: number, public y: number) {}
@@ -100,16 +101,16 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
         GeneratedBoard.renderRiver(
             display,
             layout,
-            this.props.board.terrainTilesLayout.some((tl) => {
-              return tl.coordinate.x === layout.coordinate.x && tl.coordinate.y === layout.coordinate.y && tl.chits.odds() !== 0;
-            }));
+            this.props.board.terrainTilesLayout.filter((tl) => {
+              return tl.coordinate.x === layout.coordinate.x && tl.coordinate.y === layout.coordinate.y;
+            })[0]);
       });
     });
 
     return display.getContainer() as HTMLCanvasElement;
   }
 
-  static renderTerrain(display: ROT.Display, configuredTile: Configuration) {
+  static renderTerrain(display: ROT.Display, configuredTile: Configuration.Configuration) {
     const options = display._options;
 
     const label = configuredTile.tile === Tiles.UNKNOWN
@@ -123,7 +124,7 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
         GeneratedBoard.tileColor(configuredTile.tile));
   }
 
-  static renderPort(display: ROT.Display, configuredTile: Configuration): void {
+  static renderPort(display: ROT.Display, configuredTile: Configuration.Configuration): void {
     const options = display._options;
 
     const hexSize = (display._backend as Hex)._hexSize;
@@ -147,7 +148,8 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
         configuredTile.tile === Tiles.GENERIC_HARBOR ? '3:1' : '2:1');
   }
 
-  static renderFishery(display: ROT.Display, configuredTile: Configuration, inside: boolean) {
+  static renderFishery(
+      display: ROT.Display, configuredTile: Configuration.Configuration, inside: boolean) {
     const options = display._options;
 
     // These calculations copied from rot.js to help ensure consistency.
@@ -177,7 +179,10 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
         GeneratedBoard.chitsToString(configuredTile.chits));
   }
 
-  static renderRiver(display: ROT.Display, configuredTile: Configuration, chitsExist: boolean) {
+  static renderRiver(
+      display: ROT.Display,
+      configuredTile: Configuration.Configuration,
+      underlyingConfiguration: Configuration.Configuration) {
     const options = display._options;
 
     const hexSize = (display._backend as Hex)._hexSize;
@@ -185,13 +190,21 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
 
     const edgePositionStartPoint = _.partial(GeneratedBoard.edgePositionStartPoint, _, hexCenter, hexSize, options.border);
 
+    const chitsExist = underlyingConfiguration.chits.odds() !== 0;
+
+    const backgroundLuminance = GeneratedBoard.luminance(GeneratedBoard.tileColor(underlyingConfiguration.tile));
+    const lakeColor = GeneratedBoard.tileColor(Tiles.LAKE);
+    const seaColor = GeneratedBoard.tileColor(Tiles.SEA);
+    const color = Math.abs(backgroundLuminance - GeneratedBoard.luminance(lakeColor)) > Math.abs(backgroundLuminance - GeneratedBoard.luminance(seaColor))
+        ? GeneratedBoard.tileColor(Tiles.LAKE)
+        : GeneratedBoard.tileColor(Tiles.SEA);
+
     configuredTile.coordinate.positions.forEach((position) => {
       const vertex0 = edgePositionStartPoint(position);
       const vertex1 = edgePositionStartPoint((position + 1) % 6);
 
       const midpoint = vertex0.translate(vertex1.diff(vertex0).scale(.5));
 
-      const color = GeneratedBoard.tileColor(Tiles.LAKE);
       GeneratedBoard.renderPolygon(
           display,
           [
@@ -259,26 +272,18 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
         * ([Coordinates.TOP_RIGHT, Coordinates.BOTTOM_LEFT].some((p) => p === edgePosition) ? 1 : .5) * hexSize + border));
   }
 
-  static chitColor(tile: Tiles.Tile, chits: Chits.Chits, primaryColor: string) {
-    function secondaryColor(backgroundColor: string) {
-      switch (backgroundColor) {
-        case 'firebrick': {
-          return '#FF8C8C';
-        }
+  static chitColor(tile: Tiles.Tile, chits: Chits.Chits, primaryColor: string): string {
+    function secondaryColor(backgroundColor: string): string {
+      const backgroundLuminance = GeneratedBoard.luminance(backgroundColor);
 
-        case 'forestgreen':
-        case 'slategray': {
-          return '#FFD3D3';
-        }
+      return ['crimson', '#C70000', '#FF8C8C', '#FFD3D3']
+          .reduce((max: [string, number], color: string): [string, number] => {
+            const contrast = Math.abs(backgroundLuminance - GeneratedBoard.luminance(color));
 
-        case 'sandybrown': {
-          return '#C70000';
-        }
-
-        default: {
-          return 'crimson';
-        }
-      }
+            return contrast > max[1]
+                ? [color, contrast]
+                : max
+          }, ['', 0])[0];
     }
 
     return chits.odds() < 5
@@ -347,6 +352,15 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
       }
     }
   }
+
+  static luminance(color: string): number {
+    const rgb = ROT.Color.fromString(color);
+
+    return Math.sqrt(
+        0.299 * Math.pow(rgb[0], 2)
+        + 0.587 * Math.pow(rgb[1], 2)
+        + 0.114 * Math.pow(rgb[2], 2));
+  }
 }
 
 interface AppProps {}
@@ -413,7 +427,8 @@ class App extends React.Component<AppProps, AppState> {
       'Traders and Barbarians: Rivers of Catan': {
         '3': [Specifications.SPEC_3_4_EXP_TB_SCEN_ROC, Specifications.SPEC_3_4_EXP_TB_SCEN_ROC_FISHERMEN],
         '4': [Specifications.SPEC_3_4_EXP_TB_SCEN_ROC, Specifications.SPEC_3_4_EXP_TB_SCEN_ROC_FISHERMEN],
-        '5-6': [Specifications.SPEC_5_6_EXP_TB_SCEN_ROC, Specifications.SPEC_5_6_EXP_TB_SCEN_ROC_FISHERMEN]
+        '5-6': [Specifications.SPEC_5_6_EXP_TB_SCEN_ROC, Specifications.SPEC_5_6_EXP_TB_SCEN_ROC_FISHERMEN],
+        '7-8': [Specifications.SPEC_7_8_EXP_TB_SCEN_ROC, Specifications.SPEC_7_8_EXP_TB_SCEN_ROC_FISHERMEN]
       },
       'Traders and Barbarians: Traders and Barbarians': {
         '3': [Specifications.SPEC_3_4_EXP_TB_SCEN_TB, Specifications.SPEC_3_4_EXP_TB_SCEN_TB_FISHERMEN],

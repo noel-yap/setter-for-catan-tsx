@@ -158,27 +158,27 @@
     new Coordinate(9, 7),
     new Coordinate(11, 7)];
   export const EXT_7_8_HARBOR_COORDINATES = [
-    new Coordinate(6, 0, [BOTTOM_RIGHT]),
-    new Coordinate(12, 0, [BOTTOM_LEFT]),
-    new Coordinate(3, 1, [RIGHT]),
-    new Coordinate(2, 2, [BOTTOM_RIGHT]),
-    new Coordinate(14, 2, [LEFT]),
-    new Coordinate(15, 3, [BOTTOM_LEFT]),
-    new Coordinate(0, 4, [RIGHT]),
-    new Coordinate(15, 5, [LEFT]),
-    new Coordinate(3, 7, [TOP_RIGHT]),
-    new Coordinate(6, 8, [TOP_LEFT]),
-    new Coordinate(8, 8, [TOP_RIGHT]),
-    new Coordinate(12, 8, [TOP_LEFT])];
+    new Coordinate(4, 0, [BOTTOM_RIGHT]),
+    new Coordinate(8, 0, [BOTTOM_LEFT]),
+    new Coordinate(10, 0, [BOTTOM_RIGHT]),
+    new Coordinate(13, 1, [BOTTOM_LEFT]),
+    new Coordinate(1, 3, [RIGHT]),
+    new Coordinate(16, 4, [LEFT]),
+    new Coordinate(1, 5, [TOP_RIGHT]),
+    new Coordinate(2, 6, [RIGHT]),
+    new Coordinate(14, 6, [TOP_LEFT]),
+    new Coordinate(13, 7, [LEFT]),
+    new Coordinate(4, 8, [TOP_RIGHT]),
+    new Coordinate(10, 8, [TOP_LEFT])];
   export const EXT_7_8_FISHERY_COORDINATES = [
-    new Coordinate(10, 0, [BOTTOM_RIGHT, BOTTOM_LEFT]),
-    new Coordinate(5, 1, [TOP_LEFT, TOP_RIGHT]),
-    new Coordinate(1, 3, [RIGHT, BOTTOM_RIGHT]),
+    new Coordinate(6, 0, [BOTTOM_RIGHT, BOTTOM_LEFT]),
+    new Coordinate(11, 1, [TOP_RIGHT, RIGHT]),
+    new Coordinate(2, 2, [RIGHT, BOTTOM_RIGHT]),
     new Coordinate(13, 3, [TOP_RIGHT, RIGHT]),
     new Coordinate(3, 5, [BOTTOM_LEFT, LEFT]),
-    new Coordinate(14, 6, [LEFT, TOP_LEFT]),
-    new Coordinate(5, 7, [BOTTOM_LEFT, LEFT]),
-    new Coordinate(10, 8, [TOP_LEFT, TOP_RIGHT])];
+    new Coordinate(15, 5, [LEFT, TOP_LEFT]),
+    new Coordinate(11, 7, [BOTTOM_RIGHT, BOTTOM_LEFT]),
+    new Coordinate(6, 8, [TOP_LEFT, TOP_RIGHT])];
 
   export const BASE_3_EXP_SEA_SCEN_HFNS_BIG_ISLAND_TERRAIN_COORDINATES = [
     new Coordinate(4, 1),
@@ -562,6 +562,60 @@
     new Coordinate(5, 5, [BOTTOM_RIGHT, TOP_LEFT]),
     new Coordinate(6, 6, [BOTTOM_RIGHT, TOP_LEFT]),
     new Coordinate(7, 7, [BOTTOM_LEFT, TOP_LEFT])];
+
+  export const EXT_7_8_EXP_TB_SCEN_ROC_NON_RIVER_TERRAIN_COORDINATES = [
+    new Coordinate(5, 1),
+    new Coordinate(9, 1),
+    new Coordinate(11, 1),
+    new Coordinate(4, 2),
+    new Coordinate(8, 2),
+    new Coordinate(10, 2),
+    new Coordinate(12, 2),
+    new Coordinate(3, 3),
+    new Coordinate(7, 3),
+    new Coordinate(9, 3),
+    new Coordinate(11, 3),
+    new Coordinate(13, 3),
+    new Coordinate(2, 4),
+    new Coordinate(4, 4),
+    new Coordinate(8, 4),
+    new Coordinate(3, 5),
+    new Coordinate(5, 5),
+    new Coordinate(9, 5),
+    new Coordinate(11, 5),
+    new Coordinate(13, 5),
+    new Coordinate(4, 6),
+    new Coordinate(6, 6),
+    new Coordinate(10, 6),
+    new Coordinate(12, 6),
+    new Coordinate(5, 7),
+    new Coordinate(7, 7),
+    new Coordinate(11, 7)];
+  export const EXT_7_8_EXP_TB_SCEN_ROC_RIVER_MOUNTAIN_TERRAIN_COORDINATES = [
+    new Coordinate(5, 3),
+    new Coordinate(6, 4),
+    new Coordinate(10, 4)];
+  export const EXT_7_8_EXP_TB_SCEN_ROC_RIVER_HILL_TERRAIN_COORDINATES = [
+    new Coordinate(6, 2),
+    new Coordinate(7, 5)];
+  export const EXT_7_8_EXP_TB_SCEN_ROC_RIVER_PASTURE_TERRAIN_COORDINATES = [
+    new Coordinate(12, 4),
+    new Coordinate(14, 4),
+    new Coordinate(8, 6)];
+  export const EXT_7_8_EXP_TB_SCEN_ROC_RIVER_SWAMP_TERRAIN_COORDINATES = [
+    new Coordinate(7, 1),
+    new Coordinate(9, 7)];
+  export const EXT_7_8_EXP_TB_SCEN_ROC_RIVER_COORDINATES = [
+    new Coordinate(7, 1, [BOTTOM_LEFT, TOP_LEFT]),
+    new Coordinate(6, 2, [TOP_RIGHT, BOTTOM_LEFT]),
+    new Coordinate(5, 3, [TOP_RIGHT]),
+    new Coordinate(6, 4, [BOTTOM_RIGHT]),
+    new Coordinate(10, 4, [RIGHT]),
+    new Coordinate(12, 4, [RIGHT, LEFT]),
+    new Coordinate(14, 4, [TOP_RIGHT, LEFT]),
+    new Coordinate(7, 5, [BOTTOM_RIGHT, TOP_LEFT]),
+    new Coordinate(8, 6, [BOTTOM_RIGHT, TOP_LEFT]),
+    new Coordinate(9, 7, [BOTTOM_LEFT, TOP_LEFT])];
 
   export const BASE_3_4_EXP_TB_SCEN_TB_NON_TRADE_TERRAIN_COORDINATES = [
     new Coordinate(4, 1),
