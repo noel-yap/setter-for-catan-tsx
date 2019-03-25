@@ -613,6 +613,37 @@ import * as Tiles from "./Tiles";
       Object.assign({...SPEC_7_8_EXP_TB_SCEN_ROC.chitsTilesMap},
           oneToOne('fishery')));
 
+  export const SPEC_3_4_EXP_TB_SCEN_CAR_TERRAIN_COORDINATES = new Specification(
+      {
+        'producing-terrain': Tiles.BASE_3_4_PRODUCING_TERRAIN_TILE_SET,
+        'oasis': [Tiles.OASIS_TERRAIN],
+        'harbor': Tiles.BASE_3_4_HARBOR_TILE_SET
+      },
+      {
+        'producing-terrain': Coordinates.BASE_3_4_EXP_TB_SCEN_CAR_PRODUCING_TERRAIN_COORDINATES,
+        'oasis': Coordinates.BASE_3_4_EXP_TB_SCEN_CAR_OASIS_COORDINATES,
+        'harbor': Coordinates.BASE_3_4_HARBOR_COORDINATES
+      },
+      {
+        'producing-terrain': Chits.BASE_3_4_PRODUCING_TERRAIN_CHIT_SET
+      },
+      Object.assign(oneToOne('harbor'), oneToOne('producing-terrain', 'oasis')),
+      oneToOne('producing-terrain'));
+  export const SPEC_3_4_EXP_TB_SCEN_CAR_TERRAIN_COORDINATES_FISHERMEN = new Specification(
+      Object.assign({...SPEC_3_4_EXP_TB_SCEN_CAR_TERRAIN_COORDINATES.tiles}, {
+        'fishery': Tiles.BASE_3_4_FISHERY_TILE_SET
+      }),
+      Object.assign({...SPEC_3_4_EXP_TB_SCEN_CAR_TERRAIN_COORDINATES.coordinates}, {
+        'fishery': Coordinates.BASE_3_4_FISHERY_COORDINATES
+      }),
+      Object.assign({...SPEC_3_4_EXP_TB_SCEN_CAR_TERRAIN_COORDINATES.chits}, {
+        'fishery': Chits.BASE_3_4_FISHERY_CHIT_SET
+      }),
+      Object.assign({...SPEC_3_4_EXP_TB_SCEN_CAR_TERRAIN_COORDINATES.coordinatesTilesMap},
+          oneToOne('fishery')),
+      Object.assign({...SPEC_3_4_EXP_TB_SCEN_CAR_TERRAIN_COORDINATES.chitsTilesMap},
+          oneToOne('fishery')));
+
   export const SPEC_3_4_EXP_TB_SCEN_TB = new Specification(
       {
         'non-trade-terrain': Tiles.BASE_3_4_EXP_TB_SCEN_TB_NON_TRADE_TERRAIN_TILE_SET,

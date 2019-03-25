@@ -116,12 +116,34 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
     const label = configuredTile.tile === Tiles.UNKNOWN
         ? '?'
         : GeneratedBoard.chitsToString(configuredTile.chits);
+    const tileColor = GeneratedBoard.tileColor(configuredTile.tile);
     display.draw(
         configuredTile.coordinate.x,
         configuredTile.coordinate.y,
         label,
         GeneratedBoard.chitColor(configuredTile.tile, configuredTile.chits, options.fg),
-        GeneratedBoard.tileColor(configuredTile.tile));
+        tileColor);
+
+    window.requestAnimationFrame(() => {
+      const hexSize = (display._backend as Hex)._hexSize;
+      const hexCenter = GeneratedBoard.hexCenter(hexSize, configuredTile.coordinate.x, configuredTile.coordinate.y);
+
+      const vertexPositionPoint = _.partial(GeneratedBoard.vertexPositionPoint, _, hexCenter, hexSize, options.border);
+
+      configuredTile.tile.specialVertices.forEach((vertexPosition) => {
+        const vertex = vertexPositionPoint(vertexPosition);
+        const midpoint = vertex.translate(hexCenter.diff(vertex).scale(.5));
+
+        const specialVertexColor = ROT.Color.toHex(ROT.Color.interpolate(
+            ROT.Color.fromString(tileColor) as [number, number, number],
+            ROT.Color.fromString('white') as [number, number, number]));
+        GeneratedBoard.renderPolygon(
+            display,
+            [midpoint, vertex],
+            specialVertexColor,
+            specialVertexColor);
+      });
+    });
   }
 
   static renderPort(display: ROT.Display, configuredTile: Configuration.Configuration): void {
@@ -132,8 +154,8 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
 
     const edgePositionStartPoint = _.partial(GeneratedBoard.edgePositionStartPoint, _, hexCenter, hexSize, options.border);
 
-    const vertex0 = edgePositionStartPoint(configuredTile.coordinate.positions[0]);
-    const vertex1 = edgePositionStartPoint((configuredTile.coordinate.positions[0] + 1) % 6);
+    const vertex0 = edgePositionStartPoint(configuredTile.coordinate.edgePositions[0]);
+    const vertex1 = edgePositionStartPoint((configuredTile.coordinate.edgePositions[0] + 1) % 6);
 
     GeneratedBoard.renderPolygon(display, [
       hexCenter,
@@ -158,9 +180,9 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
 
     const edgePositionStartPoint = _.partial(GeneratedBoard.edgePositionStartPoint, _, hexCenter, hexSize, options.border);
 
-    const vertex0 = edgePositionStartPoint(configuredTile.coordinate.positions[0]);
-    const vertex1 = edgePositionStartPoint(configuredTile.coordinate.positions[1]);
-    const vertex2 = edgePositionStartPoint((configuredTile.coordinate.positions[1] + 1) % 6);
+    const vertex0 = edgePositionStartPoint(configuredTile.coordinate.edgePositions[0]);
+    const vertex1 = edgePositionStartPoint(configuredTile.coordinate.edgePositions[1]);
+    const vertex2 = edgePositionStartPoint((configuredTile.coordinate.edgePositions[1] + 1) % 6);
     const offset = vertex1.diff(hexCenter).scale(inside ? -.5 : .5);
 
     GeneratedBoard.renderPolygon(display, [
@@ -199,7 +221,7 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
         ? GeneratedBoard.tileColor(Tiles.LAKE)
         : GeneratedBoard.tileColor(Tiles.SEA);
 
-    configuredTile.coordinate.positions.forEach((position) => {
+    configuredTile.coordinate.edgePositions.forEach((position) => {
       const vertex0 = edgePositionStartPoint(position);
       const vertex1 = edgePositionStartPoint((position + 1) % 6);
 
@@ -257,19 +279,51 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
   }
 
   static edgePositionStartPoint(edgePosition: Coordinates.EdgePosition, hexCenter: Cartesian2D, hexSize: number, border: number): Cartesian2D {
+    function getStartVertex(edgePosition: Coordinates.EdgePosition) {
+      switch (edgePosition) {
+        case Coordinates.TOP_RIGHT: {
+          return Coordinates.VertexPosition.TOP;
+        }
+
+        case Coordinates.RIGHT: {
+          return Coordinates.VertexPosition.TOP_RIGHT;
+        }
+
+        case Coordinates.BOTTOM_RIGHT: {
+          return Coordinates.VertexPosition.BOTTOM_RIGHT;
+        }
+
+        case Coordinates.BOTTOM_LEFT: {
+          return Coordinates.VertexPosition.BOTTOM;
+        }
+
+        case Coordinates.LEFT: {
+          return Coordinates.VertexPosition.BOTTOM_LEFT;
+        }
+
+        case Coordinates.TOP_LEFT: {
+          return Coordinates.VertexPosition.TOP_LEFT;
+        }
+      }
+    }
+
+    return GeneratedBoard.vertexPositionPoint(getStartVertex(edgePosition), hexCenter, hexSize, border);
+  }
+
+  static vertexPositionPoint(vertexPosition: Coordinates.VertexPosition, hexCenter: Cartesian2D, hexSize: number, border: number): Cartesian2D {
     const spacingX = hexSize * Math.sqrt(3) / 2;
 
     return hexCenter.translate(new Cartesian2D(
-        ([Coordinates.LEFT, Coordinates.TOP_LEFT].some((p) => p === edgePosition)
+        ([Coordinates.VertexPosition.BOTTOM_LEFT, Coordinates.VertexPosition.TOP_LEFT].some((p) => p === vertexPosition)
             ? -1
-            : [Coordinates.TOP_RIGHT, Coordinates.BOTTOM_LEFT].some((p) => p === edgePosition)
+            : [Coordinates.VertexPosition.TOP, Coordinates.VertexPosition.BOTTOM].some((p) => p === vertexPosition)
                 ? 0
                 : 1)
         * (spacingX - border),
-        ([Coordinates.TOP_RIGHT, Coordinates.RIGHT, Coordinates.TOP_LEFT].some((p) => p === edgePosition)
+        ([Coordinates.VertexPosition.TOP, Coordinates.VertexPosition.TOP_RIGHT, Coordinates.VertexPosition.TOP_LEFT].some((p) => p === vertexPosition)
             ? -1
             : 1)
-        * ([Coordinates.TOP_RIGHT, Coordinates.BOTTOM_LEFT].some((p) => p === edgePosition) ? 1 : .5) * hexSize + border));
+        * ([Coordinates.VertexPosition.TOP, Coordinates.VertexPosition.BOTTOM].some((p) => p === vertexPosition) ? 1 : .5) * hexSize + border));
   }
 
   static chitColor(tile: Tiles.Tile, chits: Chits.Chits, primaryColor: string): string {
@@ -297,7 +351,8 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
         return 'white';
       }
 
-      case Tiles.Type.DESERT: {
+      case Tiles.Type.DESERT:
+      case Tiles.Type.OASIS: {
         return 'sandybrown';
       }
 
@@ -429,6 +484,10 @@ class App extends React.Component<AppProps, AppState> {
         '4': [Specifications.SPEC_3_4_EXP_TB_SCEN_ROC, Specifications.SPEC_3_4_EXP_TB_SCEN_ROC_FISHERMEN],
         '5-6': [Specifications.SPEC_5_6_EXP_TB_SCEN_ROC, Specifications.SPEC_5_6_EXP_TB_SCEN_ROC_FISHERMEN],
         '7-8': [Specifications.SPEC_7_8_EXP_TB_SCEN_ROC, Specifications.SPEC_7_8_EXP_TB_SCEN_ROC_FISHERMEN]
+      },
+      'Traders and Barbarians: The Caravans': {
+        '3': [Specifications.SPEC_3_4_EXP_TB_SCEN_CAR_TERRAIN_COORDINATES, Specifications.SPEC_3_4_EXP_TB_SCEN_CAR_TERRAIN_COORDINATES_FISHERMEN],
+        '4': [Specifications.SPEC_3_4_EXP_TB_SCEN_CAR_TERRAIN_COORDINATES, Specifications.SPEC_3_4_EXP_TB_SCEN_CAR_TERRAIN_COORDINATES_FISHERMEN]
       },
       'Traders and Barbarians: Traders and Barbarians': {
         '3': [Specifications.SPEC_3_4_EXP_TB_SCEN_TB, Specifications.SPEC_3_4_EXP_TB_SCEN_TB_FISHERMEN],

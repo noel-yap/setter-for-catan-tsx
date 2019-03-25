@@ -3,6 +3,7 @@ import * as _ from 'underscore';
 import * as Specifications from "./Specifications";
 import * as Configuration from "./Configuration";
 import * as Tiles from "./Tiles";
+import * as Coordinates from "./Coordinates";
 
 // export module Boards {
   export class Board {
@@ -15,7 +16,7 @@ import * as Tiles from "./Tiles";
       console.log(`configuration = ${JSON.stringify(configurations)}`);
 
       const riverNotRiver = _.groupBy(configurations, (configuration) => configuration.tile.type === Tiles.Type.RIVER ? 0 : 1);
-      const groupedSettings = _.groupBy(riverNotRiver[1], (configuration) => configuration.coordinate.positions.length);
+      const groupedSettings = _.groupBy(riverNotRiver[1], (configuration) => configuration.coordinate.edgePositions.length);
 
       this._portTilesLayout = groupedSettings['1'] || [];
       this._fisheryTilesLayout = groupedSettings['2'] || [];
@@ -89,7 +90,7 @@ import * as Tiles from "./Tiles";
       function odds(contributingTiles: Configuration.Configuration[], vertex: number): number {
         return contributingTiles
             .filter((ct) => {
-              return ct.coordinate.positions.some((p) => {
+              return ct.coordinate.edgePositions.some((p) => {
                 return p === vertex || p === (vertex + 5) % 6;
               });
             })
@@ -117,7 +118,7 @@ import * as Tiles from "./Tiles";
             .reduce((sum, contributor) => {
               const contributorOdds = odds(contributor[0], contributor[1]);
 
-              console.log(`contributor = ${contributor}, odds = ${contributorOdds}`);
+              console.log(`contributor = ${JSON.stringify(contributor)}, odds = ${contributorOdds}`);
 
               return sum + contributorOdds;
             }, 0);
@@ -154,15 +155,17 @@ import * as Tiles from "./Tiles";
       console.log(`x ∈ [${minX}, ${maxX}], y ∈ [${minY}, ${maxY}]`);
 
       for (let y = minY - 1; y < maxY + 1; ++y) {
-        for (let x = minX - 2 + y % 2; x < maxX + 2; x += 2) {
+        for (let x = minX - 2 + (minX + minY + y) % 2; x < maxX + 2; x += 2) {
           const topVertexContributors = <[Configuration.Configuration[], number][]>[
-            [coordinatesMap[key(x, y)], 0],
-            [coordinatesMap[key(x - 1, y - 1)], 2],
-            [coordinatesMap[key(x + 1, y - 1)], 4]];
+            [coordinatesMap[key(x, y)], Coordinates.VertexPosition.TOP],
+            [coordinatesMap[key(x - 1, y - 1)], Coordinates.VertexPosition.BOTTOM_RIGHT],
+            [coordinatesMap[key(x + 1, y - 1)], Coordinates.VertexPosition.BOTTOM_LEFT]];
           const topRightVertexContributors = <[Configuration.Configuration[], number][]>[
-            [coordinatesMap[key(x, y)], 1],
-            [coordinatesMap[key(x + 1, y - 1)], 3],
-            [coordinatesMap[key(x + 2, y)], 5]];
+            [coordinatesMap[key(x, y)], Coordinates.VertexPosition.TOP_RIGHT],
+            [coordinatesMap[key(x + 1, y - 1)], Coordinates.VertexPosition.BOTTOM],
+            [coordinatesMap[key(x + 2, y)], Coordinates.VertexPosition.TOP_LEFT]];
+
+          console.log(`(x, y) = ${key(x, y)}, topVertexContributors = ${JSON.stringify(topVertexContributors)}, topRightVertexContributors = ${JSON.stringify(topRightVertexContributors)}`);
 
           const invalid = [topVertexContributors, topRightVertexContributors].some((contributors) => {
             const eligibleContributors = contributors
@@ -171,7 +174,7 @@ import * as Tiles from "./Tiles";
                   const eligibleConfiguration = elt[0]
                       .filter((ct) => {
                         return [Tiles.SEA, Tiles.UNKNOWN].every((t) => t !== ct.tile)
-                            && ct.coordinate.positions.some((p) => {
+                            && ct.coordinate.edgePositions.some((p) => {
                               return p === elt[1] || p === (elt[1] + 5) % 6;
                             });
                       });
