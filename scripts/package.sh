@@ -13,6 +13,9 @@ build_dir="$(git rev-parse --show-toplevel)/tmp"
 mkdir -p ${build_dir}
 cd ${build_dir}
 
+mkdir -p root/home/ec2-user/.nvm
+npm install --prefix=$(pwd)/root/home/ec2-user/.nvm/versions/node/v10.15.3/ -g serve
+
 mkdir -p root/opt
 cp -pr ${build_dir}/../build root/opt/${project_name}
 cp -pr ${build_dir}/../root/* root
