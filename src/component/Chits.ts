@@ -39,24 +39,18 @@ export class Chits {
       .concat(new Array(2).fill(CHITS_9))
       .concat(new Array(2).fill(CHITS_6))
       .concat(new Array(2).fill(CHITS_8));
-  export const BASE_3_4_FISHERY_CHIT_SET = [CHITS_4, CHITS_5, CHITS_6, CHITS_8, CHITS_9, CHITS_10];
 
   export const EXT_5_6_PRODUCING_TERRAIN_CHIT_SET = BASE_3_4_PRODUCING_TERRAIN_CHIT_SET
       .concat([CHITS_2, CHITS_3, CHITS_4, CHITS_5, CHITS_6, CHITS_8, CHITS_9, CHITS_10, CHITS_11, CHITS_12]);
-  export const EXT_5_6_FISHERY_CHIT_SET = BASE_3_4_FISHERY_CHIT_SET
-      .concat([CHITS_5, CHITS_10]);
 
   export const EXT_7_8_PRODUCING_TERRAIN_CHIT_SET = BASE_3_4_PRODUCING_TERRAIN_CHIT_SET
       .concat(BASE_3_4_PRODUCING_TERRAIN_CHIT_SET);
-  export const EXT_7_8_FISHERY_CHIT_SET = EXT_5_6_FISHERY_CHIT_SET;
-
   export const BASE_3_EXP_SEA_SCEN_HFNS_PRODUCING_TERRAIN_CHIT_SET = [CHITS_2, CHITS_3, CHITS_4, CHITS_9]
       .concat(new Array(2).fill(CHITS_5))
       .concat(new Array(2).fill(CHITS_6))
       .concat(new Array(2).fill(CHITS_8))
       .concat(new Array(2).fill(CHITS_10))
       .concat(new Array(2).fill(CHITS_11));
-  export const BASE_3_EXP_SEA_SCEN_HFNS_FISHERY_CHIT_SET = [CHITS_4, CHITS_5, CHITS_9, CHITS_10];
   export const BASE_3_EXP_SEA_SCEN_HFNS_SMALL_ISLANDS_PRODUCING_TERRAIN_CHIT_SET = [CHITS_3, CHITS_5, CHITS_8, CHITS_9, CHITS_10, CHITS_12]
       .concat(new Array(2).fill(CHITS_4));
 
