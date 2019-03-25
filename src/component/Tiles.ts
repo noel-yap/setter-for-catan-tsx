@@ -117,7 +117,6 @@ import {VertexPosition} from "./Coordinates";
         WOOL_HARBOR,
         BRICK_HARBOR,
         ORE_HARBOR]);
-  export const BASE_3_4_FISHERY_TILE_SET = new Array(6).fill(FISHERY);
 
   export const EXT_5_6_PRODUCING_TERRAIN_TILE_SET = BASE_3_4_PRODUCING_TERRAIN_TILE_SET
       .concat(new Array(2).fill(FIELD_TERRAIN))
@@ -127,13 +126,11 @@ import {VertexPosition} from "./Coordinates";
       .concat(new Array(2).fill(MOUNTAIN_TERRAIN));
   export const EXT_5_6_HARBOR_TILE_SET = BASE_3_4_HARBOR_TILE_SET
       .concat([GENERIC_HARBOR, WOOL_HARBOR]);
-  export const EXT_5_6_FISHERY_TILE_SET = new Array(8).fill(FISHERY);
 
   export const EXT_7_8_PRODUCING_TERRAIN_TILE_SET = BASE_3_4_PRODUCING_TERRAIN_TILE_SET
       .concat(BASE_3_4_PRODUCING_TERRAIN_TILE_SET);
   export const EXT_7_8_HARBOR_TILE_SET = BASE_3_4_HARBOR_TILE_SET
       .concat([GRAIN_HARBOR, LUMBER_HARBOR, WOOL_HARBOR]);
-  export const EXT_7_8_FISHERY_TILE_SET = EXT_5_6_FISHERY_TILE_SET;
 
   export const BASE_3_EXP_SEA_SCEN_HFNS_BIG_ISLAND_PRODUCING_TERRAIN_TILE_SET = new Array(3).fill(FIELD_TERRAIN)
       .concat(new Array(3).fill(FOREST_TERRAIN))

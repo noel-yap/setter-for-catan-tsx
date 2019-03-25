@@ -470,6 +470,22 @@ import * as Tiles from "./Tiles";
       },
       Object.assign(oneToOne('harbor'), oneToOne('producing-terrain', 'oasis')),
       oneToOne('producing-terrain'));
+  export const SPEC_5_6_EXP_TB_SCEN_CAR_TERRAIN_COORDINATES = new Specification(
+      {
+        'producing-terrain': Tiles.EXT_5_6_PRODUCING_TERRAIN_TILE_SET,
+        'oasis': new Array(2).fill(Tiles.OASIS_TERRAIN),
+        'harbor': Tiles.EXT_5_6_HARBOR_TILE_SET
+      },
+      {
+        'producing-terrain': Coordinates.EXT_5_6_EXP_TB_SCEN_CAR_PRODUCING_TERRAIN_COORDINATES,
+        'oasis': Coordinates.EXT_5_6_EXP_TB_SCEN_CAR_OASIS_COORDINATES,
+        'harbor': Coordinates.EXT_5_6_HARBOR_COORDINATES
+      },
+      {
+        'producing-terrain': Chits.EXT_5_6_PRODUCING_TERRAIN_CHIT_SET
+      },
+      Object.assign(oneToOne('harbor'), oneToOne('producing-terrain', 'oasis')),
+      oneToOne('producing-terrain'));
 
   export const SPEC_3_4_EXP_TB_SCEN_TB = new Specification(
       {
