@@ -23,6 +23,25 @@ import * as Boards from './component/Boards';
 import * as Chits from './component/Chits';
 import * as Coordinates from './component/Coordinates';
 import * as Specifications from './component/Specifications';
+import {
+  SPEC_3_4,
+  SPEC_3_4_EXP_TB_SCEN_CAR_TERRAIN_COORDINATES,
+  SPEC_3_4_EXP_TB_SCEN_ROC,
+  SPEC_3_4_EXP_TB_SCEN_TB,
+  SPEC_3_EXP_SEA_SCEN_FI,
+  SPEC_3_EXP_SEA_SCEN_HFNS,
+  SPEC_4_EXP_SEA_SCEN_FI,
+  SPEC_4_EXP_SEA_SCEN_HFNS,
+  SPEC_5_6,
+  SPEC_5_6_EXP_SEA_SCEN_FI,
+  SPEC_5_6_EXP_SEA_SCEN_HFNS,
+  SPEC_5_6_EXP_TB_SCEN_ROC,
+  SPEC_5_6_EXP_TB_SCEN_TB,
+  SPEC_7_8,
+  SPEC_7_8_EXP_SEA_SCEN_HFNS,
+  SPEC_7_8_EXP_TB_SCEN_ROC,
+  withFisheries
+} from './component/Specifications';
 import * as Tiles from './component/Tiles';
 import * as Configuration from './component/Configuration';
 
@@ -432,7 +451,7 @@ interface AppState {
 
 interface BoardSpecifications {
   [key: string]: {
-    [key: string]: Specifications.Specification[]
+    [key: string]: [Specifications.Specification, Coordinates.Coordinate[]]
   }
 }
 
@@ -463,36 +482,36 @@ class App extends React.Component<AppProps, AppState> {
 
     const boardSpecifications: BoardSpecifications = {
       'Base': {
-        '3': [Specifications.SPEC_3_4, Specifications.SPEC_3_4_FISHERMEN],
-        '4': [Specifications.SPEC_3_4, Specifications.SPEC_3_4_FISHERMEN],
-        '5-6': [Specifications.SPEC_5_6, Specifications.SPEC_5_6_FISHERMEN],
-        '7-8': [Specifications.SPEC_7_8, Specifications.SPEC_7_8_FISHERMEN]
+        '3': [Specifications.SPEC_3_4, Coordinates.BASE_3_4_FISHERY_COORDINATES],
+        '4': [Specifications.SPEC_3_4, Coordinates.BASE_3_4_FISHERY_COORDINATES],
+        '5-6': [Specifications.SPEC_5_6, Coordinates.EXT_5_6_FISHERY_COORDINATES],
+        '7-8': [Specifications.SPEC_7_8, Coordinates.EXT_7_8_FISHERY_COORDINATES]
       },
       'Seafarers: Heading for New Shores': {
-        '3': [Specifications.SPEC_3_EXP_SEA_SCEN_HFNS, Specifications.SPEC_3_EXP_SEA_SCEN_HFNS_FISHERMEN],
-        '4': [Specifications.SPEC_4_EXP_SEA_SCEN_HFNS, Specifications.SPEC_4_EXP_SEA_SCEN_HFNS_FISHERMEN],
-        '5-6': [Specifications.SPEC_5_6_EXP_SEA_SCEN_HFNS, Specifications.SPEC_5_6_EXP_SEA_SCEN_HFNS_FISHERMEN],
-        '7-8': [Specifications.SPEC_7_8_EXP_SEA_SCEN_HFNS, Specifications.SPEC_7_8_EXP_SEA_SCEN_HFNS_FISHERMEN]
+        '3': [Specifications.SPEC_3_EXP_SEA_SCEN_HFNS, Coordinates.BASE_3_EXP_SEA_SCEN_HFNS_BIG_ISLAND_FISHERY_COORDINATES],
+        '4': [Specifications.SPEC_4_EXP_SEA_SCEN_HFNS, Coordinates.BASE_3_4_FISHERY_COORDINATES],
+        '5-6': [Specifications.SPEC_5_6_EXP_SEA_SCEN_HFNS, Coordinates.EXT_5_6_EXP_SEA_SCEN_HFNS_BIG_ISLAND_FISHERY_COORDINATES],
+        '7-8': [Specifications.SPEC_7_8_EXP_SEA_SCEN_HFNS, Coordinates.EXT_7_8_EXP_SEA_SCEN_HFNS_BIG_ISLAND_FISHERY_COORDINATES]
       },
       'Seafarers: The Fog Islands': {
-        '3': [Specifications.SPEC_3_EXP_SEA_SCEN_FI, Specifications.SPEC_3_EXP_SEA_SCEN_FI_FISHERMEN],
-        '4': [Specifications.SPEC_4_EXP_SEA_SCEN_FI, Specifications.SPEC_4_EXP_SEA_SCEN_FI_FISHERMEN],
-        '5-6': [Specifications.SPEC_5_6_EXP_SEA_SCEN_FI, Specifications.SPEC_5_6_EXP_SEA_SCEN_FI_FISHERMEN]
+        '3': [Specifications.SPEC_3_EXP_SEA_SCEN_FI, Coordinates.BASE_3_EXP_SEA_SCENS_FI_FISHERY_COORDINATES],
+        '4': [Specifications.SPEC_4_EXP_SEA_SCEN_FI, Coordinates.BASE_4_EXP_SEA_SCENS_FI_FISHERY_COORDINATES],
+        '5-6': [Specifications.SPEC_5_6_EXP_SEA_SCEN_FI, Coordinates.EXT_5_6_EXP_SEA_SCENS_FI_FISHERY_COORDINATES]
       },
       'Traders and Barbarians: Rivers of Catan': {
-        '3': [Specifications.SPEC_3_4_EXP_TB_SCEN_ROC, Specifications.SPEC_3_4_EXP_TB_SCEN_ROC_FISHERMEN],
-        '4': [Specifications.SPEC_3_4_EXP_TB_SCEN_ROC, Specifications.SPEC_3_4_EXP_TB_SCEN_ROC_FISHERMEN],
-        '5-6': [Specifications.SPEC_5_6_EXP_TB_SCEN_ROC, Specifications.SPEC_5_6_EXP_TB_SCEN_ROC_FISHERMEN],
-        '7-8': [Specifications.SPEC_7_8_EXP_TB_SCEN_ROC, Specifications.SPEC_7_8_EXP_TB_SCEN_ROC_FISHERMEN]
+        '3': [Specifications.SPEC_3_4_EXP_TB_SCEN_ROC, Coordinates.BASE_3_4_FISHERY_COORDINATES],
+        '4': [Specifications.SPEC_3_4_EXP_TB_SCEN_ROC, Coordinates.BASE_3_4_FISHERY_COORDINATES],
+        '5-6': [Specifications.SPEC_5_6_EXP_TB_SCEN_ROC, Coordinates.EXT_5_6_FISHERY_COORDINATES],
+        '7-8': [Specifications.SPEC_7_8_EXP_TB_SCEN_ROC, Coordinates.EXT_7_8_FISHERY_COORDINATES]
       },
       'Traders and Barbarians: The Caravans': {
-        '3': [Specifications.SPEC_3_4_EXP_TB_SCEN_CAR_TERRAIN_COORDINATES, Specifications.SPEC_3_4_EXP_TB_SCEN_CAR_TERRAIN_COORDINATES_FISHERMEN],
-        '4': [Specifications.SPEC_3_4_EXP_TB_SCEN_CAR_TERRAIN_COORDINATES, Specifications.SPEC_3_4_EXP_TB_SCEN_CAR_TERRAIN_COORDINATES_FISHERMEN]
+        '3': [Specifications.SPEC_3_4_EXP_TB_SCEN_CAR_TERRAIN_COORDINATES, Coordinates.BASE_3_4_FISHERY_COORDINATES],
+        '4': [Specifications.SPEC_3_4_EXP_TB_SCEN_CAR_TERRAIN_COORDINATES, Coordinates.BASE_3_4_FISHERY_COORDINATES]
       },
       'Traders and Barbarians: Traders and Barbarians': {
-        '3': [Specifications.SPEC_3_4_EXP_TB_SCEN_TB, Specifications.SPEC_3_4_EXP_TB_SCEN_TB_FISHERMEN],
-        '4': [Specifications.SPEC_3_4_EXP_TB_SCEN_TB, Specifications.SPEC_3_4_EXP_TB_SCEN_TB_FISHERMEN],
-        '5-6': [Specifications.SPEC_5_6_EXP_TB_SCEN_TB, Specifications.SPEC_5_6_EXP_TB_SCEN_TB_FISHERMEN]
+        '3': [Specifications.SPEC_3_4_EXP_TB_SCEN_TB, Coordinates.BASE_3_4_FISHERY_COORDINATES],
+        '4': [Specifications.SPEC_3_4_EXP_TB_SCEN_TB, Coordinates.BASE_3_4_FISHERY_COORDINATES],
+        '5-6': [Specifications.SPEC_5_6_EXP_TB_SCEN_TB, Coordinates.EXT_5_6_EXP_TB_SCEN_TB_FISHERY_COORDINATES]
       }
     };
     const SCENs = Object.keys(boardSpecifications);
@@ -586,8 +605,9 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   generateBoard(boardSpecifications: BoardSpecifications, SCEN: string, playerCount: string, useFishermenOfCatanVariant: boolean) {
-    const boardGenerator = new Boards.BoardGenerator(
-        boardSpecifications[SCEN][playerCount][useFishermenOfCatanVariant ? 1 : 0]);
+    const boardGenerator = new Boards.BoardGenerator(useFishermenOfCatanVariant
+        ? withFisheries(boardSpecifications[SCEN][playerCount][0], boardSpecifications[SCEN][playerCount][1])
+        : boardSpecifications[SCEN][playerCount][0]);
 
     this.setState({
       openMenu: false,
