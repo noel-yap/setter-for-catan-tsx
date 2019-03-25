@@ -1,4 +1,5 @@
 import * as Coordinates from "./Coordinates";
+import {VertexPosition} from "./Coordinates";
 
 // export module Tiles {
   export enum Type {
@@ -25,13 +26,14 @@ import * as Coordinates from "./Coordinates";
 
     GOLD = 32,
     SWAMP,
+    OASIS,
     CASTLE,
     GLASSWORKS,
     QUARRY
   }
 
   export class Tile {
-    constructor(public type: Type) {}
+    constructor(public type: Type, public specialVertices: VertexPosition[] = []) {}
 
     edgeCount(): [number, number] {
       switch (this.type) {
@@ -59,6 +61,7 @@ import * as Coordinates from "./Coordinates";
         case Type.MOUNTAIN:
         case Type.PASTURE:
         case Type.SWAMP:
+        case Type.OASIS:
         case Type.CASTLE:
         case Type.GLASSWORKS:
         case Type.QUARRY: {
@@ -90,6 +93,8 @@ import * as Coordinates from "./Coordinates";
 
   export const GOLD_TERRAIN = new Tile(Type.GOLD);
 
+  export const OASIS_TERRAIN = new Tile(Type.OASIS, [
+      Coordinates.VertexPosition.TOP_RIGHT, Coordinates.VertexPosition.BOTTOM, Coordinates.VertexPosition.TOP_LEFT]);
   export const CASTLE_TERRAIN = new Tile(Type.CASTLE);
   export const GLASSWORKS_TERRAIN = new Tile(Type.GLASSWORKS);
   export const QUARRY_TERRAIN = new Tile(Type.QUARRY);
