@@ -94,9 +94,11 @@ import * as Tiles from "./Tiles";
               });
             })
             .reduce((sum, ct) => {
-              console.log(`ct = ${JSON.stringify(ct)}`);
+              const ctOdds = ct.chits.odds();
 
-              return ct.chits.odds();
+              console.log(`ct = ${JSON.stringify(ct)}, ctOdds = ${ctOdds}`);
+
+              return sum + ctOdds;
             }, 0);
       }
       function oddsWithinValidRange(contributors: [Configuration.Configuration[], number][]) {
@@ -112,7 +114,13 @@ import * as Tiles from "./Tiles";
         }
 
         const totalOdds = contributors
-            .reduce((sum, c) => sum + odds(c[0], c[1]), 0);
+            .reduce((sum, contributor) => {
+              const contributorOdds = odds(contributor[0], contributor[1]);
+
+              console.log(`contributor = ${contributor}, odds = ${contributorOdds}`);
+
+              return sum + contributorOdds;
+            }, 0);
 
         console.log(`contributors = ${JSON.stringify(contributors)}, odds = ${totalOdds}, contributorCount = ${contributorCount}, validRange = ${JSON.stringify(validRange)}`);
 
@@ -145,8 +153,8 @@ import * as Tiles from "./Tiles";
 
       console.log(`x ∈ [${minX}, ${maxX}], y ∈ [${minY}, ${maxY}]`);
 
-      for (let x = minX - 1; x < maxX + 2; ++x) {
-        for (let y = minY - 2; y < maxY + 1; ++y) {
+      for (let y = minY - 1; y < maxY + 1; ++y) {
+        for (let x = minX - 2 + y % 2; x < maxX + 2; x += 2) {
           const topVertexContributors = <[Configuration.Configuration[], number][]>[
             [coordinatesMap[key(x, y)], 0],
             [coordinatesMap[key(x - 1, y - 1)], 2],
