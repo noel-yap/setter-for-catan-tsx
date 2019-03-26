@@ -1,5 +1,4 @@
 // export module Coordinates {
-
   export enum EdgePosition {
     TOP_RIGHT,
     RIGHT,
@@ -9,8 +8,20 @@
     TOP_LEFT
   }
 
+  export enum VertexPosition {
+    TOP,
+    TOP_RIGHT,
+    BOTTOM_RIGHT,
+    BOTTOM,
+    BOTTOM_LEFT,
+    TOP_LEFT
+  }
+
   export class Coordinate {
-    constructor(public x: number, public y: number, public positions: EdgePosition[] = HEXAGON_EDGE_POSITIONS) {}
+    constructor(
+        public x: number,
+        public y: number,
+        public edgePositions: EdgePosition[] = HEXAGON_EDGE_POSITIONS) {}
   }
 
   export const TOP_RIGHT = EdgePosition.TOP_RIGHT;
@@ -240,7 +251,7 @@
     new Coordinate(11, 7)];
 
   export const EXT_5_6_EXP_SEA_SCEN_HFNS_BIG_ISLAND_TERRAIN_COORDINATES = EXT_5_6_TERRAIN_COORDINATES
-      .map((c) => new Coordinate(c.x + 2, c.y, c.positions));
+      .map((c) => new Coordinate(c.x + 2, c.y, c.edgePositions));
   export const EXT_5_6_EXP_SEA_SCEN_HFNS_BIG_ISLAND_HARBOR_COORDINATES = [
     new Coordinate(6, 0, [BOTTOM_RIGHT]),
     new Coordinate(10, 0, [BOTTOM_LEFT]),
@@ -279,42 +290,42 @@
     new Coordinate(15, 7)];
 
   export const EXT_7_8_EXP_SEA_SCEN_HFNS_BIG_ISLAND_TERRAIN_COORDINATES = EXT_7_8_TERRAIN_COORDINATES
-      .map((c) => new Coordinate(c.x + 2, c.y + 2, c.positions));
+      .map((c) => new Coordinate(c.x + 3, c.y + 1, c.edgePositions));
   export const EXT_7_8_EXP_SEA_SCEN_HFNS_BIG_ISLAND_HARBOR_COORDINATES = EXT_7_8_HARBOR_COORDINATES
-      .map((c) => new Coordinate(c.x + 2, c.y + 2, c.positions));
+      .map((c) => new Coordinate(c.x + 3, c.y + 1, c.edgePositions));
   export const EXT_7_8_EXP_SEA_SCEN_HFNS_BIG_ISLAND_FISHERY_COORDINATES = EXT_7_8_FISHERY_COORDINATES
-      .map((c) => new Coordinate(c.x + 2, c.y + 2, c.positions));
+      .map((c) => new Coordinate(c.x + 3, c.y + 1, c.edgePositions));
   export const EXT_7_8_EXP_SEA_SCEN_HFNS_SMALL_ISLAND_TERRAIN_COORDINATES = [
+    new Coordinate(6, 0),
+    new Coordinate(8, 0),
+    new Coordinate(10, 0),
+    new Coordinate(12, 0),
+    new Coordinate(14, 0),
+    new Coordinate(16, 0),
     new Coordinate(5, 1),
-    new Coordinate(7, 1),
-    new Coordinate(9, 1),
-    new Coordinate(11, 1),
-    new Coordinate(13, 1),
-    new Coordinate(15, 1),
+    new Coordinate(17, 1),
     new Coordinate(4, 2),
-    new Coordinate(16, 2),
+    new Coordinate(18, 2),
     new Coordinate(3, 3),
-    new Coordinate(17, 3),
+    new Coordinate(19, 3),
     new Coordinate(2, 4),
-    new Coordinate(18, 4),
+    new Coordinate(20, 4),
     new Coordinate(1, 5),
-    new Coordinate(19, 5),
-    new Coordinate(0, 6),
+    new Coordinate(21, 5),
+    new Coordinate(2, 6),
     new Coordinate(20, 6),
-    new Coordinate(1, 7),
+    new Coordinate(3, 7),
     new Coordinate(19, 7),
-    new Coordinate(2, 8),
+    new Coordinate(4, 8),
     new Coordinate(18, 8),
-    new Coordinate(3, 9),
+    new Coordinate(5, 9),
     new Coordinate(17, 9),
-    new Coordinate(4, 10),
-    new Coordinate(16, 10),
-    new Coordinate(5, 11),
-    new Coordinate(7, 11),
-    new Coordinate(9, 11),
-    new Coordinate(11, 11),
-    new Coordinate(13, 11),
-    new Coordinate(15, 11)];
+    new Coordinate(6, 10),
+    new Coordinate(8, 10),
+    new Coordinate(10, 10),
+    new Coordinate(12, 10),
+    new Coordinate(14, 10),
+    new Coordinate(16, 10)];
 
   export const BASE_3_EXP_SEA_SCEN_FI_FACE_UP_PRODUCING_TERRAIN_COORDINATES = [
     new Coordinate(5, 1),
@@ -617,6 +628,101 @@
     new Coordinate(8, 6, [BOTTOM_RIGHT, TOP_LEFT]),
     new Coordinate(9, 7, [BOTTOM_LEFT, TOP_LEFT])];
 
+  export const BASE_3_4_EXP_TB_SCEN_CAR_PRODUCING_TERRAIN_COORDINATES = [
+    new Coordinate(3, 1),
+    new Coordinate(5, 1),
+    new Coordinate(7, 1),
+    new Coordinate(2, 2),
+    new Coordinate(4, 2),
+    new Coordinate(6, 2),
+    new Coordinate(8, 2),
+    new Coordinate(1, 3),
+    new Coordinate(3, 3),
+    new Coordinate(7, 3),
+    new Coordinate(9, 3),
+    new Coordinate(2, 4),
+    new Coordinate(4, 4),
+    new Coordinate(6, 4),
+    new Coordinate(8, 4),
+    new Coordinate(3, 5),
+    new Coordinate(5, 5),
+    new Coordinate(7, 5)];
+  export const BASE_3_4_EXP_TB_SCEN_CAR_OASIS_COORDINATES = [
+    new Coordinate(5, 3)];
+
+  export const EXT_5_6_EXP_TB_SCEN_CAR_PRODUCING_TERRAIN_COORDINATES = [
+    new Coordinate(5, 1),
+    new Coordinate(7, 1),
+    new Coordinate(9, 1),
+    new Coordinate(4, 2),
+    new Coordinate(6, 2),
+    new Coordinate(8, 2),
+    new Coordinate(10, 2),
+    new Coordinate(3, 3),
+    new Coordinate(7, 3),
+    new Coordinate(9, 3),
+    new Coordinate(11, 3),
+    new Coordinate(2, 4),
+    new Coordinate(4, 4),
+    new Coordinate(6, 4),
+    new Coordinate(8, 4),
+    new Coordinate(10, 4),
+    new Coordinate(12, 4),
+    new Coordinate(3, 5),
+    new Coordinate(5, 5),
+    new Coordinate(7, 5),
+    new Coordinate(11, 5),
+    new Coordinate(4, 6),
+    new Coordinate(6, 6),
+    new Coordinate(8, 6),
+    new Coordinate(10, 6),
+    new Coordinate(5, 7),
+    new Coordinate(7, 7),
+    new Coordinate(9, 7)];
+  export const EXT_5_6_EXP_TB_SCEN_CAR_OASIS_COORDINATES = [
+    new Coordinate(5, 3),
+    new Coordinate(9, 5)];
+
+  export const EXT_7_8_EXP_TB_SCEN_CAR_PRODUCING_TERRAIN_COORDINATES = [
+    new Coordinate(5, 1),
+    new Coordinate(7, 1),
+    new Coordinate(9, 1),
+    new Coordinate(11, 1),
+    new Coordinate(4, 2),
+    new Coordinate(6, 2),
+    new Coordinate(8, 2),
+    new Coordinate(10, 2),
+    new Coordinate(12, 2),
+    new Coordinate(3, 3),
+    new Coordinate(7, 3),
+    new Coordinate(9, 3),
+    new Coordinate(11, 3),
+    new Coordinate(13, 3),
+    new Coordinate(2, 4),
+    new Coordinate(4, 4),
+    new Coordinate(6, 4),
+    new Coordinate(8, 4),
+    new Coordinate(10, 4),
+    new Coordinate(12, 4),
+    new Coordinate(14, 4),
+    new Coordinate(3, 5),
+    new Coordinate(5, 5),
+    new Coordinate(7, 5),
+    new Coordinate(9, 5),
+    new Coordinate(13, 5),
+    new Coordinate(4, 6),
+    new Coordinate(6, 6),
+    new Coordinate(8, 6),
+    new Coordinate(10, 6),
+    new Coordinate(12, 6),
+    new Coordinate(5, 7),
+    new Coordinate(7, 7),
+    new Coordinate(9, 7),
+    new Coordinate(11, 7)];
+  export const EXT_7_8_EXP_TB_SCEN_CAR_OASIS_COORDINATES = [
+    new Coordinate(5, 3),
+    new Coordinate(11, 5)];
+
   export const BASE_3_4_EXP_TB_SCEN_TB_NON_TRADE_TERRAIN_COORDINATES = [
     new Coordinate(3, 1),
     new Coordinate(5, 1),
@@ -673,33 +779,32 @@
   export const EXT_5_6_EXP_TB_SCEN_TB_CASTLE_TERRAIN_COORDINATES = [
     new Coordinate(8, 4)];
   export const EXT_5_6_EXP_TB_SCEN_TB_GLASSWORKS_TERRAIN_COORDINATES = [
-    new Coordinate(11, 1),
-    new Coordinate(2, 4),
-    new Coordinate(11, 7)];
-  export const EXT_5_6_EXP_TB_SCEN_TB_QUARRY_TERRAIN_COORDINATES = [
     new Coordinate(5, 1),
     new Coordinate(14, 4),
     new Coordinate(5, 7)];
-
+  export const EXT_5_6_EXP_TB_SCEN_TB_QUARRY_TERRAIN_COORDINATES = [
+    new Coordinate(11, 1),
+    new Coordinate(2, 4),
+    new Coordinate(11, 7)];
   export const EXT_5_6_EXP_TB_SCEN_TB_HARBOR_COORDINATES = [
-    new Coordinate(6, 0, [BOTTOM_RIGHT]),
-    new Coordinate(12, 0, [BOTTOM_LEFT]),
-    new Coordinate(3, 1, [RIGHT]),
-    new Coordinate(2, 2, [BOTTOM_RIGHT]),
-    new Coordinate(14, 2, [LEFT]),
-    new Coordinate(0, 4, [RIGHT]),
-    new Coordinate(15, 5, [LEFT]),
+    new Coordinate(4, 0, [BOTTOM_RIGHT]),
+    new Coordinate(8, 0, [BOTTOM_LEFT]),
+    new Coordinate(13, 1, [BOTTOM_LEFT]),
+    new Coordinate(1, 3, [RIGHT]),
+    new Coordinate(16, 4, [LEFT]),
+    new Coordinate(1, 5, [TOP_RIGHT]),
     new Coordinate(2, 6, [RIGHT]),
+    new Coordinate(14, 6, [TOP_LEFT]),
+    new Coordinate(13, 7, [LEFT]),
     new Coordinate(4, 8, [TOP_RIGHT]),
-    new Coordinate(6, 8, [TOP_LEFT]),
     new Coordinate(10, 8, [TOP_LEFT])];
   export const EXT_5_6_EXP_TB_SCEN_TB_FISHERY_COORDINATES = [
-    new Coordinate(10, 0, [BOTTOM_RIGHT, BOTTOM_LEFT]),
-    new Coordinate(5, 1, [TOP_LEFT, TOP_RIGHT]),
-    new Coordinate(13, 1, [BOTTOM_LEFT, LEFT]),
-    new Coordinate(1, 3, [RIGHT, BOTTOM_RIGHT]),
-    new Coordinate(14, 4, [TOP_RIGHT, RIGHT]),
-    new Coordinate(3, 5, [BOTTOM_LEFT, LEFT]),
-    new Coordinate(13, 7, [LEFT, TOP_LEFT]),
-    new Coordinate(7, 7, [BOTTOM_RIGHT, BOTTOM_LEFT])];
+    new Coordinate(6, 0, [BOTTOM_RIGHT, BOTTOM_LEFT]),
+    new Coordinate(11, 1, [TOP_LEFT, TOP_RIGHT]),
+    new Coordinate(4, 2, [LEFT, TOP_LEFT]),
+    new Coordinate(15, 3, [BOTTOM_LEFT, LEFT]),
+    new Coordinate(2, 4, [LEFT, TOP_LEFT]),
+    new Coordinate(12, 6, [RIGHT, BOTTOM_RIGHT]),
+    new Coordinate(3, 7, [TOP_RIGHT, RIGHT]),
+    new Coordinate(8, 8, [TOP_LEFT, TOP_RIGHT])];
 // }
