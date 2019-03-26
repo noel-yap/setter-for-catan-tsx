@@ -74,6 +74,9 @@ export class Chits {
   export const BASE_3_EXP_SEA_SCEN_4_ISLANDS_TERRAIN_CHIT_SET = BASE_3_4_PRODUCING_TERRAIN_CHIT_SET
       .concat([CHITS_5, CHITS_9]);
 
+  export const BASE_4_EXP_SEA_SCEN_4_ISLANDS_TERRAIN_CHIT_SET = BASE_3_EXP_SEA_SCEN_4_ISLANDS_TERRAIN_CHIT_SET
+      .concat([CHITS_4, CHITS_10, CHITS_2_12]);
+
   export const BASE_3_EXP_SEA_SCEN_FI_FACE_UP_PRODUCING_TERRAIN_CHIT_SET = [CHITS_3, CHITS_4, CHITS_10, CHITS_12]
       .concat(new Array(2).fill(CHITS_5))
       .concat(new Array(2).fill(CHITS_6))

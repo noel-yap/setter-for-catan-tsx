@@ -494,7 +494,8 @@ class App extends React.Component<AppProps, AppState> {
         '7-8': [Specifications.SPEC_7_8_EXP_SEA_SCEN_HFNS, Coordinates.EXT_7_8_EXP_SEA_SCEN_HFNS_BIG_ISLAND_FISHERY_COORDINATES]
       },
       'Seafarers: The Four Islands': {
-        '3': [Specifications.SPEC_3_EXP_SEA_SCEN_4_ISLANDS, Coordinates.BASE_3_EXP_SEA_SCEN_4_ISLANDS_FISHERY_COORDINATES]
+        '3': [Specifications.SPEC_3_EXP_SEA_SCEN_4_ISLANDS, Coordinates.BASE_3_EXP_SEA_SCEN_4_ISLANDS_FISHERY_COORDINATES],
+        '4': [Specifications.SPEC_4_EXP_SEA_SCEN_4_ISLANDS, Coordinates.BASE_4_EXP_SEA_SCEN_4_ISLANDS_FISHERY_COORDINATES]
       },
       'Seafarers: The Fog Islands': {
         '3': [Specifications.SPEC_3_EXP_SEA_SCEN_FI, Coordinates.BASE_3_EXP_SEA_SCENS_FI_FISHERY_COORDINATES],
