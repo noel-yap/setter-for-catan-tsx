@@ -406,6 +406,57 @@
       new Coordinate(12, 4, [TOP_RIGHT, RIGHT]),
       new Coordinate(12, 6, [LEFT, TOP_LEFT])];
 
+  export const EXT_5_6_EXP_SEA_SCEN_6_ISLANDS_TERRAIN_COORDINATES = [
+      new Coordinate(3, 1),
+      new Coordinate(5, 1),
+      new Coordinate(9, 1),
+      new Coordinate(13, 1),
+      new Coordinate(15, 1),
+      new Coordinate(2, 2),
+      new Coordinate(4, 2),
+      new Coordinate(8, 2),
+      new Coordinate(10, 2),
+      new Coordinate(14, 2),
+      new Coordinate(16, 2),
+      new Coordinate(1, 3),
+      new Coordinate(3, 3),
+      new Coordinate(7, 3),
+      new Coordinate(9, 3),
+      new Coordinate(15, 3),
+      new Coordinate(3, 5),
+      new Coordinate(9, 5),
+      new Coordinate(11, 5),
+      new Coordinate(15, 5),
+      new Coordinate(17, 5),
+      new Coordinate(2, 6),
+      new Coordinate(4, 6),
+      new Coordinate(8, 6),
+      new Coordinate(10, 6),
+      new Coordinate(14, 6),
+      new Coordinate(16, 6),
+      new Coordinate(3, 7),
+      new Coordinate(5, 7),
+      new Coordinate(9, 7),
+      new Coordinate(13, 7),
+      new Coordinate(15, 7)];
+  export const EXT_5_6_EXP_SEA_SCEN_4_ISLANDS_HARBOR_COORDINATES = [
+      new Coordinate(6, 0, [BOTTOM_LEFT]),
+      new Coordinate(11, 1, [BOTTOM_LEFT]),
+      new Coordinate(0, 2, [RIGHT]),
+      new Coordinate(12, 2, [TOP_RIGHT]),
+      new Coordinate(18, 2, [LEFT]),
+      new Coordinate(16, 4, [BOTTOM_LEFT]),
+      new Coordinate(5, 5, [BOTTOM_LEFT]),
+      new Coordinate(13, 5, [BOTTOM_RIGHT]),
+      new Coordinate(2, 8, [TOP_RIGHT]),
+      new Coordinate(8, 8, [TOP_RIGHT]),
+      new Coordinate(14, 8, [TOP_RIGHT])];
+  export const EXT_5_6_EXP_SEA_SCEN_6_ISLANDS_FISHERY_COORDINATES = [
+    new Coordinate(15, 1, [TOP_RIGHT, RIGHT]),
+    new Coordinate(11, 3, [LEFT, TOP_LEFT]),
+    new Coordinate(7, 5, [RIGHT, BOTTOM_RIGHT]),
+    new Coordinate(2, 6, [BOTTOM_LEFT, LEFT])];
+
   export const BASE_3_EXP_SEA_SCEN_FI_FACE_UP_PRODUCING_TERRAIN_COORDINATES = [
     new Coordinate(5, 1),
     new Coordinate(4, 2),
