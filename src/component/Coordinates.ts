@@ -327,6 +327,43 @@
     new Coordinate(14, 10),
     new Coordinate(16, 10)];
 
+  export const BASE_3_EXP_SEA_SCEN_4_ISLANDS_TERRAIN_COORDINATES = [
+      new Coordinate(10, 0),
+      new Coordinate(3, 1),
+      new Coordinate(5, 1),
+      new Coordinate(9, 1),
+      new Coordinate(11, 1),
+      new Coordinate(2, 2),
+      new Coordinate(4, 2),
+      new Coordinate(8, 2),
+      new Coordinate(10, 2),
+      new Coordinate(12, 2),
+      new Coordinate(4, 4),
+      new Coordinate(6, 4),
+      new Coordinate(10, 4),
+      new Coordinate(12, 4),
+      new Coordinate(3, 5),
+      new Coordinate(5, 5),
+      new Coordinate(9, 5),
+      new Coordinate(11, 5),
+      new Coordinate(4, 6),
+      new Coordinate(6, 6)];
+  export const BASE_3_EXP_SEA_SCEN_4_ISLANDS_HARBOR_COORDINATES = [
+      new Coordinate(8, 0, [BOTTOM_RIGHT]),
+      new Coordinate(1, 1, [BOTTOM_RIGHT]),
+      new Coordinate(13, 1, [BOTTOM_LEFT]),
+      new Coordinate(6, 2, [TOP_LEFT]),
+      new Coordinate(5, 3, [BOTTOM_LEFT]),
+      new Coordinate(11, 3, [TOP_RIGHT]),
+      new Coordinate(8, 4, [BOTTOM_RIGHT]),
+      new Coordinate(13, 5, [TOP_LEFT]),
+      new Coordinate(2, 6, [TOP_RIGHT])];
+  export const BASE_3_EXP_SEA_SCEN_4_ISLANDS_FISHERY_COORDINATES = [
+      new Coordinate(4, 0, [BOTTOM_RIGHT, BOTTOM_LEFT]),
+      new Coordinate(3, 3, [TOP_LEFT, TOP_RIGHT]),
+      new Coordinate(11, 3, [BOTTOM_RIGHT, BOTTOM_LEFT]),
+      new Coordinate(10, 6, [TOP_LEFT, TOP_RIGHT])];
+
   export const BASE_3_EXP_SEA_SCEN_FI_FACE_UP_PRODUCING_TERRAIN_COORDINATES = [
     new Coordinate(5, 1),
     new Coordinate(4, 2),
