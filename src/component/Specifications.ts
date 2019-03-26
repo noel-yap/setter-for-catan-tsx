@@ -327,6 +327,20 @@ import * as Tiles from "./Tiles";
       },
       oneToOne('terrain', 'harbor'),
       oneToOne('terrain'));
+  export const SPEC_5_6_EXP_SEA_SCEN_6_ISLANDS = new Specification(
+      {
+        'terrain': Tiles.EXT_5_6_EXP_SEA_SCEN_6_ISLANDS_TERRAIN_TILE_SET,
+        'harbor': Tiles.EXT_5_6_HARBOR_TILE_SET
+      },
+      {
+        'terrain': Coordinates.EXT_5_6_EXP_SEA_SCEN_6_ISLANDS_TERRAIN_COORDINATES,
+        'harbor': Coordinates.EXT_5_6_EXP_SEA_SCEN_4_ISLANDS_HARBOR_COORDINATES
+      },
+      {
+        'terrain': Chits.EXT_5_6_EXP_SEA_SCEN_6_ISLANDS_TERRAIN_CHIT_SET
+      },
+      oneToOne('terrain', 'harbor'),
+      oneToOne('terrain'));
 
   export const SPEC_3_EXP_SEA_SCEN_FI = new Specification(
       {
