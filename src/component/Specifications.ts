@@ -334,10 +334,24 @@ import * as Tiles from "./Tiles";
       },
       {
         'terrain': Coordinates.EXT_5_6_EXP_SEA_SCEN_6_ISLANDS_TERRAIN_COORDINATES,
-        'harbor': Coordinates.EXT_5_6_EXP_SEA_SCEN_4_ISLANDS_HARBOR_COORDINATES
+        'harbor': Coordinates.EXT_5_6_EXP_SEA_SCEN_6_ISLANDS_HARBOR_COORDINATES
       },
       {
         'terrain': Chits.EXT_5_6_EXP_SEA_SCEN_6_ISLANDS_TERRAIN_CHIT_SET
+      },
+      oneToOne('terrain', 'harbor'),
+      oneToOne('terrain'));
+  export const SPEC_7_8_EXP_SEA_SCEN_6_ISLANDS = new Specification(
+      {
+        'terrain': Tiles.EXT_7_8_EXP_SEA_SCEN_8_ISLANDS_TERRAIN_TILE_SET,
+        'harbor': Tiles.EXT_7_8_HARBOR_TILE_SET
+      },
+      {
+        'terrain': Coordinates.EXT_7_8_EXP_SEA_SCEN_8_ISLANDS_TERRAIN_COORDINATES,
+        'harbor': Coordinates.EXT_7_8_EXP_SEA_SCEN_8_ISLANDS_HARBOR_COORDINATES
+      },
+      {
+        'terrain': Chits.EXT_7_8_EXP_SEA_SCEN_8_ISLANDS_TERRAIN_CHIT_SET
       },
       oneToOne('terrain', 'harbor'),
       oneToOne('terrain'));

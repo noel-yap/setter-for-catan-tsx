@@ -172,6 +172,12 @@ import {VertexPosition} from "./Coordinates";
       .concat(new Array(7).fill(PASTURE_TERRAIN))
       .concat(new Array(7).fill(FOREST_TERRAIN));
 
+  export const EXT_7_8_EXP_SEA_SCEN_8_ISLANDS_TERRAIN_TILE_SET = new Array(8).fill(HILL_TERRAIN)
+      .concat(new Array(8).fill(MOUNTAIN_TERRAIN))
+      .concat(new Array(8).fill(PASTURE_TERRAIN))
+      .concat(new Array(9).fill(FIELD_TERRAIN))
+      .concat(new Array(9).fill(FOREST_TERRAIN));
+
   export const BASE_3_EXP_SEA_SCEN_FI_FACE_UP_PRODUCING_TERRAIN_TILE_SET = new Array(2).fill(FIELD_TERRAIN)
       .concat(new Array(2).fill(HILL_TERRAIN))
       .concat(new Array(2).fill(MOUNTAIN_TERRAIN))
