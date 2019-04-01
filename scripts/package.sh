@@ -19,7 +19,7 @@ then
       -v $(git rev-parse --show-toplevel):/home/ec2-user/${project_name} \
       -e PROJECT_NAME=${project_name} \
       -e PROJECT_VERSION=${project_version} \
-      packager.node \
+      ${aws_account_id}.dkr.ecr.${region}.amazonaws.com/packager.node \
       /bin/bash -c "/home/ec2-user/${project_name}/scripts/package.sh"
 
   docker logout
