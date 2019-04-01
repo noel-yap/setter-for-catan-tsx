@@ -2,6 +2,11 @@
 
 if [[ "$(id -u)" != '0' || -z "$(id -u ec2-user 2>/dev/null)" || -z "${PROJECT_NAME}" || -z "${PROJECT_VERSION}" ]]
 then
+  region=us-east-2
+
+  aws_account_id=$(aws sts get-caller-identity --output text --query Account)
+  $(aws ecr get-login --no-include-email --region ${region} | sed 's|https://||')
+
   project_name=$(basename $(git remote get-url origin) .git)
   project_version=$1
   if [ -z "${project_version}" ]
@@ -16,6 +21,8 @@ then
       -e PROJECT_VERSION=${project_version} \
       packager.node \
       /bin/bash -c "/home/ec2-user/${project_name}/scripts/package.sh"
+
+  docker logout
 else
   project_dir="/home/ec2-user/${PROJECT_NAME}"
   package_dir="${project_dir}/package"
