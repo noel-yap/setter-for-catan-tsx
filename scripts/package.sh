@@ -22,7 +22,7 @@ then
       ${aws_account_id}.dkr.ecr.${region}.amazonaws.com/packager.node \
       /bin/bash -c "/home/ec2-user/${project_name}/scripts/package.sh"
 
-  docker logout
+  docker logout >/dev/null 2>&1
 else
   project_dir="/home/ec2-user/${PROJECT_NAME}"
   package_dir="${project_dir}/package"
