@@ -19,7 +19,7 @@ do
   sleep 1
   ((--timeout))
 
-  node_ec2_instance=$(aws ec2 run-instances --image-id "ami-${node_ec2_image}" --count 1 --instance-type t2.micro --security-group-ids "${security_group_ids}" --output text --query 'Instances[].InstanceId')
+  node_ec2_instance=$(aws ec2 run-instances --image-id "${node_ec2_image}" --count 1 --instance-type t2.micro --security-group-ids "${security_group_ids}" --output text --query 'Instances[].InstanceId')
 done
 echo "node_ec2_instance = [${node_ec2_instance}]"
 
