@@ -228,4 +228,16 @@ import {VertexPosition} from "./Coordinates";
       .concat(new Array(3).fill(HILL_TERRAIN))
       .concat(new Array(3).fill(MOUNTAIN_TERRAIN));
   export const BASE_3_4_EXP_TB_SCEN_TB_TRADE_TERRAIN_TILE_SET = [CASTLE_TERRAIN, GLASSWORKS_TERRAIN, QUARRY_TERRAIN];
+
+  export const EXT_7_8_TB_SCEN_TB_NON_TRADE_TERRAIN_TILE_SET = BASE_3_4_PRODUCING_TERRAIN_TILE_SET
+      .concat(BASE_3_4_PRODUCING_TERRAIN_TILE_SET)
+      .concat(BASE_3_4_PRODUCING_TERRAIN_TILE_SET);
+  export const EXT_7_8_TB_SCEN_TB_HARBOR_TILE_SET = BASE_3_4_HARBOR_TILE_SET
+      .concat([
+        GENERIC_HARBOR,
+        GRAIN_HARBOR,
+        LUMBER_HARBOR,
+        WOOL_HARBOR,
+        BRICK_HARBOR,
+        ORE_HARBOR]);
 // }

@@ -154,8 +154,8 @@ import * as Coordinates from "./Coordinates";
 
       console.log(`x ∈ [${minX}, ${maxX}], y ∈ [${minY}, ${maxY}]`);
 
-      for (let y = minY - 1; y < maxY + 1; ++y) {
-        for (let x = minX - 2 + (minX + minY + y) % 2; x < maxX + 2; x += 2) {
+      for (let y = minY; y < maxY + 1; ++y) {
+        for (let x = minX - 2 + (minX + minY) % 2; x < maxX + 2; x += 2) {
           const topVertexContributors = <[Configuration.Configuration[], number][]>[
             [coordinatesMap[key(x, y)], Coordinates.VertexPosition.TOP],
             [coordinatesMap[key(x - 1, y - 1)], Coordinates.VertexPosition.BOTTOM_RIGHT],

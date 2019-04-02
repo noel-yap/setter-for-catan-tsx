@@ -500,7 +500,8 @@ class App extends React.Component<AppProps, AppState> {
       'Traders and Barbarians: Traders and Barbarians': {
         '3': [Specifications.SPEC_3_4_EXP_TB_SCEN_TB, Coordinates.BASE_3_4_FISHERY_COORDINATES],
         '4': [Specifications.SPEC_3_4_EXP_TB_SCEN_TB, Coordinates.BASE_3_4_FISHERY_COORDINATES],
-        '5-6': [Specifications.SPEC_5_6_EXP_TB_SCEN_TB, Coordinates.EXT_5_6_EXP_TB_SCEN_TB_FISHERY_COORDINATES]
+        '5-6': [Specifications.SPEC_5_6_EXP_TB_SCEN_TB, Coordinates.EXT_5_6_EXP_TB_SCEN_TB_FISHERY_COORDINATES],
+        '7-8': [Specifications.SPEC_7_8_EXP_TB_SCEN_TB, Coordinates.EXT_7_8_EXP_TB_SCEN_TB_FISHERY_COORDINATES]
       }
     };
     const SCENs = Object.keys(boardSpecifications);
