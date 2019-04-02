@@ -32,7 +32,7 @@ else
   
   mkdir -p ${package_dir}/root/{home,opt}
 
-  cp -r ${project_dir}/root/* ${package_dir}/root
+  #cp -r ${project_dir}/root/* ${package_dir}/root
   cp -r ${project_dir}/build ${package_dir}/root/opt/${PROJECT_NAME}
   
   chown -R root:root ${package_dir}/root/*
