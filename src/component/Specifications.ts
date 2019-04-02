@@ -117,6 +117,7 @@ import * as Tiles from "./Tiles";
         : 0;
     const fisheryCount = fisheryCoordinates.length;
 
+    // TODO: Handle not replacing deserts.
     // TODO: Handle desertCount > 2.
     // TODO: Handle fisheryCount > 8.
     const tiles = Object.assign({..._.omit(specification.tiles, 'desert')}, {
@@ -572,7 +573,7 @@ import * as Tiles from "./Tiles";
         'harbor': Coordinates.BASE_3_4_HARBOR_COORDINATES
       },
       {
-        'non-trade-terrain': Chits.BASE_EXP_TB_SCEN_TB_TERRAIN_CHIT_SET
+        'non-trade-terrain': Chits.BASE_3_4_EXP_TB_SCEN_TB_TERRAIN_CHIT_SET
       },
       oneToOne('non-trade-terrain', 'trade-terrain', 'harbor'),
       oneToOne('non-trade-terrain'));
@@ -599,4 +600,24 @@ import * as Tiles from "./Tiles";
         'non-trade-terrain': ['producing-terrain', 'desert']
       }),
       oneToOne('producing-terrain'));
+  export const SPEC_7_8_EXP_TB_SCEN_TB = new Specification(
+      {
+        'non-trade-terrain': Tiles.EXT_7_8_TB_SCEN_TB_NON_TRADE_TERRAIN_TILE_SET,
+        'castle': [Tiles.CASTLE_TERRAIN],
+        'glassworks': new Array(3).fill(Tiles.GLASSWORKS_TERRAIN),
+        'quarry': new Array(3).fill(Tiles.QUARRY_TERRAIN),
+        'harbor': Tiles.EXT_7_8_TB_SCEN_TB_HARBOR_TILE_SET
+      },
+      {
+        'non-trade-terrain': Coordinates.EXT_7_8_EXP_TB_SCEN_TB_NON_TRADE_TERRAIN_COORDINATES,
+        'castle': Coordinates.EXT_7_8_EXP_TB_SCEN_TB_CASTLE_TERRAIN_COORDINATES,
+        'glassworks': Coordinates.EXT_7_8_EXP_TB_SCEN_TB_GLASSWORKS_TERRAIN_COORDINATES,
+        'quarry': Coordinates.EXT_7_8_EXP_TB_SCEN_TB_QUARRY_TERRAIN_COORDINATES,
+        'harbor': Coordinates.EXT_7_8_EXP_TB_SCEN_TB_HARBOR_COORDINATES
+      },
+      {
+        'non-trade-terrain': Chits.EXT_7_8_EXP_TB_SCEN_TB_TERRAIN_CHIT_SET
+      },
+      oneToOne('non-trade-terrain', 'castle', 'glassworks', 'quarry', 'harbor'),
+      oneToOne('non-trade-terrain'));
 // }
