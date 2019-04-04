@@ -173,7 +173,7 @@ import * as Coordinates from "./Coordinates";
                 .map((elt) => {
                   const eligibleConfiguration = elt[0]
                       .filter((ct) => {
-                        return [Tiles.SEA, Tiles.UNKNOWN].every((t) => t !== ct.tile)
+                        return Tiles.SEA !== ct.tile
                             && ct.coordinate.edgePositions.some((p) => {
                               return p === elt[1] || p === (elt[1] + 5) % 6;
                             });

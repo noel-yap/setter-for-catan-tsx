@@ -19,3 +19,12 @@
   margin-top: 1em;
   margin-bottom: 1em;
 }
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+#× {
+  display: none;
+}
