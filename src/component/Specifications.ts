@@ -84,6 +84,7 @@ import * as Tiles from "./Tiles";
             }, {})
       };
 
+      // TODO: Allow specification not to shuffle (eg for face-down tiles and sets of like tiles).
       const tileCoordinateMap = tileArtifactMap(this.coordinatesTilesMap, this.coordinates);
       const tileChitsMap = tileArtifactMap(this.chitsTilesMap, this.chits);
 
@@ -112,15 +113,13 @@ import * as Tiles from "./Tiles";
       Chits.CHITS_5,
       Chits.CHITS_9];
 
-    const desertCount = specification.tiles.hasOwnProperty('desert')
-        ? specification.tiles['desert'].length
+    const desertCount = specification.tiles.hasOwnProperty('desert-or-lake')
+        ? specification.tiles['desert-or-lake'].length
         : 0;
     const fisheryCount = fisheryCoordinates.length;
 
-    // TODO: Handle not replacing deserts.
-    // TODO: Handle desertCount > 2.
     // TODO: Handle fisheryCount > 8.
-    const tiles = Object.assign({..._.omit(specification.tiles, 'desert')}, {
+    const tiles = Object.assign({..._.omit(specification.tiles, 'desert-or-lake')}, {
       'lake': new Array(desertCount).fill(Tiles.LAKE),
       'fishery': new Array(fisheryCount).fill(Tiles.FISHERY)
     });
@@ -134,7 +133,7 @@ import * as Tiles from "./Tiles";
               return Object.assign(object, {
                 [key]: specification.coordinatesTilesMap[key]
                     .map((tilesName) => {
-                      return tilesName === 'desert'
+                      return tilesName === 'desert-or-lake'
                           ? 'lake'
                           : tilesName;
                     })
@@ -164,7 +163,7 @@ import * as Tiles from "./Tiles";
   export const SPEC_3_4 = new Specification(
       {
         'producing-terrain': Tiles.BASE_3_4_PRODUCING_TERRAIN_TILE_SET,
-        'desert': [Tiles.DESERT_TERRAIN],
+        'desert-or-lake': [Tiles.DESERT_TERRAIN],
         'harbor': Tiles.BASE_3_4_HARBOR_TILE_SET
       },
       {
@@ -175,13 +174,13 @@ import * as Tiles from "./Tiles";
         'producing-terrain': Chits.BASE_3_4_PRODUCING_TERRAIN_CHIT_SET
       },
       Object.assign(oneToOne('harbor'), {
-        'terrain': ['producing-terrain', 'desert']
+        'terrain': ['producing-terrain', 'desert-or-lake']
       }),
       oneToOne('producing-terrain'));
   export const SPEC_5_6 = new Specification(
       {
         'producing-terrain': Tiles.EXT_5_6_PRODUCING_TERRAIN_TILE_SET,
-        'desert': new Array(2).fill(Tiles.DESERT_TERRAIN),
+        'desert-or-lake': new Array(2).fill(Tiles.DESERT_TERRAIN),
         'harbor': Tiles.EXT_5_6_HARBOR_TILE_SET
       },
       {
@@ -192,13 +191,13 @@ import * as Tiles from "./Tiles";
         'producing-terrain': Chits.EXT_5_6_PRODUCING_TERRAIN_CHIT_SET
       },
       Object.assign(oneToOne('harbor'), {
-        'terrain': ['producing-terrain', 'desert']
+        'terrain': ['producing-terrain', 'desert-or-lake']
       }),
       oneToOne('producing-terrain'));
   export const SPEC_7_8 = new Specification(
       {
         'producing-terrain': Tiles.EXT_7_8_PRODUCING_TERRAIN_TILE_SET,
-        'desert': [Tiles.DESERT_TERRAIN],
+        'desert-or-lake': [Tiles.DESERT_TERRAIN],
         'harbor': Tiles.EXT_7_8_HARBOR_TILE_SET
       },
       {
@@ -209,7 +208,7 @@ import * as Tiles from "./Tiles";
         'producing-terrain': Chits.EXT_7_8_PRODUCING_TERRAIN_CHIT_SET
       },
       Object.assign(oneToOne('harbor'), {
-        'terrain': ['producing-terrain', 'desert']
+        'terrain': ['producing-terrain', 'desert-or-lake']
       }),
       oneToOne('producing-terrain'));
 
@@ -236,7 +235,7 @@ import * as Tiles from "./Tiles";
   export const SPEC_4_EXP_SEA_SCEN_HFNS = new Specification(
       {
         'big-island-producing-terrain': Tiles.BASE_3_4_PRODUCING_TERRAIN_TILE_SET,
-        'desert': [Tiles.DESERT_TERRAIN],
+        'desert-or-lake': [Tiles.DESERT_TERRAIN],
         'small-island-producing-terrain': Tiles.BASE_4_EXP_SEA_SCEN_HFNS_SMALL_ISLANDS_PRODUCING_TERRAIN_TILE_SET,
         'sea': new Array(4).fill(Tiles.SEA),
         'harbor': Tiles.BASE_3_4_HARBOR_TILE_SET
@@ -251,14 +250,14 @@ import * as Tiles from "./Tiles";
         'small-island-producing-terrain': Chits.BASE_4_EXP_SEA_SCEN_HFNS_SMALL_ISLANDS_PRODUCING_TERRAIN_CHIT_SET
       },
       Object.assign(oneToOne('harbor'), {
-        'big-island-terrain': ['big-island-producing-terrain', 'desert'],
+        'big-island-terrain': ['big-island-producing-terrain', 'desert-or-lake'],
         'small-island-terrain': ['small-island-producing-terrain', 'sea']
       }),
       oneToOne('big-island-producing-terrain', 'small-island-producing-terrain'));
   export const SPEC_5_6_EXP_SEA_SCEN_HFNS = new Specification(
       {
         'big-island-producing-terrain': Tiles.EXT_5_6_PRODUCING_TERRAIN_TILE_SET,
-        'desert': new Array(2).fill(Tiles.DESERT_TERRAIN),
+        'desert-or-lake': new Array(2).fill(Tiles.DESERT_TERRAIN),
         'small-island-producing-terrain': Tiles.EXT_5_6_EXP_SEA_SCEN_HFNS_SMALL_ISLANDS_PRODUCING_TERRAIN_TILE_SET,
         'sea': new Array(4).fill(Tiles.SEA),
         'harbor': Tiles.EXT_5_6_HARBOR_TILE_SET
@@ -273,14 +272,14 @@ import * as Tiles from "./Tiles";
         'small-island-producing-terrain': Chits.EXT_5_6_EXP_SEA_SCEN_HFNS_SMALL_ISLANDS_PRODUCING_TERRAIN_CHIT_SET
       },
       Object.assign(oneToOne('harbor'), {
-        'big-island-terrain': ['big-island-producing-terrain', 'desert'],
+        'big-island-terrain': ['big-island-producing-terrain', 'desert-or-lake'],
         'small-island-terrain': ['small-island-producing-terrain', 'sea']
       }),
       oneToOne('big-island-producing-terrain', 'small-island-producing-terrain'));
   export const SPEC_7_8_EXP_SEA_SCEN_HFNS = new Specification(
       {
         'big-island-producing-terrain': Tiles.EXT_7_8_PRODUCING_TERRAIN_TILE_SET,
-        'desert': [Tiles.DESERT_TERRAIN],
+        'desert-or-lake': [Tiles.DESERT_TERRAIN],
         'small-island-producing-terrain': Tiles.EXT_7_8_EXP_SEA_SCEN_HFNS_SMALL_ISLANDS_PRODUCING_TERRAIN_TILE_SET,
         'sea': new Array(10).fill(Tiles.SEA),
         'harbor': Tiles.EXT_7_8_HARBOR_TILE_SET
@@ -295,7 +294,7 @@ import * as Tiles from "./Tiles";
         'small-island-producing-terrain': Chits.EXT_7_8_EXP_SEA_SCEN_HFNS_SMALL_ISLANDS_PRODUCING_TERRAIN_CHIT_SET
       },
       Object.assign(oneToOne('harbor'), {
-        'big-island-terrain': ['big-island-producing-terrain', 'desert'],
+        'big-island-terrain': ['big-island-producing-terrain', 'desert-or-lake'],
         'small-island-terrain': ['small-island-producing-terrain', 'sea']
       }),
       oneToOne('big-island-producing-terrain', 'small-island-producing-terrain'));
@@ -360,7 +359,8 @@ import * as Tiles from "./Tiles";
   export const SPEC_3_EXP_SEA_SCEN_FI = new Specification(
       {
         'face-up-terrain': Tiles.BASE_3_EXP_SEA_SCEN_FI_FACE_UP_PRODUCING_TERRAIN_TILE_SET,
-        'face-down-terrain': new Array(12).fill(Tiles.UNKNOWN),
+        'face-down-producing-terrain': Tiles.BASE_3_EXP_SEA_SCEN_FI_FACE_DOWN_PRODUCING_TERRAIN_TILE_SET,
+        'face-down-sea': new Array(2).fill(Tiles.SEA),
         'harbor': Tiles.BASE_3_EXP_SEA_SCEN_FI_HARBOR_TILE_SET
       },
       {
@@ -369,14 +369,18 @@ import * as Tiles from "./Tiles";
         'harbor': Coordinates.BASE_3_EXP_SEA_SCEN_FI_HARBOR_COORDINATES
       },
       {
-        'face-up-terrain': Chits.BASE_3_EXP_SEA_SCEN_FI_FACE_UP_PRODUCING_TERRAIN_CHIT_SET
+        'face-up-terrain': Chits.BASE_3_EXP_SEA_SCEN_FI_FACE_UP_PRODUCING_TERRAIN_CHIT_SET,
+        'face-down-producing-terrain': Chits.BASE_3_EXP_SEA_SCEN_FI_FACE_DOWN_PRODUCING_TERRAIN_CHIT_SET
       },
-      oneToOne('face-up-terrain', 'face-down-terrain', 'harbor'),
-      oneToOne('face-up-terrain'));
+      Object.assign(oneToOne('face-up-terrain', 'harbor'), {
+        'face-down-terrain': ['face-down-producing-terrain', 'face-down-sea']
+      }),
+      oneToOne('face-up-terrain', 'face-down-producing-terrain'));
   export const SPEC_4_EXP_SEA_SCEN_FI = new Specification(
       {
         'face-up-terrain': Tiles.BASE_4_EXP_SEA_SCEN_FI_FACE_UP_PRODUCING_TERRAIN_TILE_SET,
-        'face-down-terrain': new Array(12).fill(Tiles.UNKNOWN),
+        'face-down-producing-terrain': Tiles.BASE_4_EXP_SEA_SCEN_FI_FACE_DOWN_PRODUCING_TERRAIN_TILE_SET,
+        'face-down-sea': new Array(2).fill(Tiles.SEA),
         'harbor': Tiles.BASE_3_4_HARBOR_TILE_SET
       },
       {
@@ -385,32 +389,61 @@ import * as Tiles from "./Tiles";
         'harbor': Coordinates.BASE_4_EXP_SEA_SCEN_FI_HARBOR_COORDINATES
       },
       {
-        'face-up-terrain': Chits.BASE_4_EXP_SEA_SCEN_FI_FACE_UP_PRODUCING_TERRAIN_CHIT_SET
+        'face-up-terrain': Chits.BASE_4_EXP_SEA_SCEN_FI_FACE_UP_PRODUCING_TERRAIN_CHIT_SET,
+        'face-down-producing-terrain': Chits.BASE_4_EXP_SEA_SCEN_FI_FACE_DOWN_PRODUCING_TERRAIN_CHIT_SET
       },
-      oneToOne('face-up-terrain', 'face-down-terrain', 'harbor'),
-      oneToOne('face-up-terrain'));
+      Object.assign(oneToOne('face-up-terrain', 'harbor'), {
+        'face-down-terrain': ['face-down-producing-terrain', 'face-down-sea']
+      }),
+      oneToOne('face-up-terrain', 'face-down-producing-terrain'));
   export const SPEC_5_6_EXP_SEA_SCEN_FI = new Specification(
       {
-        'face-up-terrain': Tiles.EXT_5_6_EXP_SEA_SCEN_FI_FACE_UP_PRODUCING_TERRAIN_TILE_SET,
-        'desert': [Tiles.DESERT_TERRAIN],
-        'face-down-terrain': new Array(25).fill(Tiles.UNKNOWN),
+        'face-up-producing-terrain': Tiles.EXT_5_6_EXP_SEA_SCEN_FI_FACE_UP_PRODUCING_TERRAIN_TILE_SET,
+        'face-up-desert': [Tiles.DESERT_TERRAIN],
+        'face-down-producing-terrain': Tiles.EXT_5_6_EXP_SEA_SCEN_FI_FACE_DOWN_PRODUCING_TERRAIN_TILE_SET,
+        'face-down-sea': new Array(12).fill(Tiles.SEA),
         'gold': new Array(2).fill(Tiles.GOLD_TERRAIN),
         'harbor': Tiles.BASE_3_4_HARBOR_TILE_SET
       },
       {
-        'face-up-terrain': Coordinates.EXT_5_6_EXP_SEA_SCEN_FI_FACE_UP_PRODUCING_TERRAIN_COORDINATES,
+        'face-up-terrain': Coordinates.EXT_5_6_EXP_SEA_SCEN_FI_FACE_UP_TERRAIN_COORDINATES,
         'face-down-terrain': Coordinates.EXT_5_6_EXP_SEA_SCEN_FI_FACE_DOWN_COORDINATES,
         'gold': Coordinates.EXT_5_6_EXP_SEA_SCEN_FI_GOLD_TERRAIN_COORDINATES,
         'harbor': Coordinates.EXT_5_6_EXP_SEA_SCEN_FI_HARBOR_COORDINATES
       },
       {
-        'face-up-terrain': Chits.EXT_5_6_EXP_SEA_SCEN_FI_FACE_UP_PRODUCING_TERRAIN_CHIT_SET,
+        'face-up-producing-terrain': Chits.EXT_5_6_EXP_SEA_SCEN_FI_FACE_UP_PRODUCING_TERRAIN_CHIT_SET,
+        'face-down-producing-terrain': Chits.EXT_5_6_EXP_SEA_SCEN_FI_FACE_DOWN_PRODUCING_TERRAIN_CHIT_SET,
         'gold': Chits.EXT_5_6_EXP_SEA_SCEN_FI_GOLD_TERRAIN_CHIT_SET
       },
-      Object.assign(oneToOne('face-down-terrain', 'gold', 'harbor'), {
-        'face-up-terrain': ['face-up-terrain', 'desert']
+      Object.assign(oneToOne('gold', 'harbor'), {
+        'face-up-terrain': ['face-up-producing-terrain', 'face-up-desert'],
+        'face-down-terrain': ['face-down-producing-terrain', 'face-down-sea']
       }),
-      oneToOne('face-up-terrain', 'gold'));
+      oneToOne('face-up-producing-terrain', 'face-down-producing-terrain', 'gold'));
+  export const SPEC_7_8_EXP_SEA_SCEN_FI = new Specification(
+      {
+        'face-up-producing-terrain': Tiles.EXT_7_8_EXP_SEA_SCEN_FI_FACE_UP_PRODUCING_TERRAIN_TILE_SET,
+        'face-up-desert': [Tiles.DESERT_TERRAIN],
+        'desert-or-lake': new Array(2).fill(Tiles.DESERT_TERRAIN),
+        'face-down-producing-terrain': Tiles.EXT_7_8_EXP_SEA_SCEN_FI_FACE_DOWN_PRODUCING_TERRAIN_TILE_SET,
+        'face-down-sea': new Array(18).fill(Tiles.SEA),
+        'harbor': Tiles.EXT_7_8_HARBOR_TILE_SET
+      },
+      {
+        'face-up-terrain': Coordinates.EXT_7_8_EXP_SEA_SCEN_FI_FACE_UP_TERRAIN_COORDINATES,
+        'face-down-terrain': Coordinates.EXT_7_8_EXP_SEA_SCEN_FI_FACE_DOWN_COORDINATES,
+        'harbor': Coordinates.EXT_7_8_EXP_SEA_SCEN_FI_HARBOR_COORDINATES
+      },
+      {
+        'face-up-producing-terrain': Chits.EXT_7_8_EXP_SEA_SCEN_FI_FACE_UP_PRODUCING_TERRAIN_CHIT_SET,
+        'face-down-producing-terrain': Chits.EXT_7_8_EXP_SEA_SCEN_FI_FACE_DOWN_PRODUCING_TERRAIN_CHIT_SET
+      },
+      Object.assign(oneToOne('harbor'), {
+        'face-up-terrain': ['face-up-producing-terrain', 'face-up-desert', 'desert-or-lake'],
+        'face-down-terrain': ['face-down-producing-terrain', 'face-down-sea']
+      }),
+      oneToOne('face-up-producing-terrain', 'face-down-producing-terrain'));
 
   export const SPEC_3_4_EXP_TB_SCEN_ROC = new Specification(
       {
@@ -580,7 +613,7 @@ import * as Tiles from "./Tiles";
   export const SPEC_5_6_EXP_TB_SCEN_TB = new Specification(
       {
         'producing-terrain': Tiles.EXT_5_6_PRODUCING_TERRAIN_TILE_SET,
-        'desert': new Array(2).fill(Tiles.DESERT_TERRAIN),
+        'desert-or-lake': new Array(2).fill(Tiles.DESERT_TERRAIN),
         'castle': [Tiles.CASTLE_TERRAIN],
         'glassworks': new Array(3).fill(Tiles.GLASSWORKS_TERRAIN),
         'quarry': new Array(3).fill(Tiles.QUARRY_TERRAIN),
@@ -597,7 +630,7 @@ import * as Tiles from "./Tiles";
         'producing-terrain': Chits.EXT_5_6_PRODUCING_TERRAIN_CHIT_SET
       },
       Object.assign(oneToOne('castle', 'glassworks', 'quarry', 'harbor'), {
-        'non-trade-terrain': ['producing-terrain', 'desert']
+        'non-trade-terrain': ['producing-terrain', 'desert-or-lake']
       }),
       oneToOne('producing-terrain'));
   export const SPEC_7_8_EXP_TB_SCEN_TB = new Specification(

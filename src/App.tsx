@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import ListItem from '@material-ui/core/ListItem';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Radio from '@material-ui/core/Radio';
@@ -59,7 +60,46 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
       canvasDiv.appendChild(this.renderBoard());
     }
 
-    return (<div id="generated-board-div" ref={this.canvasDivRef}/>);
+    const terrainTilesByType = GeneratedBoard.groupByComponentType(this.props.board.terrainTilesLayout);
+    const riverByType = GeneratedBoard.groupByComponentType(this.props.board.riverLayout);
+    const fisheryTilesByType = GeneratedBoard.groupByComponentType(this.props.board.fisheryTilesLayout);
+    const portTilesByType = GeneratedBoard.groupByComponentType(this.props.board.portTilesLayout);
+    const chits = _.groupBy(this.props.board.terrainTilesLayout.concat(this.props.board.fisheryTilesLayout), (component) => {
+      return component.chits.values;
+    });
+
+    return (
+        <div className="row">
+          <div>
+            <Typography variant="body1">
+              Components:
+            </Typography>
+            <Typography variant="body2">
+              {GeneratedBoard.renderBom(terrainTilesByType)}
+              {GeneratedBoard.renderBom(riverByType)}
+              {GeneratedBoard.renderBom(fisheryTilesByType)}
+              {GeneratedBoard.renderBom(portTilesByType)}
+              {GeneratedBoard.renderBom(chits, 'Chit')}
+            </Typography>
+          </div>
+          <div id="generated-board-div" ref={this.canvasDivRef}/>
+        </div>);
+  }
+
+  static groupByComponentType(components: Configuration.Configuration[]): _.Dictionary<Configuration.Configuration[]> {
+    return _.groupBy(components, (component) => {
+      return component.tile.type;
+    });
+  }
+
+  static renderBom(componentsGroupedByType: _.Dictionary<Configuration.Configuration[]>, suffix: string = '') {
+    return Object.keys(componentsGroupedByType).map((type) => {
+      return (
+          <ListItem id={`×${type}`} key={type}>
+            {componentsGroupedByType[type].length} × {type} {suffix}
+          </ListItem>
+      );
+    });
   }
 
   renderBoard(): HTMLCanvasElement {
@@ -69,7 +109,7 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
       fg: 'black',
       bg: 'navy',
       width: 30,
-      height: 11,
+      height: 14,
       spacing: 5
     };
     const display = new ROT.Display(displayOptions as Partial<DisplayOptions>);
@@ -113,16 +153,16 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
   static renderTerrain(display: ROT.Display, configuredTile: Configuration.Configuration) {
     const options = display._options;
 
-    const label = configuredTile.tile === Tiles.UNKNOWN
-        ? '?'
-        : GeneratedBoard.chitsToString(configuredTile.chits);
-    const tileColor = GeneratedBoard.tileColor(configuredTile.tile);
-    display.draw(
-        configuredTile.coordinate.x,
-        configuredTile.coordinate.y,
-        label,
-        GeneratedBoard.chitColor(configuredTile.tile, configuredTile.chits, options.fg),
-        tileColor);
+    const draw = _.partial(display.draw.bind(display), configuredTile.coordinate.x, configuredTile.coordinate.y);
+
+    if (configuredTile.coordinate.facePosition === Coordinates.FacePosition.FACE_UP) {
+      draw(
+          GeneratedBoard.chitsToString(configuredTile.chits),
+          GeneratedBoard.chitColor(configuredTile.tile, configuredTile.chits, options.fg),
+          GeneratedBoard.tileColor(configuredTile.tile));
+    } else {
+      draw('?', 'black', 'white');
+    }
 
     window.requestAnimationFrame(() => {
       const hexSize = (display._backend as Hex)._hexSize;
@@ -135,7 +175,9 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
         const midpoint = vertex.translate(hexCenter.diff(vertex).scale(.5));
 
         const specialVertexColor = ROT.Color.toHex(ROT.Color.interpolate(
-            ROT.Color.fromString(tileColor) as [number, number, number],
+            ROT.Color.fromString(configuredTile.coordinate.facePosition === Coordinates.FacePosition.FACE_UP
+                ? GeneratedBoard.tileColor(configuredTile.tile)
+                : 'white') as [number, number, number],
             ROT.Color.fromString('white') as [number, number, number]));
         GeneratedBoard.renderPolygon(
             display,
@@ -347,10 +389,6 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
 
   static tileColor(tile: Tiles.Tile): string {
     switch (tile.type) {
-      case Tiles.Type.UNKNOWN: {
-        return 'white';
-      }
-
       case Tiles.Type.DESERT:
       case Tiles.Type.OASIS: {
         return 'sandybrown';
@@ -425,7 +463,7 @@ interface AppState {
   playerCount: string,
 
   useFishermenOfCatanVariant: boolean,
-  SCEN: string,
+  scenario: string,
   boardGenerator: Boards.BoardGenerator,
   board: Boards.Board
 }
@@ -445,7 +483,7 @@ class App extends React.Component<AppProps, AppState> {
       playerCount: '3',
 
       useFishermenOfCatanVariant: false,
-      SCEN: 'Base',
+      scenario: 'Base',
       boardGenerator: new Boards.BoardGenerator(Specifications.SPEC_3_4),
       board: new Boards.Board([])
     };
@@ -481,9 +519,10 @@ class App extends React.Component<AppProps, AppState> {
         '7-8': [Specifications.SPEC_7_8_EXP_SEA_SCEN_6_ISLANDS, Coordinates.EXT_7_8_EXP_SEA_SCEN_8_ISLANDS_FISHERY_COORDINATES]
       },
       'Seafarers: The Fog Islands': {
-        '3': [Specifications.SPEC_3_EXP_SEA_SCEN_FI, Coordinates.BASE_3_EXP_SEA_SCENS_FI_FISHERY_COORDINATES],
-        '4': [Specifications.SPEC_4_EXP_SEA_SCEN_FI, Coordinates.BASE_4_EXP_SEA_SCENS_FI_FISHERY_COORDINATES],
-        '5-6': [Specifications.SPEC_5_6_EXP_SEA_SCEN_FI, Coordinates.EXT_5_6_EXP_SEA_SCENS_FI_FISHERY_COORDINATES]
+        '3': [Specifications.SPEC_3_EXP_SEA_SCEN_FI, Coordinates.BASE_3_EXP_SEA_SCEN_FI_FISHERY_COORDINATES],
+        '4': [Specifications.SPEC_4_EXP_SEA_SCEN_FI, Coordinates.BASE_4_EXP_SEA_SCEN_FI_FISHERY_COORDINATES],
+        '5-6': [Specifications.SPEC_5_6_EXP_SEA_SCEN_FI, Coordinates.EXT_5_6_EXP_SEA_SCEN_FI_FISHERY_COORDINATES],
+        '7-8': [Specifications.SPEC_7_8_EXP_SEA_SCEN_FI, Coordinates.EXT_7_8_EXP_SEA_SCEN_FI_FISHERY_COORDINATES]
       },
       'Traders and Barbarians: Rivers of Catan': {
         '3': [Specifications.SPEC_3_4_EXP_TB_SCEN_ROC, Coordinates.BASE_3_4_FISHERY_COORDINATES],
@@ -504,7 +543,7 @@ class App extends React.Component<AppProps, AppState> {
         '7-8': [Specifications.SPEC_7_8_EXP_TB_SCEN_TB, Coordinates.EXT_7_8_EXP_TB_SCEN_TB_FISHERY_COORDINATES]
       }
     };
-    const SCENs = Object.keys(boardSpecifications);
+    const scenarios = Object.keys(boardSpecifications);
     const playerCounts = Object.keys(boardSpecifications['Base']);
 
     return (
@@ -519,7 +558,7 @@ class App extends React.Component<AppProps, AppState> {
                   name="number-of-players"
                   value={this.state.playerCount}
                   onChange={(event: any) => {
-                    this.generateBoard(boardSpecifications, this.state.SCEN, event.target.value, this.state.useFishermenOfCatanVariant);
+                    this.generateBoard(boardSpecifications, this.state.scenario, event.target.value, this.state.useFishermenOfCatanVariant);
                   }}
                   row
               >
@@ -529,7 +568,7 @@ class App extends React.Component<AppProps, AppState> {
                           key={playerCount}
                           value={playerCount}
                           label={playerCount}
-                          disabled={!boardSpecifications[this.state.SCEN].hasOwnProperty(playerCount)}
+                          disabled={!boardSpecifications[this.state.scenario].hasOwnProperty(playerCount)}
                           control={<Radio color="primary"/>}
                       />
                   );
@@ -540,7 +579,7 @@ class App extends React.Component<AppProps, AppState> {
                   label="Fishermen of Catan"
                   color={this.state.useFishermenOfCatanVariant ? "primary" : "secondary"}
                   onClick={() => {
-                    this.generateBoard(boardSpecifications, this.state.SCEN, this.state.playerCount, !this.state.useFishermenOfCatanVariant)
+                    this.generateBoard(boardSpecifications, this.state.scenario, this.state.playerCount, !this.state.useFishermenOfCatanVariant)
                   }}
               />
               <br/>
@@ -561,11 +600,11 @@ class App extends React.Component<AppProps, AppState> {
                       });
                     }}
                 >
-                  <Typography variant="h4">Generate {this.state.SCEN}</Typography>
+                  <Typography variant="h4">Generate {this.state.scenario}</Typography>
                 </Button>
               </Tooltip>
               <Menu
-                  id="SCENs"
+                  id="scenarios"
                   anchorEl={document.getElementById('generate-board-button')}
                   open={this.state.openMenu}
                   onClose={() => {
@@ -574,15 +613,15 @@ class App extends React.Component<AppProps, AppState> {
                     });
                   }}>
                 {
-                  SCENs.map((SCEN) => (
+                  scenarios.map((scenario) => (
                       <MenuItem
-                          key={SCEN}
-                          disabled={!boardSpecifications[SCEN].hasOwnProperty(this.state.playerCount)}
+                          key={scenario}
+                          disabled={!boardSpecifications[scenario].hasOwnProperty(this.state.playerCount)}
                           onClick={() => {
-                            this.generateBoard(boardSpecifications, SCEN, this.state.playerCount, this.state.useFishermenOfCatanVariant);
+                            this.generateBoard(boardSpecifications, scenario, this.state.playerCount, this.state.useFishermenOfCatanVariant);
                           }}
                       >
-                        {SCEN}
+                        {scenario}
                       </MenuItem>
                   ))
                 }
@@ -594,15 +633,15 @@ class App extends React.Component<AppProps, AppState> {
     );
   }
 
-  generateBoard(boardSpecifications: BoardSpecifications, SCEN: string, playerCount: string, useFishermenOfCatanVariant: boolean) {
+  generateBoard(boardSpecifications: BoardSpecifications, scenario: string, playerCount: string, useFishermenOfCatanVariant: boolean) {
     const boardGenerator = new Boards.BoardGenerator(useFishermenOfCatanVariant
-        ? Specifications.withFisheries(boardSpecifications[SCEN][playerCount][0], boardSpecifications[SCEN][playerCount][1])
-        : boardSpecifications[SCEN][playerCount][0]);
+        ? Specifications.withFisheries(boardSpecifications[scenario][playerCount][0], boardSpecifications[scenario][playerCount][1])
+        : boardSpecifications[scenario][playerCount][0]);
 
     this.setState({
       openMenu: false,
 
-      SCEN: SCEN,
+      scenario: scenario,
       playerCount: playerCount,
       useFishermenOfCatanVariant: useFishermenOfCatanVariant,
       boardGenerator: boardGenerator,

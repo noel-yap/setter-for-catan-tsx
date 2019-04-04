@@ -17,11 +17,17 @@
     TOP_LEFT
   }
 
+  export enum FacePosition {
+    FACE_UP,
+    FACE_DOWN
+  }
+
   export class Coordinate {
     constructor(
         public x: number,
         public y: number,
-        public edgePositions: EdgePosition[] = HEXAGON_EDGE_POSITIONS) {}
+        public edgePositions: EdgePosition[] = HEXAGON_EDGE_POSITIONS,
+        public facePosition: FacePosition = FacePosition.FACE_UP) {}
   }
 
   export const TOP_RIGHT = EdgePosition.TOP_RIGHT;
@@ -549,7 +555,7 @@
     new Coordinate(14, 6, [TOP_LEFT]),
     new Coordinate(13, 7, [LEFT]),
     new Coordinate(10, 8, [TOP_LEFT])];
-  export const BASE_3_EXP_SEA_SCENS_FI_FISHERY_COORDINATES = [
+  export const BASE_3_EXP_SEA_SCEN_FI_FISHERY_COORDINATES = [
     new Coordinate(10, 0, [BOTTOM_RIGHT, BOTTOM_LEFT]),
     new Coordinate(13, 1, [BOTTOM_LEFT, LEFT]),
     new Coordinate(4, 2, [LEFT, TOP_LEFT]),
@@ -557,18 +563,18 @@
     new Coordinate(1, 7, [TOP_RIGHT, RIGHT]),
     new Coordinate(4, 8, [TOP_LEFT, TOP_RIGHT])];
   export const BASE_3_EXP_SEA_SCEN_FI_FACE_DOWN_COORDINATES = [
-    new Coordinate(9, 1),
-    new Coordinate(11, 1),
-    new Coordinate(10, 2),
-    new Coordinate(12, 2),
-    new Coordinate(9, 3),
-    new Coordinate(8, 4),
-    new Coordinate(7, 5),
-    new Coordinate(2, 6),
-    new Coordinate(4, 6),
-    new Coordinate(6, 6),
-    new Coordinate(3, 7),
-    new Coordinate(5, 7)];
+    new Coordinate(9, 1, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(11, 1, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(10, 2, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(12, 2, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(9, 3, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(8, 4, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(7, 5, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(2, 6, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(4, 6, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(6, 6, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(3, 7, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(5, 7, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN)];
 
   export const BASE_4_EXP_SEA_SCEN_FI_FACE_UP_PRODUCING_TERRAIN_COORDINATES = [
     new Coordinate(3, 1),
@@ -598,7 +604,7 @@
     new Coordinate(13, 7, [LEFT]),
     new Coordinate(8, 8, [TOP_LEFT]),
     new Coordinate(10, 8, [TOP_RIGHT])];
-  export const BASE_4_EXP_SEA_SCENS_FI_FISHERY_COORDINATES = [
+  export const BASE_4_EXP_SEA_SCEN_FI_FISHERY_COORDINATES = [
     new Coordinate(9, 1, [TOP_LEFT, TOP_RIGHT]),
     new Coordinate(11, 1, [TOP_RIGHT, RIGHT]),
     new Coordinate(2, 2, [LEFT, TOP_LEFT]),
@@ -606,20 +612,20 @@
     new Coordinate(2, 6, [BOTTOM_LEFT, LEFT]),
     new Coordinate(3, 7, [BOTTOM_RIGHT, BOTTOM_LEFT])];
   export const BASE_4_EXP_SEA_SCEN_FI_FACE_DOWN_COORDINATES = [
-    new Coordinate(9, 1),
-    new Coordinate(11, 1),
-    new Coordinate(8, 2),
-    new Coordinate(10, 2),
-    new Coordinate(7, 3),
-    new Coordinate(9, 3),
-    new Coordinate(6, 4),
-    new Coordinate(8, 4),
-    new Coordinate(5, 5),
-    new Coordinate(2, 6),
-    new Coordinate(4, 6),
-    new Coordinate(3, 7)];
+    new Coordinate(9, 1, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(11, 1, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(8, 2, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(10, 2, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(7, 3, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(9, 3, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(6, 4, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(8, 4, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(5, 5, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(2, 6, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(4, 6, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(3, 7, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN)];
 
-  export const EXT_5_6_EXP_SEA_SCEN_FI_FACE_UP_PRODUCING_TERRAIN_COORDINATES = [
+  export const EXT_5_6_EXP_SEA_SCEN_FI_FACE_UP_TERRAIN_COORDINATES = [
     new Coordinate(8, 4),
     new Coordinate(10, 4),
     new Coordinate(12, 4),
@@ -654,7 +660,7 @@
     new Coordinate(8, 8, [TOP_RIGHT]),
     new Coordinate(14, 8, [TOP_LEFT]),
     new Coordinate(16, 8, [TOP_RIGHT])];
-  export const EXT_5_6_EXP_SEA_SCENS_FI_FISHERY_COORDINATES = [
+  export const EXT_5_6_EXP_SEA_SCEN_FI_FISHERY_COORDINATES = [
     new Coordinate(4, 0, [BOTTOM_RIGHT, BOTTOM_LEFT]),
     new Coordinate(16, 0, [BOTTOM_RIGHT, BOTTOM_LEFT]),
     new Coordinate(1, 1, [RIGHT, BOTTOM_RIGHT]),
@@ -667,31 +673,126 @@
     new Coordinate(3, 1),
     new Coordinate(17, 1)];
   export const EXT_5_6_EXP_SEA_SCEN_FI_FACE_DOWN_COORDINATES = [
-    new Coordinate(5, 1),
-    new Coordinate(7, 1),
-    new Coordinate(9, 1),
+    new Coordinate(5, 1, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(7, 1, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(9, 1, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(11, 1, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(13, 1, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(15, 1, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(2, 2, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(4, 2, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(6, 2, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(8, 2, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(10, 2, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(12, 2, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(14, 2, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(16, 2, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(18, 2, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(1, 3, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(3, 3, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(5, 3, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(15, 3, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(17, 3, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(19, 3, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(2, 4, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(18, 4, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(1, 5, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(19, 5, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN)];
+
+  export const EXT_7_8_EXP_SEA_SCEN_FI_FACE_UP_TERRAIN_COORDINATES = [
     new Coordinate(11, 1),
     new Coordinate(13, 1),
-    new Coordinate(15, 1),
-    new Coordinate(2, 2),
-    new Coordinate(4, 2),
-    new Coordinate(6, 2),
-    new Coordinate(8, 2),
     new Coordinate(10, 2),
     new Coordinate(12, 2),
-    new Coordinate(14, 2),
-    new Coordinate(16, 2),
-    new Coordinate(18, 2),
-    new Coordinate(1, 3),
-    new Coordinate(3, 3),
-    new Coordinate(5, 3),
-    new Coordinate(15, 3),
-    new Coordinate(17, 3),
-    new Coordinate(19, 3),
+    new Coordinate(9, 3),
+    new Coordinate(11, 3),
     new Coordinate(2, 4),
-    new Coordinate(18, 4),
+    new Coordinate(4, 4),
+    new Coordinate(6, 4),
+    new Coordinate(8, 4),
+    new Coordinate(10, 4),
     new Coordinate(1, 5),
-    new Coordinate(19, 5)];
+    new Coordinate(3, 5),
+    new Coordinate(5, 5),
+    new Coordinate(7, 5),
+    new Coordinate(9, 5),
+    new Coordinate(14, 8),
+    new Coordinate(16, 8),
+    new Coordinate(18, 8),
+    new Coordinate(20, 8),
+    new Coordinate(22, 8),
+    new Coordinate(13, 9),
+    new Coordinate(15, 9),
+    new Coordinate(17, 9),
+    new Coordinate(19, 9),
+    new Coordinate(21, 9),
+    new Coordinate(12, 10),
+    new Coordinate(14, 10),
+    new Coordinate(11, 11),
+    new Coordinate(13, 11),
+    new Coordinate(10, 12),
+    new Coordinate(12, 12)];
+  export const EXT_7_8_EXP_SEA_SCEN_FI_HARBOR_COORDINATES = [
+    new Coordinate(14, 0, [BOTTOM_LEFT]),
+    new Coordinate(10, 0, [BOTTOM_RIGHT]),
+    new Coordinate(8, 2, [BOTTOM_RIGHT]),
+    new Coordinate(3, 3, [BOTTOM_LEFT]),
+    new Coordinate(7, 3, [BOTTOM_LEFT]),
+    new Coordinate(0, 4, [BOTTOM_RIGHT]),
+    new Coordinate(23, 9, [TOP_LEFT]),
+    new Coordinate(16, 10, [TOP_RIGHT]),
+    new Coordinate(20, 10, [TOP_RIGHT]),
+    new Coordinate(15, 11, [TOP_LEFT]),
+    new Coordinate(9, 13, [TOP_RIGHT]),
+    new Coordinate(13, 13, [TOP_LEFT])];
+  export const EXT_7_8_EXP_SEA_SCEN_FI_FACE_DOWN_COORDINATES = [
+    new Coordinate(16, 2, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(18, 2, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(15, 3, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(17, 3, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(19, 3, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(14, 4, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(16, 4, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(18, 4, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(20, 4, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(13, 5, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(15, 5, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(17, 5, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(19, 5, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(21, 5, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(12, 6, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(14, 6, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(16, 6, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(18, 6, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(20, 6, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(3, 7, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(5, 7, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(7, 7, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(9, 7, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(11, 7, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(2, 8, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(4, 8, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(6, 8, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(8, 8, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(10, 8, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(3, 9, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(5, 9, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(7, 9, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(9, 9, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(4, 10, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(6, 10, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(8, 10, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(5, 11, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
+    new Coordinate(7, 11, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN)];
+  export const EXT_7_8_EXP_SEA_SCEN_FI_FISHERY_COORDINATES = [
+    new Coordinate(12, 0, [BOTTOM_RIGHT, BOTTOM_LEFT]),
+    new Coordinate(10, 2, [LEFT, TOP_LEFT]),
+    new Coordinate(2, 4, [LEFT, TOP_LEFT]),
+    new Coordinate(5, 3, [BOTTOM_RIGHT, BOTTOM_LEFT]),
+    new Coordinate(21, 9, [RIGHT, BOTTOM_RIGHT]),
+    new Coordinate(18, 10, [TOP_LEFT, TOP_RIGHT]),
+    new Coordinate(13, 11, [RIGHT, BOTTOM_RIGHT]),
+    new Coordinate(11, 13, [TOP_LEFT, TOP_RIGHT])];
 
   export const BASE_3_4_EXP_TB_SCEN_ROC_NON_RIVER_TERRAIN_COORDINATES = [
     new Coordinate(3, 1),
