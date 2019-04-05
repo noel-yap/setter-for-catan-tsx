@@ -39,36 +39,4 @@ then
   exit 1
 fi
 
-timeout=60
-while [[ -z "${public_ip_address}" && ${timeout} -ne 0 ]]
-do
-  sleep 1
-  ((--timeout))
-
-  public_ip_address=$(aws ec2 describe-instances --instance-ids ${node_ec2_instance} --output text --query 'Reservations[].Instances[].PublicIpAddress')
-done
-
-echo "public_ip_address = [${public_ip_address}]"
-
-key=~/.ssh/aws.pem
-user=ec2-user
-while ! scp -o 'StrictHostKeyChecking no' -i ${key} "${artifact}" ${user}@${public_ip_address}:/tmp
-do
-  sleep 1
-done
-ssh -o 'StrictHostKeyChecking no' -i ${key} ${user}@${public_ip_address} "cd / && sudo tar -x -f /tmp/${project_name}-${project_version}.tar.gz -p -v -z"
-
-aws ec2 stop-instances --instance-ids ${node_ec2_instance}
-
-timeout=60
-while [ "${public_ip_address}" != 'null' -a ${timeout} -ne 0 ]
-do
-  sleep 1
-  ((--timeout))
-
-  public_ip_address=$(aws ec2 describe-instances --instance-ids ${node_ec2_instance} --output text --query 'Reservations[].Instances[].PublicIpAddress')
-done
-
-image_id=$(aws ec2 create-image --instance-id ${node_ec2_instance} --name "$(basename ${artifact} .tar.gz)" --output text --query 'ImageId')
-echo "image_id = ${image_id}"
-
+aws s3 cp "${artifact}" s3://setter-for-catan --storage-class REDUCED_REDUNDANCY
