@@ -499,6 +499,7 @@ class App extends React.Component<AppProps, AppState> {
       }
     });
 
+    // TODO: Reorganize to use submenus (eg Base, Seafarers, Traders and Barbarians).
     const boardSpecifications: BoardSpecifications = {
       'Base': {
         '3': [Specifications.SPEC_3_4, Coordinates.BASE_3_4_FISHERY_COORDINATES],
@@ -526,6 +527,7 @@ class App extends React.Component<AppProps, AppState> {
       },
       'Seafarers: Through the Desert': {
         '3': [Specifications.SPEC_3_EXP_SEA_SCEN_TD, Coordinates.BASE_3_EXP_SEA_SCEN_TD_FISHERY_COORDINATES],
+        '4': [Specifications.SPEC_4_EXP_SEA_SCEN_TD, Coordinates.BASE_4_EXP_SEA_SCEN_TD_FISHERY_COORDINATES],
       },
       'Traders and Barbarians: Rivers of Catan': {
         '3': [Specifications.SPEC_3_4_EXP_TB_SCEN_ROC, Coordinates.BASE_3_4_FISHERY_COORDINATES],

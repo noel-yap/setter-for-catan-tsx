@@ -79,7 +79,11 @@ import * as Coordinates from "./Coordinates";
         result = new Board(configurations);
 
         validBoard = configurations.every((configuration) => {
-          return this.specification.validateConfiguration(configuration);
+          const result = this.specification.validateConfiguration(configuration);
+
+          console.log(`${configuration} ${result ? 'passes' : 'fails'} custom validation.`);
+
+          return result;
         }) && BoardGenerator.verifyBoard(result, validOddsRanges);
 
         console.log(`count = ${count}, validOddsRange = ${JSON.stringify(validOddsRanges)}, validBoard = ${validBoard}`);
@@ -101,8 +105,6 @@ import * as Coordinates from "./Coordinates";
             })
             .reduce((sum, ct) => {
               const ctOdds = ct.chits.odds();
-
-              console.log(`ct = ${JSON.stringify(ct)}, ctOdds = ${ctOdds}`);
 
               return sum + ctOdds;
             }, 0);
@@ -128,9 +130,11 @@ import * as Coordinates from "./Coordinates";
               return sum + contributorOdds;
             }, 0);
 
-        console.log(`contributors = ${JSON.stringify(contributors)}, odds = ${totalOdds}, contributorCount = ${contributorCount}, validRange = ${JSON.stringify(validRange)}`);
+        const result = validRange[0] <= totalOdds && totalOdds <= validRange[1];
 
-        return validRange[0] <= totalOdds && totalOdds <= validRange[1];
+        console.log(`contributors = ${JSON.stringify(contributors)}, odds = ${totalOdds}, contributorCount = ${contributorCount}, validRange = ${JSON.stringify(validRange)}, ${result ? 'pass' : 'fail'}`);
+
+        return result;
       }
 
       const producingConfiguration = board.terrainTilesLayout
@@ -159,8 +163,8 @@ import * as Coordinates from "./Coordinates";
 
       console.log(`x ∈ [${minX}, ${maxX}], y ∈ [${minY}, ${maxY}]`);
 
-      for (let y = minY; y < maxY + 1; ++y) {
-        for (let x = minX - 2 + (minX + minY) % 2; x < maxX + 2; x += 2) {
+      for (let y = minY - 1; y < maxY + 1; ++y) {
+        for (let x = minX - 2 - (minX + y) % 2; x < maxX + 2 + (minX + y) % 2; x += 2) {
           const topVertexContributors = <[Configuration.Configuration[], number][]>[
             [coordinatesMap[key(x, y)], Coordinates.VertexPosition.TOP],
             [coordinatesMap[key(x - 1, y - 1)], Coordinates.VertexPosition.BOTTOM_RIGHT],

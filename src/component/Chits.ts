@@ -187,9 +187,20 @@ export class Chits {
       .concat(new Array(2).fill(CHITS_8))
       .concat(new Array(2).fill(CHITS_9))
       .concat(new Array(2).fill(CHITS_10));
-  export const BASE_3_SEA_SCEN_TD_FOREIGN_ISLAND_PRODUCING_TERRAIN_CHIT_SET = [
-    CHITS_3, CHITS_4, CHITS_6, CHITS_8, CHITS_9, CHITS_11]
-      .concat(new Array(2).fill(CHITS_5));
+  export const BASE_3_SEA_SCEN_TD_FOREIGN_ISLAND_PRODUCING_TERRAIN_CHIT_SET = new Array(2).fill(CHITS_5)
+      .concat([CHITS_3, CHITS_4, CHITS_6, CHITS_8, CHITS_9, CHITS_11]);
+
+  export const BASE_4_SEA_SCEN_TD_INDIGENOUS_ISLAND_PRODUCING_TERRAIN_CHIT_SET = [CHITS_12]
+      .concat(new Array(2).fill(CHITS_3))
+      .concat(new Array(2).fill(CHITS_4))
+      .concat(new Array(2).fill(CHITS_5))
+      .concat(new Array(2).fill(CHITS_6))
+      .concat(new Array(2).fill(CHITS_8))
+      .concat(new Array(2).fill(CHITS_9))
+      .concat(new Array(2).fill(CHITS_10))
+      .concat(new Array(2).fill(CHITS_11));
+  export const BASE_4_SEA_SCEN_TD_FOREIGN_ISLAND_PRODUCING_TERRAIN_CHIT_SET = [
+    CHITS_2, CHITS_3, CHITS_4, CHITS_5, CHITS_6, CHITS_8, CHITS_9, CHITS_10, CHITS_11, CHITS_12];
 
   export const BASE_3_4_EXP_TB_SCEN_ROC_PRODUCING_TERRAIN_CHIT_SET = [CHITS_2_12]
     .concat(new Array(2).fill(CHITS_3))
