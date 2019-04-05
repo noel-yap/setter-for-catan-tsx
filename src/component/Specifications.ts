@@ -12,7 +12,8 @@ import * as Tiles from "./Tiles";
         public coordinates: {[name: string]: Coordinates.Coordinate[]},
         public chits: {[name: string]: Chits.Chits[]},
         public coordinatesTilesMap: {[coordinatesName: string]: string[]} = {},
-        public chitsTilesMap: {[chitsName: string]: string[]} = {}) {
+        public chitsTilesMap: {[chitsName: string]: string[]} = {},
+        public validateConfiguration = (configuration: Configuration.Configuration) => { return true; }) {
       this.validate();
     }
 
@@ -93,7 +94,10 @@ import * as Tiles from "./Tiles";
         const tileName = tileId.substring(0, delimiterIndex);
         const index = parseInt(tileId.substring(delimiterIndex + 1, tileId.indexOf(']')));
 
-        return new Configuration.Configuration(this.tiles[tileName][index], tileCoordinateMap[tileId], tileChitsMap[tileId] || Chits.NO_CHITS);
+        return new Configuration.Configuration(
+            this.tiles[tileName][index],
+            tileCoordinateMap[tileId],
+            tileChitsMap[tileId] || Chits.NO_CHITS);
       });
     }
   }
@@ -444,6 +448,32 @@ import * as Tiles from "./Tiles";
         'face-down-terrain': ['face-down-producing-terrain', 'face-down-sea']
       }),
       oneToOne('face-up-producing-terrain', 'face-down-producing-terrain'));
+
+  export const SPEC_3_EXP_SEA_SCEN_TD = new Specification(
+      {
+        'indigenous-producing-terrain': Tiles.BASE_3_SEA_SCEN_TD_INDIGENOUS_PRODUCING_TERRAIN_TILE_SET,
+        'indigenous-desert': new Array(3).fill(Tiles.DESERT_TERRAIN),
+        'indigenous-harbor': Tiles.BASE_3_SEA_SCEN_TD_INDIGENOUS_HARBOR_TILE_SET,
+        'foreign-producing-terrain': Tiles.BASE_3_SEA_SCEN_TD_FOREIGN_PRODUCING_TERRAIN_TILE_SET,
+        'foreign-sea': new Array(2).fill(Tiles.SEA)
+      },
+      {
+        'indigenous-producing-terrain': Coordinates.BASE_3_EXP_SEA_SCEN_TD_INDIGENOUS_TERRAIN_COORDINATES,
+        'indigenous-desert': Coordinates.BASE_3_EXP_SEA_SCEN_TD_INDIGENOUS_DESERT_COORDINATES,
+        'indigenous-harbor': Coordinates.BASE_3_EXP_SEA_SCEN_TD_INDIGENOUS_HARBOR_COORDINATES,
+        'foreign-terrain': Coordinates.BASE_3_EXP_SEA_SCEN_TD_FOREIGN_TERRAIN_COORDINATES
+      },
+      {
+        'indigenous-producing-terrain': Chits.BASE_3_SEA_SCEN_TD_INDIGENOUS_ISLAND_PRODUCING_TERRAIN_CHIT_SET,
+        'foreign-producing-terrain': Chits.BASE_3_SEA_SCEN_TD_FOREIGN_ISLAND_PRODUCING_TERRAIN_CHIT_SET
+      },
+      Object.assign(oneToOne('indigenous-producing-terrain', 'indigenous-desert', 'indigenous-harbor'), {
+        'foreign-terrain': ['foreign-producing-terrain', 'foreign-sea']
+      }),
+      oneToOne('indigenous-producing-terrain', 'foreign-producing-terrain'),
+      ((configuration: Configuration.Configuration) => {
+        return configuration.tile !== Tiles.GOLD_TERRAIN || configuration.chits.odds() < 5;
+      }));
 
   export const SPEC_3_4_EXP_TB_SCEN_ROC = new Specification(
       {

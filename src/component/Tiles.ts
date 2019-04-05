@@ -217,6 +217,18 @@ import {VertexPosition} from './Coordinates';
       .concat(new Array(5).fill(PASTURE_TERRAIN))
       .concat(new Array(5).fill(FOREST_TERRAIN));
 
+  export const BASE_3_SEA_SCEN_TD_INDIGENOUS_PRODUCING_TERRAIN_TILE_SET = new Array(2).fill(FIELD_TERRAIN)
+      .concat(new Array(2).fill(MOUNTAIN_TERRAIN))
+      .concat(new Array(3).fill(HILL_TERRAIN))
+      .concat(new Array(3).fill(PASTURE_TERRAIN))
+      .concat(new Array(4).fill(FOREST_TERRAIN));
+  export const BASE_3_SEA_SCEN_TD_INDIGENOUS_HARBOR_TILE_SET = new Array(3).fill(GENERIC_HARBOR)
+      .concat([BRICK_HARBOR, GRAIN_HARBOR, LUMBER_HARBOR, ORE_HARBOR, WOOL_HARBOR]);
+  export const BASE_3_SEA_SCEN_TD_FOREIGN_PRODUCING_TERRAIN_TILE_SET = [PASTURE_TERRAIN, FOREST_TERRAIN]
+      .concat(new Array(2).fill(GOLD_TERRAIN))
+      .concat(new Array(2).fill(FIELD_TERRAIN))
+      .concat(new Array(2).fill(MOUNTAIN_TERRAIN));
+
   export const BASE_3_4_EXP_TB_SCEN_ROC_NON_RIVER_TERRAIN_TILE_SET = [HILL_TERRAIN, MOUNTAIN_TERRAIN]
       .concat(new Array(4).fill(FIELD_TERRAIN))
       .concat(new Array(4).fill(FOREST_TERRAIN))

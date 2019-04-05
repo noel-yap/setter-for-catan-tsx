@@ -54,8 +54,6 @@ import * as Coordinates from "./Coordinates";
       let validBoard;
 
       do {
-        result = new Board(this.specification.toConfiguration());
-
         const validOddsRanges = count < 216
             ? [
               [0, 6],
@@ -75,7 +73,14 @@ import * as Coordinates from "./Coordinates";
               [0, 6],
               [1, 11],
               [3, 15]];
-        validBoard = BoardGenerator.verifyBoard(result, validOddsRanges);
+
+        const configurations = this.specification.toConfiguration();
+
+        result = new Board(configurations);
+
+        validBoard = configurations.every((configuration) => {
+          return this.specification.validateConfiguration(configuration);
+        }) && BoardGenerator.verifyBoard(result, validOddsRanges);
 
         console.log(`count = ${count}, validOddsRange = ${JSON.stringify(validOddsRanges)}, validBoard = ${validBoard}`);
       } while (!validBoard && ++count < 6 * 216);

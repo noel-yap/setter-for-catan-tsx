@@ -1,5 +1,7 @@
 // export module Chits {
 
+import {FIELD_TERRAIN} from "./Tiles";
+
 export class Chits {
     constructor(public values: number[]) {}
 
@@ -179,6 +181,15 @@ export class Chits {
       .concat(new Array(2).fill(CHITS_6))
       .concat(new Array(2).fill(CHITS_8));
 
+  export const BASE_3_SEA_SCEN_TD_INDIGENOUS_ISLAND_PRODUCING_TERRAIN_CHIT_SET = [CHITS_2, CHITS_3, CHITS_5, CHITS_11]
+      .concat(new Array(2).fill(CHITS_4))
+      .concat(new Array(2).fill(CHITS_6))
+      .concat(new Array(2).fill(CHITS_8))
+      .concat(new Array(2).fill(CHITS_9))
+      .concat(new Array(2).fill(CHITS_10));
+  export const BASE_3_SEA_SCEN_TD_FOREIGN_ISLAND_PRODUCING_TERRAIN_CHIT_SET = [
+    CHITS_3, CHITS_4, CHITS_6, CHITS_8, CHITS_9, CHITS_11]
+      .concat(new Array(2).fill(CHITS_5));
 
   export const BASE_3_4_EXP_TB_SCEN_ROC_PRODUCING_TERRAIN_CHIT_SET = [CHITS_2_12]
     .concat(new Array(2).fill(CHITS_3))
