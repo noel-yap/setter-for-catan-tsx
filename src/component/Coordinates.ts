@@ -884,6 +884,72 @@
     new Coordinate(1, 3, [BOTTOM_LEFT, LEFT]),
     new Coordinate(7, 7, [BOTTOM_RIGHT, BOTTOM_LEFT])];
 
+  export const EXT_5_6_EXP_SEA_SCEN_TD_INDIGENOUS_TERRAIN_COORDINATES = [
+    new Coordinate(3, 1),
+    new Coordinate(2, 2),
+    new Coordinate(4, 2),
+    new Coordinate(1, 3),
+    new Coordinate(3, 3),
+    new Coordinate(5, 3),
+    new Coordinate(7, 3),
+    new Coordinate(9, 3),
+    new Coordinate(11, 3),
+    new Coordinate(13, 3),
+    new Coordinate(2, 4),
+    new Coordinate(4, 4),
+    new Coordinate(6, 4),
+    new Coordinate(8, 4),
+    new Coordinate(10, 4),
+    new Coordinate(12, 4),
+    new Coordinate(14, 4),
+    new Coordinate(7, 5),
+    new Coordinate(9, 5),
+    new Coordinate(11, 5),
+    new Coordinate(13, 5)];
+  export const EXT_5_6_EXP_SEA_SCEN_TD_INDIGENOUS_DESERT_COORDINATES = [
+    new Coordinate(6, 6),
+    new Coordinate(8, 6),
+    new Coordinate(10, 6),
+    new Coordinate(12, 6),
+    new Coordinate(14, 6)];
+  export const EXT_5_6_EXP_SEA_SCEN_TD_INDIGENOUS_HARBOR_COORDINATES = [
+    new Coordinate(2, 0, [BOTTOM_RIGHT]),
+    new Coordinate(5, 1, [BOTTOM_LEFT]),
+    new Coordinate(0, 2, [RIGHT]),
+    new Coordinate(6, 2, [BOTTOM_LEFT]),
+    new Coordinate(8, 2, [BOTTOM_RIGHT]),
+    new Coordinate(12, 2, [BOTTOM_RIGHT]),
+    new Coordinate(15, 3, [BOTTOM_LEFT]),
+    new Coordinate(1, 5, [TOP_RIGHT]),
+    new Coordinate(5, 5, [TOP_RIGHT]),
+    new Coordinate(15, 5, [LEFT])];
+  export const EXT_5_6_EXP_SEA_SCEN_TD_FOREIGN_TERRAIN_COORDINATES = [
+    new Coordinate(7, 1),
+    new Coordinate(9, 1),
+    new Coordinate(11, 1),
+    new Coordinate(13, 1),
+    new Coordinate(15, 1),
+    new Coordinate(17, 1),
+    new Coordinate(16, 2),
+    new Coordinate(18, 2),
+    new Coordinate(19, 3),
+    new Coordinate(18, 4),
+    new Coordinate(19, 5),
+    new Coordinate(2, 6),
+    new Coordinate(4, 6),
+    new Coordinate(18, 6),
+    new Coordinate(3, 7),
+    new Coordinate(5, 7),
+    new Coordinate(7, 7),
+    new Coordinate(9, 7),
+    new Coordinate(11, 7),
+    new Coordinate(13, 7),
+    new Coordinate(15, 7),
+    new Coordinate(17, 7)];
+  export const EXT_5_6_EXP_SEA_SCEN_TD_FISHERY_COORDINATES = [
+    new Coordinate(1, 1, [RIGHT, BOTTOM_RIGHT]),
+    new Coordinate(1, 3, [BOTTOM_LEFT, LEFT])];
+
   export const BASE_3_4_EXP_TB_SCEN_ROC_NON_RIVER_TERRAIN_COORDINATES = [
     new Coordinate(3, 1),
     new Coordinate(5, 1),

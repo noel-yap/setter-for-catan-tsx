@@ -3,6 +3,8 @@ import {VertexPosition} from './Coordinates';
 
 // export module Tiles {
   export enum Type {
+    NONE = 'None',
+
     GENERIC_HARBOR = 'Generic Harbor',
     BRICK_HARBOR = 'Brick Harbor',
     GRAIN_HARBOR = 'Grain Harbor',
@@ -35,6 +37,10 @@ import {VertexPosition} from './Coordinates';
 
     edgeCount(): [number, number] {
       switch (this.type) {
+        case Type.NONE: {
+          return [0, 0];
+        }
+
         case Type.GENERIC_HARBOR:
         case Type.BRICK_HARBOR:
         case Type.ORE_HARBOR:
@@ -71,6 +77,8 @@ import {VertexPosition} from './Coordinates';
       }
     }
   }
+
+  export const NONE = new Tile(Type.NONE);
 
   export const GENERIC_HARBOR = new Tile(Type.GENERIC_HARBOR);
   export const BRICK_HARBOR = new Tile(Type.BRICK_HARBOR);
@@ -238,6 +246,21 @@ import {VertexPosition} from './Coordinates';
       .concat(new Array(2).fill(GOLD_TERRAIN))
       .concat(new Array(3).fill(FIELD_TERRAIN))
       .concat(new Array(3).fill(MOUNTAIN_TERRAIN));
+
+  export const EXT_5_6_SEA_SCEN_TD_INDIGENOUS_PRODUCING_TERRAIN_TILE_SET = new Array(4).fill(FIELD_TERRAIN)
+      .concat(new Array(4).fill(FOREST_TERRAIN))
+      .concat(new Array(5).fill(HILL_TERRAIN))
+      .concat(new Array(4).fill(MOUNTAIN_TERRAIN))
+      .concat(new Array(4).fill(PASTURE_TERRAIN));
+  export const EXT_5_6_SEA_SCEN_TD_INDIGENOUS_HARBOR_TILE_SET = [BRICK_HARBOR, GRAIN_HARBOR, LUMBER_HARBOR, ORE_HARBOR]
+      .concat(new Array(2).fill(WOOL_HARBOR))
+      .concat(new Array(4).fill(GENERIC_HARBOR));
+  export const EXT_5_6_SEA_SCEN_TD_FOREIGN_PRODUCING_TERRAIN_TILE_SET = new Array(3).fill(FIELD_TERRAIN)
+      .concat(new Array(3).fill(FOREST_TERRAIN))
+      .concat(new Array(2).fill(HILL_TERRAIN))
+      .concat(new Array(3).fill(MOUNTAIN_TERRAIN))
+      .concat(new Array(3).fill(PASTURE_TERRAIN))
+      .concat(new Array(3).fill(GOLD_TERRAIN));
 
   export const BASE_3_4_EXP_TB_SCEN_ROC_NON_RIVER_TERRAIN_TILE_SET = [HILL_TERRAIN, MOUNTAIN_TERRAIN]
       .concat(new Array(4).fill(FIELD_TERRAIN))

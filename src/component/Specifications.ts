@@ -499,6 +499,31 @@ import * as Tiles from "./Tiles";
       ((configuration: Configuration.Configuration) => {
         return configuration.tile !== Tiles.GOLD_TERRAIN || configuration.chits.odds() < 5;
       }));
+  export const SPEC_5_6_EXP_SEA_SCEN_TD = new Specification(
+      {
+        'indigenous-producing-terrain': Tiles.EXT_5_6_SEA_SCEN_TD_INDIGENOUS_PRODUCING_TERRAIN_TILE_SET,
+        'indigenous-desert': new Array(5).fill(Tiles.DESERT_TERRAIN),
+        'indigenous-harbor': Tiles.EXT_5_6_SEA_SCEN_TD_INDIGENOUS_HARBOR_TILE_SET,
+        'foreign-producing-terrain': Tiles.EXT_5_6_SEA_SCEN_TD_FOREIGN_PRODUCING_TERRAIN_TILE_SET,
+        'foreign-sea': new Array(5).fill(Tiles.SEA)
+      },
+      {
+        'indigenous-producing-terrain': Coordinates.EXT_5_6_EXP_SEA_SCEN_TD_INDIGENOUS_TERRAIN_COORDINATES,
+        'indigenous-desert': Coordinates.EXT_5_6_EXP_SEA_SCEN_TD_INDIGENOUS_DESERT_COORDINATES,
+        'indigenous-harbor': Coordinates.EXT_5_6_EXP_SEA_SCEN_TD_INDIGENOUS_HARBOR_COORDINATES,
+        'foreign-terrain': Coordinates.EXT_5_6_EXP_SEA_SCEN_TD_FOREIGN_TERRAIN_COORDINATES
+      },
+      {
+        'indigenous-producing-terrain': Chits.EXT_5_6_SEA_SCEN_TD_INDIGENOUS_ISLAND_PRODUCING_TERRAIN_CHIT_SET,
+        'foreign-producing-terrain': Chits.EXT_5_6_SEA_SCEN_TD_FOREIGN_ISLAND_PRODUCING_TERRAIN_CHIT_SET
+      },
+      Object.assign(oneToOne('indigenous-producing-terrain', 'indigenous-desert', 'indigenous-harbor'), {
+        'foreign-terrain': ['foreign-producing-terrain', 'foreign-sea']
+      }),
+      oneToOne('indigenous-producing-terrain', 'foreign-producing-terrain'),
+      ((configuration: Configuration.Configuration) => {
+        return configuration.tile !== Tiles.GOLD_TERRAIN || configuration.chits.odds() < 5;
+      }));
 
   export const SPEC_3_4_EXP_TB_SCEN_ROC = new Specification(
       {
