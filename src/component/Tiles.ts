@@ -263,10 +263,16 @@ import {VertexPosition} from './Coordinates';
       .concat(new Array(3).fill(GOLD_TERRAIN));
 
   export const EXT_7_8_SEA_SCEN_TD_INDIGENOUS_PRODUCING_TERRAIN_TILE_SET = new Array(5).fill(FIELD_TERRAIN)
-      .concat(new Array(5).fill(MOUNTAIN_TERRAIN))
       .concat(new Array(5).fill(FOREST_TERRAIN))
+      .concat(new Array(5).fill(MOUNTAIN_TERRAIN))
       .concat(new Array(5).fill(PASTURE_TERRAIN))
       .concat(new Array(6).fill(HILL_TERRAIN));
+  export const EXT_7_8_SEA_SCEN_TD_FOREIGN_PRODUCING_TERRAIN_TILE_SET = new Array(4).fill(HILL_TERRAIN)
+      .concat(new Array(4).fill(PASTURE_TERRAIN))
+      .concat(new Array(5).fill(FIELD_TERRAIN))
+      .concat(new Array(5).fill(FOREST_TERRAIN))
+      .concat(new Array(5).fill(MOUNTAIN_TERRAIN))
+      .concat(new Array(5).fill(GOLD_TERRAIN));
 
   export const BASE_3_4_EXP_TB_SCEN_ROC_NON_RIVER_TERRAIN_TILE_SET = [HILL_TERRAIN, MOUNTAIN_TERRAIN]
       .concat(new Array(4).fill(FIELD_TERRAIN))
