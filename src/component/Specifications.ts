@@ -12,7 +12,8 @@ import * as Tiles from "./Tiles";
         public coordinates: {[name: string]: Coordinates.Coordinate[]},
         public chits: {[name: string]: Chits.Chits[]},
         public coordinatesTilesMap: {[coordinatesName: string]: string[]} = {},
-        public chitsTilesMap: {[chitsName: string]: string[]} = {}) {
+        public chitsTilesMap: {[chitsName: string]: string[]} = {},
+        public validateConfiguration = (configuration: Configuration.Configuration) => { return true; }) {
       this.validate();
     }
 
@@ -68,20 +69,32 @@ import * as Tiles from "./Tiles";
           artifactMap: {[artifactName: string]: (Coordinates.Coordinate | Chits.Chits)[]}) => {
         return Object.keys(artifactsTilesMap)
             .flatMap((artifactName) => {
+              // TODO: Handle scenario in which `artifactName` isn't in `artifactsTilesMap` or `this.tiles`.
               const tilesNames: string[] = artifactsTilesMap[artifactName];
               const tileIds: string[] = tilesNames
                   .flatMap((tileName) => {
                     console.log(`tileName = ${tileName}, tiles = ${JSON.stringify(this.tiles)}`);
 
-                    return this.tiles[tileName].map((tile, index) => tileId(tileName, index));
+                    const tiles = this.tiles[tileName];
+
+                    if (tiles === undefined) {
+                      throw new Error(`${tileName} not in ${tiles}`);
+                    }
+
+                    return tiles
+                        .map((tile, index) => tileId(tileName, index));
                   });
               const artifacts = artifactMap[artifactName];
+
+              if (artifacts === undefined) {
+                throw new Error(`${artifactName} not in ${artifactMap}`);
+              }
 
               return _.zip(tileIds, _.shuffle(artifacts));
             })
             .reduce((object, pair) => {
               return Object.assign(object, {[pair[0]]: pair[1]});
-            }, {})
+            }, {});
       };
 
       // TODO: Allow specification not to shuffle (eg for face-down tiles and sets of like tiles).
@@ -93,7 +106,10 @@ import * as Tiles from "./Tiles";
         const tileName = tileId.substring(0, delimiterIndex);
         const index = parseInt(tileId.substring(delimiterIndex + 1, tileId.indexOf(']')));
 
-        return new Configuration.Configuration(this.tiles[tileName][index], tileCoordinateMap[tileId], tileChitsMap[tileId] || Chits.NO_CHITS);
+        return new Configuration.Configuration(
+            this.tiles[tileName][index],
+            tileCoordinateMap[tileId],
+            tileChitsMap[tileId] || Chits.NO_CHITS);
       });
     }
   }
@@ -444,6 +460,107 @@ import * as Tiles from "./Tiles";
         'face-down-terrain': ['face-down-producing-terrain', 'face-down-sea']
       }),
       oneToOne('face-up-producing-terrain', 'face-down-producing-terrain'));
+
+  export const SPEC_3_EXP_SEA_SCEN_TD = new Specification(
+      {
+        'indigenous-producing-terrain': Tiles.BASE_3_SEA_SCEN_TD_INDIGENOUS_PRODUCING_TERRAIN_TILE_SET,
+        'indigenous-desert': new Array(3).fill(Tiles.DESERT_TERRAIN),
+        'indigenous-harbor': Tiles.BASE_3_SEA_SCEN_TD_INDIGENOUS_HARBOR_TILE_SET,
+        'foreign-producing-terrain': Tiles.BASE_3_SEA_SCEN_TD_FOREIGN_PRODUCING_TERRAIN_TILE_SET,
+        'foreign-sea': new Array(2).fill(Tiles.SEA)
+      },
+      {
+        'indigenous-producing-terrain': Coordinates.BASE_3_EXP_SEA_SCEN_TD_INDIGENOUS_TERRAIN_COORDINATES,
+        'indigenous-desert': Coordinates.BASE_3_EXP_SEA_SCEN_TD_INDIGENOUS_DESERT_COORDINATES,
+        'indigenous-harbor': Coordinates.BASE_3_EXP_SEA_SCEN_TD_INDIGENOUS_HARBOR_COORDINATES,
+        'foreign-terrain': Coordinates.BASE_3_EXP_SEA_SCEN_TD_FOREIGN_TERRAIN_COORDINATES
+      },
+      {
+        'indigenous-producing-terrain': Chits.BASE_3_SEA_SCEN_TD_INDIGENOUS_ISLAND_PRODUCING_TERRAIN_CHIT_SET,
+        'foreign-producing-terrain': Chits.BASE_3_SEA_SCEN_TD_FOREIGN_ISLAND_PRODUCING_TERRAIN_CHIT_SET
+      },
+      Object.assign(oneToOne('indigenous-producing-terrain', 'indigenous-desert', 'indigenous-harbor'), {
+        'foreign-terrain': ['foreign-producing-terrain', 'foreign-sea']
+      }),
+      oneToOne('indigenous-producing-terrain', 'foreign-producing-terrain'),
+      ((configuration: Configuration.Configuration) => {
+        return configuration.tile !== Tiles.GOLD_TERRAIN || configuration.chits.odds() < 5;
+      }));
+  export const SPEC_4_EXP_SEA_SCEN_TD = new Specification(
+      {
+        'indigenous-producing-terrain': Tiles.BASE_4_SEA_SCEN_TD_INDIGENOUS_PRODUCING_TERRAIN_TILE_SET,
+        'indigenous-desert': new Array(3).fill(Tiles.DESERT_TERRAIN),
+        'indigenous-harbor': Tiles.BASE_3_4_HARBOR_TILE_SET,
+        'foreign-producing-terrain': Tiles.BASE_4_SEA_SCEN_TD_FOREIGN_PRODUCING_TERRAIN_TILE_SET,
+        'foreign-sea': new Array(2).fill(Tiles.SEA)
+      },
+      {
+        'indigenous-producing-terrain': Coordinates.BASE_4_EXP_SEA_SCEN_TD_INDIGENOUS_TERRAIN_COORDINATES,
+        'indigenous-desert': Coordinates.BASE_4_EXP_SEA_SCEN_TD_INDIGENOUS_DESERT_COORDINATES,
+        'indigenous-harbor': Coordinates.BASE_4_EXP_SEA_SCEN_TD_INDIGENOUS_HARBOR_COORDINATES,
+        'foreign-terrain': Coordinates.BASE_4_EXP_SEA_SCEN_TD_FOREIGN_TERRAIN_COORDINATES
+      },
+      {
+        'indigenous-producing-terrain': Chits.BASE_4_SEA_SCEN_TD_INDIGENOUS_ISLAND_PRODUCING_TERRAIN_CHIT_SET,
+        'foreign-producing-terrain': Chits.BASE_4_SEA_SCEN_TD_FOREIGN_ISLAND_PRODUCING_TERRAIN_CHIT_SET
+      },
+      Object.assign(oneToOne('indigenous-producing-terrain', 'indigenous-desert', 'indigenous-harbor'), {
+        'foreign-terrain': ['foreign-producing-terrain', 'foreign-sea']
+      }),
+      oneToOne('indigenous-producing-terrain', 'foreign-producing-terrain'),
+      ((configuration: Configuration.Configuration) => {
+        return configuration.tile !== Tiles.GOLD_TERRAIN || configuration.chits.odds() < 5;
+      }));
+  export const SPEC_5_6_EXP_SEA_SCEN_TD = new Specification(
+      {
+        'indigenous-producing-terrain': Tiles.EXT_5_6_SEA_SCEN_TD_INDIGENOUS_PRODUCING_TERRAIN_TILE_SET,
+        'indigenous-desert': new Array(5).fill(Tiles.DESERT_TERRAIN),
+        'indigenous-harbor': Tiles.EXT_5_6_SEA_SCEN_TD_INDIGENOUS_HARBOR_TILE_SET,
+        'foreign-producing-terrain': Tiles.EXT_5_6_SEA_SCEN_TD_FOREIGN_PRODUCING_TERRAIN_TILE_SET,
+        'foreign-sea': new Array(5).fill(Tiles.SEA)
+      },
+      {
+        'indigenous-producing-terrain': Coordinates.EXT_5_6_EXP_SEA_SCEN_TD_INDIGENOUS_TERRAIN_COORDINATES,
+        'indigenous-desert': Coordinates.EXT_5_6_EXP_SEA_SCEN_TD_INDIGENOUS_DESERT_COORDINATES,
+        'indigenous-harbor': Coordinates.EXT_5_6_EXP_SEA_SCEN_TD_INDIGENOUS_HARBOR_COORDINATES,
+        'foreign-terrain': Coordinates.EXT_5_6_EXP_SEA_SCEN_TD_FOREIGN_TERRAIN_COORDINATES
+      },
+      {
+        'indigenous-producing-terrain': Chits.EXT_5_6_SEA_SCEN_TD_INDIGENOUS_ISLAND_PRODUCING_TERRAIN_CHIT_SET,
+        'foreign-producing-terrain': Chits.EXT_5_6_SEA_SCEN_TD_FOREIGN_ISLAND_PRODUCING_TERRAIN_CHIT_SET
+      },
+      Object.assign(oneToOne('indigenous-producing-terrain', 'indigenous-desert', 'indigenous-harbor'), {
+        'foreign-terrain': ['foreign-producing-terrain', 'foreign-sea']
+      }),
+      oneToOne('indigenous-producing-terrain', 'foreign-producing-terrain'),
+      ((configuration: Configuration.Configuration) => {
+        return configuration.tile !== Tiles.GOLD_TERRAIN || configuration.chits.odds() < 5;
+      }));
+  export const SPEC_7_8_EXP_SEA_SCEN_TD = new Specification(
+      {
+        'indigenous-producing-terrain': Tiles.EXT_7_8_SEA_SCEN_TD_INDIGENOUS_PRODUCING_TERRAIN_TILE_SET,
+        'indigenous-desert': new Array(7).fill(Tiles.DESERT_TERRAIN),
+        'indigenous-harbor': Tiles.EXT_7_8_HARBOR_TILE_SET,
+        'foreign-producing-terrain': Tiles.EXT_7_8_SEA_SCEN_TD_FOREIGN_PRODUCING_TERRAIN_TILE_SET,
+        'foreign-sea': new Array(8).fill(Tiles.SEA)
+      },
+      {
+        'indigenous-producing-terrain': Coordinates.EXT_7_8_EXP_SEA_SCEN_TD_INDIGENOUS_TERRAIN_COORDINATES,
+        'indigenous-desert': Coordinates.EXT_7_8_EXP_SEA_SCEN_TD_INDIGENOUS_DESERT_COORDINATES,
+        'indigenous-harbor': Coordinates.EXT_7_8_EXP_SEA_SCEN_TD_INDIGENOUS_HARBOR_COORDINATES,
+        'foreign-terrain': Coordinates.EXT_7_8_EXP_SEA_SCEN_TD_FOREIGN_TERRAIN_COORDINATES
+      },
+      {
+        'indigenous-producing-terrain': Chits.EXT_7_8_SEA_SCEN_TD_INDIGENOUS_ISLAND_PRODUCING_TERRAIN_CHIT_SET,
+        'foreign-producing-terrain': Chits.EXT_7_8_SEA_SCEN_TD_FOREIGN_ISLAND_PRODUCING_TERRAIN_CHIT_SET
+      },
+      Object.assign(oneToOne('indigenous-producing-terrain', 'indigenous-desert', 'indigenous-harbor'), {
+        'foreign-terrain': ['foreign-producing-terrain', 'foreign-sea']
+      }),
+      oneToOne('indigenous-producing-terrain', 'foreign-producing-terrain'),
+      ((configuration: Configuration.Configuration) => {
+        return configuration.tile !== Tiles.GOLD_TERRAIN || configuration.chits.odds() < 5;
+      }));
 
   export const SPEC_3_4_EXP_TB_SCEN_ROC = new Specification(
       {

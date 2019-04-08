@@ -1,9 +1,9 @@
 import * as _ from 'underscore';
 
-import * as Specifications from "./Specifications";
-import * as Configuration from "./Configuration";
-import * as Tiles from "./Tiles";
-import * as Coordinates from "./Coordinates";
+import * as Configuration from './Configuration';
+import * as Coordinates from './Coordinates';
+import * as Specifications from './Specifications';
+import * as Tiles from './Tiles';
 
 // export module Boards {
   export class Board {
@@ -49,41 +49,56 @@ import * as Coordinates from "./Coordinates";
     constructor(public specification: Specifications.Specification) {}
 
     generateBoard(): Board {
-      let result;
-      let count = 0;
-      let validBoard;
+      const steppedValidOddsRanges = [
+        [[0, 6], [3, 9], [6, 12]],
+        [[0, 6], [2, 10], [5, 13]],
+        [[0, 6], [2, 10], [4, 14]],
+        [[0, 6], [1, 11], [3, 15]],
+        [[0, 6], [1, 11], [2, 16]],
+        [[0, 6], [0, 12], [0, 18]],
+        [[0, Number.MAX_SAFE_INTEGER], [0, Number.MAX_SAFE_INTEGER], [0, Number.MAX_SAFE_INTEGER]]];
+      const attemptsPerStep = Math.pow(6, 3);
 
-      do {
-        result = new Board(this.specification.toConfiguration());
+      return _.range(0, steppedValidOddsRanges.length * attemptsPerStep)
+          .reduce((accum, count, _, range) => {
+            const maxScore = accum['maxScore'];
 
-        const validOddsRanges = count < 216
-            ? [
-              [0, 6],
-              [3, 9],
-              [6, 12]]
-            : count < 2 * 216
-            ? [
-              [0, 6],
-              [2, 10],
-              [5, 13]]
-            : count < 4 * 216
-            ? [
-              [0, 6],
-              [2, 10],
-              [4, 14]]
-            : [
-              [0, 6],
-              [1, 11],
-              [3, 15]];
-        validBoard = BoardGenerator.verifyBoard(result, validOddsRanges);
+            const validOddsRanges = steppedValidOddsRanges[Math.floor(count / attemptsPerStep)];
+            const initialScore = validOddsRanges[0][0] + validOddsRanges[1][0] + validOddsRanges[2][0];
 
-        console.log(`count = ${count}, validOddsRange = ${JSON.stringify(validOddsRanges)}, validBoard = ${validBoard}`);
-      } while (!validBoard && ++count < 6 * 216);
+            if (maxScore >= initialScore) {
+              // highest-scoring board has been found
 
-      return result;
+              range.splice(1); // break out of iteration
+            } else {
+              const configurations = this.specification.toConfiguration();
+
+              // TODO: Score configuration validation instead of having it be all-or-nothing.
+              const configurationsValid = configurations.every((configuration) => {
+                const result = this.specification.validateConfiguration(configuration);
+
+                console.log(`${JSON.stringify(configuration)} ${result ? 'passes' : 'fails'} custom validation.`);
+
+                return result;
+              });
+              if (configurationsValid) {
+                const board = new Board(configurations);
+
+                const boardPenalty = BoardGenerator.boardPenalty(board, validOddsRanges);
+                const totalScore = initialScore - boardPenalty;
+                if (totalScore > maxScore) {
+                  return {'maxScore': totalScore, 'fairestBoard': board};
+                }
+              }
+            }
+
+            console.log(`count = ${count}, validOddsRange = ${JSON.stringify(validOddsRanges)}, score = ${maxScore}`);
+
+            return accum;
+          }, {'maxScore': 0, 'fairestBoard': new Board([])})['fairestBoard'];
     }
 
-    static verifyBoard(board: Board, validOddsRanges: number[][]): boolean {
+    static boardPenalty(board: Board, validOddsRanges: number[][]): number {
       function key(x: number, y: number): string {
         return `(${x},${y})`;
       }
@@ -97,14 +112,12 @@ import * as Coordinates from "./Coordinates";
             .reduce((sum, ct) => {
               const ctOdds = ct.chits.odds();
 
-              console.log(`ct = ${JSON.stringify(ct)}, ctOdds = ${ctOdds}`);
-
               return sum + ctOdds;
             }, 0);
       }
-      function oddsWithinValidRange(contributors: [Configuration.Configuration[], number][]) {
+      function penaltyPoints(contributors: [Configuration.Configuration[], number][]): number {
         if (contributors.length === 0) {
-          return true;
+          return 0;
         }
 
         const contributorCount = contributors.reduce((sum, c) => sum + c[0].length, 0);
@@ -123,9 +136,15 @@ import * as Coordinates from "./Coordinates";
               return sum + contributorOdds;
             }, 0);
 
-        console.log(`contributors = ${JSON.stringify(contributors)}, odds = ${totalOdds}, contributorCount = ${contributorCount}, validRange = ${JSON.stringify(validRange)}`);
+        const result = totalOdds < validRange[0]
+            ? validRange[0] - totalOdds
+            : validRange[1] < totalOdds
+            ? totalOdds - validRange[1]
+            : 0;
 
-        return validRange[0] <= totalOdds && totalOdds <= validRange[1];
+        console.log(`contributors = ${JSON.stringify(contributors)}, odds = ${totalOdds}, contributorCount = ${contributorCount}, validRange = ${JSON.stringify(validRange)}, ${result === 0 ? 'pass' : 'fail'}`);
+
+        return result;
       }
 
       const producingConfiguration = board.terrainTilesLayout
@@ -154,45 +173,45 @@ import * as Coordinates from "./Coordinates";
 
       console.log(`x ∈ [${minX}, ${maxX}], y ∈ [${minY}, ${maxY}]`);
 
-      for (let y = minY; y < maxY + 1; ++y) {
-        for (let x = minX - 2 + (minX + minY) % 2; x < maxX + 2; x += 2) {
-          const topVertexContributors = <[Configuration.Configuration[], number][]>[
-            [coordinatesMap[key(x, y)], Coordinates.VertexPosition.TOP],
-            [coordinatesMap[key(x - 1, y - 1)], Coordinates.VertexPosition.BOTTOM_RIGHT],
-            [coordinatesMap[key(x + 1, y - 1)], Coordinates.VertexPosition.BOTTOM_LEFT]];
-          const topRightVertexContributors = <[Configuration.Configuration[], number][]>[
-            [coordinatesMap[key(x, y)], Coordinates.VertexPosition.TOP_RIGHT],
-            [coordinatesMap[key(x + 1, y - 1)], Coordinates.VertexPosition.BOTTOM],
-            [coordinatesMap[key(x + 2, y)], Coordinates.VertexPosition.TOP_LEFT]];
+      return _.range(minY - 1, maxY + 1)
+          .reduce((sumOverYs, y) => {
+            const xAdjustment = (minX + y) % 2;
 
-          console.log(`(x, y) = ${key(x, y)}, topVertexContributors = ${JSON.stringify(topVertexContributors)}, topRightVertexContributors = ${JSON.stringify(topRightVertexContributors)}`);
+            return sumOverYs + _.range(minX - 2 + xAdjustment, maxX + 2 - xAdjustment, 2)
+                .reduce((sumOverXs, x) => {
+                  const topVertexContributors = <[Configuration.Configuration[], number][]>[
+                    [coordinatesMap[key(x, y)], Coordinates.VertexPosition.TOP],
+                    [coordinatesMap[key(x - 1, y - 1)], Coordinates.VertexPosition.BOTTOM_RIGHT],
+                    [coordinatesMap[key(x + 1, y - 1)], Coordinates.VertexPosition.BOTTOM_LEFT]];
+                  const topRightVertexContributors = <[Configuration.Configuration[], number][]>[
+                    [coordinatesMap[key(x, y)], Coordinates.VertexPosition.TOP_RIGHT],
+                    [coordinatesMap[key(x + 1, y - 1)], Coordinates.VertexPosition.BOTTOM],
+                    [coordinatesMap[key(x + 2, y)], Coordinates.VertexPosition.TOP_LEFT]];
 
-          const invalid = [topVertexContributors, topRightVertexContributors].some((contributors) => {
-            const eligibleContributors = contributors
-                .filter((elt) => elt[0] !== undefined)
-                .map((elt) => {
-                  const eligibleConfiguration = elt[0]
-                      .filter((ct) => {
-                        return Tiles.SEA !== ct.tile
-                            && ct.coordinate.edgePositions.some((p) => {
-                              return p === elt[1] || p === (elt[1] + 5) % 6;
+                  console.log(`(x, y) = ${key(x, y)}, topVertexContributors = ${JSON.stringify(topVertexContributors)}, topRightVertexContributors = ${JSON.stringify(topRightVertexContributors)}`);
+
+                  return sumOverXs + [topVertexContributors, topRightVertexContributors]
+                      .reduce((sumOverContributors, contributors) => {
+                        const eligibleContributors = contributors
+                            .filter((elt) => elt[0] !== undefined)
+                            .map((elt) => {
+                              const eligibleConfiguration = elt[0]
+                                  .filter((ct) => {
+                                    return Tiles.SEA !== ct.tile
+                                        && ct.coordinate.edgePositions.some((p) => {
+                                          return p === elt[1] || p === (elt[1] + 5) % 6;
+                                        });
+                                  });
+                              return [eligibleConfiguration, elt[1]] as [Configuration.Configuration[], number];
+                            })
+                            .filter((elt) => {
+                              return elt[0].length > 0;
                             });
-                      });
-                  return [eligibleConfiguration, elt[1]] as [Configuration.Configuration[], number];
-                })
-                .filter((elt) => {
-                  return elt[0].length > 0;
-                });
 
-            return !oddsWithinValidRange(eligibleContributors);
-          });
-          if (invalid) {
-            return false;
-          }
-        }
-      }
-
-      return true;
+                        return sumOverContributors + penaltyPoints(eligibleContributors);
+                      }, 0);
+                }, 0);
+          }, 0);
     }
   }
 // }
