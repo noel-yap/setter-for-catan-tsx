@@ -1,9 +1,9 @@
 import * as _ from 'underscore';
 
-import * as Chits from "./Chits";
-import * as Configuration from "./Configuration";
-import * as Coordinates from "./Coordinates";
-import * as Tiles from "./Tiles";
+import * as Chits from './Chits';
+import * as Configuration from './Configuration';
+import * as Coordinates from './Coordinates';
+import * as Tiles from './Tiles';
 
 // export module SPECs {
   export class Specification {
@@ -13,8 +13,31 @@ import * as Tiles from "./Tiles";
         public chits: {[name: string]: Chits.Chits[]},
         public coordinatesTilesMap: {[coordinatesName: string]: string[]} = {},
         public chitsTilesMap: {[chitsName: string]: string[]} = {},
-        public validateConfiguration = (configuration: Configuration.Configuration) => { return true; }) {
+        public validateConfiguration = (_: Configuration.Configuration) => { return true; },
+        public filterConfigurationScorer = (_: Configuration.Configuration) => { return true; }) {
       this.validate();
+    }
+
+    withConfigurationValidator(configurationValidator: (configuration: Configuration.Configuration) => boolean): Specification {
+      return new Specification(
+          this.tiles,
+          this.coordinates,
+          this.chits,
+          this.coordinatesTilesMap,
+          this.chitsTilesMap,
+          configurationValidator,
+          this.filterConfigurationScorer);
+    }
+
+    withConfigurationScorerFilter(configurationScorerFilter: (configuration: Configuration.Configuration) => boolean): Specification {
+      return new Specification(
+          this.tiles,
+          this.coordinates,
+          this.chits,
+          this.coordinatesTilesMap,
+          this.chitsTilesMap,
+          this.validateConfiguration,
+          configurationScorerFilter);
     }
 
     validate() {
@@ -173,7 +196,9 @@ import * as Tiles from "./Tiles";
         coordinates,
         chits,
         coordinatesTilesMap,
-        chitsTilesMap);
+        chitsTilesMap,
+        specification.validateConfiguration,
+        specification.filterConfigurationScorer);
   }
 
   export const SPEC_3_4 = new Specification(
@@ -463,10 +488,10 @@ import * as Tiles from "./Tiles";
 
   export const SPEC_3_EXP_SEA_SCEN_TD = new Specification(
       {
-        'indigenous-producing-terrain': Tiles.BASE_3_SEA_SCEN_TD_INDIGENOUS_PRODUCING_TERRAIN_TILE_SET,
+        'indigenous-producing-terrain': Tiles.BASE_3_EXP_SEA_SCEN_TD_INDIGENOUS_PRODUCING_TERRAIN_TILE_SET,
         'indigenous-desert': new Array(3).fill(Tiles.DESERT_TERRAIN),
-        'indigenous-harbor': Tiles.BASE_3_SEA_SCEN_TD_INDIGENOUS_HARBOR_TILE_SET,
-        'foreign-producing-terrain': Tiles.BASE_3_SEA_SCEN_TD_FOREIGN_PRODUCING_TERRAIN_TILE_SET,
+        'indigenous-harbor': Tiles.BASE_3_EXP_SEA_SCEN_TD_INDIGENOUS_HARBOR_TILE_SET,
+        'foreign-producing-terrain': Tiles.BASE_3_EXP_SEA_SCEN_TD_FOREIGN_PRODUCING_TERRAIN_TILE_SET,
         'foreign-sea': new Array(2).fill(Tiles.SEA)
       },
       {
@@ -476,22 +501,27 @@ import * as Tiles from "./Tiles";
         'foreign-terrain': Coordinates.BASE_3_EXP_SEA_SCEN_TD_FOREIGN_TERRAIN_COORDINATES
       },
       {
-        'indigenous-producing-terrain': Chits.BASE_3_SEA_SCEN_TD_INDIGENOUS_ISLAND_PRODUCING_TERRAIN_CHIT_SET,
-        'foreign-producing-terrain': Chits.BASE_3_SEA_SCEN_TD_FOREIGN_ISLAND_PRODUCING_TERRAIN_CHIT_SET
+        'indigenous-producing-terrain': Chits.BASE_3_EXP_SEA_SCEN_TD_INDIGENOUS_ISLAND_PRODUCING_TERRAIN_CHIT_SET,
+        'foreign-producing-terrain': Chits.BASE_3_EXP_SEA_SCEN_TD_FOREIGN_ISLAND_PRODUCING_TERRAIN_CHIT_SET
       },
       Object.assign(oneToOne('indigenous-producing-terrain', 'indigenous-desert', 'indigenous-harbor'), {
         'foreign-terrain': ['foreign-producing-terrain', 'foreign-sea']
       }),
-      oneToOne('indigenous-producing-terrain', 'foreign-producing-terrain'),
-      ((configuration: Configuration.Configuration) => {
+      oneToOne('indigenous-producing-terrain', 'foreign-producing-terrain'))
+      .withConfigurationValidator((configuration: Configuration.Configuration) => {
         return configuration.tile !== Tiles.GOLD_TERRAIN || configuration.chits.odds() < 5;
-      }));
+      })
+      .withConfigurationScorerFilter((configuration: Configuration.Configuration) => {
+        return SPEC_3_EXP_SEA_SCEN_TD.coordinates['indigenous-desert'].every((coordinate) => {
+          return coordinate.x !== configuration.coordinate.x && coordinate.y !== configuration.coordinate.y;
+        });
+      });
   export const SPEC_4_EXP_SEA_SCEN_TD = new Specification(
       {
-        'indigenous-producing-terrain': Tiles.BASE_4_SEA_SCEN_TD_INDIGENOUS_PRODUCING_TERRAIN_TILE_SET,
+        'indigenous-producing-terrain': Tiles.BASE_4_EXP_SEA_SCEN_TD_INDIGENOUS_PRODUCING_TERRAIN_TILE_SET,
         'indigenous-desert': new Array(3).fill(Tiles.DESERT_TERRAIN),
         'indigenous-harbor': Tiles.BASE_3_4_HARBOR_TILE_SET,
-        'foreign-producing-terrain': Tiles.BASE_4_SEA_SCEN_TD_FOREIGN_PRODUCING_TERRAIN_TILE_SET,
+        'foreign-producing-terrain': Tiles.BASE_4_EXP_SEA_SCEN_TD_FOREIGN_PRODUCING_TERRAIN_TILE_SET,
         'foreign-sea': new Array(2).fill(Tiles.SEA)
       },
       {
@@ -501,22 +531,27 @@ import * as Tiles from "./Tiles";
         'foreign-terrain': Coordinates.BASE_4_EXP_SEA_SCEN_TD_FOREIGN_TERRAIN_COORDINATES
       },
       {
-        'indigenous-producing-terrain': Chits.BASE_4_SEA_SCEN_TD_INDIGENOUS_ISLAND_PRODUCING_TERRAIN_CHIT_SET,
-        'foreign-producing-terrain': Chits.BASE_4_SEA_SCEN_TD_FOREIGN_ISLAND_PRODUCING_TERRAIN_CHIT_SET
+        'indigenous-producing-terrain': Chits.BASE_4_EXP_SEA_SCEN_TD_INDIGENOUS_ISLAND_PRODUCING_TERRAIN_CHIT_SET,
+        'foreign-producing-terrain': Chits.BASE_4_EXP_SEA_SCEN_TD_FOREIGN_ISLAND_PRODUCING_TERRAIN_CHIT_SET
       },
       Object.assign(oneToOne('indigenous-producing-terrain', 'indigenous-desert', 'indigenous-harbor'), {
         'foreign-terrain': ['foreign-producing-terrain', 'foreign-sea']
       }),
-      oneToOne('indigenous-producing-terrain', 'foreign-producing-terrain'),
-      ((configuration: Configuration.Configuration) => {
+      oneToOne('indigenous-producing-terrain', 'foreign-producing-terrain'))
+      .withConfigurationValidator((configuration: Configuration.Configuration) => {
         return configuration.tile !== Tiles.GOLD_TERRAIN || configuration.chits.odds() < 5;
-      }));
+      })
+      .withConfigurationScorerFilter((configuration: Configuration.Configuration) => {
+        return SPEC_4_EXP_SEA_SCEN_TD.coordinates['indigenous-desert'].every((coordinate) => {
+          return coordinate.x !== configuration.coordinate.x && coordinate.y !== configuration.coordinate.y;
+        });
+      });
   export const SPEC_5_6_EXP_SEA_SCEN_TD = new Specification(
       {
-        'indigenous-producing-terrain': Tiles.EXT_5_6_SEA_SCEN_TD_INDIGENOUS_PRODUCING_TERRAIN_TILE_SET,
+        'indigenous-producing-terrain': Tiles.EXT_5_6_EXP_SEA_SCEN_TD_INDIGENOUS_PRODUCING_TERRAIN_TILE_SET,
         'indigenous-desert': new Array(5).fill(Tiles.DESERT_TERRAIN),
-        'indigenous-harbor': Tiles.EXT_5_6_SEA_SCEN_TD_INDIGENOUS_HARBOR_TILE_SET,
-        'foreign-producing-terrain': Tiles.EXT_5_6_SEA_SCEN_TD_FOREIGN_PRODUCING_TERRAIN_TILE_SET,
+        'indigenous-harbor': Tiles.EXT_5_6_HARBOR_TILE_SET,
+        'foreign-producing-terrain': Tiles.EXT_5_6_EXP_SEA_SCEN_TD_FOREIGN_PRODUCING_TERRAIN_TILE_SET,
         'foreign-sea': new Array(5).fill(Tiles.SEA)
       },
       {
@@ -526,22 +561,27 @@ import * as Tiles from "./Tiles";
         'foreign-terrain': Coordinates.EXT_5_6_EXP_SEA_SCEN_TD_FOREIGN_TERRAIN_COORDINATES
       },
       {
-        'indigenous-producing-terrain': Chits.EXT_5_6_SEA_SCEN_TD_INDIGENOUS_ISLAND_PRODUCING_TERRAIN_CHIT_SET,
-        'foreign-producing-terrain': Chits.EXT_5_6_SEA_SCEN_TD_FOREIGN_ISLAND_PRODUCING_TERRAIN_CHIT_SET
+        'indigenous-producing-terrain': Chits.EXT_5_6_EXP_SEA_SCEN_TD_INDIGENOUS_ISLAND_PRODUCING_TERRAIN_CHIT_SET,
+        'foreign-producing-terrain': Chits.EXT_5_6_EXP_SEA_SCEN_TD_FOREIGN_ISLAND_PRODUCING_TERRAIN_CHIT_SET
       },
       Object.assign(oneToOne('indigenous-producing-terrain', 'indigenous-desert', 'indigenous-harbor'), {
         'foreign-terrain': ['foreign-producing-terrain', 'foreign-sea']
       }),
-      oneToOne('indigenous-producing-terrain', 'foreign-producing-terrain'),
-      ((configuration: Configuration.Configuration) => {
+      oneToOne('indigenous-producing-terrain', 'foreign-producing-terrain'))
+      .withConfigurationValidator((configuration: Configuration.Configuration) => {
         return configuration.tile !== Tiles.GOLD_TERRAIN || configuration.chits.odds() < 5;
-      }));
+      })
+      .withConfigurationScorerFilter((configuration: Configuration.Configuration) => {
+        return SPEC_5_6_EXP_SEA_SCEN_TD.coordinates['indigenous-desert'].every((coordinate) => {
+          return coordinate.x !== configuration.coordinate.x && coordinate.y !== configuration.coordinate.y;
+        });
+      });
   export const SPEC_7_8_EXP_SEA_SCEN_TD = new Specification(
       {
-        'indigenous-producing-terrain': Tiles.EXT_7_8_SEA_SCEN_TD_INDIGENOUS_PRODUCING_TERRAIN_TILE_SET,
+        'indigenous-producing-terrain': Tiles.EXT_7_8_EXP_SEA_SCEN_TD_INDIGENOUS_PRODUCING_TERRAIN_TILE_SET,
         'indigenous-desert': new Array(7).fill(Tiles.DESERT_TERRAIN),
         'indigenous-harbor': Tiles.EXT_7_8_HARBOR_TILE_SET,
-        'foreign-producing-terrain': Tiles.EXT_7_8_SEA_SCEN_TD_FOREIGN_PRODUCING_TERRAIN_TILE_SET,
+        'foreign-producing-terrain': Tiles.EXT_7_8_EXP_SEA_SCEN_TD_FOREIGN_PRODUCING_TERRAIN_TILE_SET,
         'foreign-sea': new Array(8).fill(Tiles.SEA)
       },
       {
@@ -551,16 +591,54 @@ import * as Tiles from "./Tiles";
         'foreign-terrain': Coordinates.EXT_7_8_EXP_SEA_SCEN_TD_FOREIGN_TERRAIN_COORDINATES
       },
       {
-        'indigenous-producing-terrain': Chits.EXT_7_8_SEA_SCEN_TD_INDIGENOUS_ISLAND_PRODUCING_TERRAIN_CHIT_SET,
-        'foreign-producing-terrain': Chits.EXT_7_8_SEA_SCEN_TD_FOREIGN_ISLAND_PRODUCING_TERRAIN_CHIT_SET
+        'indigenous-producing-terrain': Chits.EXT_7_8_EXP_SEA_SCEN_TD_INDIGENOUS_ISLAND_PRODUCING_TERRAIN_CHIT_SET,
+        'foreign-producing-terrain': Chits.EXT_7_8_EXP_SEA_SCEN_TD_FOREIGN_ISLAND_PRODUCING_TERRAIN_CHIT_SET
       },
       Object.assign(oneToOne('indigenous-producing-terrain', 'indigenous-desert', 'indigenous-harbor'), {
         'foreign-terrain': ['foreign-producing-terrain', 'foreign-sea']
       }),
-      oneToOne('indigenous-producing-terrain', 'foreign-producing-terrain'),
-      ((configuration: Configuration.Configuration) => {
+      oneToOne('indigenous-producing-terrain', 'foreign-producing-terrain'))
+      .withConfigurationValidator((configuration: Configuration.Configuration) => {
         return configuration.tile !== Tiles.GOLD_TERRAIN || configuration.chits.odds() < 5;
-      }));
+      });
+  
+  export const SPEC_3_4_EXP_SEA_SCEN_FT = new Specification(
+      {
+        'main-island-terrain': Tiles.BASE_3_4_PRODUCING_TERRAIN_TILE_SET,
+        'small-island-terrain': Tiles.BASE_3_4_EXP_SEA_SCEN_FT_SMALL_ISLAND_TERRAIN_TILE_SET,
+        'small-island-harbor': Tiles.BASE_3_4_EXP_SEA_SCEN_FT_SMALL_ISLAND_HARBOR_TILE_SET
+      },
+      {
+        'main-island-terrain': Coordinates.BASE_3_4_EXP_SEA_SCEN_FT_MAIN_ISLAND_TERRAIN_COORDINATES,
+        'small-island-terrain': Coordinates.BASE_3_4_EXP_SEA_SCEN_FT_SMALL_ISLAND_TERRAIN_COORDINATES,
+        'small-island-harbor': Coordinates.BASE_3_4_EXP_SEA_SCEN_FT_SMALL_ISLAND_HARBOR_COORDINATES
+      },
+      {
+        'main-island-terrain': Chits.BASE_3_4_PRODUCING_TERRAIN_CHIT_SET
+      },
+      oneToOne('main-island-terrain', 'small-island-terrain', 'small-island-harbor'),
+      oneToOne('main-island-terrain'))
+      .withConfigurationValidator((configuration: Configuration.Configuration) => {
+        const coordinate = configuration.coordinate;
+
+        const mainIslandCoordinates = SPEC_3_4_EXP_SEA_SCEN_FT.coordinates['main-island-terrain'];
+        const xs = mainIslandCoordinates
+            .map((coordinate) => coordinate.x);
+        const ys = mainIslandCoordinates
+            .map((coordinate) => coordinate.y);
+        const mainIslandMaxX = Math.max(...xs);
+        const mainIslandMinY = Math.min(...ys);
+        const mainIslandMaxY = Math.max(...ys);
+
+        return coordinate.x < mainIslandMaxX - 1 || mainIslandMaxX < coordinate.x ||
+            coordinate.y < mainIslandMinY || mainIslandMaxY < coordinate.y ||
+            configuration.chits.odds() < 4;
+      })
+      .withConfigurationScorerFilter((configuration: Configuration.Configuration) => {
+        return SPEC_3_4_EXP_SEA_SCEN_FT.coordinates['main-island-terrain'].some((coordinate) => {
+          return coordinate.x === configuration.coordinate.x && coordinate.y === configuration.coordinate.y;
+        });
+      });
 
   export const SPEC_3_4_EXP_TB_SCEN_ROC = new Specification(
       {

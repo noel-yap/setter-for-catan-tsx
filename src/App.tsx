@@ -199,21 +199,24 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
     const vertex0 = edgePositionStartPoint(configuredTile.coordinate.edgePositions[0]);
     const vertex1 = edgePositionStartPoint((configuredTile.coordinate.edgePositions[0] + 1) % 6);
 
-    GeneratedBoard.renderPolygon(display, [
-      hexCenter,
-      vertex0,
-      vertex1], GeneratedBoard.tileColor(configuredTile.tile));
+    GeneratedBoard.renderPolygon(
+        display,
+        [hexCenter, vertex0, vertex1],
+        configuredTile.coordinate.facePosition === Coordinates.FacePosition.FACE_UP
+            ? GeneratedBoard.tileColor(configuredTile.tile)
+            : 'white');
 
     const offset = vertex1.translate(vertex0.diff(vertex1).scale(.5)).diff(hexCenter).scale(.6875);
     GeneratedBoard.renderText(
         display,
         options.fg,
         hexCenter.translate(offset),
-        configuredTile.tile === Tiles.GENERIC_HARBOR ? '3:1' : '2:1');
+        configuredTile.coordinate.facePosition === Coordinates.FacePosition.FACE_UP
+            ? configuredTile.tile === Tiles.GENERIC_HARBOR ? '3:1' : '2:1'
+            : '?');
   }
 
-  static renderFishery(
-      display: ROT.Display, configuredTile: Configuration.Configuration, inside: boolean) {
+  static renderFishery(display: ROT.Display, configuredTile: Configuration.Configuration, inside: boolean) {
     const options = display._options;
 
     // These calculations copied from rot.js to help ensure consistency.
@@ -227,20 +230,20 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
     const vertex2 = edgePositionStartPoint((configuredTile.coordinate.edgePositions[1] + 1) % 6);
     const offset = vertex1.diff(hexCenter).scale(inside ? -.5 : .5);
 
-    GeneratedBoard.renderPolygon(display, [
-      vertex0,
-      vertex1,
-      vertex2,
-      vertex2.translate(offset),
-      vertex1.translate(offset),
-      vertex0.translate(offset)
-    ], GeneratedBoard.tileColor(configuredTile.tile));
+    GeneratedBoard.renderPolygon(
+        display,
+        [vertex0, vertex1, vertex2, vertex2.translate(offset), vertex1.translate(offset), vertex0.translate(offset)],
+        configuredTile.coordinate.facePosition === Coordinates.FacePosition.FACE_UP
+            ? GeneratedBoard.tileColor(configuredTile.tile)
+            : 'white');
 
     GeneratedBoard.renderText(
         display,
         GeneratedBoard.chitColor(configuredTile.tile, configuredTile.chits, options.fg),
         vertex1.translate(offset.scale(.5 + (inside ? .0625 : -.0625))),
-        GeneratedBoard.chitsToString(configuredTile.chits));
+        configuredTile.coordinate.facePosition === Coordinates.FacePosition.FACE_UP
+            ? GeneratedBoard.chitsToString(configuredTile.chits)
+            : '?');
   }
 
   static renderRiver(
@@ -530,6 +533,10 @@ class App extends React.Component<AppProps, AppState> {
         '4': [Specifications.SPEC_4_EXP_SEA_SCEN_TD, Coordinates.BASE_4_EXP_SEA_SCEN_TD_FISHERY_COORDINATES],
         '5-6': [Specifications.SPEC_5_6_EXP_SEA_SCEN_TD, Coordinates.EXT_5_6_EXP_SEA_SCEN_TD_FISHERY_COORDINATES],
         '7-8': [Specifications.SPEC_7_8_EXP_SEA_SCEN_TD, Coordinates.EXT_7_8_EXP_SEA_SCEN_TD_FISHERY_COORDINATES]
+      },
+      'Seafarers: The Forgotten Tribes': {
+        '3': [Specifications.SPEC_3_4_EXP_SEA_SCEN_FT, Coordinates.BASE_3_4_EXP_SEA_SCEN_FT_FISHERY_COORDINATES],
+        '4': [Specifications.SPEC_3_4_EXP_SEA_SCEN_FT, Coordinates.BASE_3_4_EXP_SEA_SCEN_FT_FISHERY_COORDINATES],
       },
       'Traders and Barbarians: Rivers of Catan': {
         '3': [Specifications.SPEC_3_4_EXP_TB_SCEN_ROC, Coordinates.BASE_3_4_FISHERY_COORDINATES],

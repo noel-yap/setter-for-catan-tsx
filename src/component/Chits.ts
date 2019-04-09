@@ -1,8 +1,5 @@
 // export module Chits {
-
-import {FIELD_TERRAIN} from "./Tiles";
-
-export class Chits {
+  export class Chits {
     constructor(public values: number[]) {}
 
     odds(): number {
@@ -181,16 +178,16 @@ export class Chits {
       .concat(new Array(2).fill(CHITS_6))
       .concat(new Array(2).fill(CHITS_8));
 
-  export const BASE_3_SEA_SCEN_TD_INDIGENOUS_ISLAND_PRODUCING_TERRAIN_CHIT_SET = [CHITS_2, CHITS_3, CHITS_5, CHITS_11]
+  export const BASE_3_EXP_SEA_SCEN_TD_INDIGENOUS_ISLAND_PRODUCING_TERRAIN_CHIT_SET = [CHITS_2, CHITS_3, CHITS_5, CHITS_11]
       .concat(new Array(2).fill(CHITS_4))
       .concat(new Array(2).fill(CHITS_6))
       .concat(new Array(2).fill(CHITS_8))
       .concat(new Array(2).fill(CHITS_9))
       .concat(new Array(2).fill(CHITS_10));
-  export const BASE_3_SEA_SCEN_TD_FOREIGN_ISLAND_PRODUCING_TERRAIN_CHIT_SET = new Array(2).fill(CHITS_5)
+  export const BASE_3_EXP_SEA_SCEN_TD_FOREIGN_ISLAND_PRODUCING_TERRAIN_CHIT_SET = new Array(2).fill(CHITS_5)
       .concat([CHITS_3, CHITS_4, CHITS_6, CHITS_8, CHITS_9, CHITS_11]);
 
-  export const BASE_4_SEA_SCEN_TD_INDIGENOUS_ISLAND_PRODUCING_TERRAIN_CHIT_SET = [CHITS_12]
+  export const BASE_4_EXP_SEA_SCEN_TD_INDIGENOUS_ISLAND_PRODUCING_TERRAIN_CHIT_SET = [CHITS_12]
       .concat(new Array(2).fill(CHITS_3))
       .concat(new Array(2).fill(CHITS_4))
       .concat(new Array(2).fill(CHITS_5))
@@ -199,10 +196,10 @@ export class Chits {
       .concat(new Array(2).fill(CHITS_9))
       .concat(new Array(2).fill(CHITS_10))
       .concat(new Array(2).fill(CHITS_11));
-  export const BASE_4_SEA_SCEN_TD_FOREIGN_ISLAND_PRODUCING_TERRAIN_CHIT_SET = [
+  export const BASE_4_EXP_SEA_SCEN_TD_FOREIGN_ISLAND_PRODUCING_TERRAIN_CHIT_SET = [
     CHITS_2, CHITS_3, CHITS_4, CHITS_5, CHITS_6, CHITS_8, CHITS_9, CHITS_10, CHITS_11, CHITS_12];
 
-  export const EXT_5_6_SEA_SCEN_TD_INDIGENOUS_ISLAND_PRODUCING_TERRAIN_CHIT_SET = [CHITS_2]
+  export const EXT_5_6_EXP_SEA_SCEN_TD_INDIGENOUS_ISLAND_PRODUCING_TERRAIN_CHIT_SET = [CHITS_2]
       .concat(new Array(2).fill(CHITS_3))
       .concat(new Array(2).fill(CHITS_4))
       .concat(new Array(2).fill(CHITS_5))
@@ -212,7 +209,7 @@ export class Chits {
       .concat(new Array(3).fill(CHITS_10))
       .concat(new Array(2).fill(CHITS_11))
       .concat(new Array(2).fill(CHITS_12));
-  export const EXT_5_6_SEA_SCEN_TD_FOREIGN_ISLAND_PRODUCING_TERRAIN_CHIT_SET = [CHITS_9, CHITS_10, CHITS_12]
+  export const EXT_5_6_EXP_SEA_SCEN_TD_FOREIGN_ISLAND_PRODUCING_TERRAIN_CHIT_SET = [CHITS_9, CHITS_10, CHITS_12]
       .concat(new Array(2).fill(CHITS_2))
       .concat(new Array(2).fill(CHITS_3))
       .concat(new Array(2).fill(CHITS_4))
@@ -221,7 +218,7 @@ export class Chits {
       .concat(new Array(2).fill(CHITS_8))
       .concat(new Array(2).fill(CHITS_11));
 
-  export const EXT_7_8_SEA_SCEN_TD_INDIGENOUS_ISLAND_PRODUCING_TERRAIN_CHIT_SET = [CHITS_2, CHITS_12]
+  export const EXT_7_8_EXP_SEA_SCEN_TD_INDIGENOUS_ISLAND_PRODUCING_TERRAIN_CHIT_SET = [CHITS_2, CHITS_12]
       .concat(new Array(2).fill(CHITS_3))
       .concat(new Array(3).fill(CHITS_4))
       .concat(new Array(4).fill(CHITS_5))
@@ -230,7 +227,7 @@ export class Chits {
       .concat(new Array(4).fill(CHITS_9))
       .concat(new Array(3).fill(CHITS_10))
       .concat(new Array(2).fill(CHITS_11));
-  export const EXT_7_8_SEA_SCEN_TD_FOREIGN_ISLAND_PRODUCING_TERRAIN_CHIT_SET = new Array(2).fill(CHITS_2)
+  export const EXT_7_8_EXP_SEA_SCEN_TD_FOREIGN_ISLAND_PRODUCING_TERRAIN_CHIT_SET = new Array(2).fill(CHITS_2)
       .concat(new Array(3).fill(CHITS_3))
       .concat(new Array(3).fill(CHITS_4))
       .concat(new Array(3).fill(CHITS_5))
