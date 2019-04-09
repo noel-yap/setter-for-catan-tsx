@@ -238,6 +238,16 @@
       .concat(new Array(3).fill(CHITS_11))
       .concat(new Array(2).fill(CHITS_12));
 
+  export const EXT_5_6_EXP_SEA_SCEN_FT_MAIN_ISLAND_TERRAIN_CHIT_SET = [CHITS_2, CHITS_12]
+      .concat(new Array(3).fill(CHITS_6))
+      .concat(new Array(3).fill(CHITS_8))
+      .concat(new Array(3).fill(CHITS_9))
+      .concat(new Array(3).fill(CHITS_10))
+      .concat(new Array(3).fill(CHITS_11))
+      .concat(new Array(4).fill(CHITS_3))
+      .concat(new Array(4).fill(CHITS_4))
+      .concat(new Array(4).fill(CHITS_5));
+
   export const BASE_3_4_EXP_TB_SCEN_ROC_PRODUCING_TERRAIN_CHIT_SET = [CHITS_2_12]
     .concat(new Array(2).fill(CHITS_3))
     .concat(new Array(2).fill(CHITS_11))

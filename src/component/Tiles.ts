@@ -275,6 +275,17 @@ import * as Coordinates from './Coordinates';
     BRICK_HARBOR,
     ORE_HARBOR];
 
+  export const EXT_5_6_EXP_SEA_SCEN_FT_MAIN_ISLAND_TERRAIN_TILE_SET = new Array(5).fill(MOUNTAIN_TERRAIN)
+      .concat(new Array(5).fill(PASTURE_TERRAIN))
+      .concat(new Array(6).fill(FIELD_TERRAIN))
+      .concat(new Array(6).fill(HILL_TERRAIN))
+      .concat(new Array(7).fill(FOREST_TERRAIN));
+  export const EXT_5_6_EXP_SEA_SCEN_FT_SMALL_ISLAND_PRODUCING_TERRAIN_TILE_SET = [FIELD_TERRAIN, HILL_TERRAIN, MOUNTAIN_TERRAIN]
+      .concat(new Array(2).fill(PASTURE_TERRAIN))
+      .concat(new Array(3).fill(GOLD_TERRAIN));
+  export const EXT_5_6_EXP_SEA_SCEN_FT_SMALL_ISLAND_HARBOR_TILE_SET = BASE_3_4_EXP_SEA_SCEN_FT_SMALL_ISLAND_HARBOR_TILE_SET
+      .concat(new Array(2).fill(GENERIC_HARBOR));
+
   export const BASE_3_4_EXP_TB_SCEN_ROC_NON_RIVER_TERRAIN_TILE_SET = [HILL_TERRAIN, MOUNTAIN_TERRAIN]
       .concat(new Array(4).fill(FIELD_TERRAIN))
       .concat(new Array(4).fill(FOREST_TERRAIN))

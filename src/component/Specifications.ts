@@ -13,23 +13,12 @@ import * as Tiles from './Tiles';
         public chits: {[name: string]: Chits.Chits[]},
         public coordinatesTilesMap: {[coordinatesName: string]: string[]} = {},
         public chitsTilesMap: {[chitsName: string]: string[]} = {},
-        public validateConfiguration = (_: Configuration.Configuration) => { return true; },
-        public filterConfigurationScorer = (_: Configuration.Configuration) => { return true; }) {
+        public validateConfiguration = (_: Configuration.Configuration): boolean => { return true; },
+        public filterConfigurationScorer = (_: Configuration.Configuration): boolean => { return true; }) {
       this.validate();
     }
 
-    withConfigurationValidator(configurationValidator: (configuration: Configuration.Configuration) => boolean): Specification {
-      return new Specification(
-          this.tiles,
-          this.coordinates,
-          this.chits,
-          this.coordinatesTilesMap,
-          this.chitsTilesMap,
-          configurationValidator,
-          this.filterConfigurationScorer);
-    }
-
-    withConfigurationScorerFilter(configurationScorerFilter: (configuration: Configuration.Configuration) => boolean): Specification {
+    withConfigurationScorerFilter(configurationScorerFilter: (_: Configuration.Configuration) => boolean): Specification {
       return new Specification(
           this.tiles,
           this.coordinates,
@@ -38,6 +27,17 @@ import * as Tiles from './Tiles';
           this.chitsTilesMap,
           this.validateConfiguration,
           configurationScorerFilter);
+    }
+
+    withConfigurationValidator(configurationValidator: (_: Configuration.Configuration) => boolean): Specification {
+      return new Specification(
+          this.tiles,
+          this.coordinates,
+          this.chits,
+          this.coordinatesTilesMap,
+          this.chitsTilesMap,
+          configurationValidator,
+          this.filterConfigurationScorer);
     }
 
     validate() {
@@ -636,6 +636,30 @@ import * as Tiles from './Tiles';
       })
       .withConfigurationScorerFilter((configuration: Configuration.Configuration) => {
         return SPEC_3_4_EXP_SEA_SCEN_FT.coordinates['main-island-terrain'].some((coordinate) => {
+          return coordinate.x === configuration.coordinate.x && coordinate.y === configuration.coordinate.y;
+        });
+      });
+  export const SPEC_5_6_EXP_SEA_SCEN_FT = new Specification(
+      {
+        'main-island-terrain': Tiles.EXT_5_6_EXP_SEA_SCEN_FT_MAIN_ISLAND_TERRAIN_TILE_SET,
+        'small-island-producing-terrain': Tiles.EXT_5_6_EXP_SEA_SCEN_FT_SMALL_ISLAND_PRODUCING_TERRAIN_TILE_SET,
+        'small-island-non-producing-terrain': new Array(4).fill(Tiles.DESERT_TERRAIN),
+        'small-island-harbor': Tiles.EXT_5_6_EXP_SEA_SCEN_FT_SMALL_ISLAND_HARBOR_TILE_SET
+      },
+      {
+        'main-island-terrain': Coordinates.EXT_5_6_EXP_SEA_SCEN_FT_MAIN_ISLAND_TERRAIN_COORDINATES,
+        'small-island-terrain': Coordinates.EXT_5_6_EXP_SEA_SCEN_FT_SMALL_ISLAND_TERRAIN_COORDINATES,
+        'small-island-harbor': Coordinates.EXT_5_6_EXP_SEA_SCEN_FT_SMALL_ISLAND_HARBOR_COORDINATES
+      },
+      {
+        'main-island-terrain': Chits.EXT_5_6_EXP_SEA_SCEN_FT_MAIN_ISLAND_TERRAIN_CHIT_SET
+      },
+      Object.assign(oneToOne('main-island-terrain', 'small-island-harbor'), {
+        'small-island-terrain': ['small-island-producing-terrain', 'small-island-non-producing-terrain']
+      }),
+      oneToOne('main-island-terrain'))
+      .withConfigurationScorerFilter((configuration: Configuration.Configuration) => {
+        return SPEC_5_6_EXP_SEA_SCEN_FT.coordinates['main-island-terrain'].some((coordinate) => {
           return coordinate.x === configuration.coordinate.x && coordinate.y === configuration.coordinate.y;
         });
       });
