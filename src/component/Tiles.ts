@@ -296,7 +296,7 @@ import * as Coordinates from './Coordinates';
       .concat(new Array(8).fill(FIELD_TERRAIN))
       .concat(new Array(9).fill(HILL_TERRAIN))
       .concat(new Array(10).fill(FOREST_TERRAIN));
-  export const EXT_7_8_EXP_SEA_SCEN_FT_SMALL_ISLAND_PRODUCING_TERRAIN_TILE_SET = [
+  export const EXT_7_8_EXP_SEA_SCEN_FT_SMALL_ISLAND_TERRAIN_TILE_SET = [
     FIELD_TERRAIN, HILL_TERRAIN, MOUNTAIN_TERRAIN]
       .concat(new Array(2).fill(PASTURE_TERRAIN))
       .concat(new Array(3).fill(GOLD_TERRAIN))

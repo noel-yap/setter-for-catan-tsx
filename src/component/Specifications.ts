@@ -666,10 +666,45 @@ import * as Tiles from './Tiles';
       {
         'main-island-terrain': Chits.EXT_5_6_EXP_SEA_SCEN_FT_MAIN_ISLAND_TERRAIN_CHIT_SET
       },
-      oneToOne('main-island-terrain', 'small-island-terrain', 'small-island-harbor', 'small-island-development-card', 'small-island-victory-point'),
+      oneToOne(
+          'main-island-terrain',
+          'small-island-terrain',
+          'small-island-harbor',
+          'small-island-development-card',
+          'small-island-victory-point'),
       oneToOne('main-island-terrain'))
       .withConfigurationScorerFilter((configuration: Configuration.Configuration) => {
         return SPEC_5_6_EXP_SEA_SCEN_FT.coordinates['main-island-terrain'].some((coordinate) => {
+          return coordinate.x === configuration.coordinate.x && coordinate.y === configuration.coordinate.y;
+        });
+      });
+  export const SPEC_7_8_EXP_SEA_SCEN_FT = new Specification(
+      {
+        'main-island-terrain': Tiles.EXT_7_8_EXP_SEA_SCEN_FT_MAIN_ISLAND_TERRAIN_TILE_SET,
+        'small-island-terrain': Tiles.EXT_7_8_EXP_SEA_SCEN_FT_SMALL_ISLAND_TERRAIN_TILE_SET,
+        'small-island-harbor': Tiles.EXT_7_8_EXP_SEA_SCEN_FT_SMALL_ISLAND_HARBOR_TILE_SET,
+        'small-island-development-card': new Array(8).fill(Tiles.DEVELOPMENT_CARD),
+        'small-island-victory-point': new Array(12).fill(Tiles.VICTORY_POINT)
+      },
+      {
+        'main-island-terrain': Coordinates.EXT_7_8_EXP_SEA_SCEN_FT_MAIN_ISLAND_TERRAIN_COORDINATES,
+        'small-island-terrain': Coordinates.EXT_7_8_EXP_SEA_SCEN_FT_SMALL_ISLAND_TERRAIN_COORDINATES,
+        'small-island-harbor': Coordinates.EXT_7_8_EXP_SEA_SCEN_FT_SMALL_ISLAND_HARBOR_COORDINATES,
+        'small-island-development-card': Coordinates.EXT_7_8_EXP_SEA_SCEN_FT_SMALL_ISLAND_DEVELOPMENT_CARD_COORDINATES,
+        'small-island-victory-point': Coordinates.EXT_7_8_EXP_SEA_SCEN_FT_SMALL_ISLAND_VICTORY_POINT_COORDINATES
+      },
+      {
+        'main-island-terrain': Chits.EXT_7_8_EXP_SEA_SCEN_FT_MAIN_ISLAND_TERRAIN_CHIT_SET
+      },
+      oneToOne(
+          'main-island-terrain',
+          'small-island-terrain',
+          'small-island-harbor',
+          'small-island-development-card',
+          'small-island-victory-point'),
+      oneToOne('main-island-terrain'))
+      .withConfigurationScorerFilter((configuration: Configuration.Configuration) => {
+        return SPEC_7_8_EXP_SEA_SCEN_FT.coordinates['main-island-terrain'].some((coordinate) => {
           return coordinate.x === configuration.coordinate.x && coordinate.y === configuration.coordinate.y;
         });
       });
