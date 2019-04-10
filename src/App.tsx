@@ -41,6 +41,10 @@ class Cartesian2D {
   diff(rhs: Cartesian2D): Cartesian2D {
     return new Cartesian2D(this.x - rhs.x, this.y - rhs.y);
   }
+
+  distance(rhs: Cartesian2D): number {
+    return Math.sqrt(Math.pow(this.x - rhs.x, 2) + Math.pow(this.y - rhs.y, 2));
+  }
 }
 
 interface GeneratedBoardProps {
@@ -63,7 +67,9 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
     const terrainTilesByType = GeneratedBoard.groupByComponentType(this.props.board.terrainTilesLayout);
     const riverByType = GeneratedBoard.groupByComponentType(this.props.board.riverLayout);
     const fisheryTilesByType = GeneratedBoard.groupByComponentType(this.props.board.fisheryTilesLayout);
+    const developmentCardsByType = GeneratedBoard.groupByComponentType(this.props.board.developmentCardsLayout);
     const portTilesByType = GeneratedBoard.groupByComponentType(this.props.board.portTilesLayout);
+    const victoryPointsByType = GeneratedBoard.groupByComponentType(this.props.board.victoryPointsLayout);
     const chits = _.groupBy(this.props.board.terrainTilesLayout.concat(this.props.board.fisheryTilesLayout), (component) => {
       return component.chits.values;
     });
@@ -78,8 +84,10 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
               {GeneratedBoard.renderBom(terrainTilesByType)}
               {GeneratedBoard.renderBom(riverByType)}
               {GeneratedBoard.renderBom(fisheryTilesByType)}
-              {GeneratedBoard.renderBom(portTilesByType)}
               {GeneratedBoard.renderBom(chits, 'Chit')}
+              {GeneratedBoard.renderBom(portTilesByType)}
+              {GeneratedBoard.renderBom(developmentCardsByType)}
+              {GeneratedBoard.renderBom(victoryPointsByType)}
             </Typography>
           </div>
           <div id="generated-board-div" ref={this.canvasDivRef}/>
@@ -126,6 +134,18 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
     });
 
     window.requestAnimationFrame(() => {
+      this.props.board.victoryPointsLayout.forEach((layout) => {
+        GeneratedBoard.renderVictoryPoint(display, layout);
+      });
+    });
+
+    window.requestAnimationFrame(() => {
+      this.props.board.developmentCardsLayout.forEach((layout) => {
+        GeneratedBoard.renderDevelopmentCard(display, layout);
+      })
+    });
+
+    window.requestAnimationFrame(() => {
       this.props.board.fisheryTilesLayout.forEach((layout) => {
         GeneratedBoard.renderFishery(
             display,
@@ -150,33 +170,33 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
     return display.getContainer() as HTMLCanvasElement;
   }
 
-  static renderTerrain(display: ROT.Display, configuredTile: Configuration.Configuration) {
+  static renderTerrain(display: ROT.Display, configuration: Configuration.Configuration) {
     const options = display._options;
 
-    const draw = _.partial(display.draw.bind(display), configuredTile.coordinate.x, configuredTile.coordinate.y);
+    const draw = _.partial(display.draw.bind(display), configuration.coordinate.x, configuration.coordinate.y);
 
-    if (configuredTile.coordinate.facePosition === Coordinates.FacePosition.FACE_UP) {
+    if (configuration.coordinate.facePosition === Coordinates.FacePosition.FACE_UP) {
       draw(
-          GeneratedBoard.chitsToString(configuredTile.chits),
-          GeneratedBoard.chitColor(configuredTile.tile, configuredTile.chits, options.fg),
-          GeneratedBoard.tileColor(configuredTile.tile));
+          GeneratedBoard.chitsToString(configuration.chits),
+          GeneratedBoard.chitColor(configuration.tile, configuration.chits, options.fg),
+          GeneratedBoard.tileColor(configuration.tile));
     } else {
       draw('?', 'black', 'white');
     }
 
     window.requestAnimationFrame(() => {
       const hexSize = (display._backend as Hex)._hexSize;
-      const hexCenter = GeneratedBoard.hexCenter(hexSize, configuredTile.coordinate.x, configuredTile.coordinate.y);
+      const hexCenter = GeneratedBoard.hexCenter(hexSize, configuration.coordinate.x, configuration.coordinate.y);
 
       const vertexPositionPoint = _.partial(GeneratedBoard.vertexPositionPoint, _, hexCenter, hexSize, options.border);
 
-      configuredTile.tile.specialVertices.forEach((vertexPosition) => {
+      configuration.tile.specialVertices.forEach((vertexPosition) => {
         const vertex = vertexPositionPoint(vertexPosition);
         const midpoint = vertex.translate(hexCenter.diff(vertex).scale(.5));
 
         const specialVertexColor = ROT.Color.toHex(ROT.Color.interpolate(
-            ROT.Color.fromString(configuredTile.coordinate.facePosition === Coordinates.FacePosition.FACE_UP
-                ? GeneratedBoard.tileColor(configuredTile.tile)
+            ROT.Color.fromString(configuration.coordinate.facePosition === Coordinates.FacePosition.FACE_UP
+                ? GeneratedBoard.tileColor(configuration.tile)
                 : 'white') as [number, number, number],
             ROT.Color.fromString('white') as [number, number, number]));
         GeneratedBoard.renderPolygon(
@@ -188,69 +208,111 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
     });
   }
 
-  static renderPort(display: ROT.Display, configuredTile: Configuration.Configuration): void {
+  static renderPort(display: ROT.Display, configuration: Configuration.Configuration): void {
     const options = display._options;
 
     const hexSize = (display._backend as Hex)._hexSize;
-    const hexCenter = GeneratedBoard.hexCenter(hexSize, configuredTile.coordinate.x, configuredTile.coordinate.y);
+    const hexCenter = GeneratedBoard.hexCenter(hexSize, configuration.coordinate.x, configuration.coordinate.y);
 
     const edgePositionStartPoint = _.partial(GeneratedBoard.edgePositionStartPoint, _, hexCenter, hexSize, options.border);
 
-    const vertex0 = edgePositionStartPoint(configuredTile.coordinate.edgePositions[0]);
-    const vertex1 = edgePositionStartPoint((configuredTile.coordinate.edgePositions[0] + 1) % 6);
+    const vertex0 = edgePositionStartPoint(configuration.coordinate.edgePositions[0]);
+    const vertex1 = edgePositionStartPoint((configuration.coordinate.edgePositions[0] + 1) % 6);
 
-    GeneratedBoard.renderPolygon(display, [
-      hexCenter,
-      vertex0,
-      vertex1], GeneratedBoard.tileColor(configuredTile.tile));
+    GeneratedBoard.renderPolygon(
+        display,
+        [hexCenter, vertex0, vertex1],
+        configuration.coordinate.facePosition === Coordinates.FacePosition.FACE_UP
+            ? GeneratedBoard.tileColor(configuration.tile)
+            : 'white');
 
     const offset = vertex1.translate(vertex0.diff(vertex1).scale(.5)).diff(hexCenter).scale(.6875);
     GeneratedBoard.renderText(
         display,
         options.fg,
         hexCenter.translate(offset),
-        configuredTile.tile === Tiles.GENERIC_HARBOR ? '3:1' : '2:1');
+        configuration.coordinate.facePosition === Coordinates.FacePosition.FACE_UP
+            ? configuration.tile === Tiles.GENERIC_HARBOR ? '3:1' : '2:1'
+            : '?');
   }
 
-  static renderFishery(
-      display: ROT.Display, configuredTile: Configuration.Configuration, inside: boolean) {
+  static renderVictoryPoint(display: ROT.Display, configuration: Configuration.Configuration) {
     const options = display._options;
 
     // These calculations copied from rot.js to help ensure consistency.
     const hexSize = (display._backend as Hex)._hexSize;
-    const hexCenter = GeneratedBoard.hexCenter(hexSize, configuredTile.coordinate.x, configuredTile.coordinate.y);
+    const hexCenter = GeneratedBoard.hexCenter(hexSize, configuration.coordinate.x, configuration.coordinate.y);
 
     const edgePositionStartPoint = _.partial(GeneratedBoard.edgePositionStartPoint, _, hexCenter, hexSize, options.border);
 
-    const vertex0 = edgePositionStartPoint(configuredTile.coordinate.edgePositions[0]);
-    const vertex1 = edgePositionStartPoint(configuredTile.coordinate.edgePositions[1]);
-    const vertex2 = edgePositionStartPoint((configuredTile.coordinate.edgePositions[1] + 1) % 6);
+    const edgePosition = configuration.coordinate.edgePositions[0];
+    const vertex0 = edgePositionStartPoint(edgePosition);
+    const vertex1 = edgePositionStartPoint((edgePosition + 1) % 6);
+
+    const midpoint = vertex0.translate(vertex1.diff(vertex0).scale(.5));
+    const radius = vertex1.distance(midpoint) / 2;
+
+    GeneratedBoard.renderCircle(display, midpoint, radius, this.tileColor(configuration.tile), 'black');
+  }
+
+  static renderDevelopmentCard(display: ROT.Display, configuration: Configuration.Configuration) {
+    const options = display._options;
+
+    // These calculations copied from rot.js to help ensure consistency.
+    const hexSize = (display._backend as Hex)._hexSize;
+    const hexCenter = GeneratedBoard.hexCenter(hexSize, configuration.coordinate.x, configuration.coordinate.y);
+
+    const edgePositionStartPoint = _.partial(GeneratedBoard.edgePositionStartPoint, _, hexCenter, hexSize, options.border);
+
+    const vertex0 = edgePositionStartPoint(configuration.coordinate.edgePositions[0]);
+    const vertex1 = edgePositionStartPoint((configuration.coordinate.edgePositions[0] + 1) % 6);
+    const vertex2 = edgePositionStartPoint(configuration.coordinate.edgePositions[1]);
+    const vertex3 = edgePositionStartPoint((configuration.coordinate.edgePositions[1] + 1) % 6);
+
+    GeneratedBoard.renderPolygon(
+        display,
+        [vertex0, vertex1, vertex2, vertex3],
+        GeneratedBoard.tileColor(configuration.tile));
+  }
+
+  static renderFishery(display: ROT.Display, configuration: Configuration.Configuration, inside: boolean) {
+    const options = display._options;
+
+    // These calculations copied from rot.js to help ensure consistency.
+    const hexSize = (display._backend as Hex)._hexSize;
+    const hexCenter = GeneratedBoard.hexCenter(hexSize, configuration.coordinate.x, configuration.coordinate.y);
+
+    const edgePositionStartPoint = _.partial(GeneratedBoard.edgePositionStartPoint, _, hexCenter, hexSize, options.border);
+
+    const vertex0 = edgePositionStartPoint(configuration.coordinate.edgePositions[0]);
+    const vertex1 = edgePositionStartPoint(configuration.coordinate.edgePositions[1]);
+    const vertex2 = edgePositionStartPoint((configuration.coordinate.edgePositions[1] + 1) % 6);
     const offset = vertex1.diff(hexCenter).scale(inside ? -.5 : .5);
 
-    GeneratedBoard.renderPolygon(display, [
-      vertex0,
-      vertex1,
-      vertex2,
-      vertex2.translate(offset),
-      vertex1.translate(offset),
-      vertex0.translate(offset)
-    ], GeneratedBoard.tileColor(configuredTile.tile));
+    GeneratedBoard.renderPolygon(
+        display,
+        [vertex0, vertex1, vertex2, vertex2.translate(offset), vertex1.translate(offset), vertex0.translate(offset)],
+        configuration.coordinate.facePosition === Coordinates.FacePosition.FACE_UP
+            ? GeneratedBoard.tileColor(configuration.tile)
+            : 'white');
 
     GeneratedBoard.renderText(
         display,
-        GeneratedBoard.chitColor(configuredTile.tile, configuredTile.chits, options.fg),
+        GeneratedBoard.chitColor(configuration.tile, configuration.chits, options.fg),
         vertex1.translate(offset.scale(.5 + (inside ? .0625 : -.0625))),
-        GeneratedBoard.chitsToString(configuredTile.chits));
+        configuration.coordinate.facePosition === Coordinates.FacePosition.FACE_UP
+            ? GeneratedBoard.chitsToString(configuration.chits)
+            : '?');
   }
 
   static renderRiver(
       display: ROT.Display,
-      configuredTile: Configuration.Configuration,
+      configuration: Configuration.Configuration,
       underlyingConfiguration: Configuration.Configuration) {
     const options = display._options;
 
     const hexSize = (display._backend as Hex)._hexSize;
-    const hexCenter = GeneratedBoard.hexCenter(hexSize, configuredTile.coordinate.x, configuredTile.coordinate.y);
+    const hexCenter = GeneratedBoard.hexCenter(hexSize, configuration.coordinate.x, configuration.coordinate.y);
 
     const edgePositionStartPoint = _.partial(GeneratedBoard.edgePositionStartPoint, _, hexCenter, hexSize, options.border);
 
@@ -263,7 +325,7 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
         ? GeneratedBoard.tileColor(Tiles.LAKE)
         : GeneratedBoard.tileColor(Tiles.SEA);
 
-    configuredTile.coordinate.edgePositions.forEach((position) => {
+    configuration.coordinate.edgePositions.forEach((position) => {
       const vertex0 = edgePositionStartPoint(position);
       const vertex1 = edgePositionStartPoint((position + 1) % 6);
 
@@ -301,8 +363,24 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
     context.moveTo(points[points.length - 1].x, points[points.length - 1].y);
     points.forEach((point) => context.lineTo(point.x, point.y));
 
-    context.stroke();
     context.fill();
+    context.stroke();
+  }
+
+  static renderCircle(display: ROT.Display, center: Cartesian2D, radius: number, fillColor: string, strokeColor ?: string): void {
+    const canvas = display.getContainer() as HTMLCanvasElement;
+    const context = canvas.getContext('2d') || new CanvasRenderingContext2D();
+    const options = display._options;
+
+    context.strokeStyle = strokeColor || options.fg;
+    context.fillStyle = fillColor;
+    context.lineWidth = 1;
+
+    context.beginPath();
+    context.arc(center.x, center.y, radius, 0, 2 * Math.PI);
+
+    context.fill();
+    context.stroke();
   }
 
   static renderText(display: ROT.Display, color: string, coordinate: Cartesian2D, text: string) {
@@ -423,7 +501,8 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
       }
 
       case Tiles.Type.GOLD:
-      case Tiles.Type.GENERIC_HARBOR: {
+      case Tiles.Type.GENERIC_HARBOR:
+      case Tiles.Type.VICTORY_POINT: {
         return 'gold';
       }
 
@@ -438,6 +517,10 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
 
       case Tiles.Type.SWAMP: {
         return 'darkkhaki';
+      }
+
+      case Tiles.Type.DEVELOPMENT_CARD: {
+        return 'white';
       }
 
       default: {
@@ -530,6 +613,12 @@ class App extends React.Component<AppProps, AppState> {
         '4': [Specifications.SPEC_4_EXP_SEA_SCEN_TD, Coordinates.BASE_4_EXP_SEA_SCEN_TD_FISHERY_COORDINATES],
         '5-6': [Specifications.SPEC_5_6_EXP_SEA_SCEN_TD, Coordinates.EXT_5_6_EXP_SEA_SCEN_TD_FISHERY_COORDINATES],
         '7-8': [Specifications.SPEC_7_8_EXP_SEA_SCEN_TD, Coordinates.EXT_7_8_EXP_SEA_SCEN_TD_FISHERY_COORDINATES]
+      },
+      'Seafarers: The Forgotten Tribe': {
+        '3': [Specifications.SPEC_3_4_EXP_SEA_SCEN_FT, Coordinates.BASE_3_4_EXP_SEA_SCEN_FT_FISHERY_COORDINATES],
+        '4': [Specifications.SPEC_3_4_EXP_SEA_SCEN_FT, Coordinates.BASE_3_4_EXP_SEA_SCEN_FT_FISHERY_COORDINATES],
+        '5-6': [Specifications.SPEC_5_6_EXP_SEA_SCEN_FT, Coordinates.EXT_5_6_EXP_SEA_SCEN_FT_FISHERY_COORDINATES],
+        '7-8': [Specifications.SPEC_7_8_EXP_SEA_SCEN_FT, Coordinates.EXT_7_8_EXP_SEA_SCEN_FT_FISHERY_COORDINATES]
       },
       'Traders and Barbarians: Rivers of Catan': {
         '3': [Specifications.SPEC_3_4_EXP_TB_SCEN_ROC, Coordinates.BASE_3_4_FISHERY_COORDINATES],

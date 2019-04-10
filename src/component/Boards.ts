@@ -9,18 +9,24 @@ import * as Tiles from './Tiles';
   export class Board {
     private _terrainTilesLayout: Configuration.Configuration[] = [];
     private _portTilesLayout: Configuration.Configuration[] = [];
+    private _victoryPointsLayout: Configuration.Configuration[] = [];
     private _fisheryTilesLayout: Configuration.Configuration[] = [];
+    private _developmentCardsLayout: Configuration.Configuration[] = [];
     private _riverLayout: Configuration.Configuration[] = [];
 
     constructor(configurations: Configuration.Configuration[]) {
       console.log(`configuration = ${JSON.stringify(configurations)}`);
 
       const riverNotRiver = _.groupBy(configurations, (configuration) => configuration.tile.type === Tiles.Type.RIVER ? 0 : 1);
-      const groupedSettings = _.groupBy(riverNotRiver[1], (configuration) => configuration.coordinate.edgePositions.length);
+      const groupedComponents = _.groupBy(riverNotRiver[1], (configuration) => configuration.coordinate.edgePositions.length);
+      const victoryPointNotVictoryPoint = _.groupBy(groupedComponents['1'], (configuration) => configuration.tile.type === Tiles.Type.VICTORY_POINT ? 0 : 1);
+      const twoEdgeComponents = _.groupBy(groupedComponents['2'], (configuration) => configuration.tile.type);
 
-      this._portTilesLayout = groupedSettings['1'] || [];
-      this._fisheryTilesLayout = groupedSettings['2'] || [];
-      this._terrainTilesLayout = groupedSettings['6'] || [];
+      this._victoryPointsLayout = victoryPointNotVictoryPoint[0] || [];
+      this._portTilesLayout = victoryPointNotVictoryPoint[1] || [];
+      this._fisheryTilesLayout = twoEdgeComponents[Tiles.Type.FISHERY] || [];
+      this._developmentCardsLayout = twoEdgeComponents[Tiles.Type.DEVELOPMENT_CARD] || [];
+      this._terrainTilesLayout = groupedComponents['6'] || [];
       this._riverLayout = riverNotRiver[0] || [];
     }
 
@@ -32,8 +38,16 @@ import * as Tiles from './Tiles';
       return this._portTilesLayout;
     }
 
+    get victoryPointsLayout(): Configuration.Configuration[] {
+      return this._victoryPointsLayout;
+    }
+
     get fisheryTilesLayout(): Configuration.Configuration[] {
       return this._fisheryTilesLayout;
+    }
+
+    get developmentCardsLayout(): Configuration.Configuration[] {
+      return this._developmentCardsLayout;
     }
 
     get riverLayout(): Configuration.Configuration[] {
@@ -41,7 +55,9 @@ import * as Tiles from './Tiles';
     }
 
     isEmpty(): boolean {
-      return this._terrainTilesLayout.length === 0 && this._portTilesLayout.length === 0 && this._fisheryTilesLayout.length === 0;
+      return this._terrainTilesLayout.length === 0 &&
+          this._portTilesLayout.length === 0 &&
+          this._fisheryTilesLayout.length === 0;
     }
   }
 
@@ -84,7 +100,7 @@ import * as Tiles from './Tiles';
               if (configurationsValid) {
                 const board = new Board(configurations);
 
-                const boardPenalty = BoardGenerator.boardPenalty(board, validOddsRanges);
+                const boardPenalty = this.boardPenalty(board, validOddsRanges);
                 const totalScore = initialScore - boardPenalty;
                 if (totalScore > maxScore) {
                   return {'maxScore': totalScore, 'fairestBoard': board};
@@ -98,7 +114,7 @@ import * as Tiles from './Tiles';
           }, {'maxScore': 0, 'fairestBoard': new Board([])})['fairestBoard'];
     }
 
-    static boardPenalty(board: Board, validOddsRanges: number[][]): number {
+    boardPenalty(board: Board, validOddsRanges: number[][]): number {
       function key(x: number, y: number): string {
         return `(${x},${y})`;
       }
@@ -194,15 +210,16 @@ import * as Tiles from './Tiles';
                       .reduce((sumOverContributors, contributors) => {
                         const eligibleContributors = contributors
                             .filter((elt) => elt[0] !== undefined)
-                            .map((elt) => {
-                              const eligibleConfiguration = elt[0]
-                                  .filter((ct) => {
-                                    return Tiles.SEA !== ct.tile
-                                        && ct.coordinate.edgePositions.some((p) => {
-                                          return p === elt[1] || p === (elt[1] + 5) % 6;
+                            .map((contributor) => {
+                              const eligibleConfiguration = contributor[0]
+                                  .filter((configuration: Configuration.Configuration) => {
+                                    return Tiles.SEA !== configuration.tile
+                                        && this.specification.filterConfigurationScorer(configuration)
+                                        && configuration.coordinate.edgePositions.some((p) => {
+                                          return p === contributor[1] || p === (contributor[1] + 5) % 6;
                                         });
                                   });
-                              return [eligibleConfiguration, elt[1]] as [Configuration.Configuration[], number];
+                              return [eligibleConfiguration, contributor[1]] as [Configuration.Configuration[], number];
                             })
                             .filter((elt) => {
                               return elt[0].length > 0;

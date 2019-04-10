@@ -1,10 +1,7 @@
 import * as Coordinates from './Coordinates';
-import {VertexPosition} from './Coordinates';
 
 // export module Tiles {
   export enum Type {
-    NONE = 'None',
-
     GENERIC_HARBOR = 'Generic Harbor',
     BRICK_HARBOR = 'Brick Harbor',
     GRAIN_HARBOR = 'Grain Harbor',
@@ -29,18 +26,17 @@ import {VertexPosition} from './Coordinates';
     OASIS = 'Oasis',
     CASTLE = 'Castle',
     GLASSWORKS = 'Glassworks',
-    QUARRY = 'Quarry'
+    QUARRY = 'Quarry',
+
+    DEVELOPMENT_CARD = 'Development Card',
+    VICTORY_POINT = 'Victory Point'
   }
 
   export class Tile {
-    constructor(public type: Type, public specialVertices: VertexPosition[] = []) {}
+    constructor(public type: Type, public specialVertices: Coordinates.VertexPosition[] = []) {}
 
     edgeCount(): [number, number] {
       switch (this.type) {
-        case Type.NONE: {
-          return [0, 0];
-        }
-
         case Type.GENERIC_HARBOR:
         case Type.BRICK_HARBOR:
         case Type.ORE_HARBOR:
@@ -50,7 +46,8 @@ import {VertexPosition} from './Coordinates';
           return [1, 1];
         }
 
-        case Type.FISHERY: {
+        case Type.FISHERY:
+        case Type.DEVELOPMENT_CARD: {
           return [2, 2];
         }
 
@@ -71,14 +68,13 @@ import {VertexPosition} from './Coordinates';
           return [6, 6];
         }
 
-        case Type.RIVER: {
+        case Type.RIVER:
+        case Type.VICTORY_POINT: {
           return [1, 6];
         }
       }
     }
   }
-
-  export const NONE = new Tile(Type.NONE);
 
   export const GENERIC_HARBOR = new Tile(Type.GENERIC_HARBOR);
   export const BRICK_HARBOR = new Tile(Type.BRICK_HARBOR);
@@ -107,6 +103,9 @@ import {VertexPosition} from './Coordinates';
   export const FISHERY = new Tile(Type.FISHERY);
   export const SWAMP_TERRAIN = new Tile(Type.SWAMP);
   export const RIVER = new Tile(Type.RIVER);
+
+  export const DEVELOPMENT_CARD = new Tile(Type.DEVELOPMENT_CARD);
+  export const VICTORY_POINT = new Tile(Type.VICTORY_POINT);
 
   export const BASE_3_4_PRODUCING_TERRAIN_TILE_SET = new Array(4).fill(FIELD_TERRAIN)
       .concat(new Array(4).fill(FOREST_TERRAIN))
@@ -225,54 +224,85 @@ import {VertexPosition} from './Coordinates';
       .concat(new Array(5).fill(PASTURE_TERRAIN))
       .concat(new Array(5).fill(FOREST_TERRAIN));
 
-  export const BASE_3_SEA_SCEN_TD_INDIGENOUS_PRODUCING_TERRAIN_TILE_SET = new Array(2).fill(FIELD_TERRAIN)
+  export const BASE_3_EXP_SEA_SCEN_TD_INDIGENOUS_PRODUCING_TERRAIN_TILE_SET = new Array(2).fill(FIELD_TERRAIN)
       .concat(new Array(2).fill(MOUNTAIN_TERRAIN))
       .concat(new Array(3).fill(HILL_TERRAIN))
       .concat(new Array(3).fill(PASTURE_TERRAIN))
       .concat(new Array(4).fill(FOREST_TERRAIN));
-  export const BASE_3_SEA_SCEN_TD_INDIGENOUS_HARBOR_TILE_SET = new Array(3).fill(GENERIC_HARBOR)
+  export const BASE_3_EXP_SEA_SCEN_TD_INDIGENOUS_HARBOR_TILE_SET = new Array(3).fill(GENERIC_HARBOR)
       .concat([BRICK_HARBOR, GRAIN_HARBOR, LUMBER_HARBOR, ORE_HARBOR, WOOL_HARBOR]);
-  export const BASE_3_SEA_SCEN_TD_FOREIGN_PRODUCING_TERRAIN_TILE_SET = [PASTURE_TERRAIN, FOREST_TERRAIN]
+  export const BASE_3_EXP_SEA_SCEN_TD_FOREIGN_PRODUCING_TERRAIN_TILE_SET = [PASTURE_TERRAIN, FOREST_TERRAIN]
       .concat(new Array(2).fill(GOLD_TERRAIN))
       .concat(new Array(2).fill(FIELD_TERRAIN))
       .concat(new Array(2).fill(MOUNTAIN_TERRAIN));
 
-  export const BASE_4_SEA_SCEN_TD_INDIGENOUS_PRODUCING_TERRAIN_TILE_SET = new Array(2).fill(FIELD_TERRAIN)
+  export const BASE_4_EXP_SEA_SCEN_TD_INDIGENOUS_PRODUCING_TERRAIN_TILE_SET = new Array(2).fill(FIELD_TERRAIN)
       .concat(new Array(2).fill(MOUNTAIN_TERRAIN))
       .concat(new Array(4).fill(HILL_TERRAIN))
       .concat(new Array(4).fill(PASTURE_TERRAIN))
       .concat(new Array(5).fill(FOREST_TERRAIN));
-  export const BASE_4_SEA_SCEN_TD_FOREIGN_PRODUCING_TERRAIN_TILE_SET = [PASTURE_TERRAIN, HILL_TERRAIN]
+  export const BASE_4_EXP_SEA_SCEN_TD_FOREIGN_PRODUCING_TERRAIN_TILE_SET = [PASTURE_TERRAIN, HILL_TERRAIN]
       .concat(new Array(2).fill(GOLD_TERRAIN))
       .concat(new Array(3).fill(FIELD_TERRAIN))
       .concat(new Array(3).fill(MOUNTAIN_TERRAIN));
 
-  export const EXT_5_6_SEA_SCEN_TD_INDIGENOUS_PRODUCING_TERRAIN_TILE_SET = new Array(4).fill(FIELD_TERRAIN)
+  export const EXT_5_6_EXP_SEA_SCEN_TD_INDIGENOUS_PRODUCING_TERRAIN_TILE_SET = new Array(4).fill(FIELD_TERRAIN)
       .concat(new Array(4).fill(MOUNTAIN_TERRAIN))
       .concat(new Array(4).fill(FOREST_TERRAIN))
       .concat(new Array(4).fill(PASTURE_TERRAIN))
       .concat(new Array(5).fill(HILL_TERRAIN));
-  export const EXT_5_6_SEA_SCEN_TD_INDIGENOUS_HARBOR_TILE_SET = [BRICK_HARBOR, GRAIN_HARBOR, LUMBER_HARBOR, ORE_HARBOR]
-      .concat(new Array(2).fill(WOOL_HARBOR))
-      .concat(new Array(4).fill(GENERIC_HARBOR));
-  export const EXT_5_6_SEA_SCEN_TD_FOREIGN_PRODUCING_TERRAIN_TILE_SET = new Array(2).fill(HILL_TERRAIN)
+  export const EXT_5_6_EXP_SEA_SCEN_TD_FOREIGN_PRODUCING_TERRAIN_TILE_SET = new Array(2).fill(HILL_TERRAIN)
       .concat(new Array(3).fill(FIELD_TERRAIN))
       .concat(new Array(3).fill(FOREST_TERRAIN))
       .concat(new Array(3).fill(MOUNTAIN_TERRAIN))
       .concat(new Array(3).fill(PASTURE_TERRAIN))
       .concat(new Array(3).fill(GOLD_TERRAIN));
 
-  export const EXT_7_8_SEA_SCEN_TD_INDIGENOUS_PRODUCING_TERRAIN_TILE_SET = new Array(5).fill(FIELD_TERRAIN)
+  export const EXT_7_8_EXP_SEA_SCEN_TD_INDIGENOUS_PRODUCING_TERRAIN_TILE_SET = new Array(5).fill(FIELD_TERRAIN)
       .concat(new Array(5).fill(FOREST_TERRAIN))
       .concat(new Array(5).fill(MOUNTAIN_TERRAIN))
       .concat(new Array(5).fill(PASTURE_TERRAIN))
       .concat(new Array(6).fill(HILL_TERRAIN));
-  export const EXT_7_8_SEA_SCEN_TD_FOREIGN_PRODUCING_TERRAIN_TILE_SET = new Array(4).fill(HILL_TERRAIN)
+  export const EXT_7_8_EXP_SEA_SCEN_TD_FOREIGN_PRODUCING_TERRAIN_TILE_SET = new Array(4).fill(HILL_TERRAIN)
       .concat(new Array(4).fill(PASTURE_TERRAIN))
       .concat(new Array(5).fill(FIELD_TERRAIN))
       .concat(new Array(5).fill(FOREST_TERRAIN))
       .concat(new Array(5).fill(MOUNTAIN_TERRAIN))
       .concat(new Array(5).fill(GOLD_TERRAIN));
+
+  export const BASE_3_4_EXP_SEA_SCEN_FT_SMALL_ISLAND_TERRAIN_TILE_SET = [FIELD_TERRAIN, FOREST_TERRAIN, PASTURE_TERRAIN]
+      .concat(new Array(2).fill(HILL_TERRAIN))
+      .concat(new Array(2).fill(MOUNTAIN_TERRAIN))
+      .concat(new Array(2).fill(GOLD_TERRAIN))
+      .concat(new Array(3).fill(DESERT_TERRAIN));
+  export const BASE_3_4_EXP_SEA_SCEN_FT_SMALL_ISLAND_HARBOR_TILE_SET = [
+    GENERIC_HARBOR, GRAIN_HARBOR, LUMBER_HARBOR, WOOL_HARBOR, BRICK_HARBOR, ORE_HARBOR];
+
+  export const EXT_5_6_EXP_SEA_SCEN_FT_MAIN_ISLAND_TERRAIN_TILE_SET = new Array(5).fill(MOUNTAIN_TERRAIN)
+      .concat(new Array(5).fill(PASTURE_TERRAIN))
+      .concat(new Array(6).fill(FIELD_TERRAIN))
+      .concat(new Array(6).fill(HILL_TERRAIN))
+      .concat(new Array(7).fill(FOREST_TERRAIN));
+  export const EXT_5_6_EXP_SEA_SCEN_FT_SMALL_ISLAND_TERRAIN_TILE_SET = [
+    FIELD_TERRAIN, HILL_TERRAIN, MOUNTAIN_TERRAIN]
+      .concat(new Array(2).fill(PASTURE_TERRAIN))
+      .concat(new Array(3).fill(GOLD_TERRAIN))
+      .concat(new Array(4).fill(DESERT_TERRAIN));
+  export const EXT_5_6_EXP_SEA_SCEN_FT_SMALL_ISLAND_HARBOR_TILE_SET = BASE_3_4_EXP_SEA_SCEN_FT_SMALL_ISLAND_HARBOR_TILE_SET
+      .concat(new Array(2).fill(GENERIC_HARBOR));
+
+  export const EXT_7_8_EXP_SEA_SCEN_FT_MAIN_ISLAND_TERRAIN_TILE_SET = new Array(6).fill(PASTURE_TERRAIN)
+      .concat(new Array(7).fill(MOUNTAIN_TERRAIN))
+      .concat(new Array(8).fill(FIELD_TERRAIN))
+      .concat(new Array(9).fill(HILL_TERRAIN))
+      .concat(new Array(10).fill(FOREST_TERRAIN));
+  export const EXT_7_8_EXP_SEA_SCEN_FT_SMALL_ISLAND_TERRAIN_TILE_SET = [
+    FIELD_TERRAIN, HILL_TERRAIN, MOUNTAIN_TERRAIN]
+      .concat(new Array(2).fill(PASTURE_TERRAIN))
+      .concat(new Array(3).fill(GOLD_TERRAIN))
+      .concat(new Array(4).fill(DESERT_TERRAIN));
+  export const EXT_7_8_EXP_SEA_SCEN_FT_SMALL_ISLAND_HARBOR_TILE_SET = BASE_3_4_EXP_SEA_SCEN_FT_SMALL_ISLAND_HARBOR_TILE_SET
+      .concat(new Array(4).fill(GENERIC_HARBOR));
 
   export const BASE_3_4_EXP_TB_SCEN_ROC_NON_RIVER_TERRAIN_TILE_SET = [HILL_TERRAIN, MOUNTAIN_TERRAIN]
       .concat(new Array(4).fill(FIELD_TERRAIN))
