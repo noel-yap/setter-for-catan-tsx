@@ -1082,6 +1082,20 @@
     new Coordinate(2, 8, [TOP_RIGHT], FacePosition.FACE_DOWN),
     new Coordinate(10, 8, [TOP_LEFT], FacePosition.FACE_DOWN),
     new Coordinate(16, 6, [TOP_LEFT], FacePosition.FACE_DOWN)];
+  export const BASE_3_4_EXP_SEA_SCEN_FT_SMALL_ISLAND_DEVELOPMENT_CARD_COORDINATES = [
+    new Coordinate(1, 1, [RIGHT, LEFT], FacePosition.FACE_DOWN),
+    new Coordinate(15, 1, [RIGHT, LEFT], FacePosition.FACE_DOWN),
+    new Coordinate(1, 7, [RIGHT, LEFT], FacePosition.FACE_DOWN),
+    new Coordinate(15, 7, [RIGHT, LEFT], FacePosition.FACE_DOWN)];
+  export const BASE_3_4_EXP_SEA_SCEN_FT_SMALL_ISLAND_VICTORY_POINT_COORDINATES = [
+    new Coordinate(4, 0, [BOTTOM_LEFT]),
+    new Coordinate(10, 0, [BOTTOM_LEFT]),
+    new Coordinate(14, 0, [BOTTOM_LEFT]),
+    new Coordinate(17, 3, [LEFT]),
+    new Coordinate(17, 5, [LEFT]),
+    new Coordinate(4, 8, [TOP_LEFT]),
+    new Coordinate(8, 8, [TOP_RIGHT]),
+    new Coordinate(14, 8, [TOP_LEFT])];
 
   export const EXT_5_6_EXP_SEA_SCEN_FT_MAIN_ISLAND_TERRAIN_COORDINATES = [
     new Coordinate(1, 3),
@@ -1140,6 +1154,24 @@
     new Coordinate(4, 8, [TOP_RIGHT], FacePosition.FACE_DOWN),
     new Coordinate(12, 8, [TOP_LEFT], FacePosition.FACE_DOWN),
     new Coordinate(14, 8, [TOP_RIGHT], FacePosition.FACE_DOWN)];
+  export const EXT_5_6_EXP_SEA_SCEN_FT_SMALL_ISLAND_DEVELOPMENT_CARD_COORDINATES = [
+    new Coordinate(12, 0, [TOP_RIGHT, BOTTOM_LEFT], FacePosition.FACE_DOWN),
+    new Coordinate(1, 1, [RIGHT, LEFT], FacePosition.FACE_DOWN),
+    new Coordinate(19, 1, [RIGHT, LEFT], FacePosition.FACE_DOWN),
+    new Coordinate(1, 7, [RIGHT, LEFT], FacePosition.FACE_DOWN),
+    new Coordinate(19, 7, [RIGHT, LEFT], FacePosition.FACE_DOWN),
+    new Coordinate(8, 8, [TOP_RIGHT, BOTTOM_LEFT], FacePosition.FACE_DOWN)];
+  export const EXT_5_6_EXP_SEA_SCEN_FT_SMALL_ISLAND_VICTORY_POINT_COORDINATES = [
+    new Coordinate(2, 0, [BOTTOM_RIGHT]),
+    new Coordinate(4, 0, [BOTTOM_RIGHT]),
+    new Coordinate(10, 0, [BOTTOM_RIGHT]),
+    new Coordinate(10, 0, [BOTTOM_LEFT]),
+    new Coordinate(16, 0, [BOTTOM_LEFT]),
+    new Coordinate(6, 8, [TOP_LEFT]),
+    new Coordinate(10, 8, [TOP_RIGHT]),
+    new Coordinate(10, 8, [TOP_LEFT]),
+    new Coordinate(16, 8, [TOP_LEFT]),
+    new Coordinate(18, 8, [TOP_LEFT])];
 
   export const BASE_3_4_EXP_TB_SCEN_ROC_NON_RIVER_TERRAIN_COORDINATES = [
     new Coordinate(3, 1),
