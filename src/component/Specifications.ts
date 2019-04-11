@@ -709,6 +709,52 @@ import * as Tiles from './Tiles';
         });
       });
 
+  export const SPEC_3_4_EXP_SEA_SCEN_CFC = new Specification(
+      {
+        'main-island-terrain': Tiles.BASE_3_4_EXP_SEA_SCEN_CFC_MAIN_ISLAND_TERRAIN_TILE_SET,
+        'main-island-harbor': Tiles.BASE_3_4_HARBOR_TILE_SET,
+        'small-island-terrain': Tiles.BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_TERRAIN_TILE_SET,
+        'small-island-3-11-chit': Tiles.BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_3_11_CHIT_TILE_SET,
+        'small-island-4-10-chit': Tiles.BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_4_10_CHIT_TILE_SET,
+        'small-island-5-9-chit': Tiles.BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_5_9_CHIT_TILE_SET,
+        'small-island-6-8-chit': Tiles.BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_6_8_CHIT_TILE_SET
+      },
+      {
+        'main-island-terrain': Coordinates.BASE_3_4_EXP_SEA_SCEN_CFC_MAIN_ISLAND_TERRAIN_COORDINATES,
+        'main-island-harbor': Coordinates.BASE_3_4_EXP_SEA_SCEN_CFC_MAIN_ISLAND_HARBOR_COORDINATES,
+        'small-island-terrain': Coordinates.BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_TERRAIN_COORDINATES,
+        'small-island-3-11-chit': Coordinates.BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_3_11_CHIT_COORDINATES,
+        'small-island-4-10-chit': Coordinates.BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_4_10_CHIT_COORDINATES,
+        'small-island-5-9-chit': Coordinates.BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_5_9_CHIT_COORDINATES,
+        'small-island-6-8-chit': Coordinates.BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_6_8_CHIT_COORDINATES
+      },
+      {
+        'main-island-terrain': Chits.BASE_3_4_EXP_SEA_SCEN_CFC_MAIN_ISLAND_TERRAIN_CHIT_SET,
+        'small-island-3-11-chit': Chits.BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_3_11_CHIT_CHIT_SET,
+        'small-island-4-10-chit': Chits.BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_4_10_CHIT_CHIT_SET,
+        'small-island-5-9-chit': Chits.BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_5_9_CHIT_CHIT_SET,
+        'small-island-6-8-chit': Chits.BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_6_8_CHIT_CHIT_SET
+      },
+      oneToOne(
+          'main-island-terrain',
+          'main-island-harbor',
+          'small-island-terrain',
+          'small-island-3-11-chit',
+          'small-island-4-10-chit',
+          'small-island-5-9-chit',
+          'small-island-6-8-chit'),
+      oneToOne(
+          'main-island-terrain',
+          'small-island-3-11-chit',
+          'small-island-4-10-chit',
+          'small-island-5-9-chit',
+          'small-island-6-8-chit'))
+      .withConfigurationScorerFilter((configuration: Configuration.Configuration) => {
+        return SPEC_3_4_EXP_SEA_SCEN_CFC.coordinates['main-island-terrain'].some((coordinate) => {
+          return coordinate.x === configuration.coordinate.x && coordinate.y === configuration.coordinate.y;
+        });
+      });
+
   export const SPEC_3_4_EXP_TB_SCEN_ROC = new Specification(
       {
         'non-river-terrain': Tiles.BASE_3_4_EXP_TB_SCEN_ROC_NON_RIVER_TERRAIN_TILE_SET,

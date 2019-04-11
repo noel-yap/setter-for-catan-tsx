@@ -26,8 +26,47 @@
     constructor(
         public x: number,
         public y: number,
-        public edgePositions: EdgePosition[] = HEXAGON_EDGE_POSITIONS,
+        public edges: EdgePosition[] = HEXAGON_EDGE_POSITIONS,
+        public vertices: VertexPosition[] = HEXAGON_VERTEX_POSITIONS,
         public facePosition: FacePosition = FacePosition.FACE_UP) {}
+
+    onEdges(...edges: EdgePosition[]): Coordinate {
+      // TODO: Set vertices based on edges.
+      return new Coordinate(
+          this.x,
+          this.y,
+          edges,
+          this.vertices,
+          this.facePosition);
+    }
+    
+    onVertices(...vertices: VertexPosition[]): Coordinate {
+      // TODO: Set edges based on vertices.
+      return new Coordinate(
+          this.x,
+          this.y,
+          vertices.length === 1 ? [] : this.edges,
+          vertices,
+          this.facePosition);
+    }
+    
+    asFaceDown(): Coordinate {
+      return new Coordinate(
+          this.x,
+          this.y,
+          this.edges,
+          this.vertices,
+          FacePosition.FACE_DOWN);
+    }
+    
+    asFaceUp(): Coordinate {
+      return new Coordinate(
+          this.x,
+          this.y,
+          this.edges,
+          this.vertices,
+          FacePosition.FACE_UP);
+    }
   }
 
   export const TOP_RIGHT = EdgePosition.TOP_RIGHT;
@@ -44,6 +83,14 @@
     EdgePosition.BOTTOM_LEFT,
     EdgePosition.LEFT,
     EdgePosition.TOP_LEFT];
+
+  const HEXAGON_VERTEX_POSITIONS: VertexPosition[] = [
+    VertexPosition.TOP,
+    VertexPosition.TOP_RIGHT,
+    VertexPosition.BOTTOM_RIGHT,
+    VertexPosition.BOTTOM,
+    VertexPosition.BOTTOM_LEFT,
+    VertexPosition.TOP_LEFT];
 
   export const BASE_3_4_TERRAIN_COORDINATES = [
     new Coordinate(3, 1),
@@ -66,22 +113,22 @@
     new Coordinate(5, 5),
     new Coordinate(7, 5)];
   export const BASE_3_4_HARBOR_COORDINATES = [
-    new Coordinate(2, 0, [BOTTOM_RIGHT]),
-    new Coordinate(6, 0, [BOTTOM_LEFT]),
-    new Coordinate(9, 1, [BOTTOM_LEFT]),
-    new Coordinate(0, 2, [RIGHT]),
-    new Coordinate(11, 3, [LEFT]),
-    new Coordinate(0, 4, [RIGHT]),
-    new Coordinate(9, 5, [TOP_LEFT]),
-    new Coordinate(6, 6, [TOP_LEFT]),
-    new Coordinate(2, 6, [TOP_RIGHT])];
+    new Coordinate(2, 0).onEdges(BOTTOM_RIGHT),
+    new Coordinate(6, 0).onEdges(BOTTOM_LEFT),
+    new Coordinate(9, 1).onEdges(BOTTOM_LEFT),
+    new Coordinate(0, 2).onEdges(RIGHT),
+    new Coordinate(11, 3).onEdges(LEFT),
+    new Coordinate(0, 4).onEdges(RIGHT),
+    new Coordinate(9, 5).onEdges(TOP_LEFT),
+    new Coordinate(6, 6).onEdges(TOP_LEFT),
+    new Coordinate(2, 6).onEdges(TOP_RIGHT)];
   export const BASE_3_4_FISHERY_COORDINATES = [
-    new Coordinate(4, 0, [BOTTOM_RIGHT, BOTTOM_LEFT]),
-    new Coordinate(1, 1, [RIGHT, BOTTOM_RIGHT]),
-    new Coordinate(10, 2, [BOTTOM_LEFT, LEFT]),
-    new Coordinate(10, 4, [LEFT, TOP_LEFT]),
-    new Coordinate(1, 5, [TOP_RIGHT, RIGHT]),
-    new Coordinate(4, 6, [TOP_LEFT, TOP_RIGHT])];
+    new Coordinate(4, 0).onEdges(BOTTOM_RIGHT, BOTTOM_LEFT),
+    new Coordinate(1, 1).onEdges(RIGHT, BOTTOM_RIGHT),
+    new Coordinate(10, 2).onEdges(BOTTOM_LEFT, LEFT),
+    new Coordinate(10, 4).onEdges(LEFT, TOP_LEFT),
+    new Coordinate(1, 5).onEdges(TOP_RIGHT, RIGHT),
+    new Coordinate(4, 6).onEdges(TOP_LEFT, TOP_RIGHT)];
 
   export const EXT_5_6_TERRAIN_COORDINATES = [
     new Coordinate(5, 1),
@@ -115,26 +162,26 @@
     new Coordinate(7, 7),
     new Coordinate(9, 7)];
   export const EXT_5_6_HARBOR_COORDINATES = [
-    new Coordinate(4, 0, [BOTTOM_RIGHT]),
-    new Coordinate(8, 0, [BOTTOM_LEFT]),
-    new Coordinate(11, 1, [BOTTOM_LEFT]),
-    new Coordinate(1, 3, [RIGHT]),
-    new Coordinate(14, 4, [LEFT]),
-    new Coordinate(1, 5, [TOP_RIGHT]),
-    new Coordinate(2, 6, [RIGHT]),
-    new Coordinate(12, 6, [TOP_LEFT]),
-    new Coordinate(11, 7, [LEFT]),
-    new Coordinate(8, 8, [TOP_LEFT]),
-    new Coordinate(4, 8, [TOP_RIGHT])];
+    new Coordinate(4, 0).onEdges(BOTTOM_RIGHT),
+    new Coordinate(8, 0).onEdges(BOTTOM_LEFT),
+    new Coordinate(11, 1).onEdges(BOTTOM_LEFT),
+    new Coordinate(1, 3).onEdges(RIGHT),
+    new Coordinate(14, 4).onEdges(LEFT),
+    new Coordinate(1, 5).onEdges(TOP_RIGHT),
+    new Coordinate(2, 6).onEdges(RIGHT),
+    new Coordinate(12, 6).onEdges(TOP_LEFT),
+    new Coordinate(11, 7).onEdges(LEFT),
+    new Coordinate(8, 8).onEdges(TOP_LEFT),
+    new Coordinate(4, 8).onEdges(TOP_RIGHT)];
   export const EXT_5_6_FISHERY_COORDINATES = [
-    new Coordinate(6, 0, [BOTTOM_RIGHT, BOTTOM_LEFT]),
-    new Coordinate(4, 2, [LEFT, TOP_LEFT]),
-    new Coordinate(11, 3, [TOP_RIGHT, RIGHT]),
-    new Coordinate(3, 5, [BOTTOM_LEFT, LEFT]),
-    new Coordinate(13, 5, [LEFT, TOP_LEFT]),
-    new Coordinate(10, 6, [RIGHT, BOTTOM_RIGHT]),
-    new Coordinate(3, 7, [TOP_RIGHT, RIGHT]),
-    new Coordinate(6, 8, [TOP_LEFT, TOP_RIGHT])];
+    new Coordinate(6, 0).onEdges(BOTTOM_RIGHT, BOTTOM_LEFT),
+    new Coordinate(4, 2).onEdges(LEFT, TOP_LEFT),
+    new Coordinate(11, 3).onEdges(TOP_RIGHT, RIGHT),
+    new Coordinate(3, 5).onEdges(BOTTOM_LEFT, LEFT),
+    new Coordinate(13, 5).onEdges(LEFT, TOP_LEFT),
+    new Coordinate(10, 6).onEdges(RIGHT, BOTTOM_RIGHT),
+    new Coordinate(3, 7).onEdges(TOP_RIGHT, RIGHT),
+    new Coordinate(6, 8).onEdges(TOP_LEFT, TOP_RIGHT)];
 
   export const EXT_7_8_TERRAIN_COORDINATES = [
     new Coordinate(5, 1),
@@ -175,27 +222,27 @@
     new Coordinate(9, 7),
     new Coordinate(11, 7)];
   export const EXT_7_8_HARBOR_COORDINATES = [
-    new Coordinate(4, 0, [BOTTOM_RIGHT]),
-    new Coordinate(8, 0, [BOTTOM_LEFT]),
-    new Coordinate(10, 0, [BOTTOM_RIGHT]),
-    new Coordinate(13, 1, [BOTTOM_LEFT]),
-    new Coordinate(1, 3, [RIGHT]),
-    new Coordinate(16, 4, [LEFT]),
-    new Coordinate(1, 5, [TOP_RIGHT]),
-    new Coordinate(2, 6, [RIGHT]),
-    new Coordinate(14, 6, [TOP_LEFT]),
-    new Coordinate(13, 7, [LEFT]),
-    new Coordinate(4, 8, [TOP_RIGHT]),
-    new Coordinate(10, 8, [TOP_LEFT])];
+    new Coordinate(4, 0).onEdges(BOTTOM_RIGHT),
+    new Coordinate(8, 0).onEdges(BOTTOM_LEFT),
+    new Coordinate(10, 0).onEdges(BOTTOM_RIGHT),
+    new Coordinate(13, 1).onEdges(BOTTOM_LEFT),
+    new Coordinate(1, 3).onEdges(RIGHT),
+    new Coordinate(16, 4).onEdges(LEFT),
+    new Coordinate(1, 5).onEdges(TOP_RIGHT),
+    new Coordinate(2, 6).onEdges(RIGHT),
+    new Coordinate(14, 6).onEdges(TOP_LEFT),
+    new Coordinate(13, 7).onEdges(LEFT),
+    new Coordinate(4, 8).onEdges(TOP_RIGHT),
+    new Coordinate(10, 8).onEdges(TOP_LEFT)];
   export const EXT_7_8_FISHERY_COORDINATES = [
-    new Coordinate(6, 0, [BOTTOM_RIGHT, BOTTOM_LEFT]),
-    new Coordinate(11, 1, [TOP_RIGHT, RIGHT]),
-    new Coordinate(2, 2, [RIGHT, BOTTOM_RIGHT]),
-    new Coordinate(13, 3, [TOP_RIGHT, RIGHT]),
-    new Coordinate(3, 5, [BOTTOM_LEFT, LEFT]),
-    new Coordinate(15, 5, [LEFT, TOP_LEFT]),
-    new Coordinate(11, 7, [BOTTOM_RIGHT, BOTTOM_LEFT]),
-    new Coordinate(6, 8, [TOP_LEFT, TOP_RIGHT])];
+    new Coordinate(6, 0).onEdges(BOTTOM_RIGHT, BOTTOM_LEFT),
+    new Coordinate(11, 1).onEdges(TOP_RIGHT, RIGHT),
+    new Coordinate(2, 2).onEdges(RIGHT, BOTTOM_RIGHT),
+    new Coordinate(13, 3).onEdges(TOP_RIGHT, RIGHT),
+    new Coordinate(3, 5).onEdges(BOTTOM_LEFT, LEFT),
+    new Coordinate(15, 5).onEdges(LEFT, TOP_LEFT),
+    new Coordinate(11, 7).onEdges(BOTTOM_RIGHT, BOTTOM_LEFT),
+    new Coordinate(6, 8).onEdges(TOP_LEFT, TOP_RIGHT)];
 
   export const BASE_3_EXP_SEA_SCEN_HFNS_BIG_ISLAND_TERRAIN_COORDINATES = [
     new Coordinate(3, 1),
@@ -213,19 +260,19 @@
     new Coordinate(3, 5),
     new Coordinate(5, 5)];
   export const BASE_3_EXP_SEA_SCEN_HFNS_BIG_ISLAND_HARBOR_COORDINATES = [
-    new Coordinate(4, 0, [BOTTOM_RIGHT]),
-    new Coordinate(1, 1, [RIGHT]),
-    new Coordinate(7, 1, [LEFT]),
-    new Coordinate(0, 2, [BOTTOM_RIGHT]),
-    new Coordinate(0, 4, [TOP_RIGHT]),
-    new Coordinate(8, 4, [TOP_LEFT]),
-    new Coordinate(1, 5, [RIGHT]),
-    new Coordinate(7, 5, [LEFT])];
+    new Coordinate(4, 0).onEdges(BOTTOM_RIGHT),
+    new Coordinate(1, 1).onEdges(RIGHT),
+    new Coordinate(7, 1).onEdges(LEFT),
+    new Coordinate(0, 2).onEdges(BOTTOM_RIGHT),
+    new Coordinate(0, 4).onEdges(TOP_RIGHT),
+    new Coordinate(8, 4).onEdges(TOP_LEFT),
+    new Coordinate(1, 5).onEdges(RIGHT),
+    new Coordinate(7, 5).onEdges(LEFT)];
   export const BASE_3_EXP_SEA_SCEN_HFNS_BIG_ISLAND_FISHERY_COORDINATES = [
-    new Coordinate(2, 2, [LEFT, TOP_LEFT]),
-    new Coordinate(8, 2, [BOTTOM_LEFT, LEFT]),
-    new Coordinate(6, 4, [RIGHT, BOTTOM_RIGHT]),
-    new Coordinate(4, 6, [TOP_LEFT, TOP_RIGHT])];
+    new Coordinate(2, 2).onEdges(LEFT, TOP_LEFT),
+    new Coordinate(8, 2).onEdges(BOTTOM_LEFT, LEFT),
+    new Coordinate(6, 4).onEdges(RIGHT, BOTTOM_RIGHT),
+    new Coordinate(4, 6).onEdges(TOP_LEFT, TOP_RIGHT)];
   export const BASE_3_EXP_SEA_SCEN_HFNS_SMALL_ISLAND_TERRAIN_COORDINATES = [
     new Coordinate(9, 1),
     new Coordinate(10, 2),
@@ -257,28 +304,28 @@
     new Coordinate(11, 7)];
 
   export const EXT_5_6_EXP_SEA_SCEN_HFNS_BIG_ISLAND_TERRAIN_COORDINATES = EXT_5_6_TERRAIN_COORDINATES
-      .map((c) => new Coordinate(c.x + 2, c.y, c.edgePositions));
+      .map((c) => new Coordinate(c.x + 2, c.y, c.edges));
   export const EXT_5_6_EXP_SEA_SCEN_HFNS_BIG_ISLAND_HARBOR_COORDINATES = [
-    new Coordinate(6, 0, [BOTTOM_RIGHT]),
-    new Coordinate(10, 0, [BOTTOM_LEFT]),
-    new Coordinate(13, 1, [BOTTOM_LEFT]),
-    new Coordinate(4, 2, [RIGHT]),
-    new Coordinate(3, 3, [BOTTOM_RIGHT]),
-    new Coordinate(15, 3, [BOTTOM_LEFT]),
-    new Coordinate(3, 5, [RIGHT]),
-    new Coordinate(15, 5, [LEFT]),
-    new Coordinate(5, 7, [TOP_RIGHT]),
-    new Coordinate(13, 7, [TOP_LEFT]),
-    new Coordinate(8, 8, [TOP_RIGHT])];
+    new Coordinate(6, 0).onEdges(BOTTOM_RIGHT),
+    new Coordinate(10, 0).onEdges(BOTTOM_LEFT),
+    new Coordinate(13, 1).onEdges(BOTTOM_LEFT),
+    new Coordinate(4, 2).onEdges(RIGHT),
+    new Coordinate(3, 3).onEdges(BOTTOM_RIGHT),
+    new Coordinate(15, 3).onEdges(BOTTOM_LEFT),
+    new Coordinate(3, 5).onEdges(RIGHT),
+    new Coordinate(15, 5).onEdges(LEFT),
+    new Coordinate(5, 7).onEdges(TOP_RIGHT),
+    new Coordinate(13, 7).onEdges(TOP_LEFT),
+    new Coordinate(8, 8).onEdges(TOP_RIGHT)];
   export const EXT_5_6_EXP_SEA_SCEN_HFNS_BIG_ISLAND_FISHERY_COORDINATES = [
-    new Coordinate(5, 1, [RIGHT, BOTTOM_RIGHT]),
-    new Coordinate(14, 2, [BOTTOM_LEFT, LEFT]),
-    new Coordinate(5, 3, [LEFT, TOP_LEFT]),
-    new Coordinate(4, 4, [BOTTOM_LEFT, LEFT]),
-    new Coordinate(14, 4, [RIGHT, BOTTOM_RIGHT]),
-    new Coordinate(14, 6, [LEFT, TOP_LEFT]),
-    new Coordinate(4, 6, [TOP_RIGHT, RIGHT]),
-    new Coordinate(11, 7, [RIGHT, BOTTOM_RIGHT])];
+    new Coordinate(5, 1).onEdges(RIGHT, BOTTOM_RIGHT),
+    new Coordinate(14, 2).onEdges(BOTTOM_LEFT, LEFT),
+    new Coordinate(5, 3).onEdges(LEFT, TOP_LEFT),
+    new Coordinate(4, 4).onEdges(BOTTOM_LEFT, LEFT),
+    new Coordinate(14, 4).onEdges(RIGHT, BOTTOM_RIGHT),
+    new Coordinate(14, 6).onEdges(LEFT, TOP_LEFT),
+    new Coordinate(4, 6).onEdges(TOP_RIGHT, RIGHT),
+    new Coordinate(11, 7).onEdges(RIGHT, BOTTOM_RIGHT)];
   export const EXT_5_6_EXP_SEA_SCEN_HFNS_SMALL_ISLAND_TERRAIN_COORDINATES = [
     new Coordinate(3, 1),
     new Coordinate(15, 1),
@@ -296,11 +343,11 @@
     new Coordinate(15, 7)];
 
   export const EXT_7_8_EXP_SEA_SCEN_HFNS_BIG_ISLAND_TERRAIN_COORDINATES = EXT_7_8_TERRAIN_COORDINATES
-      .map((c) => new Coordinate(c.x + 3, c.y + 1, c.edgePositions));
+      .map((c) => new Coordinate(c.x + 3, c.y + 1, c.edges));
   export const EXT_7_8_EXP_SEA_SCEN_HFNS_BIG_ISLAND_HARBOR_COORDINATES = EXT_7_8_HARBOR_COORDINATES
-      .map((c) => new Coordinate(c.x + 3, c.y + 1, c.edgePositions));
+      .map((c) => new Coordinate(c.x + 3, c.y + 1, c.edges));
   export const EXT_7_8_EXP_SEA_SCEN_HFNS_BIG_ISLAND_FISHERY_COORDINATES = EXT_7_8_FISHERY_COORDINATES
-      .map((c) => new Coordinate(c.x + 3, c.y + 1, c.edgePositions));
+      .map((c) => new Coordinate(c.x + 3, c.y + 1, c.edges));
   export const EXT_7_8_EXP_SEA_SCEN_HFNS_SMALL_ISLAND_TERRAIN_COORDINATES = [
     new Coordinate(6, 0),
     new Coordinate(8, 0),
@@ -355,20 +402,20 @@
       new Coordinate(4, 6),
       new Coordinate(6, 6)];
   export const BASE_3_EXP_SEA_SCEN_4_ISLANDS_HARBOR_COORDINATES = [
-      new Coordinate(8, 0, [BOTTOM_RIGHT]),
-      new Coordinate(1, 1, [BOTTOM_RIGHT]),
-      new Coordinate(13, 1, [BOTTOM_LEFT]),
-      new Coordinate(6, 2, [TOP_LEFT]),
-      new Coordinate(5, 3, [BOTTOM_LEFT]),
-      new Coordinate(11, 3, [TOP_RIGHT]),
-      new Coordinate(8, 4, [BOTTOM_RIGHT]),
-      new Coordinate(13, 5, [TOP_LEFT]),
-      new Coordinate(2, 6, [TOP_RIGHT])];
+      new Coordinate(8, 0).onEdges(BOTTOM_RIGHT),
+      new Coordinate(1, 1).onEdges(BOTTOM_RIGHT),
+      new Coordinate(13, 1).onEdges(BOTTOM_LEFT),
+      new Coordinate(6, 2).onEdges(TOP_LEFT),
+      new Coordinate(5, 3).onEdges(BOTTOM_LEFT),
+      new Coordinate(11, 3).onEdges(TOP_RIGHT),
+      new Coordinate(8, 4).onEdges(BOTTOM_RIGHT),
+      new Coordinate(13, 5).onEdges(TOP_LEFT),
+      new Coordinate(2, 6).onEdges(TOP_RIGHT)];
   export const BASE_3_EXP_SEA_SCEN_4_ISLANDS_FISHERY_COORDINATES = [
-      new Coordinate(4, 0, [BOTTOM_RIGHT, BOTTOM_LEFT]),
-      new Coordinate(3, 3, [TOP_LEFT, TOP_RIGHT]),
-      new Coordinate(11, 3, [BOTTOM_RIGHT, BOTTOM_LEFT]),
-      new Coordinate(10, 6, [TOP_LEFT, TOP_RIGHT])];
+      new Coordinate(4, 0).onEdges(BOTTOM_RIGHT, BOTTOM_LEFT),
+      new Coordinate(3, 3).onEdges(TOP_LEFT, TOP_RIGHT),
+      new Coordinate(11, 3).onEdges(BOTTOM_RIGHT, BOTTOM_LEFT),
+      new Coordinate(10, 6).onEdges(TOP_LEFT, TOP_RIGHT)];
 
   export const BASE_4_EXP_SEA_SCEN_4_ISLANDS_TERRAIN_COORDINATES = [
       new Coordinate(4, 0),
@@ -395,22 +442,22 @@
       new Coordinate(6, 6),
       new Coordinate(10, 6)];
   export const BASE_4_EXP_SEA_SCEN_4_ISLANDS_HARBOR_COORDINATES = [
-      new Coordinate(12, 0, [LEFT]),
-      new Coordinate(1, 1, [BOTTOM_RIGHT]),
-      new Coordinate(13, 1, [BOTTOM_LEFT]),
-      new Coordinate(8, 2, [TOP_RIGHT]),
-      new Coordinate(3, 3, [TOP_LEFT]),
-      new Coordinate(11, 3, [BOTTOM_RIGHT]),
-      new Coordinate(2, 4, [BOTTOM_RIGHT]),
-      new Coordinate(8, 4, [TOP_LEFT]),
-      new Coordinate(13, 5, [LEFT])];
+      new Coordinate(12, 0).onEdges(LEFT),
+      new Coordinate(1, 1).onEdges(BOTTOM_RIGHT),
+      new Coordinate(13, 1).onEdges(BOTTOM_LEFT),
+      new Coordinate(8, 2).onEdges(TOP_RIGHT),
+      new Coordinate(3, 3).onEdges(TOP_LEFT),
+      new Coordinate(11, 3).onEdges(BOTTOM_RIGHT),
+      new Coordinate(2, 4).onEdges(BOTTOM_RIGHT),
+      new Coordinate(8, 4).onEdges(TOP_LEFT),
+      new Coordinate(13, 5).onEdges(LEFT)];
   export const BASE_4_EXP_SEA_SCEN_4_ISLANDS_FISHERY_COORDINATES = [
-      new Coordinate(2, 0, [RIGHT, BOTTOM_RIGHT]),
-      new Coordinate(2, 2, [BOTTOM_LEFT, LEFT]),
-      new Coordinate(4, 2, [TOP_RIGHT, RIGHT]),
-      new Coordinate(10, 4, [BOTTOM_LEFT, LEFT]),
-      new Coordinate(12, 4, [TOP_RIGHT, RIGHT]),
-      new Coordinate(12, 6, [LEFT, TOP_LEFT])];
+      new Coordinate(2, 0).onEdges(RIGHT, BOTTOM_RIGHT),
+      new Coordinate(2, 2).onEdges(BOTTOM_LEFT, LEFT),
+      new Coordinate(4, 2).onEdges(TOP_RIGHT, RIGHT),
+      new Coordinate(10, 4).onEdges(BOTTOM_LEFT, LEFT),
+      new Coordinate(12, 4).onEdges(TOP_RIGHT, RIGHT),
+      new Coordinate(12, 6).onEdges(LEFT, TOP_LEFT)];
 
   export const EXT_5_6_EXP_SEA_SCEN_6_ISLANDS_TERRAIN_COORDINATES = [
       new Coordinate(3, 1),
@@ -446,24 +493,24 @@
       new Coordinate(13, 7),
       new Coordinate(15, 7)];
   export const EXT_5_6_EXP_SEA_SCEN_6_ISLANDS_HARBOR_COORDINATES = [
-      new Coordinate(6, 0, [BOTTOM_LEFT]),
-      new Coordinate(11, 1, [BOTTOM_LEFT]),
-      new Coordinate(0, 2, [RIGHT]),
-      new Coordinate(12, 2, [TOP_RIGHT]),
-      new Coordinate(18, 2, [LEFT]),
-      new Coordinate(16, 4, [BOTTOM_LEFT]),
-      new Coordinate(5, 5, [BOTTOM_LEFT]),
-      new Coordinate(13, 5, [BOTTOM_RIGHT]),
-      new Coordinate(2, 8, [TOP_RIGHT]),
-      new Coordinate(8, 8, [TOP_RIGHT]),
-      new Coordinate(14, 8, [TOP_RIGHT])];
+      new Coordinate(6, 0).onEdges(BOTTOM_LEFT),
+      new Coordinate(11, 1).onEdges(BOTTOM_LEFT),
+      new Coordinate(0, 2).onEdges(RIGHT),
+      new Coordinate(12, 2).onEdges(TOP_RIGHT),
+      new Coordinate(18, 2).onEdges(LEFT),
+      new Coordinate(16, 4).onEdges(BOTTOM_LEFT),
+      new Coordinate(5, 5).onEdges(BOTTOM_LEFT),
+      new Coordinate(13, 5).onEdges(BOTTOM_RIGHT),
+      new Coordinate(2, 8).onEdges(TOP_RIGHT),
+      new Coordinate(8, 8).onEdges(TOP_RIGHT),
+      new Coordinate(14, 8).onEdges(TOP_RIGHT)];
   export const EXT_5_6_EXP_SEA_SCEN_6_ISLANDS_FISHERY_COORDINATES = [
-    new Coordinate(14, 0, [BOTTOM_RIGHT, BOTTOM_LEFT]),
-    new Coordinate(3, 1, [LEFT, TOP_LEFT]),
-    new Coordinate(17, 1, [BOTTOM_LEFT, LEFT]),
-    new Coordinate(16, 6, [RIGHT, BOTTOM_RIGHT]),
-    new Coordinate(1, 7, [TOP_RIGHT, RIGHT]),
-    new Coordinate(4, 8, [TOP_LEFT, TOP_RIGHT])];
+    new Coordinate(14, 0).onEdges(BOTTOM_RIGHT, BOTTOM_LEFT),
+    new Coordinate(3, 1).onEdges(LEFT, TOP_LEFT),
+    new Coordinate(17, 1).onEdges(BOTTOM_LEFT, LEFT),
+    new Coordinate(16, 6).onEdges(RIGHT, BOTTOM_RIGHT),
+    new Coordinate(1, 7).onEdges(TOP_RIGHT, RIGHT),
+    new Coordinate(4, 8).onEdges(TOP_LEFT, TOP_RIGHT)];
 
   export const EXT_7_8_EXP_SEA_SCEN_8_ISLANDS_TERRAIN_COORDINATES = [
     new Coordinate(3, 1),
@@ -509,27 +556,27 @@
     new Coordinate(21, 7),
     new Coordinate(23, 7)];
   export const EXT_7_8_EXP_SEA_SCEN_8_ISLANDS_HARBOR_COORDINATES = [
-    new Coordinate(2, 0, [BOTTOM_RIGHT]),
-    new Coordinate(10, 0, [BOTTOM_LEFT]),
-    new Coordinate(16, 0, [BOTTOM_RIGHT]),
-    new Coordinate(26, 0, [BOTTOM_LEFT]),
-    new Coordinate(0, 2, [RIGHT]),
-    new Coordinate(26, 2, [LEFT]),
-    new Coordinate(0, 6, [RIGHT]),
-    new Coordinate(26, 6, [LEFT]),
-    new Coordinate(2, 8, [TOP_RIGHT]),
-    new Coordinate(10, 8, [TOP_LEFT]),
-    new Coordinate(16, 8, [TOP_RIGHT]),
-    new Coordinate(24, 8, [TOP_LEFT])];
+    new Coordinate(2, 0).onEdges(BOTTOM_RIGHT),
+    new Coordinate(10, 0).onEdges(BOTTOM_LEFT),
+    new Coordinate(16, 0).onEdges(BOTTOM_RIGHT),
+    new Coordinate(26, 0).onEdges(BOTTOM_LEFT),
+    new Coordinate(0, 2).onEdges(RIGHT),
+    new Coordinate(26, 2).onEdges(LEFT),
+    new Coordinate(0, 6).onEdges(RIGHT),
+    new Coordinate(26, 6).onEdges(LEFT),
+    new Coordinate(2, 8).onEdges(TOP_RIGHT),
+    new Coordinate(10, 8).onEdges(TOP_LEFT),
+    new Coordinate(16, 8).onEdges(TOP_RIGHT),
+    new Coordinate(24, 8).onEdges(TOP_LEFT)];
   export const EXT_7_8_EXP_SEA_SCEN_8_ISLANDS_FISHERY_COORDINATES = [
-    new Coordinate(24, 0, [BOTTOM_RIGHT, BOTTOM_LEFT]),
-    new Coordinate(1, 1, [RIGHT, BOTTOM_RIGHT]),
-    new Coordinate(15, 1, [LEFT, TOP_LEFT]),
-    new Coordinate(25, 1, [RIGHT, BOTTOM_RIGHT]),
-    new Coordinate(1, 7, [TOP_RIGHT, RIGHT]),
-    new Coordinate(11, 7, [RIGHT, BOTTOM_RIGHT]),
-    new Coordinate(25, 7, [LEFT, TOP_LEFT]),
-    new Coordinate(4, 8, [TOP_LEFT, TOP_RIGHT])];
+    new Coordinate(24, 0).onEdges(BOTTOM_RIGHT, BOTTOM_LEFT),
+    new Coordinate(1, 1).onEdges(RIGHT, BOTTOM_RIGHT),
+    new Coordinate(15, 1).onEdges(LEFT, TOP_LEFT),
+    new Coordinate(25, 1).onEdges(RIGHT, BOTTOM_RIGHT),
+    new Coordinate(1, 7).onEdges(TOP_RIGHT, RIGHT),
+    new Coordinate(11, 7).onEdges(RIGHT, BOTTOM_RIGHT),
+    new Coordinate(25, 7).onEdges(LEFT, TOP_LEFT),
+    new Coordinate(4, 8).onEdges(TOP_LEFT, TOP_RIGHT)];
 
   export const BASE_3_EXP_SEA_SCEN_FI_FACE_UP_PRODUCING_TERRAIN_COORDINATES = [
     new Coordinate(5, 1),
@@ -547,34 +594,34 @@
     new Coordinate(9, 7),
     new Coordinate(11, 7)];
   export const BASE_3_EXP_SEA_SCEN_FI_HARBOR_COORDINATES = [
-    new Coordinate(3, 1, [RIGHT]),
-    new Coordinate(7, 1, [BOTTOM_LEFT]),
-    new Coordinate(2, 2, [BOTTOM_RIGHT]),
-    new Coordinate(1, 3, [BOTTOM_RIGHT]),
-    new Coordinate(14, 4, [LEFT]),
-    new Coordinate(14, 6, [TOP_LEFT]),
-    new Coordinate(13, 7, [LEFT]),
-    new Coordinate(10, 8, [TOP_LEFT])];
+    new Coordinate(3, 1).onEdges(RIGHT),
+    new Coordinate(7, 1).onEdges(BOTTOM_LEFT),
+    new Coordinate(2, 2).onEdges(BOTTOM_RIGHT),
+    new Coordinate(1, 3).onEdges(BOTTOM_RIGHT),
+    new Coordinate(14, 4).onEdges(LEFT),
+    new Coordinate(14, 6).onEdges(TOP_LEFT),
+    new Coordinate(13, 7).onEdges(LEFT),
+    new Coordinate(10, 8).onEdges(TOP_LEFT)];
   export const BASE_3_EXP_SEA_SCEN_FI_FISHERY_COORDINATES = [
-    new Coordinate(10, 0, [BOTTOM_RIGHT, BOTTOM_LEFT]),
-    new Coordinate(13, 1, [BOTTOM_LEFT, LEFT]),
-    new Coordinate(4, 2, [LEFT, TOP_LEFT]),
-    new Coordinate(12, 6, [RIGHT, BOTTOM_RIGHT]),
-    new Coordinate(1, 7, [TOP_RIGHT, RIGHT]),
-    new Coordinate(4, 8, [TOP_LEFT, TOP_RIGHT])];
+    new Coordinate(10, 0).onEdges(BOTTOM_RIGHT, BOTTOM_LEFT),
+    new Coordinate(13, 1).onEdges(BOTTOM_LEFT, LEFT),
+    new Coordinate(4, 2).onEdges(LEFT, TOP_LEFT),
+    new Coordinate(12, 6).onEdges(RIGHT, BOTTOM_RIGHT),
+    new Coordinate(1, 7).onEdges(TOP_RIGHT, RIGHT),
+    new Coordinate(4, 8).onEdges(TOP_LEFT, TOP_RIGHT)];
   export const BASE_3_EXP_SEA_SCEN_FI_FACE_DOWN_COORDINATES = [
-    new Coordinate(9, 1, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(11, 1, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(10, 2, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(12, 2, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(9, 3, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(8, 4, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(7, 5, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(2, 6, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(4, 6, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(6, 6, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(3, 7, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(5, 7, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN)];
+    new Coordinate(9, 1).asFaceDown(),
+    new Coordinate(11, 1).asFaceDown(),
+    new Coordinate(10, 2).asFaceDown(),
+    new Coordinate(12, 2).asFaceDown(),
+    new Coordinate(9, 3).asFaceDown(),
+    new Coordinate(8, 4).asFaceDown(),
+    new Coordinate(7, 5).asFaceDown(),
+    new Coordinate(2, 6).asFaceDown(),
+    new Coordinate(4, 6).asFaceDown(),
+    new Coordinate(6, 6).asFaceDown(),
+    new Coordinate(3, 7).asFaceDown(),
+    new Coordinate(5, 7).asFaceDown()];
 
   export const BASE_4_EXP_SEA_SCEN_FI_FACE_UP_PRODUCING_TERRAIN_COORDINATES = [
     new Coordinate(3, 1),
@@ -595,35 +642,35 @@
     new Coordinate(9, 7),
     new Coordinate(11, 7)];
   export const BASE_4_EXP_SEA_SCEN_FI_HARBOR_COORDINATES = [
-    new Coordinate(4, 0, [BOTTOM_LEFT]),
-    new Coordinate(1, 1, [RIGHT]),
-    new Coordinate(0, 2, [BOTTOM_RIGHT]),
-    new Coordinate(0, 4, [RIGHT]),
-    new Coordinate(14, 4, [TOP_LEFT]),
-    new Coordinate(14, 6, [TOP_LEFT]),
-    new Coordinate(13, 7, [LEFT]),
-    new Coordinate(8, 8, [TOP_LEFT]),
-    new Coordinate(10, 8, [TOP_RIGHT])];
+    new Coordinate(4, 0).onEdges(BOTTOM_LEFT),
+    new Coordinate(1, 1).onEdges(RIGHT),
+    new Coordinate(0, 2).onEdges(BOTTOM_RIGHT),
+    new Coordinate(0, 4).onEdges(RIGHT),
+    new Coordinate(14, 4).onEdges(TOP_LEFT),
+    new Coordinate(14, 6).onEdges(TOP_LEFT),
+    new Coordinate(13, 7).onEdges(LEFT),
+    new Coordinate(8, 8).onEdges(TOP_LEFT),
+    new Coordinate(10, 8).onEdges(TOP_RIGHT)];
   export const BASE_4_EXP_SEA_SCEN_FI_FISHERY_COORDINATES = [
-    new Coordinate(9, 1, [TOP_LEFT, TOP_RIGHT]),
-    new Coordinate(11, 1, [TOP_RIGHT, RIGHT]),
-    new Coordinate(2, 2, [LEFT, TOP_LEFT]),
-    new Coordinate(12, 6, [RIGHT, BOTTOM_RIGHT]),
-    new Coordinate(2, 6, [BOTTOM_LEFT, LEFT]),
-    new Coordinate(3, 7, [BOTTOM_RIGHT, BOTTOM_LEFT])];
+    new Coordinate(9, 1).onEdges(TOP_LEFT, TOP_RIGHT),
+    new Coordinate(11, 1).onEdges(TOP_RIGHT, RIGHT),
+    new Coordinate(2, 2).onEdges(LEFT, TOP_LEFT),
+    new Coordinate(12, 6).onEdges(RIGHT, BOTTOM_RIGHT),
+    new Coordinate(2, 6).onEdges(BOTTOM_LEFT, LEFT),
+    new Coordinate(3, 7).onEdges(BOTTOM_RIGHT, BOTTOM_LEFT)];
   export const BASE_4_EXP_SEA_SCEN_FI_FACE_DOWN_COORDINATES = [
-    new Coordinate(9, 1, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(11, 1, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(8, 2, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(10, 2, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(7, 3, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(9, 3, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(6, 4, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(8, 4, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(5, 5, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(2, 6, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(4, 6, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(3, 7, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN)];
+    new Coordinate(9, 1).asFaceDown(),
+    new Coordinate(11, 1).asFaceDown(),
+    new Coordinate(8, 2).asFaceDown(),
+    new Coordinate(10, 2).asFaceDown(),
+    new Coordinate(7, 3).asFaceDown(),
+    new Coordinate(9, 3).asFaceDown(),
+    new Coordinate(6, 4).asFaceDown(),
+    new Coordinate(8, 4).asFaceDown(),
+    new Coordinate(5, 5).asFaceDown(),
+    new Coordinate(2, 6).asFaceDown(),
+    new Coordinate(4, 6).asFaceDown(),
+    new Coordinate(3, 7).asFaceDown()];
 
   export const EXT_5_6_EXP_SEA_SCEN_FI_FACE_UP_TERRAIN_COORDINATES = [
     new Coordinate(8, 4),
@@ -651,53 +698,53 @@
     new Coordinate(15, 7),
     new Coordinate(17, 7)];
   export const EXT_5_6_EXP_SEA_SCEN_FI_HARBOR_COORDINATES = [
-    new Coordinate(9, 3, [BOTTOM_RIGHT]),
-    new Coordinate(6, 4, [BOTTOM_RIGHT]),
-    new Coordinate(14, 4, [BOTTOM_LEFT]),
-    new Coordinate(2, 6, [RIGHT]),
-    new Coordinate(18, 6, [LEFT]),
-    new Coordinate(4, 8, [TOP_LEFT]),
-    new Coordinate(8, 8, [TOP_RIGHT]),
-    new Coordinate(14, 8, [TOP_LEFT]),
-    new Coordinate(16, 8, [TOP_RIGHT])];
+    new Coordinate(9, 3).onEdges(BOTTOM_RIGHT),
+    new Coordinate(6, 4).onEdges(BOTTOM_RIGHT),
+    new Coordinate(14, 4).onEdges(BOTTOM_LEFT),
+    new Coordinate(2, 6).onEdges(RIGHT),
+    new Coordinate(18, 6).onEdges(LEFT),
+    new Coordinate(4, 8).onEdges(TOP_LEFT),
+    new Coordinate(8, 8).onEdges(TOP_RIGHT),
+    new Coordinate(14, 8).onEdges(TOP_LEFT),
+    new Coordinate(16, 8).onEdges(TOP_RIGHT)];
   export const EXT_5_6_EXP_SEA_SCEN_FI_FISHERY_COORDINATES = [
-    new Coordinate(4, 0, [BOTTOM_RIGHT, BOTTOM_LEFT]),
-    new Coordinate(16, 0, [BOTTOM_RIGHT, BOTTOM_LEFT]),
-    new Coordinate(1, 1, [RIGHT, BOTTOM_RIGHT]),
-    new Coordinate(19, 1, [BOTTOM_LEFT, LEFT]),
-    new Coordinate(5, 5, [LEFT, TOP_LEFT]),
-    new Coordinate(15, 5, [TOP_RIGHT, RIGHT]),
-    new Coordinate(3, 7, [BOTTOM_LEFT, LEFT]),
-    new Coordinate(17, 7, [RIGHT, BOTTOM_RIGHT])];
+    new Coordinate(4, 0).onEdges(BOTTOM_RIGHT, BOTTOM_LEFT),
+    new Coordinate(16, 0).onEdges(BOTTOM_RIGHT, BOTTOM_LEFT),
+    new Coordinate(1, 1).onEdges(RIGHT, BOTTOM_RIGHT),
+    new Coordinate(19, 1).onEdges(BOTTOM_LEFT, LEFT),
+    new Coordinate(5, 5).onEdges(LEFT, TOP_LEFT),
+    new Coordinate(15, 5).onEdges(TOP_RIGHT, RIGHT),
+    new Coordinate(3, 7).onEdges(BOTTOM_LEFT, LEFT),
+    new Coordinate(17, 7).onEdges(RIGHT, BOTTOM_RIGHT)];
   export const EXT_5_6_EXP_SEA_SCEN_FI_GOLD_TERRAIN_COORDINATES = [
     new Coordinate(3, 1),
     new Coordinate(17, 1)];
   export const EXT_5_6_EXP_SEA_SCEN_FI_FACE_DOWN_COORDINATES = [
-    new Coordinate(5, 1, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(7, 1, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(9, 1, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(11, 1, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(13, 1, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(15, 1, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(2, 2, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(4, 2, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(6, 2, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(8, 2, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(10, 2, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(12, 2, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(14, 2, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(16, 2, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(18, 2, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(1, 3, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(3, 3, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(5, 3, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(15, 3, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(17, 3, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(19, 3, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(2, 4, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(18, 4, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(1, 5, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(19, 5, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN)];
+    new Coordinate(5, 1).asFaceDown(),
+    new Coordinate(7, 1).asFaceDown(),
+    new Coordinate(9, 1).asFaceDown(),
+    new Coordinate(11, 1).asFaceDown(),
+    new Coordinate(13, 1).asFaceDown(),
+    new Coordinate(15, 1).asFaceDown(),
+    new Coordinate(2, 2).asFaceDown(),
+    new Coordinate(4, 2).asFaceDown(),
+    new Coordinate(6, 2).asFaceDown(),
+    new Coordinate(8, 2).asFaceDown(),
+    new Coordinate(10, 2).asFaceDown(),
+    new Coordinate(12, 2).asFaceDown(),
+    new Coordinate(14, 2).asFaceDown(),
+    new Coordinate(16, 2).asFaceDown(),
+    new Coordinate(18, 2).asFaceDown(),
+    new Coordinate(1, 3).asFaceDown(),
+    new Coordinate(3, 3).asFaceDown(),
+    new Coordinate(5, 3).asFaceDown(),
+    new Coordinate(15, 3).asFaceDown(),
+    new Coordinate(17, 3).asFaceDown(),
+    new Coordinate(19, 3).asFaceDown(),
+    new Coordinate(2, 4).asFaceDown(),
+    new Coordinate(18, 4).asFaceDown(),
+    new Coordinate(1, 5).asFaceDown(),
+    new Coordinate(19, 5).asFaceDown()];
 
   export const EXT_7_8_EXP_SEA_SCEN_FI_FACE_UP_TERRAIN_COORDINATES = [
     new Coordinate(11, 1),
@@ -733,66 +780,66 @@
     new Coordinate(10, 12),
     new Coordinate(12, 12)];
   export const EXT_7_8_EXP_SEA_SCEN_FI_HARBOR_COORDINATES = [
-    new Coordinate(14, 0, [BOTTOM_LEFT]),
-    new Coordinate(10, 0, [BOTTOM_RIGHT]),
-    new Coordinate(8, 2, [BOTTOM_RIGHT]),
-    new Coordinate(3, 3, [BOTTOM_LEFT]),
-    new Coordinate(7, 3, [BOTTOM_LEFT]),
-    new Coordinate(0, 4, [BOTTOM_RIGHT]),
-    new Coordinate(23, 9, [TOP_LEFT]),
-    new Coordinate(16, 10, [TOP_RIGHT]),
-    new Coordinate(20, 10, [TOP_RIGHT]),
-    new Coordinate(15, 11, [TOP_LEFT]),
-    new Coordinate(9, 13, [TOP_RIGHT]),
-    new Coordinate(13, 13, [TOP_LEFT])];
+    new Coordinate(14, 0).onEdges(BOTTOM_LEFT),
+    new Coordinate(10, 0).onEdges(BOTTOM_RIGHT),
+    new Coordinate(8, 2).onEdges(BOTTOM_RIGHT),
+    new Coordinate(3, 3).onEdges(BOTTOM_LEFT),
+    new Coordinate(7, 3).onEdges(BOTTOM_LEFT),
+    new Coordinate(0, 4).onEdges(BOTTOM_RIGHT),
+    new Coordinate(23, 9).onEdges(TOP_LEFT),
+    new Coordinate(16, 10).onEdges(TOP_RIGHT),
+    new Coordinate(20, 10).onEdges(TOP_RIGHT),
+    new Coordinate(15, 11).onEdges(TOP_LEFT),
+    new Coordinate(9, 13).onEdges(TOP_RIGHT),
+    new Coordinate(13, 13).onEdges(TOP_LEFT)];
   export const EXT_7_8_EXP_SEA_SCEN_FI_FACE_DOWN_COORDINATES = [
-    new Coordinate(16, 2, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(18, 2, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(15, 3, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(17, 3, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(19, 3, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(14, 4, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(16, 4, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(18, 4, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(20, 4, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(13, 5, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(15, 5, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(17, 5, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(19, 5, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(21, 5, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(12, 6, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(14, 6, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(16, 6, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(18, 6, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(20, 6, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(3, 7, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(5, 7, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(7, 7, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(9, 7, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(11, 7, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(2, 8, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(4, 8, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(6, 8, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(8, 8, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(10, 8, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(3, 9, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(5, 9, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(7, 9, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(9, 9, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(4, 10, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(6, 10, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(8, 10, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(5, 11, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN),
-    new Coordinate(7, 11, HEXAGON_EDGE_POSITIONS, FacePosition.FACE_DOWN)];
+    new Coordinate(16, 2).asFaceDown(),
+    new Coordinate(18, 2).asFaceDown(),
+    new Coordinate(15, 3).asFaceDown(),
+    new Coordinate(17, 3).asFaceDown(),
+    new Coordinate(19, 3).asFaceDown(),
+    new Coordinate(14, 4).asFaceDown(),
+    new Coordinate(16, 4).asFaceDown(),
+    new Coordinate(18, 4).asFaceDown(),
+    new Coordinate(20, 4).asFaceDown(),
+    new Coordinate(13, 5).asFaceDown(),
+    new Coordinate(15, 5).asFaceDown(),
+    new Coordinate(17, 5).asFaceDown(),
+    new Coordinate(19, 5).asFaceDown(),
+    new Coordinate(21, 5).asFaceDown(),
+    new Coordinate(12, 6).asFaceDown(),
+    new Coordinate(14, 6).asFaceDown(),
+    new Coordinate(16, 6).asFaceDown(),
+    new Coordinate(18, 6).asFaceDown(),
+    new Coordinate(20, 6).asFaceDown(),
+    new Coordinate(3, 7).asFaceDown(),
+    new Coordinate(5, 7).asFaceDown(),
+    new Coordinate(7, 7).asFaceDown(),
+    new Coordinate(9, 7).asFaceDown(),
+    new Coordinate(11, 7).asFaceDown(),
+    new Coordinate(2, 8).asFaceDown(),
+    new Coordinate(4, 8).asFaceDown(),
+    new Coordinate(6, 8).asFaceDown(),
+    new Coordinate(8, 8).asFaceDown(),
+    new Coordinate(10, 8).asFaceDown(),
+    new Coordinate(3, 9).asFaceDown(),
+    new Coordinate(5, 9).asFaceDown(),
+    new Coordinate(7, 9).asFaceDown(),
+    new Coordinate(9, 9).asFaceDown(),
+    new Coordinate(4, 10).asFaceDown(),
+    new Coordinate(6, 10).asFaceDown(),
+    new Coordinate(8, 10).asFaceDown(),
+    new Coordinate(5, 11).asFaceDown(),
+    new Coordinate(7, 11).asFaceDown()];
   export const EXT_7_8_EXP_SEA_SCEN_FI_FISHERY_COORDINATES = [
-    new Coordinate(12, 0, [BOTTOM_RIGHT, BOTTOM_LEFT]),
-    new Coordinate(10, 2, [LEFT, TOP_LEFT]),
-    new Coordinate(2, 4, [LEFT, TOP_LEFT]),
-    new Coordinate(5, 3, [BOTTOM_RIGHT, BOTTOM_LEFT]),
-    new Coordinate(21, 9, [RIGHT, BOTTOM_RIGHT]),
-    new Coordinate(18, 10, [TOP_LEFT, TOP_RIGHT]),
-    new Coordinate(13, 11, [RIGHT, BOTTOM_RIGHT]),
-    new Coordinate(11, 13, [TOP_LEFT, TOP_RIGHT])];
+    new Coordinate(12, 0).onEdges(BOTTOM_RIGHT, BOTTOM_LEFT),
+    new Coordinate(10, 2).onEdges(LEFT, TOP_LEFT),
+    new Coordinate(2, 4).onEdges(LEFT, TOP_LEFT),
+    new Coordinate(5, 3).onEdges(BOTTOM_RIGHT, BOTTOM_LEFT),
+    new Coordinate(21, 9).onEdges(RIGHT, BOTTOM_RIGHT),
+    new Coordinate(18, 10).onEdges(TOP_LEFT, TOP_RIGHT),
+    new Coordinate(13, 11).onEdges(RIGHT, BOTTOM_RIGHT),
+    new Coordinate(11, 13).onEdges(TOP_LEFT, TOP_RIGHT)];
 
   export const BASE_3_EXP_SEA_SCEN_TD_INDIGENOUS_TERRAIN_COORDINATES = [
     new Coordinate(2, 2),
@@ -814,14 +861,14 @@
     new Coordinate(9, 5),
     new Coordinate(11, 5)];
   export const BASE_3_EXP_SEA_SCEN_TD_INDIGENOUS_HARBOR_COORDINATES = [
-    new Coordinate(3, 1, [BOTTOM_LEFT]),
-    new Coordinate(5, 1, [BOTTOM_RIGHT]),
-    new Coordinate(0, 2, [BOTTOM_RIGHT]),
-    new Coordinate(8, 2, [LEFT]),
-    new Coordinate(0, 4, [TOP_RIGHT]),
-    new Coordinate(12, 4, [LEFT]),
-    new Coordinate(1, 5, [RIGHT]),
-    new Coordinate(5, 5, [TOP_LEFT])];
+    new Coordinate(3, 1).onEdges(BOTTOM_LEFT),
+    new Coordinate(5, 1).onEdges(BOTTOM_RIGHT),
+    new Coordinate(0, 2).onEdges(BOTTOM_RIGHT),
+    new Coordinate(8, 2).onEdges(LEFT),
+    new Coordinate(0, 4).onEdges(TOP_RIGHT),
+    new Coordinate(12, 4).onEdges(LEFT),
+    new Coordinate(1, 5).onEdges(RIGHT),
+    new Coordinate(5, 5).onEdges(TOP_LEFT)];
   export const BASE_3_EXP_SEA_SCEN_TD_FOREIGN_TERRAIN_COORDINATES = [
     new Coordinate(4, 0),
     new Coordinate(6, 0),
@@ -834,8 +881,8 @@
     new Coordinate(8, 6),
     new Coordinate(10, 6)];
   export const BASE_3_EXP_SEA_SCEN_TD_FISHERY_COORDINATES = [
-    new Coordinate(2, 2, [LEFT, TOP_LEFT]),
-    new Coordinate(2, 4, [BOTTOM_LEFT, LEFT])];
+    new Coordinate(2, 2).onEdges(LEFT, TOP_LEFT),
+    new Coordinate(2, 4).onEdges(BOTTOM_LEFT, LEFT)];
 
   export const BASE_4_EXP_SEA_SCEN_TD_INDIGENOUS_TERRAIN_COORDINATES = [
     new Coordinate(3, 3),
@@ -860,15 +907,15 @@
     new Coordinate(10, 6),
     new Coordinate(12, 6)];
   export const BASE_4_EXP_SEA_SCEN_TD_INDIGENOUS_HARBOR_COORDINATES = [
-    new Coordinate(4, 2, [BOTTOM_LEFT]),
-    new Coordinate(6, 2, [BOTTOM_RIGHT]),
-    new Coordinate(10, 2, [BOTTOM_RIGHT]),
-    new Coordinate(1, 3, [RIGHT]),
-    new Coordinate(13, 3, [LEFT]),
-    new Coordinate(2, 4, [BOTTOM_RIGHT]),
-    new Coordinate(14, 4, [BOTTOM_LEFT]),
-    new Coordinate(2, 6, [TOP_RIGHT]),
-    new Coordinate(6, 6, [TOP_RIGHT])];
+    new Coordinate(4, 2).onEdges(BOTTOM_LEFT),
+    new Coordinate(6, 2).onEdges(BOTTOM_RIGHT),
+    new Coordinate(10, 2).onEdges(BOTTOM_RIGHT),
+    new Coordinate(1, 3).onEdges(RIGHT),
+    new Coordinate(13, 3).onEdges(LEFT),
+    new Coordinate(2, 4).onEdges(BOTTOM_RIGHT),
+    new Coordinate(14, 4).onEdges(BOTTOM_LEFT),
+    new Coordinate(2, 6).onEdges(TOP_RIGHT),
+    new Coordinate(6, 6).onEdges(TOP_RIGHT)];
   export const BASE_4_EXP_SEA_SCEN_TD_FOREIGN_TERRAIN_COORDINATES = [
     new Coordinate(6, 0),
     new Coordinate(8, 0),
@@ -883,8 +930,8 @@
     new Coordinate(9, 7),
     new Coordinate(11, 7)];
   export const BASE_4_EXP_SEA_SCEN_TD_FISHERY_COORDINATES = [
-    new Coordinate(13, 5, [RIGHT, BOTTOM_RIGHT]),
-    new Coordinate(4, 6, [BOTTOM_LEFT, LEFT])];
+    new Coordinate(13, 5).onEdges(RIGHT, BOTTOM_RIGHT),
+    new Coordinate(4, 6).onEdges(BOTTOM_LEFT, LEFT)];
 
   export const EXT_5_6_EXP_SEA_SCEN_TD_INDIGENOUS_TERRAIN_COORDINATES = [
     new Coordinate(3, 1),
@@ -915,17 +962,17 @@
     new Coordinate(12, 6),
     new Coordinate(14, 6)];
   export const EXT_5_6_EXP_SEA_SCEN_TD_INDIGENOUS_HARBOR_COORDINATES = [
-    new Coordinate(2, 0, [BOTTOM_RIGHT]),
-    new Coordinate(5, 1, [BOTTOM_LEFT]),
-    new Coordinate(0, 2, [RIGHT]),
-    new Coordinate(6, 2, [BOTTOM_LEFT]),
-    new Coordinate(8, 2, [BOTTOM_RIGHT]),
-    new Coordinate(12, 2, [BOTTOM_RIGHT]),
-    new Coordinate(15, 3, [BOTTOM_LEFT]),
-    new Coordinate(0, 4, [TOP_RIGHT]),
-    new Coordinate(1, 5, [TOP_RIGHT]),
-    new Coordinate(5, 5, [TOP_RIGHT]),
-    new Coordinate(15, 5, [LEFT])];
+    new Coordinate(2, 0).onEdges(BOTTOM_RIGHT),
+    new Coordinate(5, 1).onEdges(BOTTOM_LEFT),
+    new Coordinate(0, 2).onEdges(RIGHT),
+    new Coordinate(6, 2).onEdges(BOTTOM_LEFT),
+    new Coordinate(8, 2).onEdges(BOTTOM_RIGHT),
+    new Coordinate(12, 2).onEdges(BOTTOM_RIGHT),
+    new Coordinate(15, 3).onEdges(BOTTOM_LEFT),
+    new Coordinate(0, 4).onEdges(TOP_RIGHT),
+    new Coordinate(1, 5).onEdges(TOP_RIGHT),
+    new Coordinate(5, 5).onEdges(TOP_RIGHT),
+    new Coordinate(15, 5).onEdges(LEFT)];
   export const EXT_5_6_EXP_SEA_SCEN_TD_FOREIGN_TERRAIN_COORDINATES = [
     new Coordinate(7, 1),
     new Coordinate(9, 1),
@@ -950,8 +997,8 @@
     new Coordinate(15, 7),
     new Coordinate(17, 7)];
   export const EXT_5_6_EXP_SEA_SCEN_TD_FISHERY_COORDINATES = [
-    new Coordinate(1, 1, [RIGHT, BOTTOM_RIGHT]),
-    new Coordinate(1, 3, [LEFT, TOP_LEFT])];
+    new Coordinate(1, 1).onEdges(RIGHT, BOTTOM_RIGHT),
+    new Coordinate(1, 3).onEdges(LEFT, TOP_LEFT)];
 
   export const EXT_7_8_EXP_SEA_SCEN_TD_INDIGENOUS_TERRAIN_COORDINATES = [
     new Coordinate(3, 1),
@@ -989,18 +1036,18 @@
     new Coordinate(16, 6),
     new Coordinate(18, 6)];
   export const EXT_7_8_EXP_SEA_SCEN_TD_INDIGENOUS_HARBOR_COORDINATES = [
-    new Coordinate(2, 0, [BOTTOM_RIGHT]),
-    new Coordinate(5, 1, [BOTTOM_LEFT]),
-    new Coordinate(0, 2, [RIGHT]),
-    new Coordinate(6, 2, [BOTTOM_RIGHT]),
-    new Coordinate(10, 2, [BOTTOM_LEFT]),
-    new Coordinate(12, 2, [BOTTOM_RIGHT]),
-    new Coordinate(16, 2, [BOTTOM_LEFT]),
-    new Coordinate(17, 3, [BOTTOM_RIGHT]),
-    new Coordinate(0, 4, [TOP_RIGHT]),
-    new Coordinate(3, 5, [TOP_LEFT]),
-    new Coordinate(5, 5, [TOP_RIGHT]),
-    new Coordinate(19, 5, [TOP_LEFT])];
+    new Coordinate(2, 0).onEdges(BOTTOM_RIGHT),
+    new Coordinate(5, 1).onEdges(BOTTOM_LEFT),
+    new Coordinate(0, 2).onEdges(RIGHT),
+    new Coordinate(6, 2).onEdges(BOTTOM_RIGHT),
+    new Coordinate(10, 2).onEdges(BOTTOM_LEFT),
+    new Coordinate(12, 2).onEdges(BOTTOM_RIGHT),
+    new Coordinate(16, 2).onEdges(BOTTOM_LEFT),
+    new Coordinate(17, 3).onEdges(BOTTOM_RIGHT),
+    new Coordinate(0, 4).onEdges(TOP_RIGHT),
+    new Coordinate(3, 5).onEdges(TOP_LEFT),
+    new Coordinate(5, 5).onEdges(TOP_RIGHT),
+    new Coordinate(19, 5).onEdges(TOP_LEFT)];
   export const EXT_7_8_EXP_SEA_SCEN_TD_FOREIGN_TERRAIN_COORDINATES = [
     new Coordinate(7, 1),
     new Coordinate(9, 1),
@@ -1060,8 +1107,8 @@
     new Coordinate(9, 5),
     new Coordinate(11, 5)];
   export const BASE_3_4_EXP_SEA_SCEN_FT_FISHERY_COORDINATES = [
-    new Coordinate(1, 3, [BOTTOM_LEFT, LEFT]),
-    new Coordinate(1, 5, [LEFT, TOP_LEFT])];
+    new Coordinate(1, 3).onEdges(BOTTOM_LEFT, LEFT),
+    new Coordinate(1, 5).onEdges(LEFT, TOP_LEFT)];
   export const BASE_3_4_EXP_SEA_SCEN_FT_SMALL_ISLAND_TERRAIN_COORDINATES = [
     new Coordinate(3, 1),
     new Coordinate(5, 1),
@@ -1076,26 +1123,26 @@
     new Coordinate(11, 7),
     new Coordinate(13, 7)];
   export const BASE_3_4_EXP_SEA_SCEN_FT_SMALL_ISLAND_HARBOR_COORDINATES = [
-    new Coordinate(2, 0, [BOTTOM_RIGHT], FacePosition.FACE_DOWN),
-    new Coordinate(8, 0, [BOTTOM_RIGHT], FacePosition.FACE_DOWN),
-    new Coordinate(16, 2, [BOTTOM_LEFT], FacePosition.FACE_DOWN),
-    new Coordinate(2, 8, [TOP_RIGHT], FacePosition.FACE_DOWN),
-    new Coordinate(10, 8, [TOP_LEFT], FacePosition.FACE_DOWN),
-    new Coordinate(16, 6, [TOP_LEFT], FacePosition.FACE_DOWN)];
+    new Coordinate(2, 0).onEdges(BOTTOM_RIGHT).asFaceDown(),
+    new Coordinate(8, 0).onEdges(BOTTOM_RIGHT).asFaceDown(),
+    new Coordinate(16, 2).onEdges(BOTTOM_LEFT).asFaceDown(),
+    new Coordinate(2, 8).onEdges(TOP_RIGHT).asFaceDown(),
+    new Coordinate(10, 8).onEdges(TOP_LEFT).asFaceDown(),
+    new Coordinate(16, 6).onEdges(TOP_LEFT).asFaceDown()];
   export const BASE_3_4_EXP_SEA_SCEN_FT_SMALL_ISLAND_DEVELOPMENT_CARD_COORDINATES = [
-    new Coordinate(1, 1, [RIGHT, LEFT], FacePosition.FACE_DOWN),
-    new Coordinate(15, 1, [RIGHT, LEFT], FacePosition.FACE_DOWN),
-    new Coordinate(1, 7, [RIGHT, LEFT], FacePosition.FACE_DOWN),
-    new Coordinate(15, 7, [RIGHT, LEFT], FacePosition.FACE_DOWN)];
+    new Coordinate(1, 1).onEdges(RIGHT, LEFT).asFaceDown(),
+    new Coordinate(15, 1).onEdges(RIGHT, LEFT).asFaceDown(),
+    new Coordinate(1, 7).onEdges(RIGHT, LEFT).asFaceDown(),
+    new Coordinate(15, 7).onEdges(RIGHT, LEFT).asFaceDown()];
   export const BASE_3_4_EXP_SEA_SCEN_FT_SMALL_ISLAND_VICTORY_POINT_COORDINATES = [
-    new Coordinate(4, 0, [BOTTOM_LEFT]),
-    new Coordinate(10, 0, [BOTTOM_LEFT]),
-    new Coordinate(14, 0, [BOTTOM_LEFT]),
-    new Coordinate(17, 3, [LEFT]),
-    new Coordinate(17, 5, [LEFT]),
-    new Coordinate(4, 8, [TOP_LEFT]),
-    new Coordinate(8, 8, [TOP_RIGHT]),
-    new Coordinate(14, 8, [TOP_LEFT])];
+    new Coordinate(4, 0).onEdges(BOTTOM_LEFT),
+    new Coordinate(10, 0).onEdges(BOTTOM_LEFT),
+    new Coordinate(14, 0).onEdges(BOTTOM_LEFT),
+    new Coordinate(17, 3).onEdges(LEFT),
+    new Coordinate(17, 5).onEdges(LEFT),
+    new Coordinate(4, 8).onEdges(TOP_LEFT),
+    new Coordinate(8, 8).onEdges(TOP_RIGHT),
+    new Coordinate(14, 8).onEdges(TOP_LEFT)];
 
   export const EXT_5_6_EXP_SEA_SCEN_FT_MAIN_ISLAND_TERRAIN_COORDINATES = [
     new Coordinate(1, 3),
@@ -1129,8 +1176,8 @@
     new Coordinate(19, 5)];
   export const EXT_5_6_EXP_SEA_SCEN_FT_FISHERY_COORDINATES = BASE_3_4_EXP_SEA_SCEN_FT_FISHERY_COORDINATES
       .concat([
-        new Coordinate(19, 3, [RIGHT, BOTTOM_RIGHT]),
-        new Coordinate(19, 5, [TOP_RIGHT, RIGHT])
+        new Coordinate(19, 3).onEdges(RIGHT, BOTTOM_RIGHT),
+        new Coordinate(19, 5).onEdges(TOP_RIGHT, RIGHT)
       ]);
   export const EXT_5_6_EXP_SEA_SCEN_FT_SMALL_ISLAND_TERRAIN_COORDINATES = [
     new Coordinate(3, 1),
@@ -1146,32 +1193,32 @@
     new Coordinate(15, 7),
     new Coordinate(17, 7)];
   export const EXT_5_6_EXP_SEA_SCEN_FT_SMALL_ISLAND_HARBOR_COORDINATES = [
-    new Coordinate(6, 0, [BOTTOM_LEFT], FacePosition.FACE_DOWN),
-    new Coordinate(8, 0, [BOTTOM_RIGHT], FacePosition.FACE_DOWN),
-    new Coordinate(14, 0, [BOTTOM_RIGHT], FacePosition.FACE_DOWN),
-    new Coordinate(18, 0, [BOTTOM_LEFT], FacePosition.FACE_DOWN),
-    new Coordinate(2, 8, [TOP_RIGHT], FacePosition.FACE_DOWN),
-    new Coordinate(4, 8, [TOP_RIGHT], FacePosition.FACE_DOWN),
-    new Coordinate(12, 8, [TOP_LEFT], FacePosition.FACE_DOWN),
-    new Coordinate(14, 8, [TOP_RIGHT], FacePosition.FACE_DOWN)];
+    new Coordinate(6, 0).onEdges(BOTTOM_LEFT).asFaceDown(),
+    new Coordinate(8, 0).onEdges(BOTTOM_RIGHT).asFaceDown(),
+    new Coordinate(14, 0).onEdges(BOTTOM_RIGHT).asFaceDown(),
+    new Coordinate(18, 0).onEdges(BOTTOM_LEFT).asFaceDown(),
+    new Coordinate(2, 8).onEdges(TOP_RIGHT).asFaceDown(),
+    new Coordinate(4, 8).onEdges(TOP_RIGHT).asFaceDown(),
+    new Coordinate(12, 8).onEdges(TOP_LEFT).asFaceDown(),
+    new Coordinate(14, 8).onEdges(TOP_RIGHT).asFaceDown()];
   export const EXT_5_6_EXP_SEA_SCEN_FT_SMALL_ISLAND_DEVELOPMENT_CARD_COORDINATES = [
-    new Coordinate(12, 0, [TOP_RIGHT, BOTTOM_LEFT], FacePosition.FACE_DOWN),
-    new Coordinate(1, 1, [RIGHT, LEFT], FacePosition.FACE_DOWN),
-    new Coordinate(19, 1, [RIGHT, LEFT], FacePosition.FACE_DOWN),
-    new Coordinate(1, 7, [RIGHT, LEFT], FacePosition.FACE_DOWN),
-    new Coordinate(19, 7, [RIGHT, LEFT], FacePosition.FACE_DOWN),
-    new Coordinate(8, 8, [TOP_RIGHT, BOTTOM_LEFT], FacePosition.FACE_DOWN)];
+    new Coordinate(12, 0).onEdges(TOP_RIGHT, BOTTOM_LEFT).asFaceDown(),
+    new Coordinate(1, 1).onEdges(RIGHT, LEFT).asFaceDown(),
+    new Coordinate(19, 1).onEdges(RIGHT, LEFT).asFaceDown(),
+    new Coordinate(1, 7).onEdges(RIGHT, LEFT).asFaceDown(),
+    new Coordinate(19, 7).onEdges(RIGHT, LEFT).asFaceDown(),
+    new Coordinate(8, 8).onEdges(TOP_RIGHT, BOTTOM_LEFT).asFaceDown()];
   export const EXT_5_6_EXP_SEA_SCEN_FT_SMALL_ISLAND_VICTORY_POINT_COORDINATES = [
-    new Coordinate(2, 0, [BOTTOM_RIGHT]),
-    new Coordinate(4, 0, [BOTTOM_RIGHT]),
-    new Coordinate(10, 0, [BOTTOM_RIGHT]),
-    new Coordinate(10, 0, [BOTTOM_LEFT]),
-    new Coordinate(16, 0, [BOTTOM_LEFT]),
-    new Coordinate(6, 8, [TOP_LEFT]),
-    new Coordinate(10, 8, [TOP_RIGHT]),
-    new Coordinate(10, 8, [TOP_LEFT]),
-    new Coordinate(16, 8, [TOP_LEFT]),
-    new Coordinate(18, 8, [TOP_LEFT])];
+    new Coordinate(2, 0).onEdges(BOTTOM_RIGHT),
+    new Coordinate(4, 0).onEdges(BOTTOM_RIGHT),
+    new Coordinate(10, 0).onEdges(BOTTOM_RIGHT),
+    new Coordinate(10, 0).onEdges(BOTTOM_LEFT),
+    new Coordinate(16, 0).onEdges(BOTTOM_LEFT),
+    new Coordinate(6, 8).onEdges(TOP_LEFT),
+    new Coordinate(10, 8).onEdges(TOP_RIGHT),
+    new Coordinate(10, 8).onEdges(TOP_LEFT),
+    new Coordinate(16, 8).onEdges(TOP_LEFT),
+    new Coordinate(18, 8).onEdges(TOP_LEFT)];
   
   export const EXT_7_8_EXP_SEA_SCEN_FT_MAIN_ISLAND_TERRAIN_COORDINATES = [
     new Coordinate(3, 3),
@@ -1215,10 +1262,10 @@
     new Coordinate(25, 5),
     new Coordinate(27, 5)];
   export const EXT_7_8_EXP_SEA_SCEN_FT_FISHERY_COORDINATES = [
-    new Coordinate(1, 3, [RIGHT, BOTTOM_RIGHT]),
-    new Coordinate(29, 3, [BOTTOM_LEFT, LEFT]),
-    new Coordinate(1, 5, [TOP_RIGHT, RIGHT]),
-    new Coordinate(29, 5, [LEFT, TOP_LEFT])];
+    new Coordinate(1, 3).onEdges(RIGHT, BOTTOM_RIGHT),
+    new Coordinate(29, 3).onEdges(BOTTOM_LEFT, LEFT),
+    new Coordinate(1, 5).onEdges(TOP_RIGHT, RIGHT),
+    new Coordinate(29, 5).onEdges(LEFT, TOP_LEFT)];
   export const EXT_7_8_EXP_SEA_SCEN_FT_SMALL_ISLAND_TERRAIN_COORDINATES = [
     new Coordinate(5, 1),
     new Coordinate(9, 1),
@@ -1233,38 +1280,94 @@
     new Coordinate(21, 7),
     new Coordinate(25, 7)];
   export const EXT_7_8_EXP_SEA_SCEN_FT_SMALL_ISLAND_HARBOR_COORDINATES = [
-    new Coordinate(4, 0, [BOTTOM_RIGHT], FacePosition.FACE_DOWN),
-    new Coordinate(10, 0, [BOTTOM_LEFT], FacePosition.FACE_DOWN),
-    new Coordinate(12, 0, [BOTTOM_RIGHT], FacePosition.FACE_DOWN),
-    new Coordinate(20, 0, [BOTTOM_RIGHT], FacePosition.FACE_DOWN),
-    new Coordinate(26, 0, [BOTTOM_LEFT], FacePosition.FACE_DOWN),
-    new Coordinate(6, 8, [TOP_LEFT], FacePosition.FACE_DOWN),
-    new Coordinate(8, 8, [TOP_RIGHT], FacePosition.FACE_DOWN),
-    new Coordinate(16, 8, [TOP_RIGHT], FacePosition.FACE_DOWN),
-    new Coordinate(22, 8, [TOP_LEFT], FacePosition.FACE_DOWN),
-    new Coordinate(24, 8, [TOP_RIGHT], FacePosition.FACE_DOWN)];
+    new Coordinate(4, 0).onEdges(BOTTOM_RIGHT).asFaceDown(),
+    new Coordinate(10, 0).onEdges(BOTTOM_LEFT).asFaceDown(),
+    new Coordinate(12, 0).onEdges(BOTTOM_RIGHT).asFaceDown(),
+    new Coordinate(20, 0).onEdges(BOTTOM_RIGHT).asFaceDown(),
+    new Coordinate(26, 0).onEdges(BOTTOM_LEFT).asFaceDown(),
+    new Coordinate(6, 8).onEdges(TOP_LEFT).asFaceDown(),
+    new Coordinate(8, 8).onEdges(TOP_RIGHT).asFaceDown(),
+    new Coordinate(16, 8).onEdges(TOP_RIGHT).asFaceDown(),
+    new Coordinate(22, 8).onEdges(TOP_LEFT).asFaceDown(),
+    new Coordinate(24, 8).onEdges(TOP_RIGHT).asFaceDown()];
   export const EXT_7_8_EXP_SEA_SCEN_FT_SMALL_ISLAND_DEVELOPMENT_CARD_COORDINATES = [
-    new Coordinate(3, 1, [RIGHT, LEFT]),
-    new Coordinate(11, 1, [RIGHT, LEFT]),
-    new Coordinate(19, 1, [RIGHT, LEFT]),
-    new Coordinate(27, 1, [RIGHT, LEFT]),
-    new Coordinate(3, 7, [RIGHT, LEFT]),
-    new Coordinate(11, 7, [RIGHT, LEFT]),
-    new Coordinate(19, 7, [RIGHT, LEFT]),
-    new Coordinate(27, 7, [RIGHT, LEFT])];
+    new Coordinate(3, 1).onEdges(RIGHT, LEFT),
+    new Coordinate(11, 1).onEdges(RIGHT, LEFT),
+    new Coordinate(19, 1).onEdges(RIGHT, LEFT),
+    new Coordinate(27, 1).onEdges(RIGHT, LEFT),
+    new Coordinate(3, 7).onEdges(RIGHT, LEFT),
+    new Coordinate(11, 7).onEdges(RIGHT, LEFT),
+    new Coordinate(19, 7).onEdges(RIGHT, LEFT),
+    new Coordinate(27, 7).onEdges(RIGHT, LEFT)];
   export const EXT_7_8_EXP_SEA_SCEN_FT_SMALL_ISLAND_VICTORY_POINT_COORDINATES = [
-    new Coordinate(6, 0, [BOTTOM_LEFT]),
-    new Coordinate(8, 0, [BOTTOM_RIGHT]),
-    new Coordinate(14, 0, [BOTTOM_LEFT]),
-    new Coordinate(16, 0, [BOTTOM_RIGHT]),
-    new Coordinate(22, 0, [BOTTOM_LEFT]),
-    new Coordinate(24, 0, [BOTTOM_RIGHT]),
-    new Coordinate(4, 8, [TOP_RIGHT]),
-    new Coordinate(10, 8, [TOP_LEFT]),
-    new Coordinate(12, 8, [TOP_RIGHT]),
-    new Coordinate(18, 8, [TOP_LEFT]),
-    new Coordinate(20, 8, [TOP_RIGHT]),
-    new Coordinate(26, 8, [TOP_LEFT])];
+    new Coordinate(6, 0).onEdges(BOTTOM_LEFT),
+    new Coordinate(8, 0).onEdges(BOTTOM_RIGHT),
+    new Coordinate(14, 0).onEdges(BOTTOM_LEFT),
+    new Coordinate(16, 0).onEdges(BOTTOM_RIGHT),
+    new Coordinate(22, 0).onEdges(BOTTOM_LEFT),
+    new Coordinate(24, 0).onEdges(BOTTOM_RIGHT),
+    new Coordinate(4, 8).onEdges(TOP_RIGHT),
+    new Coordinate(10, 8).onEdges(TOP_LEFT),
+    new Coordinate(12, 8).onEdges(TOP_RIGHT),
+    new Coordinate(18, 8).onEdges(TOP_LEFT),
+    new Coordinate(20, 8).onEdges(TOP_RIGHT),
+    new Coordinate(26, 8).onEdges(TOP_LEFT)];
+
+  export const BASE_3_4_EXP_SEA_SCEN_CFC_MAIN_ISLAND_TERRAIN_COORDINATES = [
+    new Coordinate(3, 1),
+    new Coordinate(5, 1),
+    new Coordinate(7, 1),
+    new Coordinate(9, 1),
+    new Coordinate(11, 1),
+    new Coordinate(2, 2),
+    new Coordinate(4, 2),
+    new Coordinate(10, 2),
+    new Coordinate(12, 2),
+    new Coordinate(1, 3),
+    new Coordinate(13, 5),
+    new Coordinate(2, 6),
+    new Coordinate(4, 6),
+    new Coordinate(10, 6),
+    new Coordinate(12, 6),
+    new Coordinate(3, 7),
+    new Coordinate(5, 7),
+    new Coordinate(7, 7),
+    new Coordinate(9, 7),
+    new Coordinate(11, 7)];
+  export const BASE_3_4_EXP_SEA_SCEN_CFC_MAIN_ISLAND_HARBOR_COORDINATES = [
+    new Coordinate(4, 0).onEdges(BOTTOM_LEFT),
+    new Coordinate(8, 0).onEdges(BOTTOM_RIGHT),
+    new Coordinate(0, 2).onEdges(RIGHT),
+    new Coordinate(14, 2).onEdges(LEFT),
+    new Coordinate(15, 5).onEdges(LEFT),
+    new Coordinate(0, 6).onEdges(RIGHT),
+    new Coordinate(13, 7).onEdges(TOP_LEFT),
+    new Coordinate(4, 8).onEdges(TOP_RIGHT),
+    new Coordinate(10, 8).onEdges(TOP_LEFT)];
+  export const BASE_3_4_EXP_SEA_SCEN_CFC_FISHERY_COORDINATES = [
+    new Coordinate(6, 0).onEdges(BOTTOM_RIGHT, BOTTOM_LEFT),
+    new Coordinate(13, 1).onEdges(BOTTOM_LEFT, LEFT),
+    new Coordinate(1, 3).onEdges(LEFT, TOP_LEFT),
+    new Coordinate(14, 6).onEdges(LEFT, TOP_LEFT),
+    new Coordinate(1, 7).onEdges(TOP_RIGHT, RIGHT),
+    new Coordinate(8, 8).onEdges(TOP_LEFT, TOP_RIGHT)];
+  export const BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_TERRAIN_COORDINATES = [
+    new Coordinate(7, 3),
+    new Coordinate(4, 4),
+    new Coordinate(10, 4),
+    new Coordinate(7, 5)];
+  export const BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_3_11_CHIT_COORDINATES = [
+    new Coordinate(7, 3).onVertices(VertexPosition.TOP),
+    new Coordinate(7, 5).onVertices(VertexPosition.BOTTOM)];
+  export const BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_4_10_CHIT_COORDINATES = [
+    new Coordinate(4, 4).onVertices(VertexPosition.BOTTOM),
+    new Coordinate(10, 4).onVertices(VertexPosition.BOTTOM)];
+  export const BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_5_9_CHIT_COORDINATES = [
+    new Coordinate(4, 4).onVertices(VertexPosition.TOP),
+    new Coordinate(10, 4).onVertices(VertexPosition.TOP)];
+  export const BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_6_8_CHIT_COORDINATES = [
+    new Coordinate(7, 3).onVertices(VertexPosition.BOTTOM),
+    new Coordinate(7, 5).onVertices(VertexPosition.TOP)];
 
   export const BASE_3_4_EXP_TB_SCEN_ROC_NON_RIVER_TERRAIN_COORDINATES = [
     new Coordinate(3, 1),
@@ -1290,13 +1393,13 @@
     new Coordinate(2, 2),
     new Coordinate(2, 4)];
   export const BASE_3_4_EXP_TB_SCEN_ROC_RIVER_COORDINATES = [
-    new Coordinate(2, 2, [RIGHT, TOP_LEFT]),
-    new Coordinate(4, 2, [RIGHT, LEFT]),
-    new Coordinate(6, 2, [RIGHT, LEFT]),
-    new Coordinate(8, 2, [LEFT]),
-    new Coordinate(2, 4, [RIGHT, BOTTOM_LEFT]),
-    new Coordinate(4, 4, [RIGHT, LEFT]),
-    new Coordinate(6, 4, [LEFT])];
+    new Coordinate(2, 2).onEdges(RIGHT, TOP_LEFT),
+    new Coordinate(4, 2).onEdges(RIGHT, LEFT),
+    new Coordinate(6, 2).onEdges(RIGHT, LEFT),
+    new Coordinate(8, 2).onEdges(LEFT),
+    new Coordinate(2, 4).onEdges(RIGHT, BOTTOM_LEFT),
+    new Coordinate(4, 4).onEdges(RIGHT, LEFT),
+    new Coordinate(6, 4).onEdges(LEFT)];
 
   export const EXT_5_6_EXP_TB_SCEN_ROC_NON_RIVER_TERRAIN_COORDINATES = [
     new Coordinate(5, 1),
@@ -1334,16 +1437,16 @@
     new Coordinate(7, 1),
     new Coordinate(7, 7)];
   export const EXT_5_6_EXP_TB_SCEN_ROC_RIVER_COORDINATES = [
-    new Coordinate(7, 1, [BOTTOM_LEFT, TOP_LEFT]),
-    new Coordinate(6, 2, [TOP_RIGHT, BOTTOM_LEFT]),
-    new Coordinate(5, 3, [TOP_RIGHT]),
-    new Coordinate(4, 4, [BOTTOM_RIGHT]),
-    new Coordinate(8, 4, [RIGHT]),
-    new Coordinate(10, 4, [RIGHT, LEFT]),
-    new Coordinate(12, 4, [TOP_RIGHT, LEFT]),
-    new Coordinate(5, 5, [BOTTOM_RIGHT, TOP_LEFT]),
-    new Coordinate(6, 6, [BOTTOM_RIGHT, TOP_LEFT]),
-    new Coordinate(7, 7, [BOTTOM_LEFT, TOP_LEFT])];
+    new Coordinate(7, 1).onEdges(BOTTOM_LEFT, TOP_LEFT),
+    new Coordinate(6, 2).onEdges(TOP_RIGHT, BOTTOM_LEFT),
+    new Coordinate(5, 3).onEdges(TOP_RIGHT),
+    new Coordinate(4, 4).onEdges(BOTTOM_RIGHT),
+    new Coordinate(8, 4).onEdges(RIGHT),
+    new Coordinate(10, 4).onEdges(RIGHT, LEFT),
+    new Coordinate(12, 4).onEdges(TOP_RIGHT, LEFT),
+    new Coordinate(5, 5).onEdges(BOTTOM_RIGHT, TOP_LEFT),
+    new Coordinate(6, 6).onEdges(BOTTOM_RIGHT, TOP_LEFT),
+    new Coordinate(7, 7).onEdges(BOTTOM_LEFT, TOP_LEFT)];
 
   export const EXT_7_8_EXP_TB_SCEN_ROC_NON_RIVER_TERRAIN_COORDINATES = [
     new Coordinate(5, 1),
@@ -1388,16 +1491,16 @@
     new Coordinate(7, 1),
     new Coordinate(9, 7)];
   export const EXT_7_8_EXP_TB_SCEN_ROC_RIVER_COORDINATES = [
-    new Coordinate(7, 1, [BOTTOM_LEFT, TOP_LEFT]),
-    new Coordinate(6, 2, [TOP_RIGHT, BOTTOM_LEFT]),
-    new Coordinate(5, 3, [TOP_RIGHT]),
-    new Coordinate(6, 4, [BOTTOM_RIGHT]),
-    new Coordinate(10, 4, [RIGHT]),
-    new Coordinate(12, 4, [RIGHT, LEFT]),
-    new Coordinate(14, 4, [TOP_RIGHT, LEFT]),
-    new Coordinate(7, 5, [BOTTOM_RIGHT, TOP_LEFT]),
-    new Coordinate(8, 6, [BOTTOM_RIGHT, TOP_LEFT]),
-    new Coordinate(9, 7, [BOTTOM_LEFT, TOP_LEFT])];
+    new Coordinate(7, 1).onEdges(BOTTOM_LEFT, TOP_LEFT),
+    new Coordinate(6, 2).onEdges(TOP_RIGHT, BOTTOM_LEFT),
+    new Coordinate(5, 3).onEdges(TOP_RIGHT),
+    new Coordinate(6, 4).onEdges(BOTTOM_RIGHT),
+    new Coordinate(10, 4).onEdges(RIGHT),
+    new Coordinate(12, 4).onEdges(RIGHT, LEFT),
+    new Coordinate(14, 4).onEdges(TOP_RIGHT, LEFT),
+    new Coordinate(7, 5).onEdges(BOTTOM_RIGHT, TOP_LEFT),
+    new Coordinate(8, 6).onEdges(BOTTOM_RIGHT, TOP_LEFT),
+    new Coordinate(9, 7).onEdges(BOTTOM_LEFT, TOP_LEFT)];
 
   export const BASE_3_4_EXP_TB_SCEN_CAR_PRODUCING_TERRAIN_COORDINATES = [
     new Coordinate(3, 1),
@@ -1558,26 +1661,26 @@
     new Coordinate(2, 4),
     new Coordinate(11, 7)];
   export const EXT_5_6_EXP_TB_SCEN_TB_HARBOR_COORDINATES = [
-    new Coordinate(4, 0, [BOTTOM_RIGHT]),
-    new Coordinate(8, 0, [BOTTOM_LEFT]),
-    new Coordinate(13, 1, [BOTTOM_LEFT]),
-    new Coordinate(1, 3, [RIGHT]),
-    new Coordinate(16, 4, [LEFT]),
-    new Coordinate(1, 5, [TOP_RIGHT]),
-    new Coordinate(2, 6, [RIGHT]),
-    new Coordinate(14, 6, [TOP_LEFT]),
-    new Coordinate(13, 7, [LEFT]),
-    new Coordinate(4, 8, [TOP_RIGHT]),
-    new Coordinate(10, 8, [TOP_LEFT])];
+    new Coordinate(4, 0).onEdges(BOTTOM_RIGHT),
+    new Coordinate(8, 0).onEdges(BOTTOM_LEFT),
+    new Coordinate(13, 1).onEdges(BOTTOM_LEFT),
+    new Coordinate(1, 3).onEdges(RIGHT),
+    new Coordinate(16, 4).onEdges(LEFT),
+    new Coordinate(1, 5).onEdges(TOP_RIGHT),
+    new Coordinate(2, 6).onEdges(RIGHT),
+    new Coordinate(14, 6).onEdges(TOP_LEFT),
+    new Coordinate(13, 7).onEdges(LEFT),
+    new Coordinate(4, 8).onEdges(TOP_RIGHT),
+    new Coordinate(10, 8).onEdges(TOP_LEFT)];
   export const EXT_5_6_EXP_TB_SCEN_TB_FISHERY_COORDINATES = [
-    new Coordinate(6, 0, [BOTTOM_RIGHT, BOTTOM_LEFT]),
-    new Coordinate(11, 1, [TOP_LEFT, TOP_RIGHT]),
-    new Coordinate(4, 2, [LEFT, TOP_LEFT]),
-    new Coordinate(15, 3, [BOTTOM_LEFT, LEFT]),
-    new Coordinate(2, 4, [LEFT, TOP_LEFT]),
-    new Coordinate(12, 6, [RIGHT, BOTTOM_RIGHT]),
-    new Coordinate(3, 7, [TOP_RIGHT, RIGHT]),
-    new Coordinate(8, 8, [TOP_LEFT, TOP_RIGHT])];
+    new Coordinate(6, 0).onEdges(BOTTOM_RIGHT, BOTTOM_LEFT),
+    new Coordinate(11, 1).onEdges(TOP_LEFT, TOP_RIGHT),
+    new Coordinate(4, 2).onEdges(LEFT, TOP_LEFT),
+    new Coordinate(15, 3).onEdges(BOTTOM_LEFT, LEFT),
+    new Coordinate(2, 4).onEdges(LEFT, TOP_LEFT),
+    new Coordinate(12, 6).onEdges(RIGHT, BOTTOM_RIGHT),
+    new Coordinate(3, 7).onEdges(TOP_RIGHT, RIGHT),
+    new Coordinate(8, 8).onEdges(TOP_LEFT, TOP_RIGHT)];
 
   export const EXT_7_8_EXP_TB_SCEN_TB_NON_TRADE_TERRAIN_COORDINATES = [
     new Coordinate(9, 1),
@@ -1645,28 +1748,28 @@
     new Coordinate(3, 5),
     new Coordinate(15, 9)];
   export const EXT_7_8_EXP_TB_SCEN_TB_HARBOR_COORDINATES = [
-    new Coordinate(6, 0, [BOTTOM_RIGHT]),
-    new Coordinate(10, 0, [BOTTOM_LEFT]),
-    new Coordinate(14, 0, [BOTTOM_RIGHT]),
-    new Coordinate(17, 1, [BOTTOM_LEFT]),
-    new Coordinate(4, 2, [RIGHT]),
-    new Coordinate(19, 3, [BOTTOM_LEFT]),
-    new Coordinate(2, 4, [RIGHT]),
-    new Coordinate(21, 5, [LEFT]),
-    new Coordinate(2, 6, [RIGHT]),
-    new Coordinate(19, 7, [TOP_LEFT]),
-    new Coordinate(4, 8, [RIGHT]),
-    new Coordinate(17, 9, [LEFT]),
-    new Coordinate(6, 10, [TOP_RIGHT]),
-    new Coordinate(10, 10, [TOP_LEFT]),
-    new Coordinate(14, 10, [TOP_LEFT])];
+    new Coordinate(6, 0).onEdges(BOTTOM_RIGHT),
+    new Coordinate(10, 0).onEdges(BOTTOM_LEFT),
+    new Coordinate(14, 0).onEdges(BOTTOM_RIGHT),
+    new Coordinate(17, 1).onEdges(BOTTOM_LEFT),
+    new Coordinate(4, 2).onEdges(RIGHT),
+    new Coordinate(19, 3).onEdges(BOTTOM_LEFT),
+    new Coordinate(2, 4).onEdges(RIGHT),
+    new Coordinate(21, 5).onEdges(LEFT),
+    new Coordinate(2, 6).onEdges(RIGHT),
+    new Coordinate(19, 7).onEdges(TOP_LEFT),
+    new Coordinate(4, 8).onEdges(RIGHT),
+    new Coordinate(17, 9).onEdges(LEFT),
+    new Coordinate(6, 10).onEdges(TOP_RIGHT),
+    new Coordinate(10, 10).onEdges(TOP_LEFT),
+    new Coordinate(14, 10).onEdges(TOP_LEFT)];
   export const EXT_7_8_EXP_TB_SCEN_TB_FISHERY_COORDINATES = [
-    new Coordinate(5, 1, [RIGHT, BOTTOM_RIGHT]),
-    new Coordinate(11, 1, [TOP_LEFT, TOP_RIGHT]),
-    new Coordinate(18, 2, [BOTTOM_LEFT, LEFT]),
-    new Coordinate(3, 5, [LEFT, TOP_LEFT]),
-    new Coordinate(20, 6, [LEFT, TOP_LEFT]),
-    new Coordinate(16, 8, [RIGHT, BOTTOM_RIGHT]),
-    new Coordinate(5, 9, [TOP_RIGHT, RIGHT]),
-    new Coordinate(11, 9, [BOTTOM_RIGHT, BOTTOM_LEFT])];
+    new Coordinate(5, 1).onEdges(RIGHT, BOTTOM_RIGHT),
+    new Coordinate(11, 1).onEdges(TOP_LEFT, TOP_RIGHT),
+    new Coordinate(18, 2).onEdges(BOTTOM_LEFT, LEFT),
+    new Coordinate(3, 5).onEdges(LEFT, TOP_LEFT),
+    new Coordinate(20, 6).onEdges(LEFT, TOP_LEFT),
+    new Coordinate(16, 8).onEdges(RIGHT, BOTTOM_RIGHT),
+    new Coordinate(5, 9).onEdges(TOP_RIGHT, RIGHT),
+    new Coordinate(11, 9).onEdges(BOTTOM_RIGHT, BOTTOM_LEFT)];
 // }

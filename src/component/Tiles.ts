@@ -29,7 +29,8 @@ import * as Coordinates from './Coordinates';
     QUARRY = 'Quarry',
 
     DEVELOPMENT_CARD = 'Development Card',
-    VICTORY_POINT = 'Victory Point'
+    VICTORY_POINT = 'Victory Point',
+    CHIT = 'Chit'
   }
 
   export class Tile {
@@ -37,12 +38,17 @@ import * as Coordinates from './Coordinates';
 
     edgeCount(): [number, number] {
       switch (this.type) {
+        case Type.CHIT: {
+          return [0, 0];
+        }
+
         case Type.GENERIC_HARBOR:
         case Type.BRICK_HARBOR:
         case Type.ORE_HARBOR:
         case Type.GRAIN_HARBOR:
         case Type.LUMBER_HARBOR:
-        case Type.WOOL_HARBOR: {
+        case Type.WOOL_HARBOR:
+        case Type.VICTORY_POINT: {
           return [1, 1];
         }
 
@@ -68,8 +74,7 @@ import * as Coordinates from './Coordinates';
           return [6, 6];
         }
 
-        case Type.RIVER:
-        case Type.VICTORY_POINT: {
+        case Type.RIVER: {
           return [1, 6];
         }
       }
@@ -106,6 +111,7 @@ import * as Coordinates from './Coordinates';
 
   export const DEVELOPMENT_CARD = new Tile(Type.DEVELOPMENT_CARD);
   export const VICTORY_POINT = new Tile(Type.VICTORY_POINT);
+  export const CHIT = new Tile(Type.CHIT);
 
   export const BASE_3_4_PRODUCING_TERRAIN_TILE_SET = new Array(4).fill(FIELD_TERRAIN)
       .concat(new Array(4).fill(FOREST_TERRAIN))
@@ -303,6 +309,18 @@ import * as Coordinates from './Coordinates';
       .concat(new Array(4).fill(DESERT_TERRAIN));
   export const EXT_7_8_EXP_SEA_SCEN_FT_SMALL_ISLAND_HARBOR_TILE_SET = BASE_3_4_EXP_SEA_SCEN_FT_SMALL_ISLAND_HARBOR_TILE_SET
       .concat(new Array(4).fill(GENERIC_HARBOR));
+
+  export const BASE_3_4_EXP_SEA_SCEN_CFC_MAIN_ISLAND_TERRAIN_TILE_SET = new Array(3).fill(HILL_TERRAIN)
+      .concat(new Array(4).fill(FOREST_TERRAIN))
+      .concat(new Array(4).fill(MOUNTAIN_TERRAIN))
+      .concat(new Array(4).fill(PASTURE_TERRAIN))
+      .concat(new Array(5).fill(FIELD_TERRAIN));
+  export const BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_TERRAIN_TILE_SET = new Array(2).fill(DESERT_TERRAIN)
+      .concat(new Array(2).fill(GOLD_TERRAIN));
+  export const BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_3_11_CHIT_TILE_SET = new Array(2).fill(CHIT);
+  export const BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_4_10_CHIT_TILE_SET = new Array(2).fill(CHIT);
+  export const BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_5_9_CHIT_TILE_SET = new Array(2).fill(CHIT);
+  export const BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_6_8_CHIT_TILE_SET = new Array(2).fill(CHIT);
 
   export const BASE_3_4_EXP_TB_SCEN_ROC_NON_RIVER_TERRAIN_TILE_SET = [HILL_TERRAIN, MOUNTAIN_TERRAIN]
       .concat(new Array(4).fill(FIELD_TERRAIN))

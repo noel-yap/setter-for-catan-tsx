@@ -1,5 +1,6 @@
 // export module Chits {
-  export class Chits {
+
+export class Chits {
     constructor(public values: number[]) {}
 
     odds(): number {
@@ -252,6 +253,13 @@
       .concat(new Array(2).fill(CHITS_12))
       .concat(BASE_3_4_PRODUCING_TERRAIN_CHIT_SET)
       .concat(BASE_3_4_PRODUCING_TERRAIN_CHIT_SET);
+
+  export const BASE_3_4_EXP_SEA_SCEN_CFC_MAIN_ISLAND_TERRAIN_CHIT_SET = [CHITS_2, CHITS_12]
+      .concat(BASE_3_4_PRODUCING_TERRAIN_CHIT_SET);
+  export const BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_3_11_CHIT_CHIT_SET = [CHITS_3, CHITS_11];
+  export const BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_4_10_CHIT_CHIT_SET = [CHITS_4, CHITS_10];
+  export const BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_5_9_CHIT_CHIT_SET = [CHITS_5, CHITS_9];
+  export const BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_6_8_CHIT_CHIT_SET = [CHITS_6, CHITS_8];
 
   export const BASE_3_4_EXP_TB_SCEN_ROC_PRODUCING_TERRAIN_CHIT_SET = [CHITS_2_12]
     .concat(new Array(2).fill(CHITS_3))

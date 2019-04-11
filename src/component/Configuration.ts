@@ -15,7 +15,7 @@ import * as Tiles from './Tiles';
       console.log(`tile = ${JSON.stringify(this.tile)}, coordinate = ${JSON.stringify(this.coordinate)}, chits = ${JSON.stringify(this.chits)}`);
 
       const tileEdgeCount = this.tile.edgeCount();
-      if (this.coordinate.edgePositions.length < tileEdgeCount[0] || tileEdgeCount[1] < this.coordinate.edgePositions.length) {
+      if (this.coordinate.edges.length < tileEdgeCount[0] || tileEdgeCount[1] < this.coordinate.edges.length) {
         throw new Error(`Invalid configuration: Coordinate \`${JSON.stringify(this.coordinate)}\` is not appropriate for the tile \`${JSON.stringify(this.tile)}\` with edge count \`{this.tile.edgeCount()\``);
       }
     }
