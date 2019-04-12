@@ -322,6 +322,22 @@ import * as Coordinates from './Coordinates';
   export const BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_5_9_CHIT_TILE_SET = new Array(2).fill(CHIT);
   export const BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_6_8_CHIT_TILE_SET = new Array(2).fill(CHIT);
 
+  export const EXT_5_6_EXP_SEA_SCEN_CFC_MAIN_ISLAND_TERRAIN_TILE_SET = new Array(4).fill(HILL_TERRAIN)
+      .concat(new Array(5).fill(MOUNTAIN_TERRAIN))
+      .concat(new Array(5).fill(PASTURE_TERRAIN))
+      .concat(new Array(6).fill(FIELD_TERRAIN))
+      .concat(new Array(6).fill(FOREST_TERRAIN));
+  export const EXT_5_6_EXP_SEA_SCEN_CFC_MAIN_ISLAND_HARBOR_TILE_SET = [
+    BRICK_HARBOR, GRAIN_HARBOR, ORE_HARBOR, WOOL_HARBOR]
+      .concat(new Array(2).fill(LUMBER_HARBOR))
+      .concat(new Array(5).fill(GENERIC_HARBOR));
+  export const EXT_5_6_EXP_SEA_SCEN_CFC_SMALL_ISLAND_TERRAIN_TILE_SET = new Array(2).fill(GOLD_TERRAIN)
+      .concat(new Array(4).fill(DESERT_TERRAIN));
+  export const EXT_5_6_EXP_SEA_SCEN_CFC_SMALL_ISLAND_2_12_CHIT_TILE_SET = new Array(2).fill(CHIT);
+  export const EXT_5_6_EXP_SEA_SCEN_CFC_SMALL_ISLAND_4_10_CHIT_TILE_SET = new Array(4).fill(CHIT);
+  export const EXT_5_6_EXP_SEA_SCEN_CFC_SMALL_ISLAND_5_9_CHIT_TILE_SET = new Array(4).fill(CHIT);
+  export const EXT_5_6_EXP_SEA_SCEN_CFC_SMALL_ISLAND_6_8_CHIT_TILE_SET = new Array(2).fill(CHIT);
+
   export const BASE_3_4_EXP_TB_SCEN_ROC_NON_RIVER_TERRAIN_TILE_SET = [HILL_TERRAIN, MOUNTAIN_TERRAIN]
       .concat(new Array(4).fill(FIELD_TERRAIN))
       .concat(new Array(4).fill(FOREST_TERRAIN))
