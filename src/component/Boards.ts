@@ -105,7 +105,7 @@ import * as Tiles from './Tiles';
             } else {
               const configurations = this.specification.toConfiguration();
 
-              // TODO: Score configuration validation instead of having it be all-or-nothing.
+              // IDEA: Score configuration validation instead of having it be all-or-nothing.
               const configurationsValid = configurations.every((configuration) => {
                 const result = this.specification.validateConfiguration(configuration);
 
