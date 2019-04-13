@@ -68,11 +68,15 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
     const riverByType = GeneratedBoard.groupByComponentType(this.props.board.riverLayout);
     const fisheryTilesByType = GeneratedBoard.groupByComponentType(this.props.board.fisheryTilesLayout);
     const developmentCardsByType = GeneratedBoard.groupByComponentType(this.props.board.developmentCardsLayout);
-    const portTilesByType = GeneratedBoard.groupByComponentType(this.props.board.portTilesLayout);
+    const harborTilesByType = GeneratedBoard.groupByComponentType(this.props.board.harborTilesLayout);
     const victoryPointsByType = GeneratedBoard.groupByComponentType(this.props.board.victoryPointsLayout);
-    const chits = _.groupBy(this.props.board.terrainTilesLayout.concat(this.props.board.fisheryTilesLayout), (component) => {
-      return component.chits.values;
-    });
+    const chits = _.groupBy(
+        this.props.board.terrainTilesLayout
+            .concat(this.props.board.fisheryTilesLayout)
+            .concat(this.props.board.vertexChitsLayout),
+        (component) => {
+          return component.chits.values;
+        });
 
     return (
         <div className="row">
@@ -85,7 +89,7 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
               {GeneratedBoard.renderBom(riverByType)}
               {GeneratedBoard.renderBom(fisheryTilesByType)}
               {GeneratedBoard.renderBom(chits, 'Chit')}
-              {GeneratedBoard.renderBom(portTilesByType)}
+              {GeneratedBoard.renderBom(harborTilesByType)}
               {GeneratedBoard.renderBom(developmentCardsByType)}
               {GeneratedBoard.renderBom(victoryPointsByType)}
             </Typography>
@@ -123,46 +127,52 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
     const display = new ROT.Display(displayOptions as Partial<DisplayOptions>);
     console.log(`App.GeneratedBoard.canvas: display.options = ${JSON.stringify(display._options)}`);
 
-    this.props.board.terrainTilesLayout.forEach((layout) => {
-      GeneratedBoard.renderTerrain(display, layout);
+    this.props.board.terrainTilesLayout.forEach((configuration) => {
+      GeneratedBoard.renderTerrain(display, configuration);
     });
 
     window.requestAnimationFrame(() => {
-      this.props.board.portTilesLayout.forEach((layout) => {
-        GeneratedBoard.renderPort(display, layout);
+      this.props.board.harborTilesLayout.forEach((configuration) => {
+        GeneratedBoard.renderPort(display, configuration);
       });
     });
 
     window.requestAnimationFrame(() => {
-      this.props.board.victoryPointsLayout.forEach((layout) => {
-        GeneratedBoard.renderVictoryPoint(display, layout);
-      });
-    });
-
-    window.requestAnimationFrame(() => {
-      this.props.board.developmentCardsLayout.forEach((layout) => {
-        GeneratedBoard.renderDevelopmentCard(display, layout);
+      this.props.board.developmentCardsLayout.forEach((configuration) => {
+        GeneratedBoard.renderDevelopmentCard(display, configuration);
       })
     });
 
     window.requestAnimationFrame(() => {
-      this.props.board.fisheryTilesLayout.forEach((layout) => {
+      this.props.board.victoryPointsLayout.forEach((configuration) => {
+        GeneratedBoard.renderVictoryPoint(display, configuration);
+      });
+    });
+
+    window.requestAnimationFrame(() => {
+      this.props.board.vertexChitsLayout.forEach((configuration) => {
+        GeneratedBoard.renderVertexChit(display, configuration);
+      });
+    });
+
+    window.requestAnimationFrame(() => {
+      this.props.board.fisheryTilesLayout.forEach((configuration) => {
         GeneratedBoard.renderFishery(
             display,
-            layout,
-            !this.props.board.terrainTilesLayout.some((tl) => {
-              return tl.coordinate.x === layout.coordinate.x && tl.coordinate.y === layout.coordinate.y;
+            configuration,
+            !this.props.board.terrainTilesLayout.some((c) => {
+              return c.coordinate.x === configuration.coordinate.x && c.coordinate.y === configuration.coordinate.y;
             }));
       })
     });
 
     window.requestAnimationFrame(() => {
-      this.props.board.riverLayout.forEach((layout) => {
+      this.props.board.riverLayout.forEach((configuration) => {
         GeneratedBoard.renderRiver(
             display,
-            layout,
-            this.props.board.terrainTilesLayout.filter((tl) => {
-              return tl.coordinate.x === layout.coordinate.x && tl.coordinate.y === layout.coordinate.y;
+            configuration,
+            this.props.board.terrainTilesLayout.filter((c) => {
+              return c.coordinate.x === configuration.coordinate.x && c.coordinate.y === configuration.coordinate.y;
             })[0]);
       });
     });
@@ -173,21 +183,41 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
   static renderTerrain(display: ROT.Display, configuration: Configuration.Configuration) {
     const options = display._options;
 
+    const hexSize = (display._backend as Hex)._hexSize;
+    const hexCenter = GeneratedBoard.hexCenter(hexSize, configuration.coordinate.x, configuration.coordinate.y);
+
     const draw = _.partial(display.draw.bind(display), configuration.coordinate.x, configuration.coordinate.y);
 
-    if (configuration.coordinate.facePosition === Coordinates.FacePosition.FACE_UP) {
-      draw(
-          GeneratedBoard.chitsToString(configuration.chits),
-          GeneratedBoard.chitColor(configuration.tile, configuration.chits, options.fg),
-          GeneratedBoard.tileColor(configuration.tile));
+    if (configuration.coordinate.facePosition === Coordinates.FacePosition.FACE_DOWN) {
+        draw('?', 'black', 'white');
     } else {
-      draw('?', 'black', 'white');
+      const tile = configuration.tile;
+      const chits = configuration.chits;
+
+      if (chits.values.length < 2) {
+        draw(
+            '',
+            '',
+            GeneratedBoard.tileColor(tile));
+
+        if (chits.odds() > 0) {
+          window.requestAnimationFrame(() => {
+            GeneratedBoard.renderChit(
+                display,
+                hexCenter,
+                hexSize / 3,
+                chits);
+          });
+        }
+      } else {
+        draw(
+            GeneratedBoard.chitsToString(chits),
+            GeneratedBoard.chitTextColor(chits, display._options.fg, GeneratedBoard.tileColor(tile)),
+            GeneratedBoard.tileColor(tile, configuration.coordinate.facePosition));
+      }
     }
 
     window.requestAnimationFrame(() => {
-      const hexSize = (display._backend as Hex)._hexSize;
-      const hexCenter = GeneratedBoard.hexCenter(hexSize, configuration.coordinate.x, configuration.coordinate.y);
-
       const vertexPositionPoint = _.partial(GeneratedBoard.vertexPositionPoint, _, hexCenter, hexSize, options.border);
 
       configuration.tile.specialVertices.forEach((vertexPosition) => {
@@ -195,9 +225,8 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
         const midpoint = vertex.translate(hexCenter.diff(vertex).scale(.5));
 
         const specialVertexColor = ROT.Color.toHex(ROT.Color.interpolate(
-            ROT.Color.fromString(configuration.coordinate.facePosition === Coordinates.FacePosition.FACE_UP
-                ? GeneratedBoard.tileColor(configuration.tile)
-                : 'white') as [number, number, number],
+            ROT.Color.fromString(GeneratedBoard.tileColor(
+                configuration.tile, configuration.coordinate.facePosition)) as [number, number, number],
             ROT.Color.fromString('white') as [number, number, number]));
         GeneratedBoard.renderPolygon(
             display,
@@ -216,15 +245,13 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
 
     const edgePositionStartPoint = _.partial(GeneratedBoard.edgePositionStartPoint, _, hexCenter, hexSize, options.border);
 
-    const vertex0 = edgePositionStartPoint(configuration.coordinate.edgePositions[0]);
-    const vertex1 = edgePositionStartPoint((configuration.coordinate.edgePositions[0] + 1) % 6);
+    const vertex0 = edgePositionStartPoint(configuration.coordinate.edges[0]);
+    const vertex1 = edgePositionStartPoint((configuration.coordinate.edges[0] + 1) % 6);
 
     GeneratedBoard.renderPolygon(
         display,
         [hexCenter, vertex0, vertex1],
-        configuration.coordinate.facePosition === Coordinates.FacePosition.FACE_UP
-            ? GeneratedBoard.tileColor(configuration.tile)
-            : 'white');
+        GeneratedBoard.tileColor(configuration.tile, configuration.coordinate.facePosition));
 
     const offset = vertex1.translate(vertex0.diff(vertex1).scale(.5)).diff(hexCenter).scale(.6875);
     GeneratedBoard.renderText(
@@ -236,25 +263,6 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
             : '?');
   }
 
-  static renderVictoryPoint(display: ROT.Display, configuration: Configuration.Configuration) {
-    const options = display._options;
-
-    // These calculations copied from rot.js to help ensure consistency.
-    const hexSize = (display._backend as Hex)._hexSize;
-    const hexCenter = GeneratedBoard.hexCenter(hexSize, configuration.coordinate.x, configuration.coordinate.y);
-
-    const edgePositionStartPoint = _.partial(GeneratedBoard.edgePositionStartPoint, _, hexCenter, hexSize, options.border);
-
-    const edgePosition = configuration.coordinate.edgePositions[0];
-    const vertex0 = edgePositionStartPoint(edgePosition);
-    const vertex1 = edgePositionStartPoint((edgePosition + 1) % 6);
-
-    const midpoint = vertex0.translate(vertex1.diff(vertex0).scale(.5));
-    const radius = vertex1.distance(midpoint) / 2;
-
-    GeneratedBoard.renderCircle(display, midpoint, radius, this.tileColor(configuration.tile), 'black');
-  }
-
   static renderDevelopmentCard(display: ROT.Display, configuration: Configuration.Configuration) {
     const options = display._options;
 
@@ -264,15 +272,63 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
 
     const edgePositionStartPoint = _.partial(GeneratedBoard.edgePositionStartPoint, _, hexCenter, hexSize, options.border);
 
-    const vertex0 = edgePositionStartPoint(configuration.coordinate.edgePositions[0]);
-    const vertex1 = edgePositionStartPoint((configuration.coordinate.edgePositions[0] + 1) % 6);
-    const vertex2 = edgePositionStartPoint(configuration.coordinate.edgePositions[1]);
-    const vertex3 = edgePositionStartPoint((configuration.coordinate.edgePositions[1] + 1) % 6);
+    const vertex0 = edgePositionStartPoint(configuration.coordinate.edges[0]);
+    const vertex1 = edgePositionStartPoint((configuration.coordinate.edges[0] + 1) % 6);
+    const vertex2 = edgePositionStartPoint(configuration.coordinate.edges[1]);
+    const vertex3 = edgePositionStartPoint((configuration.coordinate.edges[1] + 1) % 6);
 
     GeneratedBoard.renderPolygon(
         display,
         [vertex0, vertex1, vertex2, vertex3],
-        GeneratedBoard.tileColor(configuration.tile));
+        GeneratedBoard.tileColor(configuration.tile, configuration.coordinate.facePosition));
+  }
+
+  static renderVictoryPoint(display: ROT.Display, configuration: Configuration.Configuration) {
+    const options = display._options;
+
+    // These calculations copied from rot.js to help ensure consistency.
+    const hexSize = (display._backend as Hex)._hexSize;
+    const hexCenter = GeneratedBoard.hexCenter(hexSize, configuration.coordinate.x, configuration.coordinate.y);
+
+    const edgePositionStartPoint = _.partial(GeneratedBoard.edgePositionStartPoint, _, hexCenter, hexSize, options.border);
+
+    const edgePosition = configuration.coordinate.edges[0];
+    const vertex0 = edgePositionStartPoint(edgePosition);
+    const vertex1 = edgePositionStartPoint((edgePosition + 1) % 6);
+
+    const midpoint = vertex0.translate(vertex1.diff(vertex0).scale(.5));
+    const radius = hexSize / 4;
+
+    GeneratedBoard.renderCircle(display, midpoint, radius, this.tileColor(configuration.tile), 'black');
+  }
+
+  static renderVertexChit(display: ROT.Display, configuration: Configuration.Configuration) {
+    const options = display._options;
+
+    // These calculations copied from rot.js to help ensure consistency.
+    const hexSize = (display._backend as Hex)._hexSize;
+    const hexCenter = GeneratedBoard.hexCenter(hexSize, configuration.coordinate.x, configuration.coordinate.y);
+
+    const vertexPositionPoint = _.partial(GeneratedBoard.vertexPositionPoint, _, hexCenter, hexSize, options.border);
+
+    GeneratedBoard.renderChit(
+        display,
+        vertexPositionPoint(configuration.coordinate.vertices[0]),
+        hexSize / 3,
+        configuration.chits);
+  }
+
+  static renderChit(
+      display: ROT.Display,
+      vertex: Cartesian2D,
+      radius: number,
+      chits: Chits.Chits) {
+    GeneratedBoard.renderCircle(display, vertex, radius, this.tileColor(Tiles.CHIT), 'black');
+    GeneratedBoard.renderText(
+        display,
+        GeneratedBoard.chitTextColor(chits, display._options.fg, GeneratedBoard.tileColor(Tiles.CHIT)),
+        vertex,
+        GeneratedBoard.chitsToString(chits));
   }
 
   static renderFishery(display: ROT.Display, configuration: Configuration.Configuration, inside: boolean) {
@@ -284,25 +340,24 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
 
     const edgePositionStartPoint = _.partial(GeneratedBoard.edgePositionStartPoint, _, hexCenter, hexSize, options.border);
 
-    const vertex0 = edgePositionStartPoint(configuration.coordinate.edgePositions[0]);
-    const vertex1 = edgePositionStartPoint(configuration.coordinate.edgePositions[1]);
-    const vertex2 = edgePositionStartPoint((configuration.coordinate.edgePositions[1] + 1) % 6);
+    const vertex0 = edgePositionStartPoint(configuration.coordinate.edges[0]);
+    const vertex1 = edgePositionStartPoint(configuration.coordinate.edges[1]);
+    const vertex2 = edgePositionStartPoint((configuration.coordinate.edges[1] + 1) % 6);
     const offset = vertex1.diff(hexCenter).scale(inside ? -.5 : .5);
 
     GeneratedBoard.renderPolygon(
         display,
         [vertex0, vertex1, vertex2, vertex2.translate(offset), vertex1.translate(offset), vertex0.translate(offset)],
-        configuration.coordinate.facePosition === Coordinates.FacePosition.FACE_UP
-            ? GeneratedBoard.tileColor(configuration.tile)
-            : 'white');
+        GeneratedBoard.tileColor(configuration.tile, configuration.coordinate.facePosition));
 
     GeneratedBoard.renderText(
         display,
-        GeneratedBoard.chitColor(configuration.tile, configuration.chits, options.fg),
+        GeneratedBoard.chitTextColor(
+            configuration.chits,
+            display._options.fg,
+            GeneratedBoard.tileColor(configuration.tile)),
         vertex1.translate(offset.scale(.5 + (inside ? .0625 : -.0625))),
-        configuration.coordinate.facePosition === Coordinates.FacePosition.FACE_UP
-            ? GeneratedBoard.chitsToString(configuration.chits)
-            : '?');
+        GeneratedBoard.chitsToString(configuration.chits));
   }
 
   static renderRiver(
@@ -325,7 +380,7 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
         ? GeneratedBoard.tileColor(Tiles.LAKE)
         : GeneratedBoard.tileColor(Tiles.SEA);
 
-    configuration.coordinate.edgePositions.forEach((position) => {
+    configuration.coordinate.edges.forEach((position) => {
       const vertex0 = edgePositionStartPoint(position);
       const vertex1 = edgePositionStartPoint((position + 1) % 6);
 
@@ -446,85 +501,94 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
         * ([Coordinates.VertexPosition.TOP, Coordinates.VertexPosition.BOTTOM].some((p) => p === vertexPosition) ? 1 : .5) * hexSize + border));
   }
 
-  static chitColor(tile: Tiles.Tile, chits: Chits.Chits, primaryColor: string): string {
-    function secondaryColor(backgroundColor: string): string {
-      const backgroundLuminance = GeneratedBoard.luminance(backgroundColor);
+  static chitTextColor(chits: Chits.Chits, primaryForegroundColor: string, underlyingBackgroundColor: string): string {
+      function secondaryColor(backgroundColor: string): string {
+        const backgroundLuminance = GeneratedBoard.luminance(backgroundColor);
 
-      return ['crimson', '#C70000', '#FF8C8C', '#FFD3D3']
-          .reduce((max: [string, number], color: string): [string, number] => {
-            const contrast = Math.abs(backgroundLuminance - GeneratedBoard.luminance(color));
+        return ['crimson', '#C70000', '#FF8C8C', '#FFD3D3']
+            .reduce((max: [string, number], color: string): [string, number] => {
+              const contrast = Math.abs(backgroundLuminance - GeneratedBoard.luminance(color));
 
-            return contrast > max[1]
-                ? [color, contrast]
-                : max
-          }, ['', 0])[0];
-    }
+              return contrast > max[1]
+                  ? [color, contrast]
+                  : max
+            }, ['', 0])[0];
+      }
 
-    return chits.odds() < 5
-        ? primaryColor
-        : secondaryColor(GeneratedBoard.tileColor(tile));
+      return chits.odds() < 5
+        ? primaryForegroundColor
+        : secondaryColor(underlyingBackgroundColor);
   }
 
-  static tileColor(tile: Tiles.Tile): string {
-    switch (tile.type) {
-      case Tiles.Type.DESERT:
-      case Tiles.Type.OASIS: {
-        return 'sandybrown';
-      }
+  static tileColor(
+      tile: Tiles.Tile, facePosition: Coordinates.FacePosition = Coordinates.FacePosition.FACE_UP): string {
+    if (facePosition === Coordinates.FacePosition.FACE_DOWN) {
+      return 'white';
+    } else {
+      switch (tile.type) {
+        case Tiles.Type.DESERT:
+        case Tiles.Type.OASIS: {
+          return 'sandybrown';
+        }
 
-      case Tiles.Type.BRICK_HARBOR:
-      case Tiles.Type.HILL:
-      case Tiles.Type.QUARRY: {
-        return 'firebrick';
-      }
+        case Tiles.Type.BRICK_HARBOR:
+        case Tiles.Type.HILL:
+        case Tiles.Type.QUARRY: {
+          return 'firebrick';
+        }
 
-      case Tiles.Type.ORE_HARBOR:
-      case Tiles.Type.MOUNTAIN: {
-        return 'slategray';
-      }
+        case Tiles.Type.ORE_HARBOR:
+        case Tiles.Type.MOUNTAIN: {
+          return 'slategray';
+        }
 
-      case Tiles.Type.WOOL_HARBOR:
-      case Tiles.Type.PASTURE:
-      case Tiles.Type.CASTLE: {
-        return 'lawngreen';
-      }
+        case Tiles.Type.WOOL_HARBOR:
+        case Tiles.Type.PASTURE:
+        case Tiles.Type.CASTLE: {
+          return 'lawngreen';
+        }
 
-      case Tiles.Type.GRAIN_HARBOR:
-      case Tiles.Type.FIELD: {
-        return 'wheat';
-      }
+        case Tiles.Type.GRAIN_HARBOR:
+        case Tiles.Type.FIELD: {
+          return 'wheat';
+        }
 
-      case Tiles.Type.LUMBER_HARBOR:
-      case Tiles.Type.FOREST:
-      case Tiles.Type.GLASSWORKS: {
-        return 'forestgreen';
-      }
+        case Tiles.Type.LUMBER_HARBOR:
+        case Tiles.Type.FOREST:
+        case Tiles.Type.GLASSWORKS: {
+          return 'forestgreen';
+        }
 
-      case Tiles.Type.GOLD:
-      case Tiles.Type.GENERIC_HARBOR:
-      case Tiles.Type.VICTORY_POINT: {
-        return 'gold';
-      }
+        case Tiles.Type.GOLD:
+        case Tiles.Type.GENERIC_HARBOR:
+        case Tiles.Type.VICTORY_POINT: {
+          return 'gold';
+        }
 
-      case Tiles.Type.SEA: {
-        return 'navy';
-      }
+        case Tiles.Type.SEA: {
+          return 'navy';
+        }
 
-      case Tiles.Type.FISHERY:
-      case Tiles.Type.LAKE: {
-        return 'aqua';
-      }
+        case Tiles.Type.FISHERY:
+        case Tiles.Type.LAKE: {
+          return 'aqua';
+        }
 
-      case Tiles.Type.SWAMP: {
-        return 'darkkhaki';
-      }
+        case Tiles.Type.SWAMP: {
+          return 'darkkhaki';
+        }
 
-      case Tiles.Type.DEVELOPMENT_CARD: {
-        return 'white';
-      }
+        case Tiles.Type.DEVELOPMENT_CARD: {
+          return 'white';
+        }
 
-      default: {
-        return 'black';
+        case Tiles.Type.CHIT: {
+          return 'peachpuff';
+        }
+
+        default: {
+          return 'black';
+        }
       }
     }
   }
@@ -619,6 +683,12 @@ class App extends React.Component<AppProps, AppState> {
         '4': [Specifications.SPEC_3_4_EXP_SEA_SCEN_FT, Coordinates.BASE_3_4_EXP_SEA_SCEN_FT_FISHERY_COORDINATES],
         '5-6': [Specifications.SPEC_5_6_EXP_SEA_SCEN_FT, Coordinates.EXT_5_6_EXP_SEA_SCEN_FT_FISHERY_COORDINATES],
         '7-8': [Specifications.SPEC_7_8_EXP_SEA_SCEN_FT, Coordinates.EXT_7_8_EXP_SEA_SCEN_FT_FISHERY_COORDINATES]
+      },
+      'Seafarers: Cloth for Catan': {
+        '3': [Specifications.SPEC_3_4_EXP_SEA_SCEN_CFC, Coordinates.BASE_3_4_EXP_SEA_SCEN_CFC_FISHERY_COORDINATES],
+        '4': [Specifications.SPEC_3_4_EXP_SEA_SCEN_CFC, Coordinates.BASE_3_4_EXP_SEA_SCEN_CFC_FISHERY_COORDINATES],
+        '5-6': [Specifications.SPEC_5_6_EXP_SEA_SCEN_CFC, Coordinates.EXT_5_6_EXP_SEA_SCEN_CFC_FISHERY_COORDINATES],
+        '7-8': [Specifications.SPEC_7_8_EXP_SEA_SCEN_CFC, Coordinates.EXT_7_8_EXP_SEA_SCEN_CFC_FISHERY_COORDINATES],
       },
       'Traders and Barbarians: Rivers of Catan': {
         '3': [Specifications.SPEC_3_4_EXP_TB_SCEN_ROC, Coordinates.BASE_3_4_FISHERY_COORDINATES],

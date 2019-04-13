@@ -120,7 +120,7 @@ import * as Tiles from './Tiles';
             }, {});
       };
 
-      // TODO: Allow specification not to shuffle (eg for face-down tiles and sets of like tiles).
+      // IDEA: Allow specification not to shuffle (eg for face-down tiles and sets of like tiles).
       const tileCoordinateMap = tileArtifactMap(this.coordinatesTilesMap, this.coordinates);
       const tileChitsMap = tileArtifactMap(this.chitsTilesMap, this.chits);
 
@@ -705,6 +705,146 @@ import * as Tiles from './Tiles';
       oneToOne('main-island-terrain'))
       .withConfigurationScorerFilter((configuration: Configuration.Configuration) => {
         return SPEC_7_8_EXP_SEA_SCEN_FT.coordinates['main-island-terrain'].some((coordinate) => {
+          return coordinate.x === configuration.coordinate.x && coordinate.y === configuration.coordinate.y;
+        });
+      });
+
+  export const SPEC_3_4_EXP_SEA_SCEN_CFC = new Specification(
+      {
+        'main-island-terrain': Tiles.BASE_3_4_EXP_SEA_SCEN_CFC_MAIN_ISLAND_TERRAIN_TILE_SET,
+        'main-island-harbor': Tiles.BASE_3_4_HARBOR_TILE_SET,
+        'small-island-terrain': Tiles.BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_TERRAIN_TILE_SET,
+        'small-island-3-11-chit': Tiles.BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_3_11_CHIT_TILE_SET,
+        'small-island-4-10-chit': Tiles.BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_4_10_CHIT_TILE_SET,
+        'small-island-5-9-chit': Tiles.BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_5_9_CHIT_TILE_SET,
+        'small-island-6-8-chit': Tiles.BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_6_8_CHIT_TILE_SET
+      },
+      {
+        'main-island-terrain': Coordinates.BASE_3_4_EXP_SEA_SCEN_CFC_MAIN_ISLAND_TERRAIN_COORDINATES,
+        'main-island-harbor': Coordinates.BASE_3_4_EXP_SEA_SCEN_CFC_MAIN_ISLAND_HARBOR_COORDINATES,
+        'small-island-terrain': Coordinates.BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_TERRAIN_COORDINATES,
+        'small-island-3-11-chit': Coordinates.BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_3_11_CHIT_COORDINATES,
+        'small-island-4-10-chit': Coordinates.BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_4_10_CHIT_COORDINATES,
+        'small-island-5-9-chit': Coordinates.BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_5_9_CHIT_COORDINATES,
+        'small-island-6-8-chit': Coordinates.BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_6_8_CHIT_COORDINATES
+      },
+      {
+        'main-island-terrain': Chits.BASE_3_4_EXP_SEA_SCEN_CFC_MAIN_ISLAND_TERRAIN_CHIT_SET,
+        'small-island-3-11-chit': Chits.BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_3_11_CHIT_CHIT_SET,
+        'small-island-4-10-chit': Chits.BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_4_10_CHIT_CHIT_SET,
+        'small-island-5-9-chit': Chits.BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_5_9_CHIT_CHIT_SET,
+        'small-island-6-8-chit': Chits.BASE_3_4_EXP_SEA_SCEN_CFC_SMALL_ISLAND_6_8_CHIT_CHIT_SET
+      },
+      oneToOne(
+          'main-island-terrain',
+          'main-island-harbor',
+          'small-island-terrain',
+          'small-island-3-11-chit',
+          'small-island-4-10-chit',
+          'small-island-5-9-chit',
+          'small-island-6-8-chit'),
+      oneToOne(
+          'main-island-terrain',
+          'small-island-3-11-chit',
+          'small-island-4-10-chit',
+          'small-island-5-9-chit',
+          'small-island-6-8-chit'))
+      .withConfigurationScorerFilter((configuration: Configuration.Configuration) => {
+        return SPEC_3_4_EXP_SEA_SCEN_CFC.coordinates['main-island-terrain'].some((coordinate) => {
+          return coordinate.x === configuration.coordinate.x && coordinate.y === configuration.coordinate.y;
+        });
+      });
+
+  export const SPEC_5_6_EXP_SEA_SCEN_CFC = new Specification(
+      {
+        'main-island-terrain': Tiles.EXT_5_6_EXP_SEA_SCEN_CFC_MAIN_ISLAND_TERRAIN_TILE_SET,
+        'main-island-harbor': Tiles.EXT_5_6_EXP_SEA_SCEN_CFC_MAIN_ISLAND_HARBOR_TILE_SET,
+        'small-island-terrain': Tiles.EXT_5_6_EXP_SEA_SCEN_CFC_SMALL_ISLAND_TERRAIN_TILE_SET,
+        'small-island-2-12-chit': Tiles.EXT_5_6_EXP_SEA_SCEN_CFC_SMALL_ISLAND_2_12_CHIT_TILE_SET,
+        'small-island-4-10-chit': Tiles.EXT_5_6_EXP_SEA_SCEN_CFC_SMALL_ISLAND_4_10_CHIT_TILE_SET,
+        'small-island-5-9-chit': Tiles.EXT_5_6_EXP_SEA_SCEN_CFC_SMALL_ISLAND_5_9_CHIT_TILE_SET,
+        'small-island-6-8-chit': Tiles.EXT_5_6_EXP_SEA_SCEN_CFC_SMALL_ISLAND_6_8_CHIT_TILE_SET
+      },
+      {
+        'main-island-terrain': Coordinates.EXT_5_6_EXP_SEA_SCEN_CFC_MAIN_ISLAND_TERRAIN_COORDINATES,
+        'main-island-harbor': Coordinates.EXT_5_6_EXP_SEA_SCEN_CFC_MAIN_ISLAND_HARBOR_COORDINATES,
+        'small-island-terrain': Coordinates.EXT_5_6_EXP_SEA_SCEN_CFC_SMALL_ISLAND_TERRAIN_COORDINATES,
+        'small-island-2-12-chit': Coordinates.EXT_5_6_EXP_SEA_SCEN_CFC_SMALL_ISLAND_2_12_CHIT_COORDINATES,
+        'small-island-4-10-chit': Coordinates.EXT_5_6_EXP_SEA_SCEN_CFC_SMALL_ISLAND_4_10_CHIT_COORDINATES,
+        'small-island-5-9-chit': Coordinates.EXT_5_6_EXP_SEA_SCEN_CFC_SMALL_ISLAND_5_9_CHIT_COORDINATES,
+        'small-island-6-8-chit': Coordinates.EXT_5_6_EXP_SEA_SCEN_CFC_SMALL_ISLAND_6_8_CHIT_COORDINATES
+      },
+      {
+        'main-island-terrain': Chits.EXT_5_6_EXP_SEA_SCEN_CFC_MAIN_ISLAND_TERRAIN_CHIT_SET,
+        'small-island-2-12-chit': Chits.EXT_5_6_EXP_SEA_SCEN_CFC_SMALL_ISLAND_2_12_CHIT_CHIT_SET,
+        'small-island-4-10-chit': Chits.EXT_5_6_EXP_SEA_SCEN_CFC_SMALL_ISLAND_4_10_CHIT_CHIT_SET,
+        'small-island-5-9-chit': Chits.EXT_5_6_EXP_SEA_SCEN_CFC_SMALL_ISLAND_5_9_CHIT_CHIT_SET,
+        'small-island-6-8-chit': Chits.EXT_5_6_EXP_SEA_SCEN_CFC_SMALL_ISLAND_6_8_CHIT_CHIT_SET
+      },
+      oneToOne(
+          'main-island-terrain',
+          'main-island-harbor',
+          'small-island-terrain',
+          'small-island-2-12-chit',
+          'small-island-4-10-chit',
+          'small-island-5-9-chit',
+          'small-island-6-8-chit'),
+      oneToOne(
+          'main-island-terrain',
+          'small-island-2-12-chit',
+          'small-island-4-10-chit',
+          'small-island-5-9-chit',
+          'small-island-6-8-chit'))
+      .withConfigurationScorerFilter((configuration: Configuration.Configuration) => {
+        return SPEC_5_6_EXP_SEA_SCEN_CFC.coordinates['main-island-terrain'].some((coordinate) => {
+          return coordinate.x === configuration.coordinate.x && coordinate.y === configuration.coordinate.y;
+        });
+      });
+
+  export const SPEC_7_8_EXP_SEA_SCEN_CFC = new Specification(
+      {
+        'main-island-terrain': Tiles.EXT_7_8_EXP_SEA_SCEN_CFC_MAIN_ISLAND_TERRAIN_TILE_SET,
+        'main-island-harbor': Tiles.EXT_7_8_HARBOR_TILE_SET,
+        'small-island-terrain': Tiles.EXT_7_8_EXP_SEA_SCEN_CFC_SMALL_ISLAND_TERRAIN_TILE_SET,
+        'small-island-2-12-chit': Tiles.EXT_7_8_EXP_SEA_SCEN_CFC_SMALL_ISLAND_2_12_CHIT_TILE_SET,
+        'small-island-4-10-chit': Tiles.EXT_7_8_EXP_SEA_SCEN_CFC_SMALL_ISLAND_4_10_CHIT_TILE_SET,
+        'small-island-5-9-chit': Tiles.EXT_7_8_EXP_SEA_SCEN_CFC_SMALL_ISLAND_5_9_CHIT_TILE_SET,
+        'small-island-6-8-chit': Tiles.EXT_7_8_EXP_SEA_SCEN_CFC_SMALL_ISLAND_6_8_CHIT_TILE_SET
+      },
+      {
+        'main-island-terrain': Coordinates.EXT_7_8_EXP_SEA_SCEN_CFC_MAIN_ISLAND_TERRAIN_COORDINATES,
+        'main-island-harbor': Coordinates.EXT_7_8_EXP_SEA_SCEN_CFC_MAIN_ISLAND_HARBOR_COORDINATES,
+        'small-island-terrain': Coordinates.EXT_7_8_EXP_SEA_SCEN_CFC_SMALL_ISLAND_TERRAIN_COORDINATES,
+        'small-island-2-12-chit': Coordinates.EXT_7_8_EXP_SEA_SCEN_CFC_SMALL_ISLAND_2_12_CHIT_COORDINATES,
+        'small-island-4-10-chit': Coordinates.EXT_7_8_EXP_SEA_SCEN_CFC_SMALL_ISLAND_4_10_CHIT_COORDINATES,
+        'small-island-5-9-chit': Coordinates.EXT_7_8_EXP_SEA_SCEN_CFC_SMALL_ISLAND_5_9_CHIT_COORDINATES,
+        'small-island-6-8-chit': Coordinates.EXT_7_8_EXP_SEA_SCEN_CFC_SMALL_ISLAND_6_8_CHIT_COORDINATES
+      },
+      {
+        'main-island-terrain': Chits.EXT_7_8_EXP_SEA_SCEN_CFC_MAIN_ISLAND_TERRAIN_CHIT_SET,
+        'small-island-2-12-chit': Chits.EXT_7_8_EXP_SEA_SCEN_CFC_SMALL_ISLAND_2_12_CHIT_CHIT_SET,
+        'small-island-4-10-chit': Chits.EXT_7_8_EXP_SEA_SCEN_CFC_SMALL_ISLAND_4_10_CHIT_CHIT_SET,
+        'small-island-5-9-chit': Chits.EXT_7_8_EXP_SEA_SCEN_CFC_SMALL_ISLAND_5_9_CHIT_CHIT_SET,
+        'small-island-6-8-chit': Chits.EXT_7_8_EXP_SEA_SCEN_CFC_SMALL_ISLAND_6_8_CHIT_CHIT_SET
+      },
+      oneToOne(
+          'main-island-terrain',
+          'main-island-harbor',
+          'small-island-terrain',
+          'small-island-2-12-chit',
+          'small-island-4-10-chit',
+          'small-island-5-9-chit',
+          'small-island-6-8-chit'
+      ),
+      oneToOne(
+          'main-island-terrain',
+          'small-island-2-12-chit',
+          'small-island-4-10-chit',
+          'small-island-5-9-chit',
+          'small-island-6-8-chit'
+      ))
+      .withConfigurationScorerFilter((configuration: Configuration.Configuration) => {
+        return SPEC_7_8_EXP_SEA_SCEN_CFC.coordinates['main-island-terrain'].some((coordinate) => {
           return coordinate.x === configuration.coordinate.x && coordinate.y === configuration.coordinate.y;
         });
       });

@@ -8,24 +8,36 @@ import * as Tiles from './Tiles';
 // export module Boards {
   export class Board {
     private _terrainTilesLayout: Configuration.Configuration[] = [];
-    private _portTilesLayout: Configuration.Configuration[] = [];
-    private _victoryPointsLayout: Configuration.Configuration[] = [];
+    private _harborTilesLayout: Configuration.Configuration[] = [];
     private _fisheryTilesLayout: Configuration.Configuration[] = [];
     private _developmentCardsLayout: Configuration.Configuration[] = [];
+    private _victoryPointsLayout: Configuration.Configuration[] = [];
+    private _vertexChitsLayout: Configuration.Configuration[] = [];
     private _riverLayout: Configuration.Configuration[] = [];
 
     constructor(configurations: Configuration.Configuration[]) {
       console.log(`configuration = ${JSON.stringify(configurations)}`);
 
       const riverNotRiver = _.groupBy(configurations, (configuration) => configuration.tile.type === Tiles.Type.RIVER ? 0 : 1);
-      const groupedComponents = _.groupBy(riverNotRiver[1], (configuration) => configuration.coordinate.edgePositions.length);
-      const victoryPointNotVictoryPoint = _.groupBy(groupedComponents['1'], (configuration) => configuration.tile.type === Tiles.Type.VICTORY_POINT ? 0 : 1);
-      const twoEdgeComponents = _.groupBy(groupedComponents['2'], (configuration) => configuration.tile.type);
+      const groupedComponents = _.groupBy(riverNotRiver[1], (configuration) => configuration.coordinate.edges.length);
+      const groupedOnePositionComponents = _.groupBy(groupedComponents['1'], (configuration) => {
+        switch (configuration.tile.type) {
+          case Tiles.Type.VICTORY_POINT: {
+            return configuration.tile.type;
+          }
 
-      this._victoryPointsLayout = victoryPointNotVictoryPoint[0] || [];
-      this._portTilesLayout = victoryPointNotVictoryPoint[1] || [];
-      this._fisheryTilesLayout = twoEdgeComponents[Tiles.Type.FISHERY] || [];
-      this._developmentCardsLayout = twoEdgeComponents[Tiles.Type.DEVELOPMENT_CARD] || [];
+          default: {
+            return 'harbor';
+          }
+        }
+      });
+      const twoPositionComponents = _.groupBy(groupedComponents['2'], (configuration) => configuration.tile.type);
+
+      this._harborTilesLayout = groupedOnePositionComponents['harbor'] || [];
+      this._victoryPointsLayout = groupedOnePositionComponents[Tiles.Type.VICTORY_POINT] || [];
+      this._vertexChitsLayout = groupedComponents['0'] || [];
+      this._fisheryTilesLayout = twoPositionComponents[Tiles.Type.FISHERY] || [];
+      this._developmentCardsLayout = twoPositionComponents[Tiles.Type.DEVELOPMENT_CARD] || [];
       this._terrainTilesLayout = groupedComponents['6'] || [];
       this._riverLayout = riverNotRiver[0] || [];
     }
@@ -34,12 +46,16 @@ import * as Tiles from './Tiles';
       return this._terrainTilesLayout;
     }
 
-    get portTilesLayout(): Configuration.Configuration[] {
-      return this._portTilesLayout;
+    get harborTilesLayout(): Configuration.Configuration[] {
+      return this._harborTilesLayout;
     }
 
     get victoryPointsLayout(): Configuration.Configuration[] {
       return this._victoryPointsLayout;
+    }
+
+    get vertexChitsLayout(): Configuration.Configuration[] {
+      return this._vertexChitsLayout;
     }
 
     get fisheryTilesLayout(): Configuration.Configuration[] {
@@ -56,7 +72,7 @@ import * as Tiles from './Tiles';
 
     isEmpty(): boolean {
       return this._terrainTilesLayout.length === 0 &&
-          this._portTilesLayout.length === 0 &&
+          this._harborTilesLayout.length === 0 &&
           this._fisheryTilesLayout.length === 0;
     }
   }
@@ -89,7 +105,7 @@ import * as Tiles from './Tiles';
             } else {
               const configurations = this.specification.toConfiguration();
 
-              // TODO: Score configuration validation instead of having it be all-or-nothing.
+              // IDEA: Score configuration validation instead of having it be all-or-nothing.
               const configurationsValid = configurations.every((configuration) => {
                 const result = this.specification.validateConfiguration(configuration);
 
@@ -121,7 +137,7 @@ import * as Tiles from './Tiles';
       function odds(contributingTiles: Configuration.Configuration[], vertex: number): number {
         return contributingTiles
             .filter((ct) => {
-              return ct.coordinate.edgePositions.some((p) => {
+              return ct.coordinate.edges.some((p) => {
                 return p === vertex || p === (vertex + 5) % 6;
               });
             })
@@ -215,7 +231,7 @@ import * as Tiles from './Tiles';
                                   .filter((configuration: Configuration.Configuration) => {
                                     return Tiles.SEA !== configuration.tile
                                         && this.specification.filterConfigurationScorer(configuration)
-                                        && configuration.coordinate.edgePositions.some((p) => {
+                                        && configuration.coordinate.edges.some((p) => {
                                           return p === contributor[1] || p === (contributor[1] + 5) % 6;
                                         });
                                   });
