@@ -666,11 +666,11 @@ class App extends React.Component<AppProps, AppState> {
         '5-6': [Specifications.SPEC_5_6_EXP_SEA_SCEN_6_ISLANDS, Coordinates.EXT_5_6_EXP_SEA_SCEN_6_ISLANDS_FISHERY_COORDINATES],
         '7-8': [Specifications.SPEC_7_8_EXP_SEA_SCEN_6_ISLANDS, Coordinates.EXT_7_8_EXP_SEA_SCEN_8_ISLANDS_FISHERY_COORDINATES]
       },
-      'Seafarers: The Fog Islands': {
-        '3': [Specifications.SPEC_3_EXP_SEA_SCEN_FI, Coordinates.BASE_3_EXP_SEA_SCEN_FI_FISHERY_COORDINATES],
-        '4': [Specifications.SPEC_4_EXP_SEA_SCEN_FI, Coordinates.BASE_4_EXP_SEA_SCEN_FI_FISHERY_COORDINATES],
-        '5-6': [Specifications.SPEC_5_6_EXP_SEA_SCEN_FI, Coordinates.EXT_5_6_EXP_SEA_SCEN_FI_FISHERY_COORDINATES],
-        '7-8': [Specifications.SPEC_7_8_EXP_SEA_SCEN_FI, Coordinates.EXT_7_8_EXP_SEA_SCEN_FI_FISHERY_COORDINATES]
+      'Seafarers: Oceania': {
+        '3': [Specifications.SPEC_3_EXP_SEA_SCEN_FI, Coordinates.BASE_3_EXP_SEA_SCEN_OC_FISHERY_COORDINATES],
+        '4': [Specifications.SPEC_4_EXP_SEA_SCEN_FI, Coordinates.BASE_4_EXP_SEA_SCEN_OC_FISHERY_COORDINATES],
+        '5-6': [Specifications.SPEC_5_6_EXP_SEA_SCEN_FI, Coordinates.EXT_5_6_EXP_SEA_SCEN_OC_FISHERY_COORDINATES],
+        '7-8': [Specifications.SPEC_7_8_EXP_SEA_SCEN_FI, Coordinates.EXT_7_8_EXP_SEA_SCEN_OC_FISHERY_COORDINATES]
       },
       'Seafarers: Through the Desert': {
         '3': [Specifications.SPEC_3_EXP_SEA_SCEN_TD, Coordinates.BASE_3_EXP_SEA_SCEN_TD_FISHERY_COORDINATES],
