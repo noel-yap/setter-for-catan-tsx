@@ -300,7 +300,7 @@ import * as Tiles from './Tiles';
         'big-island-producing-terrain': Tiles.EXT_5_6_PRODUCING_TERRAIN_TILE_SET,
         'desert-or-lake': new Array(2).fill(Tiles.DESERT_TERRAIN),
         'small-island-producing-terrain': Tiles.EXT_5_6_EXP_SEA_SCEN_HFNS_SMALL_ISLANDS_PRODUCING_TERRAIN_TILE_SET,
-        'sea': new Array(4).fill(Tiles.SEA),
+        'sea': new Array(2).fill(Tiles.SEA),
         'harbor': Tiles.EXT_5_6_HARBOR_TILE_SET
       },
       {
@@ -399,92 +399,107 @@ import * as Tiles from './Tiles';
 
   export const SPEC_3_EXP_SEA_SCEN_FI = new Specification(
       {
-        'face-up-terrain': Tiles.BASE_3_EXP_SEA_SCEN_FI_FACE_UP_PRODUCING_TERRAIN_TILE_SET,
-        'face-down-producing-terrain': Tiles.BASE_3_EXP_SEA_SCEN_FI_FACE_DOWN_PRODUCING_TERRAIN_TILE_SET,
+        'face-up-terrain': Tiles.BASE_3_EXP_SEA_SCEN_OC_FACE_UP_PRODUCING_TERRAIN_TILE_SET,
+        'face-down-producing-terrain': Tiles.BASE_3_EXP_SEA_SCEN_OC_FACE_DOWN_PRODUCING_TERRAIN_TILE_SET,
         'face-down-sea': new Array(2).fill(Tiles.SEA),
-        'harbor': Tiles.BASE_3_EXP_SEA_SCEN_FI_HARBOR_TILE_SET
+        'harbor': Tiles.BASE_3_EXP_SEA_SCEN_OC_HARBOR_TILE_SET
       },
       {
-        'face-up-terrain': Coordinates.BASE_3_EXP_SEA_SCEN_FI_FACE_UP_PRODUCING_TERRAIN_COORDINATES,
-        'face-down-terrain': Coordinates.BASE_3_EXP_SEA_SCEN_FI_FACE_DOWN_COORDINATES,
-        'harbor': Coordinates.BASE_3_EXP_SEA_SCEN_FI_HARBOR_COORDINATES
+        'face-up-terrain': Coordinates.BASE_3_EXP_SEA_SCEN_OC_FACE_UP_PRODUCING_TERRAIN_COORDINATES,
+        'face-down-terrain': Coordinates.BASE_3_EXP_SEA_SCEN_OC_FACE_DOWN_COORDINATES,
+        'harbor': Coordinates.BASE_3_EXP_SEA_SCEN_OC_HARBOR_COORDINATES
       },
       {
-        'face-up-terrain': Chits.BASE_3_EXP_SEA_SCEN_FI_FACE_UP_PRODUCING_TERRAIN_CHIT_SET,
-        'face-down-producing-terrain': Chits.BASE_3_EXP_SEA_SCEN_FI_FACE_DOWN_PRODUCING_TERRAIN_CHIT_SET
+        'face-up-terrain': Chits.BASE_3_EXP_SEA_SCEN_OC_FACE_UP_PRODUCING_TERRAIN_CHIT_SET,
+        'face-down-producing-terrain': Chits.BASE_3_EXP_SEA_SCEN_OC_FACE_DOWN_PRODUCING_TERRAIN_CHIT_SET
       },
       Object.assign(oneToOne('face-up-terrain', 'harbor'), {
         'face-down-terrain': ['face-down-producing-terrain', 'face-down-sea']
       }),
-      oneToOne('face-up-terrain', 'face-down-producing-terrain'));
+      oneToOne('face-up-terrain', 'face-down-producing-terrain'))
+      .withConfigurationScorerFilter((configuration: Configuration.Configuration) => {
+        return SPEC_3_EXP_SEA_SCEN_FI.coordinates['face-up-terrain'].some((coordinate) => {
+          return coordinate.x === configuration.coordinate.x && coordinate.y === configuration.coordinate.y;
+        });
+      });
   export const SPEC_4_EXP_SEA_SCEN_FI = new Specification(
       {
-        'face-up-terrain': Tiles.BASE_4_EXP_SEA_SCEN_FI_FACE_UP_PRODUCING_TERRAIN_TILE_SET,
-        'face-down-producing-terrain': Tiles.BASE_4_EXP_SEA_SCEN_FI_FACE_DOWN_PRODUCING_TERRAIN_TILE_SET,
+        'face-up-terrain': Tiles.BASE_4_EXP_SEA_SCEN_OC_FACE_UP_PRODUCING_TERRAIN_TILE_SET,
+        'face-down-producing-terrain': Tiles.BASE_4_EXP_SEA_SCEN_OC_FACE_DOWN_PRODUCING_TERRAIN_TILE_SET,
         'face-down-sea': new Array(2).fill(Tiles.SEA),
         'harbor': Tiles.BASE_3_4_HARBOR_TILE_SET
       },
       {
-        'face-up-terrain': Coordinates.BASE_4_EXP_SEA_SCEN_FI_FACE_UP_PRODUCING_TERRAIN_COORDINATES,
-        'face-down-terrain': Coordinates.BASE_4_EXP_SEA_SCEN_FI_FACE_DOWN_COORDINATES,
-        'harbor': Coordinates.BASE_4_EXP_SEA_SCEN_FI_HARBOR_COORDINATES
+        'face-up-terrain': Coordinates.BASE_4_EXP_SEA_SCEN_OC_FACE_UP_PRODUCING_TERRAIN_COORDINATES,
+        'face-down-terrain': Coordinates.BASE_4_EXP_SEA_SCEN_OC_FACE_DOWN_COORDINATES,
+        'harbor': Coordinates.BASE_4_EXP_SEA_SCEN_OC_HARBOR_COORDINATES
       },
       {
-        'face-up-terrain': Chits.BASE_4_EXP_SEA_SCEN_FI_FACE_UP_PRODUCING_TERRAIN_CHIT_SET,
-        'face-down-producing-terrain': Chits.BASE_4_EXP_SEA_SCEN_FI_FACE_DOWN_PRODUCING_TERRAIN_CHIT_SET
+        'face-up-terrain': Chits.BASE_4_EXP_SEA_SCEN_OC_FACE_UP_PRODUCING_TERRAIN_CHIT_SET,
+        'face-down-producing-terrain': Chits.BASE_4_EXP_SEA_SCEN_OC_FACE_DOWN_PRODUCING_TERRAIN_CHIT_SET
       },
       Object.assign(oneToOne('face-up-terrain', 'harbor'), {
         'face-down-terrain': ['face-down-producing-terrain', 'face-down-sea']
       }),
-      oneToOne('face-up-terrain', 'face-down-producing-terrain'));
+      oneToOne('face-up-terrain', 'face-down-producing-terrain'))
+      .withConfigurationScorerFilter((configuration: Configuration.Configuration) => {
+        return SPEC_4_EXP_SEA_SCEN_FI.coordinates['face-up-terrain'].some((coordinate) => {
+          return coordinate.x === configuration.coordinate.x && coordinate.y === configuration.coordinate.y;
+        });
+      });
   export const SPEC_5_6_EXP_SEA_SCEN_FI = new Specification(
       {
-        'face-up-producing-terrain': Tiles.EXT_5_6_EXP_SEA_SCEN_FI_FACE_UP_PRODUCING_TERRAIN_TILE_SET,
-        'face-up-desert': [Tiles.DESERT_TERRAIN],
-        'face-down-producing-terrain': Tiles.EXT_5_6_EXP_SEA_SCEN_FI_FACE_DOWN_PRODUCING_TERRAIN_TILE_SET,
-        'face-down-sea': new Array(12).fill(Tiles.SEA),
-        'gold': new Array(2).fill(Tiles.GOLD_TERRAIN),
-        'harbor': Tiles.BASE_3_4_HARBOR_TILE_SET
+        'face-up-terrain': Tiles.EXT_5_6_EXP_SEA_SCEN_OC_FACE_UP_TERRAIN_TILE_SET,
+        'face-down-producing-terrain': Tiles.EXT_5_6_EXP_SEA_SCEN_OC_FACE_DOWN_PRODUCING_TERRAIN_TILE_SET,
+        'face-down-desert': [Tiles.DESERT_TERRAIN],
+        'face-down-sea': new Array(3).fill(Tiles.SEA),
+        'harbor': Tiles.EXT_5_6_HARBOR_TILE_SET
       },
       {
-        'face-up-terrain': Coordinates.EXT_5_6_EXP_SEA_SCEN_FI_FACE_UP_TERRAIN_COORDINATES,
-        'face-down-terrain': Coordinates.EXT_5_6_EXP_SEA_SCEN_FI_FACE_DOWN_COORDINATES,
-        'gold': Coordinates.EXT_5_6_EXP_SEA_SCEN_FI_GOLD_TERRAIN_COORDINATES,
-        'harbor': Coordinates.EXT_5_6_EXP_SEA_SCEN_FI_HARBOR_COORDINATES
+        'face-up-terrain': Coordinates.EXT_5_6_EXP_SEA_SCEN_OC_FACE_UP_TERRAIN_COORDINATES,
+        'face-down-terrain': Coordinates.EXT_5_6_EXP_SEA_SCEN_OC_FACE_DOWN_COORDINATES,
+        'harbor': Coordinates.EXT_5_6_EXP_SEA_SCEN_OC_HARBOR_COORDINATES
       },
       {
-        'face-up-producing-terrain': Chits.EXT_5_6_EXP_SEA_SCEN_FI_FACE_UP_PRODUCING_TERRAIN_CHIT_SET,
-        'face-down-producing-terrain': Chits.EXT_5_6_EXP_SEA_SCEN_FI_FACE_DOWN_PRODUCING_TERRAIN_CHIT_SET,
-        'gold': Chits.EXT_5_6_EXP_SEA_SCEN_FI_GOLD_TERRAIN_CHIT_SET
+        'face-up-terrain': Chits.EXT_5_6_EXP_SEA_SCEN_OC_FACE_UP_TERRAIN_CHIT_SET,
+        'face-down-producing-terrain': Chits.EXT_5_6_EXP_SEA_SCEN_OC_FACE_DOWN_PRODUCING_TERRAIN_CHIT_SET,
       },
-      Object.assign(oneToOne('gold', 'harbor'), {
-        'face-up-terrain': ['face-up-producing-terrain', 'face-up-desert'],
-        'face-down-terrain': ['face-down-producing-terrain', 'face-down-sea']
+      Object.assign(oneToOne('face-up-terrain', 'harbor'), {
+        'face-down-terrain': ['face-down-producing-terrain', 'face-down-desert', 'face-down-sea']
       }),
-      oneToOne('face-up-producing-terrain', 'face-down-producing-terrain', 'gold'));
+      oneToOne('face-up-terrain', 'face-down-producing-terrain'))
+      .withConfigurationScorerFilter((configuration: Configuration.Configuration) => {
+        return SPEC_5_6_EXP_SEA_SCEN_FI.coordinates['face-up-terrain'].some((coordinate) => {
+          return coordinate.x === configuration.coordinate.x && coordinate.y === configuration.coordinate.y;
+        });
+      });
   export const SPEC_7_8_EXP_SEA_SCEN_FI = new Specification(
       {
-        'face-up-producing-terrain': Tiles.EXT_7_8_EXP_SEA_SCEN_FI_FACE_UP_PRODUCING_TERRAIN_TILE_SET,
-        'face-up-desert': [Tiles.DESERT_TERRAIN],
-        'desert-or-lake': new Array(2).fill(Tiles.DESERT_TERRAIN),
-        'face-down-producing-terrain': Tiles.EXT_7_8_EXP_SEA_SCEN_FI_FACE_DOWN_PRODUCING_TERRAIN_TILE_SET,
+        'face-up-producing-terrain': Tiles.EXT_7_8_EXP_SEA_SCEN_OC_FACE_UP_PRODUCING_TERRAIN_TILE_SET,
+        'desert-or-lake': [Tiles.DESERT_TERRAIN],
+        'face-down-producing-terrain': Tiles.EXT_7_8_EXP_SEA_SCEN_OC_FACE_DOWN_PRODUCING_TERRAIN_TILE_SET,
         'face-down-sea': new Array(18).fill(Tiles.SEA),
         'harbor': Tiles.EXT_7_8_HARBOR_TILE_SET
       },
       {
-        'face-up-terrain': Coordinates.EXT_7_8_EXP_SEA_SCEN_FI_FACE_UP_TERRAIN_COORDINATES,
-        'face-down-terrain': Coordinates.EXT_7_8_EXP_SEA_SCEN_FI_FACE_DOWN_COORDINATES,
-        'harbor': Coordinates.EXT_7_8_EXP_SEA_SCEN_FI_HARBOR_COORDINATES
+        'face-up-terrain': Coordinates.EXT_7_8_EXP_SEA_SCEN_OC_FACE_UP_TERRAIN_COORDINATES,
+        'face-down-terrain': Coordinates.EXT_7_8_EXP_SEA_SCEN_OC_FACE_DOWN_COORDINATES,
+        'harbor': Coordinates.EXT_7_8_EXP_SEA_SCEN_OC_HARBOR_COORDINATES
       },
       {
-        'face-up-producing-terrain': Chits.EXT_7_8_EXP_SEA_SCEN_FI_FACE_UP_PRODUCING_TERRAIN_CHIT_SET,
-        'face-down-producing-terrain': Chits.EXT_7_8_EXP_SEA_SCEN_FI_FACE_DOWN_PRODUCING_TERRAIN_CHIT_SET
+        'face-up-producing-terrain': Chits.EXT_7_8_EXP_SEA_SCEN_OC_FACE_UP_PRODUCING_TERRAIN_CHIT_SET,
+        'face-down-producing-terrain': Chits.EXT_7_8_EXP_SEA_SCEN_OC_FACE_DOWN_PRODUCING_TERRAIN_CHIT_SET
       },
       Object.assign(oneToOne('harbor'), {
-        'face-up-terrain': ['face-up-producing-terrain', 'face-up-desert', 'desert-or-lake'],
+        'face-up-terrain': ['face-up-producing-terrain', 'desert-or-lake'],
         'face-down-terrain': ['face-down-producing-terrain', 'face-down-sea']
       }),
-      oneToOne('face-up-producing-terrain', 'face-down-producing-terrain'));
+      oneToOne('face-up-producing-terrain', 'face-down-producing-terrain'))
+      .withConfigurationScorerFilter((configuration: Configuration.Configuration) => {
+        return SPEC_7_8_EXP_SEA_SCEN_FI.coordinates['face-up-terrain'].some((coordinate) => {
+          return coordinate.x === configuration.coordinate.x && coordinate.y === configuration.coordinate.y;
+        });
+      });
 
   export const SPEC_3_EXP_SEA_SCEN_TD = new Specification(
       {
