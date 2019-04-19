@@ -383,6 +383,17 @@ import * as Coordinates from './Coordinates';
       .concat(new Array(2).fill(FIELD_TERRAIN))
       .concat(new Array(2).fill(MOUNTAIN_TERRAIN));
 
+  export const EXT_5_6_EXP_TB_SCEN_BA_OUTER_PRODUCING_TERRAIN_TILE_SET = new Array(2).fill(FIELD_TERRAIN)
+      .concat(new Array(2).fill(MOUNTAIN_TERRAIN))
+      .concat(new Array(2).fill(PASTURE_TERRAIN))
+      .concat(new Array(3).fill(HILL_TERRAIN))
+      .concat(new Array(3).fill(FOREST_TERRAIN));
+  export const EXT_5_6_EXP_TB_SCEN_BA_INNER_PRODUCING_TERRAIN_TILE_SET = new Array(2).fill(FOREST_TERRAIN)
+      .concat(new Array(2).fill(HILL_TERRAIN))
+      .concat(new Array(3).fill(MOUNTAIN_TERRAIN))
+      .concat(new Array(3).fill(PASTURE_TERRAIN))
+      .concat(new Array(4).fill(FIELD_TERRAIN));
+
   export const BASE_3_4_EXP_TB_SCEN_TB_NON_TRADE_TERRAIN_TILE_SET = new Array(3).fill(FIELD_TERRAIN)
       .concat(new Array(4).fill(FOREST_TERRAIN))
       .concat(new Array(3).fill(PASTURE_TERRAIN))

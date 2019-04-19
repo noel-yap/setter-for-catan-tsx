@@ -1036,6 +1036,29 @@ import * as Tiles from './Tiles';
         'producing-terrain': ['inner-producing-terrain', 'outer-producing-terrain']
       }
   );
+  export const SPEC_5_6_EXP_TB_SCEN_BA = new Specification(
+      {
+        'outer-producing-terrain': Tiles.EXT_5_6_EXP_TB_SCEN_BA_OUTER_PRODUCING_TERRAIN_TILE_SET,
+        'inner-producing-terrain': Tiles.EXT_5_6_EXP_TB_SCEN_BA_INNER_PRODUCING_TERRAIN_TILE_SET,
+        'outer-desert-terrain': new Array(2).fill(Tiles.DESERT_TERRAIN),
+        'outer-castle-terrain': new Array(2).fill(Tiles.CASTLE_TERRAIN),
+        'harbor': Tiles.EXT_5_6_HARBOR_TILE_SET
+      },
+      {
+        'outer-producing-terrain': Coordinates.EXT_5_6_EXP_TB_SCEN_BA_OUTER_PRODUCING_TERRAIN_COORDINATES,
+        'inner-producing-terrain': Coordinates.EXT_5_6_EXP_TB_SCEN_BA_INNER_PRODUCING_TERRAIN_COORDINATES,
+        'outer-desert-terrain': Coordinates.EXT_5_6_EXP_TB_SCEN_BA_OUTER_DESERT_TERRAIN_COORDINATES,
+        'outer-castle-terrain': Coordinates.EXT_5_6_EXP_TB_SCEN_BA_OUTER_CASTLE_TERRAIN_COORDINATES,
+        'harbor': Coordinates.EXT_5_6_HARBOR_COORDINATES
+      },
+      {
+        'producing-terrain': Chits.EXT_5_6_EXP_TB_SCEN_BA_PRODUCING_TERRAIN_CHIT_SET
+      },
+      oneToOne('inner-producing-terrain', 'outer-producing-terrain', 'outer-desert-terrain', 'outer-castle-terrain', 'harbor'),
+      {
+        'producing-terrain': ['inner-producing-terrain', 'outer-producing-terrain']
+      }
+  );
 
   export const SPEC_3_4_EXP_TB_SCEN_TB = new Specification(
       {
