@@ -1795,6 +1795,48 @@
     new Coordinate(8, 6)
   ];
 
+  export const EXT_7_8_EXP_TB_SCEN_BA_OUTER_PRODUCING_TERRAIN_COORDINATES = [
+    new Coordinate(7, 1),
+    new Coordinate(9, 1),
+    new Coordinate(11, 1),
+    new Coordinate(12, 2),
+    new Coordinate(3, 3),
+    new Coordinate(2, 4),
+    new Coordinate(3, 5),
+    new Coordinate(13, 5),
+    new Coordinate(4, 6),
+    new Coordinate(12, 6),
+    new Coordinate(9, 7),
+    new Coordinate(11, 7)];
+  export const EXT_7_8_EXP_TB_SCEN_BA_OUTER_DESERT_TERRAIN_COORDINATES = [
+    new Coordinate(4, 2),
+    new Coordinate(13, 3),
+    new Coordinate(7, 7)];
+  export const EXT_7_8_EXP_TB_SCEN_BA_OUTER_CASTLE_TERRAIN_COORDINATES = [
+    new Coordinate(5, 1),
+    new Coordinate(14, 4),
+    new Coordinate(5, 7)];
+  export const EXT_7_8_EXP_TB_SCEN_BA_INNER_PRODUCING_TERRAIN_COORDINATES = [
+    new Coordinate(6, 2),
+    new Coordinate(8, 2),
+    new Coordinate(10, 2),
+    new Coordinate(5, 3),
+    new Coordinate(7, 3),
+    new Coordinate(9, 3),
+    new Coordinate(11, 3),
+    new Coordinate(4, 4),
+    new Coordinate(6, 4),
+    new Coordinate(8, 4),
+    new Coordinate(10, 4),
+    new Coordinate(12, 4),
+    new Coordinate(5, 5),
+    new Coordinate(7, 5),
+    new Coordinate(9, 5),
+    new Coordinate(11, 5),
+    new Coordinate(6, 6),
+    new Coordinate(8, 6),
+    new Coordinate(10, 6)];
+
   export const BASE_3_4_EXP_TB_SCEN_TB_NON_TRADE_TERRAIN_COORDINATES = [
     new Coordinate(3, 1),
     new Coordinate(5, 1),

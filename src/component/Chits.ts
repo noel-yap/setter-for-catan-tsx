@@ -331,6 +331,18 @@ export class Chits {
       .concat(new Array(3).fill(CHITS_10))
       .concat(new Array(3).fill(CHITS_11));
 
+  export const EXT_7_8_EXP_TB_SCEN_BA_PRODUCING_TERRAIN_CHIT_SET = [CHITS_2_12]
+      .concat(new Array(2).fill(CHITS_2))
+      .concat(new Array(3).fill(CHITS_3))
+      .concat(new Array(4).fill(CHITS_4))
+      .concat(new Array(3).fill(CHITS_5))
+      .concat(new Array(3).fill(CHITS_6))
+      .concat(new Array(3).fill(CHITS_8))
+      .concat(new Array(3).fill(CHITS_9))
+      .concat(new Array(4).fill(CHITS_10))
+      .concat(new Array(3).fill(CHITS_11))
+      .concat(new Array(2).fill(CHITS_12));
+
   export const BASE_3_4_EXP_TB_SCEN_TB_TERRAIN_CHIT_SET = new Array(2).fill(CHITS_3)
       .concat(new Array(2).fill(CHITS_11))
       .concat(new Array(2).fill(CHITS_4))
