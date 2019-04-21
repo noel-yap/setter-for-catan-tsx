@@ -1013,6 +1013,76 @@ import * as Tiles from './Tiles';
       Object.assign(oneToOne('harbor'), oneToOne('producing-terrain', 'oasis')),
       oneToOne('producing-terrain'));
 
+  export const SPEC_3_4_EXP_TB_SCEN_BA = new Specification(
+      {
+        'outer-producing-terrain': Tiles.BASE_3_4_EXP_TB_SCEN_BA_OUTER_PRODUCING_TERRAIN_TILE_SET,
+        'inner-producing-terrain': Tiles.BASE_3_4_EXP_TB_SCEN_BA_INNER_PRODUCING_TERRAIN_TILE_SET,
+        'desert': [Tiles.DESERT_TERRAIN],
+        'castle': [Tiles.CASTLE_TERRAIN],
+        'harbor': Tiles.BASE_3_4_HARBOR_TILE_SET
+      },
+      {
+        'outer-producing-terrain': Coordinates.BASE_3_4_EXP_TB_SCEN_BA_OUTER_PRODUCING_TERRAIN_COORDINATES,
+        'inner-producing-terrain': Coordinates.BASE_3_4_EXP_TB_SCEN_BA_INNER_PRODUCING_TERRAIN_COORDINATES,
+        'desert': [new Coordinates.Coordinate(7, 1)],
+        'castle': [new Coordinates.Coordinate(3, 5)],
+        'harbor': Coordinates.BASE_3_4_HARBOR_COORDINATES
+      },
+      {
+        'producing-terrain': Chits.BASE_3_4_EXP_TB_SCEN_BA_PRODUCING_TERRAIN_CHIT_SET
+      },
+      oneToOne('inner-producing-terrain', 'outer-producing-terrain', 'desert', 'castle', 'harbor'),
+      {
+        'producing-terrain': ['inner-producing-terrain', 'outer-producing-terrain']
+      }
+  );
+  export const SPEC_5_6_EXP_TB_SCEN_BA = new Specification(
+      {
+        'outer-producing-terrain': Tiles.EXT_5_6_EXP_TB_SCEN_BA_OUTER_PRODUCING_TERRAIN_TILE_SET,
+        'inner-producing-terrain': Tiles.EXT_5_6_EXP_TB_SCEN_BA_INNER_PRODUCING_TERRAIN_TILE_SET,
+        'outer-desert-terrain': new Array(2).fill(Tiles.DESERT_TERRAIN),
+        'outer-castle-terrain': new Array(2).fill(Tiles.CASTLE_TERRAIN),
+        'harbor': Tiles.EXT_5_6_HARBOR_TILE_SET
+      },
+      {
+        'outer-producing-terrain': Coordinates.EXT_5_6_EXP_TB_SCEN_BA_OUTER_PRODUCING_TERRAIN_COORDINATES,
+        'inner-producing-terrain': Coordinates.EXT_5_6_EXP_TB_SCEN_BA_INNER_PRODUCING_TERRAIN_COORDINATES,
+        'outer-desert-terrain': Coordinates.EXT_5_6_EXP_TB_SCEN_BA_OUTER_DESERT_TERRAIN_COORDINATES,
+        'outer-castle-terrain': Coordinates.EXT_5_6_EXP_TB_SCEN_BA_OUTER_CASTLE_TERRAIN_COORDINATES,
+        'harbor': Coordinates.EXT_5_6_HARBOR_COORDINATES
+      },
+      {
+        'producing-terrain': Chits.EXT_5_6_EXP_TB_SCEN_BA_PRODUCING_TERRAIN_CHIT_SET
+      },
+      oneToOne('inner-producing-terrain', 'outer-producing-terrain', 'outer-desert-terrain', 'outer-castle-terrain', 'harbor'),
+      {
+        'producing-terrain': ['inner-producing-terrain', 'outer-producing-terrain']
+      }
+  );
+  export const SPEC_7_8_EXP_TB_SCEN_BA = new Specification(
+      {
+        'outer-producing-terrain': Tiles.EXT_7_8_EXP_TB_SCEN_BA_OUTER_PRODUCING_TERRAIN_TILE_SET,
+        'inner-producing-terrain': Tiles.EXT_7_8_EXP_TB_SCEN_BA_INNER_PRODUCING_TERRAIN_TILE_SET,
+        'outer-desert-terrain': new Array(3).fill(Tiles.DESERT_TERRAIN),
+        'outer-castle-terrain': new Array(3).fill(Tiles.CASTLE_TERRAIN),
+        'harbor': Tiles.EXT_7_8_HARBOR_TILE_SET
+      },
+      {
+        'outer-producing-terrain': Coordinates.EXT_7_8_EXP_TB_SCEN_BA_OUTER_PRODUCING_TERRAIN_COORDINATES,
+        'inner-producing-terrain': Coordinates.EXT_7_8_EXP_TB_SCEN_BA_INNER_PRODUCING_TERRAIN_COORDINATES,
+        'outer-desert-terrain': Coordinates.EXT_7_8_EXP_TB_SCEN_BA_OUTER_DESERT_TERRAIN_COORDINATES,
+        'outer-castle-terrain': Coordinates.EXT_7_8_EXP_TB_SCEN_BA_OUTER_CASTLE_TERRAIN_COORDINATES,
+        'harbor': Coordinates.EXT_7_8_HARBOR_COORDINATES
+      },
+      {
+        'producing-terrain': Chits.EXT_7_8_EXP_TB_SCEN_BA_PRODUCING_TERRAIN_CHIT_SET
+      },
+      oneToOne('inner-producing-terrain', 'outer-producing-terrain', 'outer-desert-terrain', 'outer-castle-terrain', 'harbor'),
+      {
+        'producing-terrain': ['inner-producing-terrain', 'outer-producing-terrain']
+      }
+  );
+
   export const SPEC_3_4_EXP_TB_SCEN_TB = new Specification(
       {
         'non-trade-terrain': Tiles.BASE_3_4_EXP_TB_SCEN_TB_NON_TRADE_TERRAIN_TILE_SET,
