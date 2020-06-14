@@ -1508,6 +1508,55 @@
     new Coordinate(14, 4).onVertices(VertexPosition.TOP),
     new Coordinate(14, 4).onVertices(VertexPosition.BOTTOM)];
 
+  export const BASE_3_4_EXP_SEA_SCEN_WOC_MAIN_ISLAND_PRODUCING_TERRAIN_COORDINATES = [
+    new Coordinate(9, 1),
+    new Coordinate(8, 2),
+    new Coordinate(1, 3),
+    new Coordinate(3, 3),
+    new Coordinate(5, 3),
+    new Coordinate(7, 3),
+    new Coordinate(9, 3),
+    new Coordinate(11, 3),
+    new Coordinate(2, 4),
+    new Coordinate(4, 4),
+    new Coordinate(6, 4),
+    new Coordinate(8, 4),
+    new Coordinate(10, 4),
+    new Coordinate(1, 5),
+    new Coordinate(3, 5),
+    new Coordinate(9, 5),
+    new Coordinate(4, 6),
+    new Coordinate(8, 6),
+    new Coordinate(10, 6),
+    new Coordinate(3, 7),
+    new Coordinate(7, 7),
+    new Coordinate(9, 7)];
+  export const BASE_3_4_EXP_SEA_SCEN_WOC_MAIN_ISLAND_HARBOR_COORDINATES = [
+    new Coordinate(2, 2).onEdges(BOTTOM_RIGHT),
+    new Coordinate(6, 2).onEdges(BOTTOM_RIGHT),
+    new Coordinate(10, 2).onEdges(BOTTOM_LEFT),
+    new Coordinate(0, 4).onEdges(RIGHT),
+    new Coordinate(5, 5).onEdges(TOP_LEFT),
+    new Coordinate(11, 5).onEdges(BOTTOM_LEFT),
+    new Coordinate(2, 6).onEdges(RIGHT),
+    new Coordinate(11, 7).onEdges(TOP_LEFT),
+    new Coordinate(8, 8).onEdges(TOP_LEFT)];
+  export const BASE_3_4_EXP_SEA_SCEN_WOC_MAIN_ISLAND_DESERT_TERRAIN_COORDINATES = [
+    new Coordinate(12, 2),
+    new Coordinate(13, 3),
+    new Coordinate(12, 4)];
+  export const BASE_3_4_EXP_SEA_SCEN_WOC_SMALL_ISLAND_TERRAIN_COORDINATES = [
+    new Coordinate(3, 1),
+    new Coordinate(5, 1),
+    new Coordinate(15, 5),
+    new Coordinate(14, 6),
+    new Coordinate(13, 7)];
+  export const BASE_3_4_EXP_SEA_SCEN_WOC_FISHERY_COORDINATES = [
+    new Coordinate(9, 1).onEdges(TOP_LEFT, TOP_RIGHT),
+    new Coordinate(1, 3).onEdges(LEFT, TOP_LEFT),
+    new Coordinate(7, 5).onEdges(TOP_RIGHT, RIGHT),
+    new Coordinate(3, 7).onEdges(BOTTOM_LEFT, LEFT)];
+
   export const BASE_3_4_EXP_TB_SCEN_ROC_NON_RIVER_TERRAIN_COORDINATES = [
     new Coordinate(3, 1),
     new Coordinate(5, 1),

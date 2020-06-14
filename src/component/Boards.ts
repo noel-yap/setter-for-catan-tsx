@@ -58,6 +58,10 @@ import * as Tiles from './Tiles';
       return this._vertexChitsLayout;
     }
 
+    // get vertexMarkersLayout(): Configuration.Configuration[] {
+    //   return this._vertexMarkersLayout;
+    // }
+
     get fisheryTilesLayout(): Configuration.Configuration[] {
       return this._fisheryTilesLayout;
     }
