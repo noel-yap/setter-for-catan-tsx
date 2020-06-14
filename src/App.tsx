@@ -22,10 +22,10 @@ import {DisplayOptions} from 'rot-js/lib/display/types';
 
 import * as Boards from './component/Boards';
 import * as Chits from './component/Chits';
+import * as Configuration from './component/Configuration';
 import * as Coordinates from './component/Coordinates';
 import * as Specifications from './component/Specifications';
 import * as Tiles from './component/Tiles';
-import * as Configuration from './component/Configuration';
 
 class Cartesian2D {
   constructor(public x: number, public y: number) {}
@@ -70,6 +70,7 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
     const developmentCardsByType = GeneratedBoard.groupByComponentType(this.props.board.developmentCardsLayout);
     const harborTilesByType = GeneratedBoard.groupByComponentType(this.props.board.harborTilesLayout);
     const victoryPointsByType = GeneratedBoard.groupByComponentType(this.props.board.victoryPointsLayout);
+    // const markersByType = GeneratedBoard.groupByComponentType(this.props.board.vertexMarkersLayout)
     const chits = _.groupBy(
         this.props.board.terrainTilesLayout
             .concat(this.props.board.fisheryTilesLayout)
@@ -689,6 +690,10 @@ class App extends React.Component<AppProps, AppState> {
         '4': [Specifications.SPEC_3_4_EXP_SEA_SCEN_CFC, Coordinates.BASE_3_4_EXP_SEA_SCEN_CFC_FISHERY_COORDINATES],
         '5-6': [Specifications.SPEC_5_6_EXP_SEA_SCEN_CFC, Coordinates.EXT_5_6_EXP_SEA_SCEN_CFC_FISHERY_COORDINATES],
         '7-8': [Specifications.SPEC_7_8_EXP_SEA_SCEN_CFC, Coordinates.EXT_7_8_EXP_SEA_SCEN_CFC_FISHERY_COORDINATES],
+      },
+      'Seafarers: Wonders of Catan': {
+        '3': [Specifications.SPEC_3_4_EXP_SEA_SCEN_WOC, Coordinates.BASE_3_4_EXP_SEA_SCEN_WOC_FISHERY_COORDINATES],
+        '4': [Specifications.SPEC_3_4_EXP_SEA_SCEN_WOC, Coordinates.BASE_3_4_EXP_SEA_SCEN_WOC_FISHERY_COORDINATES],
       },
       'Traders and Barbarians: Rivers of Catan': {
         '3': [Specifications.SPEC_3_4_EXP_TB_SCEN_ROC, Coordinates.BASE_3_4_FISHERY_COORDINATES],
