@@ -357,6 +357,13 @@ import * as Coordinates from './Coordinates';
       .concat(new Array(5).fill(PASTURE_TERRAIN));
   export const BASE_3_4_EXP_SEA_SCEN_WOC_SMALL_ISLAND_NON_GOLD_TILE_SET = [FIELD_TERRAIN, FOREST_TERRAIN, HILL_TERRAIN];
 
+  export const EXT_5_6_EXP_SEA_SCEN_WOC_MAIN_ISLAND_PRODUCING_TERRAIN_TILE_SET = new Array(6).fill(FIELD_TERRAIN)
+      .concat(new Array(6).fill(FOREST_TERRAIN))
+      .concat(new Array(6).fill(HILL_TERRAIN))
+      .concat(new Array(6).fill(MOUNTAIN_TERRAIN))
+      .concat(new Array(7).fill(PASTURE_TERRAIN));
+  export const EXT_5_6_EXP_SEA_SCEN_WOC_SMALL_ISLAND_NON_GOLD_TILE_SET = [FOREST_TERRAIN];
+
   export const BASE_3_4_EXP_TB_SCEN_ROC_NON_RIVER_TERRAIN_TILE_SET = [HILL_TERRAIN, MOUNTAIN_TERRAIN]
       .concat(new Array(4).fill(FIELD_TERRAIN))
       .concat(new Array(4).fill(FOREST_TERRAIN))
