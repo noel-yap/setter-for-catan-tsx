@@ -102,8 +102,12 @@ import * as Tiles from './Tiles';
             const validOddsRanges = steppedValidOddsRanges[Math.floor(count / attemptsPerStep)];
             const initialScore = validOddsRanges[0][0] + validOddsRanges[1][0] + validOddsRanges[2][0];
 
-            if (maxScore >= initialScore) {
+            console.log(`maxScore = ${maxScore}`);
+
+            if (initialScore <= maxScore) {
               // highest-scoring board has been found
+
+              console.log(`Breaking out of iteration: validOddsRanges = ${validOddsRanges}, initialScore = ${initialScore}, maxScore = ${maxScore}`);
 
               range.splice(1); // break out of iteration
             } else {
@@ -122,16 +126,21 @@ import * as Tiles from './Tiles';
 
                 const boardPenalty = this.boardPenalty(board, validOddsRanges);
                 const totalScore = initialScore - boardPenalty;
+
+                console.log(`Checking for new fairestBoard: validOddsRanges = ${JSON.stringify(validOddsRanges)}, totalScore = ${totalScore}, maxScore = ${maxScore}`);
+
                 if (totalScore > maxScore) {
+                  console.log(`Found new fairestBoard: validOddsRanges = ${JSON.stringify(validOddsRanges)}, totalScore = ${totalScore}, maxScore = ${maxScore}`);
+
                   return {'maxScore': totalScore, 'fairestBoard': board};
                 }
               }
             }
 
-            console.log(`count = ${count}, validOddsRange = ${JSON.stringify(validOddsRanges)}, score = ${maxScore}`);
+            console.log(`count = ${count}, validOddsRange = ${JSON.stringify(validOddsRanges)}, score = ${maxScore}, initialScore = ${initialScore}`);
 
             return accum;
-          }, {'maxScore': 0, 'fairestBoard': new Board([])})['fairestBoard'];
+          }, {'maxScore': Number.MIN_SAFE_INTEGER, 'fairestBoard': new Board([])})['fairestBoard'];
     }
 
     boardPenalty(board: Board, validOddsRanges: number[][]): number {
