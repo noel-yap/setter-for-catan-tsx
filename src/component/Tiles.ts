@@ -364,6 +364,19 @@ import * as Coordinates from './Coordinates';
       .concat(new Array(7).fill(PASTURE_TERRAIN));
   export const EXT_5_6_EXP_SEA_SCEN_WOC_SMALL_ISLAND_NON_GOLD_TILE_SET = [FOREST_TERRAIN];
 
+  export const EXT_7_8_EXP_SEA_SCEN_WOC_MAIN_ISLAND_PRODUCING_TERRAIN_TILE_SET = new Array(7).fill(FIELD_TERRAIN)
+      .concat(new Array(8).fill(FOREST_TERRAIN))
+      .concat(new Array(7).fill(HILL_TERRAIN))
+      .concat(new Array(7).fill(MOUNTAIN_TERRAIN))
+      .concat(new Array(8).fill(PASTURE_TERRAIN));
+  export const EXT_7_8_EXP_SEA_SCEN_WOC_MAIN_ISLAND_HARBOR_TILE_SET = BASE_3_4_HARBOR_TILE_SET
+      .concat([
+        GRAIN_HARBOR,
+        LUMBER_HARBOR,
+        WOOL_HARBOR,
+        BRICK_HARBOR,
+        ORE_HARBOR]);
+
   export const BASE_3_4_EXP_TB_SCEN_ROC_NON_RIVER_TERRAIN_TILE_SET = [HILL_TERRAIN, MOUNTAIN_TERRAIN]
       .concat(new Array(4).fill(FIELD_TERRAIN))
       .concat(new Array(4).fill(FOREST_TERRAIN))

@@ -695,6 +695,7 @@ class App extends React.Component<AppProps, AppState> {
         '3': [Specifications.SPEC_3_4_EXP_SEA_SCEN_WOC, Coordinates.BASE_3_4_EXP_SEA_SCEN_WOC_FISHERY_COORDINATES],
         '4': [Specifications.SPEC_3_4_EXP_SEA_SCEN_WOC, Coordinates.BASE_3_4_EXP_SEA_SCEN_WOC_FISHERY_COORDINATES],
         '5-6': [Specifications.SPEC_5_6_EXP_SEA_SCEN_WOC, Coordinates.EXT_5_6_EXP_SEA_SCEN_WOC_FISHERY_COORDINATES],
+        '7-8': [Specifications.SPEC_7_8_EXP_SEA_SCEN_WOC, Coordinates.EXT_7_8_EXP_SEA_SCEN_WOC_FISHERY_COORDINATES]
       },
       'Traders and Barbarians: Rivers of Catan': {
         '3': [Specifications.SPEC_3_4_EXP_TB_SCEN_ROC, Coordinates.BASE_3_4_FISHERY_COORDINATES],
