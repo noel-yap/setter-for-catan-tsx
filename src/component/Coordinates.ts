@@ -121,8 +121,6 @@ export enum EdgePosition {
   }
 
   export function oddsAtCoordinatesLessThan(adjacentCoordinates: Coordinate[], odds: number): (configuration: Configuration.Configuration) => boolean {
-    console.log(`adjacentCoordinates = ${JSON.stringify(adjacentCoordinates)}`);
-
     return (configuration: Configuration.Configuration) =>
         configuration.chits.odds() < odds
         || !adjacentCoordinates
