@@ -951,6 +951,40 @@ import * as Tiles from './Tiles';
                               .some((rhs) => lhs.x === rhs.x && lhs.y === rhs.y)),
                   5));
 
+  export const SPEC_7_8_EXP_SEA_SCEN_WOC = new Specification(
+      {
+        'main-island-producing-terrain': Tiles.EXT_7_8_EXP_SEA_SCEN_WOC_MAIN_ISLAND_PRODUCING_TERRAIN_TILE_SET,
+        'main-island-desert-terrain': new Array(6).fill(Tiles.DESERT_TERRAIN),
+        'main-island-harbor': Tiles.EXT_7_8_EXP_SEA_SCEN_WOC_MAIN_ISLAND_HARBOR_TILE_SET,
+        'small-island-gold-terrain': new Array(4).fill(Tiles.GOLD_TERRAIN)
+      },
+      {
+        'main-island-producing-terrain': Coordinates.EXT_7_8_EXP_SEA_SCEN_WOC_MAIN_ISLAND_PRODUCING_TERRAIN_COORDINATES,
+        'main-island-desert-terrain': Coordinates.EXT_7_8_EXP_SEA_SCEN_WOC_MAIN_ISLAND_DESERT_TERRAIN_COORDINATES,
+        'main-island-harbor': Coordinates.EXT_7_8_EXP_SEA_SCEN_WOC_MAIN_ISLAND_HARBOR_COORDINATES,
+        'small-island-terrain': Coordinates.EXT_7_8_EXP_SEA_SCEN_WOC_SMALL_ISLAND_TERRAIN_COORDINATES
+      },
+      {
+        'main-island-producing-terrain': Chits.EXT_7_8_EXP_SEA_SCEN_WOC_MAIN_ISLAND_PRODUCING_TERRAIN_CHIT_SET,
+        'small-island-gold-terrain': Chits.EXT_7_8_EXP_SEA_SCEN_WOC_SMALL_ISLAND_GOLD_CHIT_SET
+      },
+      Object.assign(oneToOne('main-island-producing-terrain', 'main-island-desert-terrain', 'main-island-harbor'), {
+        'small-island-terrain': ['small-island-gold-terrain']
+      }),
+      oneToOne('main-island-producing-terrain', 'small-island-gold-terrain'))
+          .withMarkers(
+              new Markers.Marker(Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT, new Coordinates.Coordinate(10, 2).onVertices(Coordinates.VertexPosition.TOP)),
+              new Markers.Marker(Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT, new Coordinates.Coordinate(10, 2).onVertices(Coordinates.VertexPosition.TOP_RIGHT)),
+              new Markers.Marker(Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT, new Coordinates.Coordinate(10, 6).onVertices(Coordinates.VertexPosition.BOTTOM)),
+              new Markers.Marker(Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT, new Coordinates.Coordinate(10, 6).onVertices(Coordinates.VertexPosition.BOTTOM_LEFT)))
+          .withConfigurationValidator(
+              Coordinates.oddsAtCoordinatesLessThan(
+                  Coordinates.adjacentCoordinates(Coordinates.EXT_7_8_EXP_SEA_SCEN_WOC_MAIN_ISLAND_DESERT_TERRAIN_COORDINATES)
+                      .filter((lhs) =>
+                          Coordinates.EXT_7_8_EXP_SEA_SCEN_WOC_MAIN_ISLAND_PRODUCING_TERRAIN_COORDINATES
+                              .some((rhs) => lhs.x === rhs.x && lhs.y === rhs.y)),
+                  5));
+
   export const SPEC_3_4_EXP_TB_SCEN_ROC = new Specification(
       {
         'non-river-terrain': Tiles.BASE_3_4_EXP_TB_SCEN_ROC_NON_RIVER_TERRAIN_TILE_SET,

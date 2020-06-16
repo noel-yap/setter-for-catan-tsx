@@ -1679,6 +1679,77 @@ export enum EdgePosition {
     new Coordinate(7, 7).onEdges(BOTTOM_RIGHT, BOTTOM_LEFT),
     new Coordinate(13, 7).onEdges(BOTTOM_RIGHT, BOTTOM_LEFT)];
 
+  export const EXT_7_8_EXP_SEA_SCEN_WOC_MAIN_ISLAND_PRODUCING_TERRAIN_COORDINATES = [
+    new Coordinate(7, 1),
+    new Coordinate(9, 1),
+    new Coordinate(13, 1),
+    new Coordinate(6, 2),
+    new Coordinate(8, 2),
+    new Coordinate(12, 2),
+    new Coordinate(14, 2),
+    new Coordinate(5, 3),
+    new Coordinate(7, 3),
+    new Coordinate(9, 3),
+    new Coordinate(11, 3),
+    new Coordinate(13, 3),
+    new Coordinate(15, 3),
+    new Coordinate(17, 3),
+    new Coordinate(2, 4),
+    new Coordinate(4, 4),
+    new Coordinate(6, 4),
+    new Coordinate(8, 4),
+    new Coordinate(10, 4),
+    new Coordinate(12, 4),
+    new Coordinate(14, 4),
+    new Coordinate(16, 4),
+    new Coordinate(18, 4),
+    new Coordinate(3, 5),
+    new Coordinate(5, 5),
+    new Coordinate(7, 5),
+    new Coordinate(9, 5),
+    new Coordinate(11, 5),
+    new Coordinate(13, 5),
+    new Coordinate(15, 5),
+    new Coordinate(6, 6),
+    new Coordinate(8, 6),
+    new Coordinate(12, 6),
+    new Coordinate(14, 6),
+    new Coordinate(7, 7),
+    new Coordinate(11, 7),
+    new Coordinate(13, 7)];
+  export const EXT_7_8_EXP_SEA_SCEN_WOC_MAIN_ISLAND_HARBOR_COORDINATES = [
+    new Coordinate(8, 0).onEdges(BOTTOM_RIGHT),
+    new Coordinate(12, 0).onEdges(BOTTOM_RIGHT),
+    new Coordinate(5, 1).onEdges(BOTTOM_RIGHT),
+    new Coordinate(15, 1).onEdges(BOTTOM_LEFT),
+    new Coordinate(4, 2).onEdges(BOTTOM_RIGHT),
+    new Coordinate(10, 2).onEdges(BOTTOM_LEFT),
+    new Coordinate(16, 2).onEdges(BOTTOM_LEFT),
+    new Coordinate(4, 6).onEdges(TOP_RIGHT),
+    new Coordinate(10, 6).onEdges(TOP_RIGHT),
+    new Coordinate(16, 6).onEdges(TOP_LEFT),
+    new Coordinate(5, 7).onEdges(TOP_RIGHT),
+    new Coordinate(15, 7).onEdges(TOP_LEFT),
+    new Coordinate(8, 8).onEdges(TOP_LEFT),
+    new Coordinate(12, 8).onEdges(TOP_LEFT)];
+  export const EXT_7_8_EXP_SEA_SCEN_WOC_MAIN_ISLAND_DESERT_TERRAIN_COORDINATES = [
+    new Coordinate(1, 3),
+    new Coordinate(19, 3),
+    new Coordinate(0, 4),
+    new Coordinate(20, 4),
+    new Coordinate(1, 5),
+    new Coordinate(19, 5)];
+  export const EXT_7_8_EXP_SEA_SCEN_WOC_SMALL_ISLAND_TERRAIN_COORDINATES = [
+    new Coordinate(3, 1),
+    new Coordinate(17, 1),
+    new Coordinate(3, 7),
+    new Coordinate(17, 7)];
+  export const EXT_7_8_EXP_SEA_SCEN_WOC_FISHERY_COORDINATES = [
+    new Coordinate(7, 1).onEdges(LEFT, TOP_LEFT),
+    new Coordinate(13, 1).onEdges(TOP_RIGHT, RIGHT),
+    new Coordinate(7, 7).onEdges(BOTTOM_LEFT, LEFT),
+    new Coordinate(13, 7).onEdges(RIGHT, BOTTOM_RIGHT)];
+
   export const BASE_3_4_EXP_TB_SCEN_ROC_NON_RIVER_TERRAIN_COORDINATES = [
     new Coordinate(3, 1),
     new Coordinate(5, 1),
