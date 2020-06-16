@@ -1,5 +1,7 @@
 // export module Coordinates {
-  export enum EdgePosition {
+  import * as Configuration from "./Configuration";
+
+export enum EdgePosition {
     TOP_RIGHT,
     RIGHT,
     BOTTOM_RIGHT,
@@ -108,6 +110,23 @@
                 this.facePosition)]
           .filter((c) => c.x >= 0 && c.y >= 0);
     }
+  }
+
+  export function adjacentCoordinates(coordinates: Coordinate[]): Coordinate[] {
+    return coordinates
+        .flatMap( (c) => c.adjacentCoordinates())
+        .filter((lhs, index, self) => {
+          return self.findIndex((rhs) => lhs.x === rhs.x && lhs.y === rhs.y) === index;
+        });
+  }
+
+  export function oddsAtCoordinatesLessThan(adjacentCoordinates: Coordinate[], odds: number): (configuration: Configuration.Configuration) => boolean {
+    console.log(`adjacentCoordinates = ${JSON.stringify(adjacentCoordinates)}`);
+
+    return (configuration: Configuration.Configuration) =>
+        configuration.chits.odds() < odds
+        || !adjacentCoordinates
+            .some((c) => c.x === configuration.coordinate.x && c.y === configuration.coordinate.y);
   }
 
   export const TOP_RIGHT = EdgePosition.TOP_RIGHT;

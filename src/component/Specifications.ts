@@ -907,14 +907,13 @@ import * as Tiles from './Tiles';
       .withMarkers(
           new Markers.Marker(Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT, new Coordinates.Coordinate(5, 7).onVertices(Coordinates.VertexPosition.TOP)),
           new Markers.Marker(Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT, new Coordinates.Coordinate(5, 7).onVertices(Coordinates.VertexPosition.TOP_RIGHT)))
-      .withConfigurationValidator((configuration: Configuration.Configuration) => {
-          const mainIslandDesertCoordinates = SPEC_3_4_EXP_SEA_SCEN_WOC.coordinates['main-island-desert-terrain'];
-
-          return configuration.chits.odds() < 5
-              || !mainIslandDesertCoordinates
-                  .flatMap((c) => c.adjacentCoordinates())
-                  .some((c) => c.x === configuration.coordinate.x && c.y === configuration.coordinate.y);
-      });
+      .withConfigurationValidator(
+          Coordinates.oddsAtCoordinatesLessThan(
+              Coordinates.adjacentCoordinates(Coordinates.BASE_3_4_EXP_SEA_SCEN_WOC_MAIN_ISLAND_DESERT_TERRAIN_COORDINATES)
+                  .filter((lhs) =>
+                      Coordinates.BASE_3_4_EXP_SEA_SCEN_WOC_MAIN_ISLAND_PRODUCING_TERRAIN_COORDINATES
+                          .some((rhs) => lhs.x === rhs.x && lhs.y === rhs.y)),
+              5));
 
   export const SPEC_5_6_EXP_SEA_SCEN_WOC = new Specification(
       {
@@ -944,14 +943,13 @@ import * as Tiles from './Tiles';
               new Markers.Marker(Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT, new Coordinates.Coordinate(2, 8).onVertices(Coordinates.VertexPosition.TOP_RIGHT)),
               new Markers.Marker(Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT, new Coordinates.Coordinate(9, 7).onVertices(Coordinates.VertexPosition.TOP)),
               new Markers.Marker(Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT, new Coordinates.Coordinate(9, 7).onVertices(Coordinates.VertexPosition.TOP_RIGHT)))
-          .withConfigurationValidator((configuration: Configuration.Configuration) => {
-            const mainIslandDesertCoordinates = SPEC_5_6_EXP_SEA_SCEN_WOC.coordinates['main-island-desert-terrain'];
-
-            return configuration.chits.odds() < 5
-                || !mainIslandDesertCoordinates
-                    .flatMap((c) => c.adjacentCoordinates())
-                    .some((c) => c.x === configuration.coordinate.x && c.y === configuration.coordinate.y);
-          });
+          .withConfigurationValidator(
+              Coordinates.oddsAtCoordinatesLessThan(
+                  Coordinates.adjacentCoordinates(Coordinates.EXT_5_6_EXP_SEA_SCEN_WOC_MAIN_ISLAND_DESERT_TERRAIN_COORDINATES)
+                      .filter((lhs) =>
+                          Coordinates.EXT_5_6_EXP_SEA_SCEN_WOC_MAIN_ISLAND_PRODUCING_TERRAIN_COORDINATES
+                              .some((rhs) => lhs.x === rhs.x && lhs.y === rhs.y)),
+                  5));
 
   export const SPEC_3_4_EXP_TB_SCEN_ROC = new Specification(
       {
