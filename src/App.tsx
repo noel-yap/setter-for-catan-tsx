@@ -24,6 +24,7 @@ import * as Boards from './component/Boards';
 import * as Chits from './component/Chits';
 import * as Configuration from './component/Configuration';
 import * as Coordinates from './component/Coordinates';
+import * as Markers from './component/Markers';
 import * as Specifications from './component/Specifications';
 import * as Tiles from './component/Tiles';
 
@@ -175,6 +176,24 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
             this.props.board.terrainTilesLayout.filter((c) => {
               return c.coordinate.x === configuration.coordinate.x && c.coordinate.y === configuration.coordinate.y;
             })[0]);
+      });
+    });
+
+    window.requestAnimationFrame(() => {
+      const options = display._options;
+      const hexSize = (display._backend as Hex)._hexSize;
+
+      this.props.board.vertexMarkersLayout.forEach((marker) => {
+        const hexCenter = GeneratedBoard.hexCenter(hexSize, marker.coordinate.x, marker.coordinate.y);
+        const vertexPositionPoint = _.partial(GeneratedBoard.vertexPositionPoint, _, hexCenter, hexSize, options.border);
+
+        marker.coordinate.vertices.forEach((vertex) => {
+          GeneratedBoard.renderMarker(
+              display,
+              marker,
+              vertexPositionPoint(vertex),
+              hexSize / 6);
+        });
       });
     });
 
@@ -399,6 +418,14 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
     });
   }
 
+  static renderMarker(
+      display: ROT.Display,
+      marker: Markers.Marker,
+      vertex: Cartesian2D,
+      radius: number) {
+    GeneratedBoard.renderCircle(display, vertex, radius, this.markerColor(marker), 'black');
+  }
+
   static hexCenter(hexSize: number, x: number, y: number) {
     return new Cartesian2D(
         (x + 1) * (hexSize * Math.sqrt(3) / 2),
@@ -519,6 +546,26 @@ class GeneratedBoard extends React.Component<GeneratedBoardProps, GeneratedBoard
       return chits.odds() < 5
         ? primaryForegroundColor
         : secondaryColor(underlyingBackgroundColor);
+  }
+
+  static markerColor(marker: Markers.Marker): string {
+    switch (marker.type) {
+      case Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT: {
+        return 'purple';
+      }
+
+      case Markers.GREAT_WALL_SETTLEMENTS_REQUIREMENT: {
+        return 'yellow';
+      }
+
+      case Markers.SETUP_SETTLEMENTS_PROHIBITION: {
+        return 'orange';
+      }
+
+      default: {
+        return 'gray';
+      }
+    }
   }
 
   static tileColor(

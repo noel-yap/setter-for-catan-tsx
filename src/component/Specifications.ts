@@ -905,8 +905,37 @@ import * as Tiles from './Tiles';
       }),
       oneToOne('main-island-producing-terrain', 'small-island-gold-terrain', 'small-island-non-gold-terrain'))
       .withMarkers(
-          new Markers.Marker(Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT, new Coordinates.Coordinate(5, 7).onVertices(Coordinates.VertexPosition.TOP)),
-          new Markers.Marker(Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT, new Coordinates.Coordinate(5, 7).onVertices(Coordinates.VertexPosition.TOP_RIGHT)))
+          new Markers.Marker(
+              Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT,
+              new Coordinates.Coordinate(5, 7)
+                  .onVertices(
+                      Coordinates.VertexPosition.TOP,
+                      Coordinates.VertexPosition.TOP_RIGHT)),
+          new Markers.Marker(
+              Markers.SETUP_SETTLEMENTS_PROHIBITION,
+              new Coordinates.Coordinate(4, 6)
+                  .onVertices(
+                      Coordinates.VertexPosition.TOP_RIGHT,
+                      Coordinates.VertexPosition.BOTTOM)),
+          new Markers.Marker(
+              Markers.SETUP_SETTLEMENTS_PROHIBITION,
+              new Coordinates.Coordinate(7, 7)
+                  .onVertices(
+                      Coordinates.VertexPosition.BOTTOM_LEFT,
+                      Coordinates.VertexPosition.TOP)),
+          new Markers.Marker(
+              Markers.GREAT_WALL_SETTLEMENTS_REQUIREMENT,
+              new Coordinates.Coordinate(11, 3)
+                  .onVertices(
+                      Coordinates.VertexPosition.TOP,
+                      Coordinates.VertexPosition.TOP_RIGHT,
+                      Coordinates.VertexPosition.BOTTOM_RIGHT)),
+          new Markers.Marker(
+              Markers.GREAT_WALL_SETTLEMENTS_REQUIREMENT,
+              new Coordinates.Coordinate(10, 4)
+                  .onVertices(
+                      Coordinates.VertexPosition.TOP_RIGHT,
+                      Coordinates.VertexPosition.BOTTOM_RIGHT)))
       .withConfigurationValidator(
           Coordinates.oddsAtCoordinatesLessThan(
               Coordinates.adjacentCoordinates(Coordinates.BASE_3_4_EXP_SEA_SCEN_WOC_MAIN_ISLAND_DESERT_TERRAIN_COORDINATES)
@@ -939,10 +968,55 @@ import * as Tiles from './Tiles';
       }),
       oneToOne('main-island-producing-terrain', 'small-island-gold-terrain', 'small-island-non-gold-terrain'))
           .withMarkers(
-              new Markers.Marker(Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT, new Coordinates.Coordinate(2, 8).onVertices(Coordinates.VertexPosition.TOP)),
-              new Markers.Marker(Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT, new Coordinates.Coordinate(2, 8).onVertices(Coordinates.VertexPosition.TOP_RIGHT)),
-              new Markers.Marker(Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT, new Coordinates.Coordinate(9, 7).onVertices(Coordinates.VertexPosition.TOP)),
-              new Markers.Marker(Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT, new Coordinates.Coordinate(9, 7).onVertices(Coordinates.VertexPosition.TOP_RIGHT)))
+              new Markers.Marker(
+                  Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT,
+                  new Coordinates.Coordinate(8, 2)
+                      .onVertices(
+                          Coordinates.VertexPosition.TOP,
+                          Coordinates.VertexPosition.TOP_RIGHT)),
+              new Markers.Marker(
+                  Markers.SETUP_SETTLEMENTS_PROHIBITION,
+                  new Coordinates.Coordinate(7, 1)
+                      .onVertices(
+                          Coordinates.VertexPosition.TOP_RIGHT,
+                          Coordinates.VertexPosition.BOTTOM)),
+              new Markers.Marker(
+                  Markers.SETUP_SETTLEMENTS_PROHIBITION,
+                  new Coordinates.Coordinate(10, 2)
+                      .onVertices(
+                          Coordinates.VertexPosition.BOTTOM_LEFT,
+                          Coordinates.VertexPosition.TOP)),
+              new Markers.Marker(
+                  Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT,
+                  new Coordinates.Coordinate(10, 6)
+                      .onVertices(
+                          Coordinates.VertexPosition.BOTTOM,
+                          Coordinates.VertexPosition.BOTTOM_LEFT)),
+              new Markers.Marker(
+                  Markers.SETUP_SETTLEMENTS_PROHIBITION,
+                  new Coordinates.Coordinate(8, 6)
+                      .onVertices(
+                          Coordinates.VertexPosition.TOP_RIGHT,
+                          Coordinates.VertexPosition.BOTTOM)),
+              new Markers.Marker(
+                  Markers.SETUP_SETTLEMENTS_PROHIBITION,
+                  new Coordinates.Coordinate(11, 7)
+                      .onVertices(
+                          Coordinates.VertexPosition.BOTTOM_LEFT,
+                          Coordinates.VertexPosition.TOP)),
+              new Markers.Marker(
+                  Markers.GREAT_WALL_SETTLEMENTS_REQUIREMENT,
+                  new Coordinates.Coordinate(15, 3)
+                      .onVertices(
+                          Coordinates.VertexPosition.TOP,
+                          Coordinates.VertexPosition.TOP_RIGHT,
+                          Coordinates.VertexPosition.BOTTOM_RIGHT)),
+              new Markers.Marker(
+                  Markers.GREAT_WALL_SETTLEMENTS_REQUIREMENT,
+                  new Coordinates.Coordinate(16, 4)
+                      .onVertices(
+                          Coordinates.VertexPosition.TOP_RIGHT,
+                          Coordinates.VertexPosition.BOTTOM_RIGHT)))
           .withConfigurationValidator(
               Coordinates.oddsAtCoordinatesLessThan(
                   Coordinates.adjacentCoordinates(Coordinates.EXT_5_6_EXP_SEA_SCEN_WOC_MAIN_ISLAND_DESERT_TERRAIN_COORDINATES)
@@ -973,10 +1047,68 @@ import * as Tiles from './Tiles';
       }),
       oneToOne('main-island-producing-terrain', 'small-island-gold-terrain'))
           .withMarkers(
-              new Markers.Marker(Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT, new Coordinates.Coordinate(10, 2).onVertices(Coordinates.VertexPosition.TOP)),
-              new Markers.Marker(Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT, new Coordinates.Coordinate(10, 2).onVertices(Coordinates.VertexPosition.TOP_RIGHT)),
-              new Markers.Marker(Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT, new Coordinates.Coordinate(10, 6).onVertices(Coordinates.VertexPosition.BOTTOM)),
-              new Markers.Marker(Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT, new Coordinates.Coordinate(10, 6).onVertices(Coordinates.VertexPosition.BOTTOM_LEFT)))
+              new Markers.Marker(
+                  Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT,
+                  new Coordinates.Coordinate(10, 2)
+                      .onVertices(
+                          Coordinates.VertexPosition.TOP,
+                          Coordinates.VertexPosition.TOP_RIGHT)),
+              new Markers.Marker(
+                  Markers.SETUP_SETTLEMENTS_PROHIBITION,
+                  new Coordinates.Coordinate(9, 1)
+                      .onVertices(
+                          Coordinates.VertexPosition.TOP_RIGHT,
+                          Coordinates.VertexPosition.BOTTOM)),
+              new Markers.Marker(
+                  Markers.SETUP_SETTLEMENTS_PROHIBITION,
+                  new Coordinates.Coordinate(12, 2)
+                      .onVertices(
+                          Coordinates.VertexPosition.BOTTOM_LEFT,
+                          Coordinates.VertexPosition.TOP)),
+              new Markers.Marker(
+                  Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT,
+                  new Coordinates.Coordinate(10, 6)
+                      .onVertices(
+                          Coordinates.VertexPosition.BOTTOM,
+                          Coordinates.VertexPosition.BOTTOM_LEFT)),
+              new Markers.Marker(
+                  Markers.SETUP_SETTLEMENTS_PROHIBITION,
+                  new Coordinates.Coordinate(8, 6)
+                      .onVertices(
+                          Coordinates.VertexPosition.TOP_RIGHT,
+                          Coordinates.VertexPosition.BOTTOM)),
+              new Markers.Marker(
+                  Markers.SETUP_SETTLEMENTS_PROHIBITION,
+                  new Coordinates.Coordinate(11, 7)
+                      .onVertices(
+                          Coordinates.VertexPosition.BOTTOM_LEFT,
+                          Coordinates.VertexPosition.TOP)),
+              new Markers.Marker(
+                  Markers.GREAT_WALL_SETTLEMENTS_REQUIREMENT,
+                  new Coordinates.Coordinate(2, 4)
+                      .onVertices(
+                          Coordinates.VertexPosition.BOTTOM_LEFT,
+                          Coordinates.VertexPosition.TOP_LEFT,
+                          Coordinates.VertexPosition.TOP)),
+              new Markers.Marker(
+                  Markers.GREAT_WALL_SETTLEMENTS_REQUIREMENT,
+                  new Coordinates.Coordinate(3, 5)
+                      .onVertices(
+                          Coordinates.VertexPosition.BOTTOM_LEFT,
+                          Coordinates.VertexPosition.TOP_LEFT)),
+              new Markers.Marker(
+                  Markers.GREAT_WALL_SETTLEMENTS_REQUIREMENT,
+                  new Coordinates.Coordinate(17, 3)
+                      .onVertices(
+                          Coordinates.VertexPosition.TOP_RIGHT,
+                          Coordinates.VertexPosition.BOTTOM_RIGHT)),
+              new Markers.Marker(
+                  Markers.GREAT_WALL_SETTLEMENTS_REQUIREMENT,
+                  new Coordinates.Coordinate(18, 4)
+                      .onVertices(
+                          Coordinates.VertexPosition.TOP_RIGHT,
+                          Coordinates.VertexPosition.BOTTOM_RIGHT,
+                          Coordinates.VertexPosition.BOTTOM)))
           .withConfigurationValidator(
               Coordinates.oddsAtCoordinatesLessThan(
                   Coordinates.adjacentCoordinates(Coordinates.EXT_7_8_EXP_SEA_SCEN_WOC_MAIN_ISLAND_DESERT_TERRAIN_COORDINATES)

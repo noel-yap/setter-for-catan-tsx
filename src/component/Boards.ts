@@ -2,6 +2,7 @@ import * as _ from 'underscore';
 
 import * as Configuration from './Configuration';
 import * as Coordinates from './Coordinates';
+import * as Markers from './Markers';
 import * as Specifications from './Specifications';
 import * as Tiles from './Tiles';
 
@@ -14,8 +15,9 @@ import * as Tiles from './Tiles';
     private _victoryPointsLayout: Configuration.Configuration[] = [];
     private _vertexChitsLayout: Configuration.Configuration[] = [];
     private _riverLayout: Configuration.Configuration[] = [];
+    private _vertexMarkersLayout: Markers.Marker[] = [];
 
-    constructor(configurations: Configuration.Configuration[]) {
+    constructor(configurations: Configuration.Configuration[], markers: Markers.Marker[] = []) {
       console.log(`configuration = ${JSON.stringify(configurations)}`);
 
       const riverNotRiver = _.groupBy(configurations, (configuration) => configuration.tile.type === Tiles.Type.RIVER ? 0 : 1);
@@ -40,6 +42,7 @@ import * as Tiles from './Tiles';
       this._developmentCardsLayout = twoPositionComponents[Tiles.Type.DEVELOPMENT_CARD] || [];
       this._terrainTilesLayout = groupedComponents['6'] || [];
       this._riverLayout = riverNotRiver[0] || [];
+      this._vertexMarkersLayout = markers;
     }
 
     get terrainTilesLayout(): Configuration.Configuration[] {
@@ -58,9 +61,9 @@ import * as Tiles from './Tiles';
       return this._vertexChitsLayout;
     }
 
-    // get vertexMarkersLayout(): Configuration.Configuration[] {
-    //   return this._vertexMarkersLayout;
-    // }
+    get vertexMarkersLayout(): Markers.Marker[] {
+      return this._vertexMarkersLayout;
+    }
 
     get fisheryTilesLayout(): Configuration.Configuration[] {
       return this._fisheryTilesLayout;
@@ -122,7 +125,7 @@ import * as Tiles from './Tiles';
                 return result;
               });
               if (configurationsValid) {
-                const board = new Board(configurations);
+                const board = new Board(configurations, this.specification.markers);
 
                 const boardPenalty = this.boardPenalty(board, validOddsRanges);
                 const totalScore = initialScore - boardPenalty;
