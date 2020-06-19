@@ -1,0 +1,11 @@
+version: '3.7'
+
+services:
+
+  setter-for-catan-prod:
+    container_name: setter-for-catan-prod
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    ports:
+      - '3011:80'
