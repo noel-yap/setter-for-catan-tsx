@@ -137,8 +137,8 @@ import * as Tiles from './Tiles';
       };
 
       // IDEA: Allow specification not to shuffle (eg for face-down tiles and sets of like tiles).
-      const tileCoordinateMap = tileArtifactMap(this.coordinatesTilesMap, this.coordinates);
-      const tileChitsMap = tileArtifactMap(this.chitsTilesMap, this.chits);
+      const tileCoordinateMap = tileArtifactMap(this.coordinatesTilesMap, this.coordinates) as unknown as {[tileId: string]: Coordinates.Coordinate};
+      const tileChitsMap = tileArtifactMap(this.chitsTilesMap, this.chits) as unknown as {[tileId: string]: Chits.Chits};
 
       return Object.keys(tileCoordinateMap).map((tileId) => {
         const delimiterIndex = tileId.indexOf('[');
