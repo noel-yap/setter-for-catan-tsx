@@ -29,3 +29,7 @@ yarn-error.log*
 
 # gradle
 /.gradle
+
+# VS Code
+.history
+.vscode
