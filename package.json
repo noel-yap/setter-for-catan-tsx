@@ -18,6 +18,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start:debug": "react-scripts --inspect-brk start --runInBand --no-cache",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
