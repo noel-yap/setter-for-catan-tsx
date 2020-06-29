@@ -27,45 +27,51 @@ export class GeneratedBoard extends React.Component<GeneratedBoardProps, Generat
   private canvasDivRef = React.createRef<HTMLDivElement>();
 
   render(): JSX.Element {
-    const canvasDiv = this.canvasDivRef.current;
-    if (!!canvasDiv) {
-      canvasDiv.childNodes.forEach((child) => canvasDiv.removeChild(child));
+    if (Object.keys(this.props.board).length != 0) {
+      const canvasDiv = this.canvasDivRef.current;
+      if (!!canvasDiv) {
+        canvasDiv.childNodes.forEach((child) => canvasDiv.removeChild(child));
 
-      canvasDiv.appendChild(this.renderBoard());
+        canvasDiv.appendChild(this.renderBoard());
+      }
+
+      const terrainTilesByType = GeneratedBoard.groupByComponentType(this.props.board.terrainTilesLayout);
+      const riverByType = GeneratedBoard.groupByComponentType(this.props.board.riverLayout);
+      const fisheryTilesByType = GeneratedBoard.groupByComponentType(this.props.board.fisheryTilesLayout);
+      const developmentCardsByType = GeneratedBoard.groupByComponentType(this.props.board.developmentCardsLayout);
+      const harborTilesByType = GeneratedBoard.groupByComponentType(this.props.board.harborTilesLayout);
+      const victoryPointsByType = GeneratedBoard.groupByComponentType(this.props.board.victoryPointsLayout);
+      const chits = _.groupBy(
+          this.props.board.terrainTilesLayout
+              .concat(this.props.board.fisheryTilesLayout)
+              .concat(this.props.board.vertexChitsLayout),
+          (component) => {
+            return component.chits.values;
+          });
+
+      return (
+          <div className="row">
+            <div>
+              <Typography variant="body1">
+                Components:
+              </Typography>
+              <Typography variant="body2">
+                {GeneratedBoard.renderBom(terrainTilesByType)}
+                {GeneratedBoard.renderBom(riverByType)}
+                {GeneratedBoard.renderBom(fisheryTilesByType)}
+                {GeneratedBoard.renderBom(chits, 'Chit')}
+                {GeneratedBoard.renderBom(harborTilesByType)}
+                {GeneratedBoard.renderBom(developmentCardsByType)}
+                {GeneratedBoard.renderBom(victoryPointsByType)}
+              </Typography>
+            </div>
+            <div id="generated-board-div" ref={this.canvasDivRef}/>
+          </div>);
+    } else {
+      return (
+        <div/>
+      );
     }
-
-    const terrainTilesByType = GeneratedBoard.groupByComponentType(this.props.board.terrainTilesLayout);
-    const riverByType = GeneratedBoard.groupByComponentType(this.props.board.riverLayout);
-    const fisheryTilesByType = GeneratedBoard.groupByComponentType(this.props.board.fisheryTilesLayout);
-    const developmentCardsByType = GeneratedBoard.groupByComponentType(this.props.board.developmentCardsLayout);
-    const harborTilesByType = GeneratedBoard.groupByComponentType(this.props.board.harborTilesLayout);
-    const victoryPointsByType = GeneratedBoard.groupByComponentType(this.props.board.victoryPointsLayout);
-    const chits = _.groupBy(
-        this.props.board.terrainTilesLayout
-            .concat(this.props.board.fisheryTilesLayout)
-            .concat(this.props.board.vertexChitsLayout),
-        (component) => {
-          return component.chits.values;
-        });
-
-    return (
-        <div className="row">
-          <div>
-            <Typography variant="body1">
-              Components:
-            </Typography>
-            <Typography variant="body2">
-              {GeneratedBoard.renderBom(terrainTilesByType)}
-              {GeneratedBoard.renderBom(riverByType)}
-              {GeneratedBoard.renderBom(fisheryTilesByType)}
-              {GeneratedBoard.renderBom(chits, 'Chit')}
-              {GeneratedBoard.renderBom(harborTilesByType)}
-              {GeneratedBoard.renderBom(developmentCardsByType)}
-              {GeneratedBoard.renderBom(victoryPointsByType)}
-            </Typography>
-          </div>
-          <div id="generated-board-div" ref={this.canvasDivRef}/>
-        </div>);
   }
 
   renderBoard(): HTMLCanvasElement {

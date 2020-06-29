@@ -1,7 +1,7 @@
 // export module Coordinates {
   import * as Configuration from "./Configuration";
 
-export enum EdgePosition {
+  export enum EdgePosition {
     TOP_RIGHT,
     RIGHT,
     BOTTOM_RIGHT,
