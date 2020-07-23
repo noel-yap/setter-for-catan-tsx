@@ -1,20 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 
-import {
-  Button,
-  Typography
-} from '@material-ui/core';
-import { MuiThemeProvider } from '@material-ui/core/styles';
+import {Button, Typography} from '@material-ui/core';
+import {MuiThemeProvider} from '@material-ui/core/styles';
 
-import { useOktaAuth } from '@okta/okta-react';
+import {useOktaAuth} from '@okta/okta-react';
 
 import SetterForCatan from './SetterForCatan';
 
 import mui from './mui';
 
-const Home = () => { 
-  const { authState, authService } = useOktaAuth();
+const Home = () => {
+  const {authState, authService} = useOktaAuth();
   const [userInfo, setUserInfo] = useState(null);
+  const accessToken = authState.accessToken;
 
   useEffect(() => {
     if (!authState.isAuthenticated) {
@@ -26,38 +24,40 @@ const Home = () => {
       });
     }
   }, [authState, authService]); // Update if authState changes
-  
+
   return (
     <div className="App">
       <header className="App-body">
         <MuiThemeProvider theme={mui.theme}>
-          <Typography id="title" variant="h3">Setter for Catan</Typography>
-          {
-            userInfo
-            ? <div>
-              <SetterForCatan/>
+          <Typography id="title" variant="h3">
+            Setter for Catan
+          </Typography>
+          {userInfo ? (
+            <div>
+              <SetterForCatan />
               <Button
-                  id="logout-button"
-                  color="primary"
-                  onClick={async () => {
-                    authService.logout('/login')
-                  }}
+                id="logout-button"
+                color="primary"
+                onClick={async () => {
+                  authService.logout('/login');
+                }}
               >
                 <Typography variant="h4">Logout</Typography>
               </Button>
             </div>
-            : <div>
+          ) : (
+            <div>
               <Button
-                  id="login-button"
-                  color="primary"
-                  onClick={async () => {
-                    authService.login('/');
-                  }}
+                id="login-button"
+                color="primary"
+                onClick={async () => {
+                  authService.login('/');
+                }}
               >
                 <Typography variant="h4">Login</Typography>
               </Button>
             </div>
-          }
+          )}
         </MuiThemeProvider>
       </header>
     </div>

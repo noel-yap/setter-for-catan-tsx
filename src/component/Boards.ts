@@ -7,22 +7,32 @@ import * as Specifications from './Specifications';
 import * as Tiles from './Tiles';
 
 // export module Boards {
-  export class Board {
-    private _terrainTilesLayout: Configuration.Configuration[] = [];
-    private _harborTilesLayout: Configuration.Configuration[] = [];
-    private _fisheryTilesLayout: Configuration.Configuration[] = [];
-    private _developmentCardsLayout: Configuration.Configuration[] = [];
-    private _victoryPointsLayout: Configuration.Configuration[] = [];
-    private _vertexChitsLayout: Configuration.Configuration[] = [];
-    private _riverLayout: Configuration.Configuration[] = [];
-    private _vertexMarkersLayout: Markers.Marker[] = [];
+export class Board {
+  private _terrainTilesLayout: Configuration.Configuration[] = [];
+  private _harborTilesLayout: Configuration.Configuration[] = [];
+  private _fisheryTilesLayout: Configuration.Configuration[] = [];
+  private _developmentCardsLayout: Configuration.Configuration[] = [];
+  private _victoryPointsLayout: Configuration.Configuration[] = [];
+  private _vertexChitsLayout: Configuration.Configuration[] = [];
+  private _riverLayout: Configuration.Configuration[] = [];
+  private _vertexMarkersLayout: Markers.Marker[] = [];
 
-    constructor(configurations: Configuration.Configuration[], markers: Markers.Marker[] = []) {
-      console.log(`configuration = ${JSON.stringify(configurations)}`);
+  constructor(
+    configurations: Configuration.Configuration[],
+    markers: Markers.Marker[] = []
+  ) {
+    console.log(`configuration = ${JSON.stringify(configurations)}`);
 
-      const riverNotRiver = _.groupBy(configurations, (configuration) => configuration.tile.type === Tiles.Type.RIVER ? 0 : 1);
-      const groupedComponents = _.groupBy(riverNotRiver[1], (configuration) => configuration.coordinate.edges.length);
-      const groupedOnePositionComponents = _.groupBy(groupedComponents['1'], (configuration) => {
+    const riverNotRiver = _.groupBy(configurations, configuration =>
+      configuration.tile.type === Tiles.Type.RIVER ? 0 : 1
+    );
+    const groupedComponents = _.groupBy(
+      riverNotRiver[1],
+      configuration => configuration.coordinate.edges.length
+    );
+    const groupedOnePositionComponents = _.groupBy(
+      groupedComponents['1'],
+      configuration => {
         switch (configuration.tile.type) {
           case Tiles.Type.VICTORY_POINT: {
             return configuration.tile.type;
@@ -32,235 +42,356 @@ import * as Tiles from './Tiles';
             return 'harbor';
           }
         }
-      });
-      const twoPositionComponents = _.groupBy(groupedComponents['2'], (configuration) => configuration.tile.type);
+      }
+    );
+    const twoPositionComponents = _.groupBy(
+      groupedComponents['2'],
+      configuration => configuration.tile.type
+    );
 
-      this._harborTilesLayout = groupedOnePositionComponents['harbor'] || [];
-      this._victoryPointsLayout = groupedOnePositionComponents[Tiles.Type.VICTORY_POINT] || [];
-      this._vertexChitsLayout = groupedComponents['0'] || [];
-      this._fisheryTilesLayout = twoPositionComponents[Tiles.Type.FISHERY] || [];
-      this._developmentCardsLayout = twoPositionComponents[Tiles.Type.DEVELOPMENT_CARD] || [];
-      this._terrainTilesLayout = groupedComponents['6'] || [];
-      this._riverLayout = riverNotRiver[0] || [];
-      this._vertexMarkersLayout = markers;
-    }
-
-    get terrainTilesLayout(): Configuration.Configuration[] {
-      return this._terrainTilesLayout;
-    }
-
-    get harborTilesLayout(): Configuration.Configuration[] {
-      return this._harborTilesLayout;
-    }
-
-    get victoryPointsLayout(): Configuration.Configuration[] {
-      return this._victoryPointsLayout;
-    }
-
-    get vertexChitsLayout(): Configuration.Configuration[] {
-      return this._vertexChitsLayout;
-    }
-
-    get vertexMarkersLayout(): Markers.Marker[] {
-      return this._vertexMarkersLayout;
-    }
-
-    get fisheryTilesLayout(): Configuration.Configuration[] {
-      return this._fisheryTilesLayout;
-    }
-
-    get developmentCardsLayout(): Configuration.Configuration[] {
-      return this._developmentCardsLayout;
-    }
-
-    get riverLayout(): Configuration.Configuration[] {
-      return this._riverLayout;
-    }
-
-    isEmpty(): boolean {
-      return this._terrainTilesLayout.length === 0 &&
-          this._harborTilesLayout.length === 0 &&
-          this._fisheryTilesLayout.length === 0;
-    }
+    this._harborTilesLayout = groupedOnePositionComponents['harbor'] || [];
+    this._victoryPointsLayout =
+      groupedOnePositionComponents[Tiles.Type.VICTORY_POINT] || [];
+    this._vertexChitsLayout = groupedComponents['0'] || [];
+    this._fisheryTilesLayout = twoPositionComponents[Tiles.Type.FISHERY] || [];
+    this._developmentCardsLayout =
+      twoPositionComponents[Tiles.Type.DEVELOPMENT_CARD] || [];
+    this._terrainTilesLayout = groupedComponents['6'] || [];
+    this._riverLayout = riverNotRiver[0] || [];
+    this._vertexMarkersLayout = markers;
   }
 
-  export class BoardGenerator {
-    constructor(public specification: Specifications.Specification) {}
+  get terrainTilesLayout(): Configuration.Configuration[] {
+    return this._terrainTilesLayout;
+  }
 
-    generateBoard(): Board {
-      const steppedValidOddsRanges = [
-        [[0, 6], [3, 9], [6, 12]],
-        [[0, 6], [2, 10], [5, 13]],
-        [[0, 6], [2, 10], [4, 14]],
-        [[0, 6], [1, 11], [3, 15]],
-        [[0, 6], [1, 11], [2, 16]],
-        [[0, 6], [0, 12], [0, 18]],
-        [[0, Number.MAX_SAFE_INTEGER], [0, Number.MAX_SAFE_INTEGER], [0, Number.MAX_SAFE_INTEGER]]];
-      const attemptsPerStep = Math.pow(6, 3);
+  get harborTilesLayout(): Configuration.Configuration[] {
+    return this._harborTilesLayout;
+  }
 
-      return _.range(0, steppedValidOddsRanges.length * attemptsPerStep)
-          .reduce((accum, count, _, range) => {
-            const maxScore = accum['maxScore'];
+  get victoryPointsLayout(): Configuration.Configuration[] {
+    return this._victoryPointsLayout;
+  }
 
-            const validOddsRanges = steppedValidOddsRanges[Math.floor(count / attemptsPerStep)];
-            const initialScore = validOddsRanges[0][0] + validOddsRanges[1][0] + validOddsRanges[2][0];
+  get vertexChitsLayout(): Configuration.Configuration[] {
+    return this._vertexChitsLayout;
+  }
 
-            console.log(`maxScore = ${maxScore}`);
+  get vertexMarkersLayout(): Markers.Marker[] {
+    return this._vertexMarkersLayout;
+  }
 
-            if (initialScore <= maxScore) {
-              // highest-scoring board has been found
+  get fisheryTilesLayout(): Configuration.Configuration[] {
+    return this._fisheryTilesLayout;
+  }
 
-              console.log(`Breaking out of iteration: validOddsRanges = ${validOddsRanges}, initialScore = ${initialScore}, maxScore = ${maxScore}`);
+  get developmentCardsLayout(): Configuration.Configuration[] {
+    return this._developmentCardsLayout;
+  }
 
-              range.splice(1); // break out of iteration
-            } else {
-              const configurations = this.specification.toConfiguration();
+  get riverLayout(): Configuration.Configuration[] {
+    return this._riverLayout;
+  }
 
-              // IDEA: Score configuration validation instead of having it be all-or-nothing.
-              const configurationsValid = configurations.every((configuration) => {
-                const result = this.specification.validateConfiguration(configuration);
+  isEmpty(): boolean {
+    return (
+      this._terrainTilesLayout.length === 0 &&
+      this._harborTilesLayout.length === 0 &&
+      this._fisheryTilesLayout.length === 0
+    );
+  }
+}
 
-                console.log(`${JSON.stringify(configuration)} ${result ? 'passes' : 'fails'} custom validation.`);
+export class BoardGenerator {
+  constructor(public specification: Specifications.Specification) {}
 
-                return result;
-              });
-              if (configurationsValid) {
-                const board = new Board(configurations, this.specification.markers);
+  generateBoard(): Board {
+    const steppedValidOddsRanges = [
+      [
+        [0, 6],
+        [3, 9],
+        [6, 12],
+      ],
+      [
+        [0, 6],
+        [2, 10],
+        [5, 13],
+      ],
+      [
+        [0, 6],
+        [2, 10],
+        [4, 14],
+      ],
+      [
+        [0, 6],
+        [1, 11],
+        [3, 15],
+      ],
+      [
+        [0, 6],
+        [1, 11],
+        [2, 16],
+      ],
+      [
+        [0, 6],
+        [0, 12],
+        [0, 18],
+      ],
+      [
+        [0, Number.MAX_SAFE_INTEGER],
+        [0, Number.MAX_SAFE_INTEGER],
+        [0, Number.MAX_SAFE_INTEGER],
+      ],
+    ];
+    const attemptsPerStep = Math.pow(6, 3);
 
-                const boardPenalty = this.boardPenalty(board, validOddsRanges);
-                const totalScore = initialScore - boardPenalty;
+    return _.range(0, steppedValidOddsRanges.length * attemptsPerStep).reduce(
+      (accum, count, _, range) => {
+        const maxScore = accum['maxScore'];
 
-                console.log(`Checking for new fairestBoard: validOddsRanges = ${JSON.stringify(validOddsRanges)}, totalScore = ${totalScore}, maxScore = ${maxScore}`);
+        const validOddsRanges =
+          steppedValidOddsRanges[Math.floor(count / attemptsPerStep)];
+        const initialScore =
+          validOddsRanges[0][0] + validOddsRanges[1][0] + validOddsRanges[2][0];
 
-                if (totalScore > maxScore) {
-                  console.log(`Found new fairestBoard: validOddsRanges = ${JSON.stringify(validOddsRanges)}, totalScore = ${totalScore}, maxScore = ${maxScore}`);
+        console.log(`maxScore = ${maxScore}`);
 
-                  return {'maxScore': totalScore, 'fairestBoard': board};
-                }
-              }
+        if (initialScore <= maxScore) {
+          // highest-scoring board has been found
+
+          console.log(
+            `Breaking out of iteration: validOddsRanges = ${validOddsRanges}, initialScore = ${initialScore}, maxScore = ${maxScore}`
+          );
+
+          range.splice(1); // break out of iteration
+        } else {
+          const configurations = this.specification.toConfiguration();
+
+          // IDEA: Score configuration validation instead of having it be all-or-nothing.
+          const configurationsValid = configurations.every(configuration => {
+            const result = this.specification.validateConfiguration(
+              configuration
+            );
+
+            console.log(
+              `${JSON.stringify(configuration)} ${
+                result ? 'passes' : 'fails'
+              } custom validation.`
+            );
+
+            return result;
+          });
+          if (configurationsValid) {
+            const board = new Board(configurations, this.specification.markers);
+
+            const boardPenalty = this.boardPenalty(board, validOddsRanges);
+            const totalScore = initialScore - boardPenalty;
+
+            console.log(
+              `Checking for new fairestBoard: validOddsRanges = ${JSON.stringify(
+                validOddsRanges
+              )}, totalScore = ${totalScore}, maxScore = ${maxScore}`
+            );
+
+            if (totalScore > maxScore) {
+              console.log(
+                `Found new fairestBoard: validOddsRanges = ${JSON.stringify(
+                  validOddsRanges
+                )}, totalScore = ${totalScore}, maxScore = ${maxScore}`
+              );
+
+              return {maxScore: totalScore, fairestBoard: board};
             }
-
-            console.log(`count = ${count}, validOddsRange = ${JSON.stringify(validOddsRanges)}, score = ${maxScore}, initialScore = ${initialScore}`);
-
-            return accum;
-          }, {'maxScore': Number.MIN_SAFE_INTEGER, 'fairestBoard': new Board([])})['fairestBoard'];
-    }
-
-    boardPenalty(board: Board, validOddsRanges: number[][]): number {
-      function key(x: number, y: number): string {
-        return `(${x},${y})`;
-      }
-      function odds(contributingTiles: Configuration.Configuration[], vertex: number): number {
-        return contributingTiles
-            .filter((ct) => {
-              return ct.coordinate.edges.some((p) => {
-                return p === vertex || p === (vertex + 5) % 6;
-              });
-            })
-            .reduce((sum, ct) => {
-              const ctOdds = ct.chits.odds();
-
-              return sum + ctOdds;
-            }, 0);
-      }
-      function penaltyPoints(contributors: [Configuration.Configuration[], number][]): number {
-        if (contributors.length === 0) {
-          return 0;
+          }
         }
 
-        const contributorCount = contributors.reduce((sum, c) => sum + c[0].length, 0);
-        const validRange = validOddsRanges[contributorCount - 1];
+        console.log(
+          `count = ${count}, validOddsRange = ${JSON.stringify(
+            validOddsRanges
+          )}, score = ${maxScore}, initialScore = ${initialScore}`
+        );
 
-        if (validRange === undefined) {
-          throw new Error(`Invalid configuration: ${contributorCount} tiles contributing to coordinate. contributors = ${JSON.stringify(contributors)}`);
-        }
-
-        const totalOdds = contributors
-            .reduce((sum, contributor) => {
-              const contributorOdds = odds(contributor[0], contributor[1]);
-
-              console.log(`contributor = ${JSON.stringify(contributor)}, odds = ${contributorOdds}`);
-
-              return sum + contributorOdds;
-            }, 0);
-
-        const result = totalOdds < validRange[0]
-            ? validRange[0] - totalOdds
-            : validRange[1] < totalOdds
-            ? totalOdds - validRange[1]
-            : 0;
-
-        console.log(`contributors = ${JSON.stringify(contributors)}, odds = ${totalOdds}, contributorCount = ${contributorCount}, validRange = ${JSON.stringify(validRange)}, ${result === 0 ? 'pass' : 'fail'}`);
-
-        return result;
-      }
-
-      const producingConfiguration = board.terrainTilesLayout
-          .concat(board.fisheryTilesLayout);
-      const coordinatesMap = _.groupBy(
-          producingConfiguration,
-          (ct) => key(ct.coordinate.x, ct.coordinate.y));
-
-      const xs: number[] = Object.keys(coordinatesMap)
-          .map((c) => {
-            return Number(c
-                .substr(1, c.length - 1)
-                .replace(/,.*/, ''));
-          });
-      const minX = Math.min(...xs);
-      const maxX = Math.max(...xs);
-
-      const ys: number[] = Object.keys(coordinatesMap)
-          .map((c) => {
-            return Number(c
-                .substr(1, c.length - 2)
-                .replace(/.*,/, ''));
-          });
-      const minY = Math.min(...ys);
-      const maxY = Math.max(...ys);
-
-      console.log(`x ∈ [${minX}, ${maxX}], y ∈ [${minY}, ${maxY}]`);
-
-      return _.range(minY - 1, maxY + 1)
-          .reduce((sumOverYs, y) => {
-            const xAdjustment = (minX + y) % 2;
-
-            return sumOverYs + _.range(minX - 2 + xAdjustment, maxX + 2 - xAdjustment, 2)
-                .reduce((sumOverXs, x) => {
-                  const topVertexContributors = <[Configuration.Configuration[], number][]>[
-                    [coordinatesMap[key(x, y)], Coordinates.VertexPosition.TOP],
-                    [coordinatesMap[key(x - 1, y - 1)], Coordinates.VertexPosition.BOTTOM_RIGHT],
-                    [coordinatesMap[key(x + 1, y - 1)], Coordinates.VertexPosition.BOTTOM_LEFT]];
-                  const topRightVertexContributors = <[Configuration.Configuration[], number][]>[
-                    [coordinatesMap[key(x, y)], Coordinates.VertexPosition.TOP_RIGHT],
-                    [coordinatesMap[key(x + 1, y - 1)], Coordinates.VertexPosition.BOTTOM],
-                    [coordinatesMap[key(x + 2, y)], Coordinates.VertexPosition.TOP_LEFT]];
-
-                  console.log(`(x, y) = ${key(x, y)}, topVertexContributors = ${JSON.stringify(topVertexContributors)}, topRightVertexContributors = ${JSON.stringify(topRightVertexContributors)}`);
-
-                  return sumOverXs + [topVertexContributors, topRightVertexContributors]
-                      .reduce((sumOverContributors, contributors) => {
-                        const eligibleContributors = contributors
-                            .filter((elt) => elt[0] !== undefined)
-                            .map((contributor) => {
-                              const eligibleConfiguration = contributor[0]
-                                  .filter((configuration: Configuration.Configuration) => {
-                                    return Tiles.SEA !== configuration.tile
-                                        && this.specification.filterConfigurationScorer(configuration)
-                                        && configuration.coordinate.edges.some((p) => {
-                                          return p === contributor[1] || p === (contributor[1] + 5) % 6;
-                                        });
-                                  });
-                              return [eligibleConfiguration, contributor[1]] as [Configuration.Configuration[], number];
-                            })
-                            .filter((elt) => {
-                              return elt[0].length > 0;
-                            });
-
-                        return sumOverContributors + penaltyPoints(eligibleContributors);
-                      }, 0);
-                }, 0);
-          }, 0);
-    }
+        return accum;
+      },
+      {maxScore: Number.MIN_SAFE_INTEGER, fairestBoard: new Board([])}
+    )['fairestBoard'];
   }
+
+  boardPenalty(board: Board, validOddsRanges: number[][]): number {
+    function key(x: number, y: number): string {
+      return `(${x},${y})`;
+    }
+    function odds(
+      contributingTiles: Configuration.Configuration[],
+      vertex: number
+    ): number {
+      return contributingTiles
+        .filter(ct => {
+          return ct.coordinate.edges.some(p => {
+            return p === vertex || p === (vertex + 5) % 6;
+          });
+        })
+        .reduce((sum, ct) => {
+          const ctOdds = ct.chits.odds();
+
+          return sum + ctOdds;
+        }, 0);
+    }
+    function penaltyPoints(
+      contributors: [Configuration.Configuration[], number][]
+    ): number {
+      if (contributors.length === 0) {
+        return 0;
+      }
+
+      const contributorCount = contributors.reduce(
+        (sum, c) => sum + c[0].length,
+        0
+      );
+      const validRange = validOddsRanges[contributorCount - 1];
+
+      if (validRange === undefined) {
+        throw new Error(
+          `Invalid configuration: ${contributorCount} tiles contributing to coordinate. contributors = ${JSON.stringify(
+            contributors
+          )}`
+        );
+      }
+
+      const totalOdds = contributors.reduce((sum, contributor) => {
+        const contributorOdds = odds(contributor[0], contributor[1]);
+
+        console.log(
+          `contributor = ${JSON.stringify(
+            contributor
+          )}, odds = ${contributorOdds}`
+        );
+
+        return sum + contributorOdds;
+      }, 0);
+
+      const result =
+        totalOdds < validRange[0]
+          ? validRange[0] - totalOdds
+          : validRange[1] < totalOdds
+          ? totalOdds - validRange[1]
+          : 0;
+
+      console.log(
+        `contributors = ${JSON.stringify(
+          contributors
+        )}, odds = ${totalOdds}, contributorCount = ${contributorCount}, validRange = ${JSON.stringify(
+          validRange
+        )}, ${result === 0 ? 'pass' : 'fail'}`
+      );
+
+      return result;
+    }
+
+    const producingConfiguration = board.terrainTilesLayout.concat(
+      board.fisheryTilesLayout
+    );
+    const coordinatesMap = _.groupBy(producingConfiguration, ct =>
+      key(ct.coordinate.x, ct.coordinate.y)
+    );
+
+    const xs: number[] = Object.keys(coordinatesMap).map(c => {
+      return Number(c.substr(1, c.length - 1).replace(/,.*/, ''));
+    });
+    const minX = Math.min(...xs);
+    const maxX = Math.max(...xs);
+
+    const ys: number[] = Object.keys(coordinatesMap).map(c => {
+      return Number(c.substr(1, c.length - 2).replace(/.*,/, ''));
+    });
+    const minY = Math.min(...ys);
+    const maxY = Math.max(...ys);
+
+    console.log(`x ∈ [${minX}, ${maxX}], y ∈ [${minY}, ${maxY}]`);
+
+    return _.range(minY - 1, maxY + 1).reduce((sumOverYs, y) => {
+      const xAdjustment = (minX + y) % 2;
+
+      return (
+        sumOverYs +
+        _.range(minX - 2 + xAdjustment, maxX + 2 - xAdjustment, 2).reduce(
+          (sumOverXs, x) => {
+            const topVertexContributors = [
+              [coordinatesMap[key(x, y)], Coordinates.VertexPosition.TOP],
+              [
+                coordinatesMap[key(x - 1, y - 1)],
+                Coordinates.VertexPosition.BOTTOM_RIGHT,
+              ],
+              [
+                coordinatesMap[key(x + 1, y - 1)],
+                Coordinates.VertexPosition.BOTTOM_LEFT,
+              ],
+            ] as [Configuration.Configuration[], Coordinates.VertexPosition][];
+            const topRightVertexContributors = [
+              [coordinatesMap[key(x, y)], Coordinates.VertexPosition.TOP_RIGHT],
+              [
+                coordinatesMap[key(x + 1, y - 1)],
+                Coordinates.VertexPosition.BOTTOM,
+              ],
+              [
+                coordinatesMap[key(x + 2, y)],
+                Coordinates.VertexPosition.TOP_LEFT,
+              ],
+            ] as [Configuration.Configuration[], Coordinates.VertexPosition][];
+
+            console.log(
+              `(x, y) = ${key(x, y)}, topVertexContributors = ${JSON.stringify(
+                topVertexContributors
+              )}, topRightVertexContributors = ${JSON.stringify(
+                topRightVertexContributors
+              )}`
+            );
+
+            return (
+              sumOverXs +
+              [topVertexContributors, topRightVertexContributors].reduce(
+                (sumOverContributors, contributors) => {
+                  const eligibleContributors = contributors
+                    .filter(elt => elt[0] !== undefined)
+                    .map(contributor => {
+                      const eligibleConfiguration = contributor[0].filter(
+                        (configuration: Configuration.Configuration) => {
+                          return (
+                            Tiles.SEA !== configuration.tile &&
+                            this.specification.filterConfigurationScorer(
+                              configuration
+                            ) &&
+                            configuration.coordinate.edges.some(p => {
+                              return (
+                                p.valueOf() === contributor[1].valueOf() ||
+                                p.valueOf() ===
+                                  (contributor[1].valueOf() + 5) % 6
+                              );
+                            })
+                          );
+                        }
+                      );
+                      return [eligibleConfiguration, contributor[1]] as [
+                        Configuration.Configuration[],
+                        number
+                      ];
+                    })
+                    .filter(elt => {
+                      return elt[0].length > 0;
+                    });
+
+                  return (
+                    sumOverContributors + penaltyPoints(eligibleContributors)
+                  );
+                },
+                0
+              )
+            );
+          },
+          0
+        )
+      );
+    }, 0);
+  }
+}
 // }
