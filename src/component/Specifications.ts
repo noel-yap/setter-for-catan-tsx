@@ -212,6 +212,7 @@ export class Specification {
   }
 }
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 function oneToOne(...names: string[]): any {
   return names.reduce(
     (result, name) => Object.assign(result, {[name]: [name]}),
@@ -234,7 +235,10 @@ export function withFisheries(
     Chits.CHITS_9,
   ];
 
-  const desertCount = specification.tiles.hasOwnProperty('desert-or-lake')
+  const desertCount = Object.prototype.hasOwnProperty.call(
+    specification.tiles,
+    'desert-or-lake'
+  )
     ? specification.tiles['desert-or-lake'].length
     : 0;
   const fisheryCount = fisheryCoordinates.length;
@@ -717,8 +721,7 @@ export const SPEC_3_EXP_SEA_SCEN_TD = new Specification(
 )
   .withConfigurationValidator((configuration: Configuration.Configuration) => {
     return (
-      configuration.tile !== Tiles.GOLD_TERRAIN ||
-      configuration.chits.odds() < 5
+      configuration.tile !== Tiles.GOLD_TERRAIN || configuration.chit.odds() < 5
     );
   })
   .withConfigurationScorerFilter(
@@ -773,8 +776,7 @@ export const SPEC_4_EXP_SEA_SCEN_TD = new Specification(
 )
   .withConfigurationValidator((configuration: Configuration.Configuration) => {
     return (
-      configuration.tile !== Tiles.GOLD_TERRAIN ||
-      configuration.chits.odds() < 5
+      configuration.tile !== Tiles.GOLD_TERRAIN || configuration.chit.odds() < 5
     );
   })
   .withConfigurationScorerFilter(
@@ -829,8 +831,7 @@ export const SPEC_5_6_EXP_SEA_SCEN_TD = new Specification(
 )
   .withConfigurationValidator((configuration: Configuration.Configuration) => {
     return (
-      configuration.tile !== Tiles.GOLD_TERRAIN ||
-      configuration.chits.odds() < 5
+      configuration.tile !== Tiles.GOLD_TERRAIN || configuration.chit.odds() < 5
     );
   })
   .withConfigurationScorerFilter(
@@ -884,7 +885,7 @@ export const SPEC_7_8_EXP_SEA_SCEN_TD = new Specification(
   oneToOne('indigenous-producing-terrain', 'foreign-producing-terrain')
 ).withConfigurationValidator((configuration: Configuration.Configuration) => {
   return (
-    configuration.tile !== Tiles.GOLD_TERRAIN || configuration.chits.odds() < 5
+    configuration.tile !== Tiles.GOLD_TERRAIN || configuration.chit.odds() < 5
   );
 });
 
@@ -938,7 +939,7 @@ export const SPEC_3_4_EXP_SEA_SCEN_FT = new Specification(
       mainIslandMaxX < coordinate.x ||
       coordinate.y < mainIslandMinY ||
       mainIslandMaxY < coordinate.y ||
-      configuration.chits.odds() < 4
+      configuration.chit.odds() < 4
     );
   })
   .withConfigurationScorerFilter(

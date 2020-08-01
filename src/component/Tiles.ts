@@ -33,6 +33,12 @@ export enum Type {
   CHIT = 'Chit',
 }
 
+export function tileTypeFromString(type: string): Type {
+  return Object.keys(Type)
+      .filter(t => t === type)
+      .map(t => Type[t as keyof typeof Type])[0];
+}
+
 export class Tile {
   constructor(
     public type: Type,

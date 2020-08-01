@@ -28,7 +28,7 @@ export class Board {
     );
     const groupedComponents = _.groupBy(
       riverNotRiver[1],
-      configuration => configuration.coordinate.edges.length
+      configuration => configuration.coordinate.edgePositions.length
     );
     const groupedOnePositionComponents = _.groupBy(
       groupedComponents['1'],
@@ -227,12 +227,12 @@ export class BoardGenerator {
     ): number {
       return contributingTiles
         .filter(ct => {
-          return ct.coordinate.edges.some(p => {
+          return ct.coordinate.edgePositions.some(p => {
             return p === vertex || p === (vertex + 5) % 6;
           });
         })
         .reduce((sum, ct) => {
-          const ctOdds = ct.chits.odds();
+          const ctOdds = ct.chit.odds();
 
           return sum + ctOdds;
         }, 0);
@@ -361,7 +361,7 @@ export class BoardGenerator {
                             this.specification.filterConfigurationScorer(
                               configuration
                             ) &&
-                            configuration.coordinate.edges.some(p => {
+                            configuration.coordinate.edgePositions.some(p => {
                               return (
                                 p.valueOf() === contributor[1].valueOf() ||
                                 p.valueOf() ===

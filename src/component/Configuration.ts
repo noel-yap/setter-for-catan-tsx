@@ -7,7 +7,7 @@ export class Configuration {
   constructor(
     public tile: Tiles.Tile,
     public coordinate: Coordinates.Coordinate,
-    public chits: Chits.Chits
+    public chit: Chits.Chits
   ) {
     this.validateConfiguration();
   }
@@ -16,13 +16,13 @@ export class Configuration {
     console.log(
       `tile = ${JSON.stringify(this.tile)}, coordinate = ${JSON.stringify(
         this.coordinate
-      )}, chits = ${JSON.stringify(this.chits)}`
+      )}, chits = ${JSON.stringify(this.chit)}`
     );
 
     const tileEdgeCount = this.tile.edgeCount();
     if (
-      this.coordinate.edges.length < tileEdgeCount[0] ||
-      tileEdgeCount[1] < this.coordinate.edges.length
+      this.coordinate.edgePositions.length < tileEdgeCount[0] ||
+      tileEdgeCount[1] < this.coordinate.edgePositions.length
     ) {
       throw new Error(
         `Invalid configuration: Coordinate \`${JSON.stringify(

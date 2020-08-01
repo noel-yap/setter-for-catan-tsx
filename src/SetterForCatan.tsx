@@ -17,7 +17,10 @@ import * as BoardRestClient from './BoardRestClient';
 import * as Boards from './component/Boards';
 import * as Coordinates from './component/Coordinates';
 import * as Specifications from './component/Specifications';
+import {Board} from './component/Boards';
+import {Specification} from './component/Specifications';
 
+/* eslint-disable @typescript-eslint/no-empty-interface */
 interface SetterForCatanProps {}
 
 interface SetterForCatanState {
@@ -80,14 +83,25 @@ class SetterForCatan extends React.Component<
             aria-label="number-of-players"
             name="number-of-players"
             value={this.state.playerCount}
+            /* eslint-disable @typescript-eslint/no-explicit-any */
             onChange={(event: any) => {
-              this.generateBoard(
-                accessToken,
-                boardSpecifications,
-                this.state.scenarioName,
-                event.target.value,
-                this.state.useFishermenOfCatanVariant
-              );
+              this.setState({
+                openMenu: false,
+
+                scenarioName: this.state.scenarioName,
+                playerCount: event.target.value,
+                useFishermenOfCatanVariant: this.state.useFishermenOfCatanVariant,
+                specification: this.state.specification,
+                boardGenerator: this.state.boardGenerator,
+                board: this.state.board,
+              });
+
+              // this.generateBoard(
+              //   boardSpecifications,
+              //   this.state.scenarioName,
+              //   event.target.value,
+              //   this.state.useFishermenOfCatanVariant
+              // );
             }}
             row
           >
@@ -98,9 +112,10 @@ class SetterForCatan extends React.Component<
                   value={playerCount}
                   label={playerCount}
                   disabled={
-                    !boardSpecifications[
-                      this.state.scenarioName
-                    ].hasOwnProperty(playerCount)
+                    !Object.prototype.hasOwnProperty.call(
+                      boardSpecifications[this.state.scenarioName],
+                      playerCount
+                    )
                   }
                   control={<Radio color="primary" />}
                 />
@@ -116,13 +131,16 @@ class SetterForCatan extends React.Component<
               this.state.useFishermenOfCatanVariant ? 'primary' : 'secondary'
             }
             onClick={() => {
-              this.generateBoard(
-                accessToken,
-                boardSpecifications,
-                this.state.scenarioName,
-                this.state.playerCount,
-                !this.state.useFishermenOfCatanVariant
-              );
+              this.setState({
+                openMenu: false,
+
+                scenarioName: this.state.scenarioName,
+                playerCount: this.state.playerCount,
+                useFishermenOfCatanVariant: !this.state.useFishermenOfCatanVariant,
+                specification: this.state.specification,
+                boardGenerator: this.state.boardGenerator,
+                board: this.state.board,
+              });
             }}
           />
           <br />
@@ -132,9 +150,12 @@ class SetterForCatan extends React.Component<
               variant="contained"
               color="primary"
               onClick={() => {
-                this.setState({
-                  board: this.state.boardGenerator.generateBoard(),
-                });
+                this.generateBoard(
+                    boardSpecifications,
+                    this.state.scenarioName,
+                    this.state.playerCount,
+                    this.state.useFishermenOfCatanVariant
+                );
               }}
               onContextMenu={event => {
                 event.preventDefault();
@@ -158,25 +179,29 @@ class SetterForCatan extends React.Component<
               });
             }}
           >
-            {scenarios.map(scenario => (
+            {scenarios.map(scenarioName => (
               <MenuItem
-                key={scenario}
+                key={scenarioName}
                 disabled={
-                  !boardSpecifications[scenario].hasOwnProperty(
+                  !Object.prototype.hasOwnProperty.call(
+                    boardSpecifications[scenarioName],
                     this.state.playerCount
                   )
                 }
                 onClick={() => {
-                  this.generateBoard(
-                    accessToken,
-                    boardSpecifications,
-                    scenario,
-                    this.state.playerCount,
-                    this.state.useFishermenOfCatanVariant
-                  );
+                  this.setState({
+                    openMenu: false,
+
+                    scenarioName: scenarioName,
+                    playerCount: this.state.playerCount,
+                    useFishermenOfCatanVariant: this.state.useFishermenOfCatanVariant,
+                    specification: this.state.specification,
+                    boardGenerator: this.state.boardGenerator,
+                    board: this.state.board,
+                  });
                 }}
               >
-                {scenario}
+                {scenarioName}
               </MenuItem>
             ))}
           </Menu>
@@ -187,31 +212,25 @@ class SetterForCatan extends React.Component<
   }
 
   async generateBoard(
-    accessToken: any,
     boardSpecifications: BoardSpecifications,
     scenarioName: string,
     playerCount: string,
     useFishermenOfCatanVariant: boolean
   ) {
-    console.log(
-      `################################ scenarioName = ${scenarioName}`
-    );
+    console.log(`scenarioName = ${scenarioName}`);
 
     if (scenarioName === 'Base') {
+      // TODO(nyap): Use `useEffect`. https://www.smashingmagazine.com/2020/06/rest-api-react-fetch-axios/
       await BoardRestClient.generateBoardFromSchema(
-        accessToken,
         scenarioName,
         parseInt(playerCount.charAt(0), 10),
         useFishermenOfCatanVariant
       ).then(t2 => {
-        const specification = t2[0];
-        const board = t2[1];
+        const specification: Specification = t2[0];
+        const board: Board = t2[1];
 
-        console.log(
-          `################################ specification = ${JSON.stringify(
-            specification
-          )}, board = ${JSON.stringify(board)}`
-        );
+        console.log(`specification = ${JSON.stringify(specification)}`);
+        console.log(`board = ${JSON.stringify(board)}`);
 
         this.setState({
           openMenu: false,
@@ -226,7 +245,7 @@ class SetterForCatan extends React.Component<
       });
     } else {
       console.log(
-        `############################################# scenarioName = ${scenarioName}, playerCount = ${playerCount}, useFishermenOfCatanVariant = ${useFishermenOfCatanVariant}`
+        `scenarioName = ${scenarioName}, playerCount = ${playerCount}, useFishermenOfCatanVariant = ${useFishermenOfCatanVariant}`
       );
 
       const noFishSpecification =
@@ -244,7 +263,7 @@ class SetterForCatan extends React.Component<
         : this.state.board;
 
       console.log(
-        `################################ specification = ${JSON.stringify(
+        `specification = ${JSON.stringify(
           specification
         )}, board = ${JSON.stringify(board)}`
       );

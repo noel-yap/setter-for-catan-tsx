@@ -2,6 +2,9 @@
   "name": "setter-for-catan-tsx",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=10.6.0"
+  },
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@okta/okta-react": "^3.0.2",

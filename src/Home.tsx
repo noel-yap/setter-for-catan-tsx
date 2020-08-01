@@ -3,6 +3,7 @@ import React, {useState, useEffect} from 'react';
 import {Button, Typography} from '@material-ui/core';
 import {MuiThemeProvider} from '@material-ui/core/styles';
 
+// @ts-ignore
 import {useOktaAuth} from '@okta/okta-react';
 
 import SetterForCatan from './SetterForCatan';
@@ -12,13 +13,13 @@ import mui from './mui';
 const Home = () => {
   const {authState, authService} = useOktaAuth();
   const [userInfo, setUserInfo] = useState(null);
-  const accessToken = authState.accessToken;
 
   useEffect(() => {
     if (!authState.isAuthenticated) {
       // When user isn't authenticated, forget any user info
       setUserInfo(null);
     } else {
+      /* eslint-disable @typescript-eslint/no-explicit-any */
       authService.getUser().then((info: any) => {
         setUserInfo(info);
       });

@@ -1,13 +1,15 @@
 import React, {Component} from 'react';
+// @ts-ignore
 import * as OktaSignIn from '@okta/okta-signin-widget';
 import '@okta/okta-signin-widget/dist/css/okta-sign-in.min.css';
 
 import config from './config';
 
 export default class LoginPage extends Component {
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   signIn: any;
 
-  constructor(props) {
+  constructor(props: any) {
     super(props);
 
     const {pkce, issuer, clientId, redirectUri, scopes} = config.oidc;
@@ -34,7 +36,7 @@ export default class LoginPage extends Component {
     this.signIn.renderEl(
       {el: '#sign-in-widget'},
       () => {},
-      err => {
+        (err: any) => {
         throw err;
       }
     );

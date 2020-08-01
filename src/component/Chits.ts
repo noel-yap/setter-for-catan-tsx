@@ -1,6 +1,6 @@
 // export module Chits {
 export class Chits {
-  constructor(public values: number[]) {}
+  constructor(public values: number[] = []) {}
 
   odds(): number {
     function oddsOf(n: number): number {

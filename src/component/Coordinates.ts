@@ -10,6 +10,19 @@ export enum EdgePosition {
   TOP_LEFT,
 }
 
+export function edgePositionToInt(edgePosition: EdgePosition|string|number): number {
+  switch (typeof edgePosition) {
+    case "string": {
+      // @ts-ignore
+      return EdgePosition[edgePosition];
+    }
+
+    default: {
+      return edgePosition;
+    }
+  }
+}
+
 export enum VertexPosition {
   TOP,
   TOP_RIGHT,
@@ -19,6 +32,19 @@ export enum VertexPosition {
   TOP_LEFT,
 }
 
+export function vertexPositionToInt(vertexPosition: VertexPosition|string|number): number {
+  switch (typeof vertexPosition) {
+    case "string": {
+      // @ts-ignore
+      return VertexPosition[vertexPosition];
+    }
+
+    default: {
+      return vertexPosition;
+    }
+  }
+}
+
 export enum FacePosition {
   FACE_UP,
   FACE_DOWN,
@@ -26,10 +52,10 @@ export enum FacePosition {
 
 export class Coordinate {
   constructor(
-    public x: number,
-    public y: number,
-    public edges: EdgePosition[] = HEXAGON_EDGE_POSITIONS,
-    public vertices: VertexPosition[] = HEXAGON_VERTEX_POSITIONS,
+    public x: number = 0,
+    public y: number = 0,
+    public edgePositions: EdgePosition[] = HEXAGON_EDGE_POSITIONS,
+    public vertexPositions: VertexPosition[] = HEXAGON_VERTEX_POSITIONS,
     public facePosition: FacePosition = FacePosition.FACE_UP
   ) {}
 
@@ -47,8 +73,8 @@ export class Coordinate {
     return new Coordinate(
       this.x,
       this.y,
-      this.edges,
-      this.vertices,
+      this.edgePositions,
+      this.vertexPositions,
       FacePosition.FACE_DOWN
     );
   }
@@ -57,8 +83,8 @@ export class Coordinate {
     return new Coordinate(
       this.x,
       this.y,
-      this.edges,
-      this.vertices,
+      this.edgePositions,
+      this.vertexPositions,
       FacePosition.FACE_UP
     );
   }
@@ -68,43 +94,43 @@ export class Coordinate {
       new Coordinate(
         this.x - 1,
         this.y - 1,
-        this.edges,
-        this.vertices,
+        this.edgePositions,
+        this.vertexPositions,
         this.facePosition
       ),
       new Coordinate(
         this.x + 1,
         this.y - 1,
-        this.edges,
-        this.vertices,
+        this.edgePositions,
+        this.vertexPositions,
         this.facePosition
       ),
       new Coordinate(
         this.x + 2,
         this.y,
-        this.edges,
-        this.vertices,
+        this.edgePositions,
+        this.vertexPositions,
         this.facePosition
       ),
       new Coordinate(
         this.x + 1,
         this.y + 1,
-        this.edges,
-        this.vertices,
+        this.edgePositions,
+        this.vertexPositions,
         this.facePosition
       ),
       new Coordinate(
         this.x - 1,
         this.y + 1,
-        this.edges,
-        this.vertices,
+        this.edgePositions,
+        this.vertexPositions,
         this.facePosition
       ),
       new Coordinate(
         this.x - 2,
         this.y,
-        this.edges,
-        this.vertices,
+        this.edgePositions,
+        this.vertexPositions,
         this.facePosition
       ),
     ].filter(c => c.x >= 0 && c.y >= 0);
@@ -126,7 +152,7 @@ export function oddsAtCoordinatesLessThan(
   odds: number
 ): (configuration: Configuration.Configuration) => boolean {
   return (configuration: Configuration.Configuration) =>
-    configuration.chits.odds() < odds ||
+    configuration.chit.odds() < odds ||
     !adjacentCoordinates.some(
       c =>
         c.x === configuration.coordinate.x && c.y === configuration.coordinate.y
@@ -384,7 +410,7 @@ export const BASE_4_EXP_SEA_SCEN_HFNS_SMALL_ISLAND_TERRAIN_COORDINATES = [
 ];
 
 export const EXT_5_6_EXP_SEA_SCEN_HFNS_BIG_ISLAND_TERRAIN_COORDINATES = EXT_5_6_TERRAIN_COORDINATES.map(
-  c => new Coordinate(c.x + 2, c.y, c.edges)
+  c => new Coordinate(c.x + 2, c.y, c.edgePositions)
 );
 export const EXT_5_6_EXP_SEA_SCEN_HFNS_BIG_ISLAND_HARBOR_COORDINATES = [
   new Coordinate(6, 0).onEdges(BOTTOM_RIGHT),
@@ -425,13 +451,13 @@ export const EXT_5_6_EXP_SEA_SCEN_HFNS_SMALL_ISLAND_TERRAIN_COORDINATES = [
 ];
 
 export const EXT_7_8_EXP_SEA_SCEN_HFNS_BIG_ISLAND_TERRAIN_COORDINATES = EXT_7_8_TERRAIN_COORDINATES.map(
-  c => new Coordinate(c.x + 3, c.y + 1, c.edges)
+  c => new Coordinate(c.x + 3, c.y + 1, c.edgePositions)
 );
 export const EXT_7_8_EXP_SEA_SCEN_HFNS_BIG_ISLAND_HARBOR_COORDINATES = EXT_7_8_HARBOR_COORDINATES.map(
-  c => new Coordinate(c.x + 3, c.y + 1, c.edges)
+  c => new Coordinate(c.x + 3, c.y + 1, c.edgePositions)
 );
 export const EXT_7_8_EXP_SEA_SCEN_HFNS_BIG_ISLAND_FISHERY_COORDINATES = EXT_7_8_FISHERY_COORDINATES.map(
-  c => new Coordinate(c.x + 3, c.y + 1, c.edges)
+  c => new Coordinate(c.x + 3, c.y + 1, c.edgePositions)
 );
 export const EXT_7_8_EXP_SEA_SCEN_HFNS_SMALL_ISLAND_TERRAIN_COORDINATES = [
   new Coordinate(6, 0),

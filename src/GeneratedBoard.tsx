@@ -21,6 +21,7 @@ interface GeneratedBoardProps {
   board: Boards.Board;
 }
 
+/* eslint-disable @typescript-eslint/no-empty-interface */
 interface GeneratedBoardState {}
 
 export class GeneratedBoard extends React.Component<
@@ -61,7 +62,7 @@ export class GeneratedBoard extends React.Component<
           .concat(this.props.board.fisheryTilesLayout)
           .concat(this.props.board.vertexChitsLayout),
         component => {
-          return component.chits.values;
+          return component.chit.values;
         }
       );
 
@@ -180,11 +181,11 @@ export class GeneratedBoard extends React.Component<
           options.border
         );
 
-        marker.coordinate.vertices.forEach(vertex => {
+        marker.coordinate.vertexPositions.forEach(vertex => {
           GeneratedBoard.renderMarker(
             display,
             marker,
-            vertexPositionPoint(vertex),
+            vertexPositionPoint(Coordinates.vertexPositionToInt(vertex)),
             hexSize / 6
           );
         });
@@ -241,21 +242,21 @@ export class GeneratedBoard extends React.Component<
       draw('?', 'black', 'white');
     } else {
       const tile = configuration.tile;
-      const chits = configuration.chits;
+      const chit = configuration.chit;
 
-      if (chits.values.length < 2) {
+      if (chit.values.length < 2) {
         draw('', '', GeneratedBoard.tileColor(tile));
 
-        if (chits.odds() > 0) {
+        if (chit.odds() > 0) {
           window.requestAnimationFrame(() => {
-            GeneratedBoard.renderChit(display, hexCenter, hexSize / 3, chits);
+            GeneratedBoard.renderChit(display, hexCenter, hexSize / 3, chit);
           });
         }
       } else {
         draw(
-          GeneratedBoard.chitsToString(chits),
+          GeneratedBoard.chitsToString(chit),
           GeneratedBoard.chitTextColor(
-            chits,
+            chit,
             display._options.fg,
             GeneratedBoard.tileColor(tile)
           ),
@@ -319,10 +320,9 @@ export class GeneratedBoard extends React.Component<
       options.border
     );
 
-    const vertex0 = edgePositionStartPoint(configuration.coordinate.edges[0]);
-    const vertex1 = edgePositionStartPoint(
-      (configuration.coordinate.edges[0] + 1) % 6
-    );
+    const edgePosition = Coordinates.edgePositionToInt(configuration.coordinate.edgePositions[0]);
+    const vertex0 = edgePositionStartPoint(edgePosition);
+    const vertex1 = edgePositionStartPoint((edgePosition + 1) % 6);
 
     GeneratedBoard.renderPolygon(
       display,
@@ -371,14 +371,13 @@ export class GeneratedBoard extends React.Component<
       options.border
     );
 
-    const vertex0 = edgePositionStartPoint(configuration.coordinate.edges[0]);
-    const vertex1 = edgePositionStartPoint(
-      (configuration.coordinate.edges[0] + 1) % 6
-    );
-    const vertex2 = edgePositionStartPoint(configuration.coordinate.edges[1]);
-    const vertex3 = edgePositionStartPoint(
-      (configuration.coordinate.edges[1] + 1) % 6
-    );
+    const edgePosition0 = configuration.coordinate.edgePositions[0];
+    const vertex0 = edgePositionStartPoint(edgePosition0);
+    const vertex1 = edgePositionStartPoint((edgePosition0 + 1) % 6);
+
+    const edgePosition1 = configuration.coordinate.edgePositions[1];
+    const vertex2 = edgePositionStartPoint(edgePosition1);
+    const vertex3 = edgePositionStartPoint((edgePosition1 + 1) % 6);
 
     GeneratedBoard.renderPolygon(
       display,
@@ -412,7 +411,7 @@ export class GeneratedBoard extends React.Component<
       options.border
     );
 
-    const edgePosition = configuration.coordinate.edges[0];
+    const edgePosition = Coordinates.edgePositionToInt(configuration.coordinate.edgePositions[0]);
     const vertex0 = edgePositionStartPoint(edgePosition);
     const vertex1 = edgePositionStartPoint((edgePosition + 1) % 6);
 
@@ -452,9 +451,9 @@ export class GeneratedBoard extends React.Component<
 
     GeneratedBoard.renderChit(
       display,
-      vertexPositionPoint(configuration.coordinate.vertices[0]),
+      vertexPositionPoint(Coordinates.vertexPositionToInt(configuration.coordinate.vertexPositions[0])),
       hexSize / 3,
-      configuration.chits
+      configuration.chit
     );
   }
 
@@ -506,11 +505,13 @@ export class GeneratedBoard extends React.Component<
       options.border
     );
 
-    const vertex0 = edgePositionStartPoint(configuration.coordinate.edges[0]);
-    const vertex1 = edgePositionStartPoint(configuration.coordinate.edges[1]);
-    const vertex2 = edgePositionStartPoint(
-      (configuration.coordinate.edges[1] + 1) % 6
-    );
+    const edgePosition0 = Coordinates.edgePositionToInt(configuration.coordinate.edgePositions[0]);
+    const vertex0 = edgePositionStartPoint(edgePosition0);
+
+    const edgePosition1 = Coordinates.edgePositionToInt(configuration.coordinate.edgePositions[1]);
+    const vertex1 = edgePositionStartPoint(edgePosition1);
+    const vertex2 = edgePositionStartPoint((edgePosition1 + 1) % 6);
+
     const offset = vertex1.diff(hexCenter).scale(inside ? -0.5 : 0.5);
 
     GeneratedBoard.renderPolygon(
@@ -532,12 +533,12 @@ export class GeneratedBoard extends React.Component<
     GeneratedBoard.renderText(
       display,
       GeneratedBoard.chitTextColor(
-        configuration.chits,
+        configuration.chit,
         display._options.fg,
         GeneratedBoard.tileColor(configuration.tile)
       ),
       vertex1.translate(offset.scale(0.5 + (inside ? 0.0625 : -0.0625))),
-      GeneratedBoard.chitsToString(configuration.chits)
+      GeneratedBoard.chitsToString(configuration.chit)
     );
   }
 
@@ -563,7 +564,7 @@ export class GeneratedBoard extends React.Component<
       options.border
     );
 
-    const chitsExist = underlyingConfiguration.chits.odds() !== 0;
+    const chitsExist = underlyingConfiguration.chit.odds() !== 0;
 
     const backgroundLuminance = GeneratedBoard.luminance(
       GeneratedBoard.tileColor(underlyingConfiguration.tile)
@@ -576,7 +577,7 @@ export class GeneratedBoard extends React.Component<
         ? GeneratedBoard.tileColor(Tiles.LAKE)
         : GeneratedBoard.tileColor(Tiles.SEA);
 
-    configuration.coordinate.edges.forEach(position => {
+    configuration.coordinate.edgePositions.forEach(position => {
       const vertex0 = edgePositionStartPoint(position);
       const vertex1 = edgePositionStartPoint((position + 1) % 6);
 
