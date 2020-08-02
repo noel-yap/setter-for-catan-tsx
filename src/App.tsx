@@ -1,22 +1,23 @@
 import React from 'react';
 
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
 
-import { Security, LoginCallback } from '@okta/okta-react';
+import {Security, LoginCallback} from '@okta/okta-react';
 
 import config from './config';
 import Home from './Home';
+import Login from './Login';
 
 import './App.css';
 
-const App = () => { 
+const App = () => {
   return (
     <div className="App">
       <header className="App-body">
         <Router>
           <Security {...config.oidc}>
             <Route path="/" exact component={Home} />
-            <Route path="/login" exact component={Home} />
+            <Route path="/login" exact component={Login} />
             <Route path={config.authCallbackPath} component={LoginCallback} />
           </Security>
         </Router>
