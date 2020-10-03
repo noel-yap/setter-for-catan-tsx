@@ -10,11 +10,12 @@ export enum EdgePosition {
   TOP_LEFT,
 }
 
-export function edgePositionToInt(edgePosition: EdgePosition|string|number): number {
+export function edgePositionToInt(
+  edgePosition: EdgePosition | string | number
+): number {
   switch (typeof edgePosition) {
-    case "string": {
-      // @ts-ignore
-      return EdgePosition[edgePosition];
+    case 'string': {
+      return parseInt(EdgePosition[parseInt(edgePosition)]);
     }
 
     default: {
@@ -32,11 +33,12 @@ export enum VertexPosition {
   TOP_LEFT,
 }
 
-export function vertexPositionToInt(vertexPosition: VertexPosition|string|number): number {
+export function vertexPositionToInt(
+  vertexPosition: VertexPosition | string | number
+): number {
   switch (typeof vertexPosition) {
-    case "string": {
-      // @ts-ignore
-      return VertexPosition[vertexPosition];
+    case 'string': {
+      return parseInt(VertexPosition[parseInt(vertexPosition)]);
     }
 
     default: {

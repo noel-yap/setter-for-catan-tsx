@@ -3,7 +3,6 @@ import React, {useState, useEffect} from 'react';
 import {Button, Typography} from '@material-ui/core';
 import {MuiThemeProvider} from '@material-ui/core/styles';
 
-// @ts-ignore
 import {useOktaAuth} from '@okta/okta-react';
 
 import SetterForCatan from './SetterForCatan';
