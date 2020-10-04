@@ -90,7 +90,8 @@ class SetterForCatan extends React.Component<
 
                 scenarioName: this.state.scenarioName,
                 playerCount: event.target.value,
-                useFishermenOfCatanVariant: this.state.useFishermenOfCatanVariant,
+                useFishermenOfCatanVariant: this.state
+                  .useFishermenOfCatanVariant,
                 specification: this.state.specification,
                 boardGenerator: this.state.boardGenerator,
                 board: this.state.board,
@@ -136,7 +137,8 @@ class SetterForCatan extends React.Component<
 
                 scenarioName: this.state.scenarioName,
                 playerCount: this.state.playerCount,
-                useFishermenOfCatanVariant: !this.state.useFishermenOfCatanVariant,
+                useFishermenOfCatanVariant: !this.state
+                  .useFishermenOfCatanVariant,
                 specification: this.state.specification,
                 boardGenerator: this.state.boardGenerator,
                 board: this.state.board,
@@ -151,10 +153,10 @@ class SetterForCatan extends React.Component<
               color="primary"
               onClick={() => {
                 this.generateBoard(
-                    boardSpecifications,
-                    this.state.scenarioName,
-                    this.state.playerCount,
-                    this.state.useFishermenOfCatanVariant
+                  boardSpecifications,
+                  this.state.scenarioName,
+                  this.state.playerCount,
+                  this.state.useFishermenOfCatanVariant
                 );
               }}
               onContextMenu={event => {
@@ -194,7 +196,8 @@ class SetterForCatan extends React.Component<
 
                     scenarioName: scenarioName,
                     playerCount: this.state.playerCount,
-                    useFishermenOfCatanVariant: this.state.useFishermenOfCatanVariant,
+                    useFishermenOfCatanVariant: this.state
+                      .useFishermenOfCatanVariant,
                     specification: this.state.specification,
                     boardGenerator: this.state.boardGenerator,
                     board: this.state.board,

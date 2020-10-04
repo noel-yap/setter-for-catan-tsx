@@ -320,7 +320,9 @@ export class GeneratedBoard extends React.Component<
       options.border
     );
 
-    const edgePosition = Coordinates.edgePositionToInt(configuration.coordinate.edgePositions[0]);
+    const edgePosition = Coordinates.edgePositionToInt(
+      configuration.coordinate.edgePositions[0]
+    );
     const vertex0 = edgePositionStartPoint(edgePosition);
     const vertex1 = edgePositionStartPoint((edgePosition + 1) % 6);
 
@@ -411,7 +413,9 @@ export class GeneratedBoard extends React.Component<
       options.border
     );
 
-    const edgePosition = Coordinates.edgePositionToInt(configuration.coordinate.edgePositions[0]);
+    const edgePosition = Coordinates.edgePositionToInt(
+      configuration.coordinate.edgePositions[0]
+    );
     const vertex0 = edgePositionStartPoint(edgePosition);
     const vertex1 = edgePositionStartPoint((edgePosition + 1) % 6);
 
@@ -451,7 +455,11 @@ export class GeneratedBoard extends React.Component<
 
     GeneratedBoard.renderChit(
       display,
-      vertexPositionPoint(Coordinates.vertexPositionToInt(configuration.coordinate.vertexPositions[0])),
+      vertexPositionPoint(
+        Coordinates.vertexPositionToInt(
+          configuration.coordinate.vertexPositions[0]
+        )
+      ),
       hexSize / 3,
       configuration.chit
     );
@@ -505,10 +513,14 @@ export class GeneratedBoard extends React.Component<
       options.border
     );
 
-    const edgePosition0 = Coordinates.edgePositionToInt(configuration.coordinate.edgePositions[0]);
+    const edgePosition0 = Coordinates.edgePositionToInt(
+      configuration.coordinate.edgePositions[0]
+    );
     const vertex0 = edgePositionStartPoint(edgePosition0);
 
-    const edgePosition1 = Coordinates.edgePositionToInt(configuration.coordinate.edgePositions[1]);
+    const edgePosition1 = Coordinates.edgePositionToInt(
+      configuration.coordinate.edgePositions[1]
+    );
     const vertex1 = edgePositionStartPoint(edgePosition1);
     const vertex2 = edgePositionStartPoint((edgePosition1 + 1) % 6);
 

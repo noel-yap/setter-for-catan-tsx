@@ -5,6 +5,17 @@
   "engines": {
     "node": ">=10.6.0"
   },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "devDependencies": {
+    "@types/node": "^13.11.1",
+    "gts": "^2.0.2",
+    "typescript": "^3.8.3"
+  },
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@okta/okta-react": "^3.0.2",
@@ -18,7 +29,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "^3.4.1",
+    "react-scripts": "^3.4.3",
     "rot-js": "^2.0.3",
     "typescript": "^3.9.5",
     "underscore": "^1.9.1",
@@ -37,16 +48,5 @@
     "prepare": "npm run compile",
     "pretest": "npm run compile",
     "posttest": "npm run check"
-  },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ],
-  "devDependencies": {
-    "@types/node": "^13.11.1",
-    "gts": "^2.0.2",
-    "typescript": "^3.8.3"
   }
 }

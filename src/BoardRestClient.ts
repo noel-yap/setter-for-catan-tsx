@@ -2,7 +2,11 @@ import {Board} from './component/Boards';
 import {Specification} from './component/Specifications';
 import {Configuration} from './component/Configuration';
 import {Chits} from './component/Chits';
-import {Coordinate, EdgePosition, VertexPosition} from './component/Coordinates';
+import {
+  Coordinate,
+  EdgePosition,
+  VertexPosition,
+} from './component/Coordinates';
 import {Tile, tileTypeFromString} from './component/Tiles';
 
 export async function generateBoardFromSchema(
@@ -44,12 +48,16 @@ export async function generateBoardFromSchema(
           const tile = new Tile(tileType);
 
           const coordinateJson = c.coordinate;
-          const edgePositions: EdgePosition[] = coordinateJson.edgePositions.map(ep => {
-            return ep;
-          });
-          const vertexPositions: VertexPosition[] = coordinateJson.vertexPositions.map(vp => {
-            return vp;
-          });
+          const edgePositions: EdgePosition[] = coordinateJson.edgePositions.map(
+            ep => {
+              return ep;
+            }
+          );
+          const vertexPositions: VertexPosition[] = coordinateJson.vertexPositions.map(
+            vp => {
+              return vp;
+            }
+          );
 
           return new Configuration(
             tile,
