@@ -30,7 +30,6 @@ interface SetterForCatanState {
   useFishermenOfCatanVariant: boolean;
   scenarioName: string;
   specification: Specifications.Specification;
-  boardGenerator: Boards.BoardGenerator;
   board: Boards.Board;
 }
 
@@ -53,9 +52,6 @@ class SetterForCatan extends React.Component<
 
     const initialSpecification =
       boardSpecifications[initialScenarioName][initialPlayerCount][0];
-    const initialBoardGenerator = new Boards.BoardGenerator(
-      initialSpecification
-    );
 
     this.state = {
       openMenu: false,
@@ -65,7 +61,6 @@ class SetterForCatan extends React.Component<
       scenarioName: initialScenarioName,
 
       specification: initialSpecification,
-      boardGenerator: initialBoardGenerator,
       board: new Boards.Board([]),
     };
   }
@@ -93,16 +88,8 @@ class SetterForCatan extends React.Component<
                 useFishermenOfCatanVariant: this.state
                   .useFishermenOfCatanVariant,
                 specification: this.state.specification,
-                boardGenerator: this.state.boardGenerator,
                 board: this.state.board,
               });
-
-              // this.generateBoard(
-              //   boardSpecifications,
-              //   this.state.scenarioName,
-              //   event.target.value,
-              //   this.state.useFishermenOfCatanVariant
-              // );
             }}
             row
           >
@@ -140,7 +127,6 @@ class SetterForCatan extends React.Component<
                 useFishermenOfCatanVariant: !this.state
                   .useFishermenOfCatanVariant,
                 specification: this.state.specification,
-                boardGenerator: this.state.boardGenerator,
                 board: this.state.board,
               });
             }}
@@ -199,7 +185,6 @@ class SetterForCatan extends React.Component<
                     useFishermenOfCatanVariant: this.state
                       .useFishermenOfCatanVariant,
                     specification: this.state.specification,
-                    boardGenerator: this.state.boardGenerator,
                     board: this.state.board,
                   });
                 }}
@@ -242,7 +227,6 @@ class SetterForCatan extends React.Component<
           playerCount: playerCount,
           useFishermenOfCatanVariant: useFishermenOfCatanVariant,
           specification: specification,
-          boardGenerator: this.state.boardGenerator,
           board: board,
         });
       });
@@ -261,9 +245,7 @@ class SetterForCatan extends React.Component<
         ? withFishSpecification
         : boardSpecifications[scenarioName][playerCount][0];
       const boardGenerator = new Boards.BoardGenerator(specification);
-      const board = !this.state.board.isEmpty()
-        ? boardGenerator.generateBoard()
-        : this.state.board;
+      const board = boardGenerator.generateBoard();
 
       console.log(
         `specification = ${JSON.stringify(
@@ -278,7 +260,6 @@ class SetterForCatan extends React.Component<
         playerCount: playerCount,
         useFishermenOfCatanVariant: useFishermenOfCatanVariant,
         specification: specification,
-        boardGenerator: boardGenerator,
         board: board,
       });
     }
