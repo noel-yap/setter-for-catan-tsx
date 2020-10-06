@@ -31,7 +31,7 @@ export class GeneratedBoard extends React.Component<
   private canvasDivRef = React.createRef<HTMLDivElement>();
 
   render(): JSX.Element {
-    if (Object.keys(this.props.board).length !== 0) {
+    if (!this.props.board.isEmpty()) {
       const canvasDiv = this.canvasDivRef.current;
       if (canvasDiv) {
         canvasDiv.childNodes.forEach(child => canvasDiv.removeChild(child));

@@ -4,7 +4,7 @@ import '@okta/okta-signin-widget/dist/css/okta-sign-in.min.css';
 
 import config from './config';
 
-export default class LoginPage extends Component {
+export default class Login extends Component {
   /* eslint-disable @typescript-eslint/no-explicit-any */
   signIn: any;
 
