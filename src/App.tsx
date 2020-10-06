@@ -17,7 +17,7 @@ const App = () => {
         <Router>
           <Security {...config.oidc}>
             <Route path="/" exact component={Home} />
-            <Route path="/login" exact component={Login} />
+            <Route path="/login" exact render={props => <Login {...props} />} />
             <Route path={config.authCallbackPath} component={LoginCallback} />
           </Security>
         </Router>

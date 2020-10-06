@@ -72,6 +72,9 @@ class SetterForCatan extends React.Component<
     return (
       <div className="App">
         <header className="App-body">
+          <Typography id="title" variant="h3">
+            Setter for Catan
+          </Typography>
           <FormLabel>Number of Players</FormLabel>
           <RadioGroup
             id="player-counts"
