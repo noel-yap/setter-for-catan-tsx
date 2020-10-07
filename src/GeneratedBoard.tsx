@@ -28,64 +28,70 @@ export class GeneratedBoard extends React.Component<
   GeneratedBoardProps,
   GeneratedBoardState
 > {
-  private canvasDivRef = React.createRef<HTMLDivElement>();
+  private readonly canvasDivRef = React.createRef<HTMLDivElement>();
 
   render(): JSX.Element {
-    if (!this.props.board.isEmpty()) {
-      const canvasDiv = this.canvasDivRef.current;
-      if (canvasDiv) {
-        canvasDiv.childNodes.forEach(child => canvasDiv.removeChild(child));
-
-        canvasDiv.appendChild(this.renderBoard());
-      }
-
-      const terrainTilesByType = GeneratedBoard.groupByComponentType(
-        this.props.board.terrainTilesLayout
-      );
-      const riverByType = GeneratedBoard.groupByComponentType(
-        this.props.board.riverLayout
-      );
-      const fisheryTilesByType = GeneratedBoard.groupByComponentType(
-        this.props.board.fisheryTilesLayout
-      );
-      const developmentCardsByType = GeneratedBoard.groupByComponentType(
-        this.props.board.developmentCardsLayout
-      );
-      const harborTilesByType = GeneratedBoard.groupByComponentType(
-        this.props.board.harborTilesLayout
-      );
-      const victoryPointsByType = GeneratedBoard.groupByComponentType(
-        this.props.board.victoryPointsLayout
-      );
-      const chits = _.groupBy(
-        this.props.board.terrainTilesLayout
-          .concat(this.props.board.fisheryTilesLayout)
-          .concat(this.props.board.vertexChitsLayout),
-        component => {
-          return component.chit.values;
-        }
-      );
-
-      return (
-        <div className="row">
-          <div>
-            <Typography variant="body1">Components:</Typography>
-            <Typography variant="body2">
-              {GeneratedBoard.renderBom(terrainTilesByType)}
-              {GeneratedBoard.renderBom(riverByType)}
-              {GeneratedBoard.renderBom(fisheryTilesByType)}
-              {GeneratedBoard.renderBom(chits, 'Chit')}
-              {GeneratedBoard.renderBom(harborTilesByType)}
-              {GeneratedBoard.renderBom(developmentCardsByType)}
-              {GeneratedBoard.renderBom(victoryPointsByType)}
-            </Typography>
-          </div>
-          <div id="generated-board-div" ref={this.canvasDivRef} />
-        </div>
-      );
-    } else {
-      return <div />;
+    if (this.props.board === undefined) {
+      return <div>
+        The Setters of Catan seem to be having some sort of work stoppage.
+      </div>;
     }
+
+    if (this.props.board.isEmpty()) {
+      return <div id="generated-board-div" ref={this.canvasDivRef} />;
+    }
+
+    const canvasDiv = this.canvasDivRef.current;
+    if (canvasDiv) {
+      canvasDiv.childNodes.forEach((child: any) => canvasDiv.removeChild(child));
+
+      canvasDiv.appendChild(this.renderBoard());
+    }
+
+    const terrainTilesByType = GeneratedBoard.groupByComponentType(
+      this.props.board.terrainTilesLayout
+    );
+    const riverByType = GeneratedBoard.groupByComponentType(
+      this.props.board.riverLayout
+    );
+    const fisheryTilesByType = GeneratedBoard.groupByComponentType(
+      this.props.board.fisheryTilesLayout
+    );
+    const developmentCardsByType = GeneratedBoard.groupByComponentType(
+      this.props.board.developmentCardsLayout
+    );
+    const harborTilesByType = GeneratedBoard.groupByComponentType(
+      this.props.board.harborTilesLayout
+    );
+    const victoryPointsByType = GeneratedBoard.groupByComponentType(
+      this.props.board.victoryPointsLayout
+    );
+    const chits = _.groupBy(
+      this.props.board.terrainTilesLayout
+        .concat(this.props.board.fisheryTilesLayout)
+        .concat(this.props.board.vertexChitsLayout),
+      component => {
+        return component.chit.values;
+      }
+    );
+
+    return (
+      <div className="row">
+        <div>
+          <Typography variant="body1">Components:</Typography>
+          <Typography variant="body2">
+            {GeneratedBoard.renderBom(terrainTilesByType)}
+            {GeneratedBoard.renderBom(riverByType)}
+            {GeneratedBoard.renderBom(fisheryTilesByType)}
+            {GeneratedBoard.renderBom(chits, 'Chit')}
+            {GeneratedBoard.renderBom(harborTilesByType)}
+            {GeneratedBoard.renderBom(developmentCardsByType)}
+            {GeneratedBoard.renderBom(victoryPointsByType)}
+          </Typography>
+        </div>
+        <div id="generated-board-div" ref={this.canvasDivRef} />
+      </div>
+    );
   }
 
   renderBoard(): HTMLCanvasElement {

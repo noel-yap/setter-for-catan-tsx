@@ -61,10 +61,6 @@ export class Board {
     this._vertexMarkersLayout = markers;
   }
 
-  getLayout<K extends keyof Board>(layoutName: K): Board[K] {
-    return this[layoutName];
-  }
-
   get terrainTilesLayout(): Configuration.Configuration[] {
     return this._terrainTilesLayout;
   }
@@ -100,7 +96,7 @@ export class Board {
   isEmpty(): boolean {
     return Object.keys(this)
       .filter(k => k.endsWith('Layout'))
-      .every(k => this.getLayout(k as keyof Board).length === 0);
+      .every(k => this[k as keyof Board].length === 0);
   }
 }
 

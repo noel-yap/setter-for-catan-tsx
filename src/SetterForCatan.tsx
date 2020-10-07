@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Button,
   Chip,
-  FormLabel,
   FormControlLabel,
+  FormLabel,
   Menu,
   MenuItem,
   Radio,
@@ -15,23 +15,11 @@ import {
 import {GeneratedBoard} from './GeneratedBoard';
 import * as BoardRestClient from './BoardRestClient';
 import * as Boards from './component/Boards';
+import {Board} from './component/Boards';
 import * as Coordinates from './component/Coordinates';
 import * as Specifications from './component/Specifications';
-import {Board} from './component/Boards';
 import {Specification} from './component/Specifications';
-
-/* eslint-disable @typescript-eslint/no-empty-interface */
-interface SetterForCatanProps {}
-
-interface SetterForCatanState {
-  openMenu: boolean;
-  playerCount: string;
-
-  useFishermenOfCatanVariant: boolean;
-  scenarioName: string;
-  specification: Specifications.Specification;
-  board: Boards.Board;
-}
+import {useOktaAuth} from "@okta/okta-react";
 
 interface BoardSpecifications {
   [key: string]: {
@@ -39,178 +27,29 @@ interface BoardSpecifications {
   };
 }
 
-class SetterForCatan extends React.Component<
-  SetterForCatanProps,
-  SetterForCatanState
-> {
-  constructor(props: Readonly<{}>) {
-    super(props);
+export function SetterForCatan() {
+  const {authState} = useOktaAuth();
 
-    const initialScenarioName = 'Base';
-    const initialPlayerCount = '3';
-    const initialUseFishermenOfCatanVariant = false;
+  const initialScenarioName = 'Base';
 
-    const initialSpecification =
-      boardSpecifications[initialScenarioName][initialPlayerCount][0];
+  const [openMenu, setOpenMenu] = useState(false);
+  const [playerCount, setPlayerCount] = useState('3');
+  const [useFishermenOfCatanVariant, setUseFishermenOfCatanVariant] = useState(false);
+  const [scenarioName, setScenarioName] = useState(initialScenarioName);
+  const [board, setBoard] = useState(new Boards.Board([]));
 
-    this.state = {
-      openMenu: false,
+  const scenarios = Object.keys(boardSpecifications);
+  const playerCounts = Object.keys(boardSpecifications[initialScenarioName]);
 
-      playerCount: initialPlayerCount,
-      useFishermenOfCatanVariant: initialUseFishermenOfCatanVariant,
-      scenarioName: initialScenarioName,
-
-      specification: initialSpecification,
-      board: new Boards.Board([]),
-    };
-  }
-
-  render(): JSX.Element {
-    const scenarios = Object.keys(boardSpecifications);
-    const playerCounts = Object.keys(boardSpecifications['Base']);
-
-    return (
-      <div className="App">
-        <header className="App-body">
-          <Typography id="title" variant="h3">
-            Setter for Catan
-          </Typography>
-          <FormLabel>Number of Players</FormLabel>
-          <RadioGroup
-            id="player-counts"
-            aria-label="number-of-players"
-            name="number-of-players"
-            value={this.state.playerCount}
-            /* eslint-disable @typescript-eslint/no-explicit-any */
-            onChange={(event: any) => {
-              this.setState({
-                openMenu: false,
-
-                scenarioName: this.state.scenarioName,
-                playerCount: event.target.value,
-                useFishermenOfCatanVariant: this.state
-                  .useFishermenOfCatanVariant,
-                specification: this.state.specification,
-                board: this.state.board,
-              });
-            }}
-            row
-          >
-            {playerCounts.map(playerCount => {
-              return (
-                <FormControlLabel
-                  key={playerCount}
-                  value={playerCount}
-                  label={playerCount}
-                  disabled={
-                    !Object.prototype.hasOwnProperty.call(
-                      boardSpecifications[this.state.scenarioName],
-                      playerCount
-                    )
-                  }
-                  control={<Radio color="primary" />}
-                />
-              );
-            })}
-          </RadioGroup>
-          <Chip
-            variant={
-              this.state.useFishermenOfCatanVariant ? 'default' : 'outlined'
-            }
-            label="Fishermen of Catan"
-            color={
-              this.state.useFishermenOfCatanVariant ? 'primary' : 'secondary'
-            }
-            onClick={() => {
-              this.setState({
-                openMenu: false,
-
-                scenarioName: this.state.scenarioName,
-                playerCount: this.state.playerCount,
-                useFishermenOfCatanVariant: !this.state
-                  .useFishermenOfCatanVariant,
-                specification: this.state.specification,
-                board: this.state.board,
-              });
-            }}
-          />
-          <br />
-          <Tooltip title="Right click to change configuration.">
-            <Button
-              id="generate-board-button"
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                this.generateBoard(
-                  boardSpecifications,
-                  this.state.scenarioName,
-                  this.state.playerCount,
-                  this.state.useFishermenOfCatanVariant
-                );
-              }}
-              onContextMenu={event => {
-                event.preventDefault();
-                this.setState({
-                  openMenu: true,
-                });
-              }}
-            >
-              <Typography variant="h4">
-                Generate {this.state.scenarioName}
-              </Typography>
-            </Button>
-          </Tooltip>
-          <Menu
-            id="scenarios"
-            anchorEl={document.getElementById('generate-board-button')}
-            open={this.state.openMenu}
-            onClose={() => {
-              this.setState({
-                openMenu: false,
-              });
-            }}
-          >
-            {scenarios.map(scenarioName => (
-              <MenuItem
-                key={scenarioName}
-                disabled={
-                  !Object.prototype.hasOwnProperty.call(
-                    boardSpecifications[scenarioName],
-                    this.state.playerCount
-                  )
-                }
-                onClick={() => {
-                  this.setState({
-                    openMenu: false,
-
-                    scenarioName: scenarioName,
-                    playerCount: this.state.playerCount,
-                    useFishermenOfCatanVariant: this.state
-                      .useFishermenOfCatanVariant,
-                    specification: this.state.specification,
-                    board: this.state.board,
-                  });
-                }}
-              >
-                {scenarioName}
-              </MenuItem>
-            ))}
-          </Menu>
-          <GeneratedBoard board={this.state.board} />
-        </header>
-      </div>
-    );
-  }
-
-  async generateBoard(
+  const generateBoard = async (
     boardSpecifications: BoardSpecifications,
     scenarioName: string,
     playerCount: string,
     useFishermenOfCatanVariant: boolean
-  ) {
+  ) => {
     console.log(`scenarioName = ${scenarioName}`);
 
-    if (scenarioName === 'Base') {
+    if (authState.isAuthenticated) {
       // TODO(nyap): Use `useEffect`. https://www.smashingmagazine.com/2020/06/rest-api-react-fetch-axios/
       await BoardRestClient.generateBoardFromSchema(
         scenarioName,
@@ -223,15 +62,7 @@ class SetterForCatan extends React.Component<
         console.log(`specification = ${JSON.stringify(specification)}`);
         console.log(`board = ${JSON.stringify(board)}`);
 
-        this.setState({
-          openMenu: false,
-
-          scenarioName: scenarioName,
-          playerCount: playerCount,
-          useFishermenOfCatanVariant: useFishermenOfCatanVariant,
-          specification: specification,
-          board: board,
-        });
+        setBoard(board);
       });
     } else {
       console.log(
@@ -250,23 +81,113 @@ class SetterForCatan extends React.Component<
       const boardGenerator = new Boards.BoardGenerator(specification);
       const board = boardGenerator.generateBoard();
 
-      console.log(
-        `specification = ${JSON.stringify(
-          specification
-        )}, board = ${JSON.stringify(board)}`
-      );
+      console.log(`specification = ${JSON.stringify(specification)}`);
+      console.log(`board = ${JSON.stringify(board)}`);
 
-      this.setState({
-        openMenu: false,
-
-        scenarioName: scenarioName,
-        playerCount: playerCount,
-        useFishermenOfCatanVariant: useFishermenOfCatanVariant,
-        specification: specification,
-        board: board,
-      });
+      setBoard(board);
     }
   }
+
+  return (
+    <div className="App">
+      <header className="App-body">
+        <Typography id="title" variant="h3">
+          Setter for Catan
+        </Typography>
+        <FormLabel>Number of Players</FormLabel>
+        <RadioGroup
+          id="player-counts"
+          aria-label="number-of-players"
+          name="number-of-players"
+          value={playerCount}
+          onChange={(event: any) => {
+            setPlayerCount(event.target.value);
+          }}
+          row
+        >
+          {playerCounts.map(playerCount => {
+            return (
+              <FormControlLabel
+                key={playerCount}
+                value={playerCount}
+                label={playerCount}
+                disabled={
+                  !Object.prototype.hasOwnProperty.call(
+                    boardSpecifications[scenarioName],
+                    playerCount
+                  )
+                }
+                control={<Radio color="primary" />}
+              />
+            );
+          })}
+        </RadioGroup>
+        <Chip
+          variant={
+            useFishermenOfCatanVariant ? 'default' : 'outlined'
+          }
+          label="Fishermen of Catan"
+          color={
+            useFishermenOfCatanVariant ? 'primary' : 'secondary'
+          }
+          onClick={() => {
+            setUseFishermenOfCatanVariant(!useFishermenOfCatanVariant);
+          }}
+        />
+        <br />
+        <Tooltip title="Right click to change configuration.">
+          <Button
+            id="generate-board-button"
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              generateBoard(
+                boardSpecifications,
+                scenarioName,
+                playerCount,
+                useFishermenOfCatanVariant
+              );
+            }}
+            onContextMenu={event => {
+              event.preventDefault();
+              setOpenMenu(true);
+            }}
+          >
+            <Typography variant="h4">
+              Generate {scenarioName}
+            </Typography>
+          </Button>
+        </Tooltip>
+        <Menu
+          id="scenarios"
+          anchorEl={document.getElementById('generate-board-button')}
+          open={openMenu}
+          onClose={() => {
+            setOpenMenu(false);
+          }}
+        >
+          {scenarios.map(scenarioName => (
+            <MenuItem
+              key={scenarioName}
+              disabled={
+                !Object.prototype.hasOwnProperty.call(
+                  boardSpecifications[scenarioName],
+                  playerCount
+                )
+              }
+              onClick={() => {
+                setOpenMenu(false);
+                setScenarioName(scenarioName);
+              }}
+            >
+              {scenarioName}
+            </MenuItem>
+          ))}
+        </Menu>
+        <GeneratedBoard board={board} />
+      </header>
+    </div>
+  );
 }
 
 // TODO: Reorganize to use submenus (eg Base, Seafarers, Traders and Barbarians).
