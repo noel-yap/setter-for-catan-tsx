@@ -38,7 +38,10 @@ export class GeneratedBoard extends React.Component<
     }
 
     if (this.props.board.isEmpty()) {
-      return <div id="generated-board-div" ref={this.canvasDivRef} />;
+      return <div className="row">
+        <Typography />
+        <div id="generated-board-div" ref={this.canvasDivRef} />
+      </div>;
     }
 
     const canvasDiv = this.canvasDivRef.current;
