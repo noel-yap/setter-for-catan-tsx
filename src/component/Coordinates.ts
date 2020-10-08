@@ -15,7 +15,7 @@ export function edgePositionToInt(
 ): number {
   switch (typeof edgePosition) {
     case 'string': {
-      return parseInt(EdgePosition[parseInt(edgePosition)]);
+      return EdgePosition[edgePosition as keyof typeof EdgePosition];
     }
 
     default: {
@@ -38,7 +38,7 @@ export function vertexPositionToInt(
 ): number {
   switch (typeof vertexPosition) {
     case 'string': {
-      return parseInt(VertexPosition[parseInt(vertexPosition)]);
+      return VertexPosition[vertexPosition as keyof typeof VertexPosition];
     }
 
     default: {
