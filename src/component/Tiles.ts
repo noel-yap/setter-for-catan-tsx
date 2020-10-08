@@ -21,7 +21,7 @@ export enum Type {
   FISHERY = 'Fishery',
   RIVER = 'River',
 
-  GOLD = 'Gold Field',
+  GOLD_FIELD = 'Gold Field',
   SWAMP = 'Swamp',
   OASIS = 'Oasis',
   CASTLE = 'Castle',
@@ -33,10 +33,10 @@ export enum Type {
   CHIT = 'Chit',
 }
 
-export function tileTypeFromString(type: string): Type {
-  return Object.keys(Type)
-    .filter(t => t === type)
-    .map(t => Type[t as keyof typeof Type])[0];
+export function tileTypeFromString(description: string): Type {
+  return Object.values(Type).filter(
+    d => d.toUpperCase() === description.toUpperCase().replace('_', ' ')
+  )[0];
 }
 
 export class Tile {
@@ -71,7 +71,7 @@ export class Tile {
       case Type.DESERT:
       case Type.FIELD:
       case Type.FOREST:
-      case Type.GOLD:
+      case Type.GOLD_FIELD:
       case Type.HILL:
       case Type.MOUNTAIN:
       case Type.PASTURE:
@@ -104,7 +104,7 @@ export const PASTURE_TERRAIN = new Tile(Type.PASTURE);
 export const HILL_TERRAIN = new Tile(Type.HILL);
 export const MOUNTAIN_TERRAIN = new Tile(Type.MOUNTAIN);
 
-export const GOLD_TERRAIN = new Tile(Type.GOLD);
+export const GOLD_TERRAIN = new Tile(Type.GOLD_FIELD);
 
 export const OASIS_TERRAIN = new Tile(Type.OASIS, [
   Coordinates.VertexPosition.TOP_RIGHT,
