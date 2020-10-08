@@ -50,9 +50,12 @@ export function SetterForCatan() {
     console.log(`scenarioName = ${scenarioName}`);
 
     if (authState.isAuthenticated) {
+      // TODO(nyap): Use proto so index in `boardSpecifications` order doesn't have to be maintained to match
+      const scenarioIndex = Object.keys(boardSpecifications).indexOf(scenarioName);
+
       // TODO(nyap): Use `useEffect`. https://www.smashingmagazine.com/2020/06/rest-api-react-fetch-axios/
       await BoardRestClient.generateBoardFromSchema(
-        scenarioName,
+        scenarioIndex,
         parseInt(playerCount.charAt(0), 10),
         useFishermenOfCatanVariant
       ).then(t2 => {

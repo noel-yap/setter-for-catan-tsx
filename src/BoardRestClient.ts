@@ -10,15 +10,13 @@ import {
 import {Tile, tileTypeFromString} from './component/Tiles';
 
 export async function generateBoardFromSchema(
-  scenarioName: string,
+  scenarioIndex: number,
   playerCount: number,
   fishermenOfCatan: boolean
 ): Promise<[Specification, Board]> {
-  const scenario: number = scenarioName === 'Base' ? 0 : 13;
-
   const body = JSON.stringify({
     schema: {
-      scenario: scenario,
+      scenario: scenarioIndex,
       player_count: playerCount,
       fishermen_of_catan: fishermenOfCatan,
     },
