@@ -78,22 +78,3 @@ export async function generateBoardFromSchema(
       return error;
     });
 }
-
-export async function generateBoardFromSpecification(
-  specification: Specification
-): Promise<[Specification, Board]> {
-  // TODO(nyap): Add auth.
-  const accessToken = '';
-
-  return fetch('http://localhost:8081/setter-for-catan/generate-board', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(specification),
-  })
-    .then(response => response.json())
-    .then(response => response as [Specification, Board]);
-}
