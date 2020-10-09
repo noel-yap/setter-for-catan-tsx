@@ -13,15 +13,9 @@ export enum EdgePosition {
 export function edgePositionToInt(
   edgePosition: EdgePosition | string | number
 ): number {
-  switch (typeof edgePosition) {
-    case 'string': {
-      return EdgePosition[edgePosition as keyof typeof EdgePosition];
-    }
-
-    default: {
-      return edgePosition;
-    }
-  }
+  return typeof edgePosition === 'string'
+    ? EdgePosition[edgePosition as keyof typeof EdgePosition]
+    : edgePosition;
 }
 
 export enum VertexPosition {
@@ -36,20 +30,22 @@ export enum VertexPosition {
 export function vertexPositionToInt(
   vertexPosition: VertexPosition | string | number
 ): number {
-  switch (typeof vertexPosition) {
-    case 'string': {
-      return VertexPosition[vertexPosition as keyof typeof VertexPosition];
-    }
-
-    default: {
-      return vertexPosition;
-    }
-  }
+  return typeof vertexPosition === 'string'
+    ? VertexPosition[vertexPosition as keyof typeof VertexPosition]
+    : vertexPosition;
 }
 
 export enum FacePosition {
   FACE_UP,
   FACE_DOWN,
+}
+
+export function facePositionToInt(
+  facePosition: FacePosition | string | number
+): number {
+  return typeof facePosition === 'string'
+    ? FacePosition[facePosition as keyof typeof FacePosition]
+    : facePosition;
 }
 
 export class Coordinate {
