@@ -2,23 +2,17 @@ import {Board} from './component/Boards';
 import {Specification} from './component/Specifications';
 import {Configuration} from './component/Configuration';
 import {Chits} from './component/Chits';
-import {
-  Coordinate,
-  EdgePosition,
-  VertexPosition,
-} from './component/Coordinates';
+import {Coordinate, facePositionToInt} from './component/Coordinates';
 import {Tile, tileTypeFromString} from './component/Tiles';
 
 export async function generateBoardFromSchema(
-  scenarioName: string,
+  scenarioIndex: number,
   playerCount: number,
   fishermenOfCatan: boolean
 ): Promise<[Specification, Board]> {
-  const scenario: number = scenarioName === 'Base' ? 0 : 13;
-
   const body = JSON.stringify({
     schema: {
-      scenario: scenario,
+      scenario: scenarioIndex,
       player_count: playerCount,
       fishermen_of_catan: fishermenOfCatan,
     },
@@ -48,27 +42,17 @@ export async function generateBoardFromSchema(
           const tile = new Tile(tileType);
 
           const coordinateJson = c.coordinate;
-          const edgePositions: EdgePosition[] = coordinateJson.edgePositions.map(
-            ep => {
-              return ep;
-            }
-          );
-          const vertexPositions: VertexPosition[] = coordinateJson.vertexPositions.map(
-            vp => {
-              return vp;
-            }
+          const coordinates = new Coordinate(
+            coordinateJson.x,
+            coordinateJson.y,
+            coordinateJson.edgePositions,
+            coordinateJson.vertexPositions,
+            facePositionToInt(coordinateJson.facePosition)
           );
 
-          return new Configuration(
-            tile,
-            new Coordinate(
-              coordinateJson.x,
-              coordinateJson.y,
-              edgePositions,
-              vertexPositions
-            ),
-            new Chits(chitJson.values)
-          );
+          const chits = new Chits(chitJson.values);
+
+          return new Configuration(tile, coordinates, chits);
         })
       );
 
