@@ -373,11 +373,15 @@ export class GeneratedBoard extends React.Component<
       options.border
     );
 
-    const edgePosition0 = configuration.coordinate.edgePositions[0];
+    const edgePosition0 = Coordinates.edgePositionToInt(
+      configuration.coordinate.edgePositions[0]
+    );
     const vertex0 = edgePositionStartPoint(edgePosition0);
     const vertex1 = edgePositionStartPoint((edgePosition0 + 1) % 6);
 
-    const edgePosition1 = configuration.coordinate.edgePositions[1];
+    const edgePosition1 = Coordinates.edgePositionToInt(
+      configuration.coordinate.edgePositions[1]
+    );
     const vertex2 = edgePositionStartPoint(edgePosition1);
     const vertex3 = edgePositionStartPoint((edgePosition1 + 1) % 6);
 
