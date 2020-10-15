@@ -1317,42 +1317,37 @@ export const SPEC_3_4_EXP_SEA_SCEN_WOC = new Specification(
   )
 )
   .withMarkers(
-    new Markers.Marker(
-      Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT,
+    new Markers.Marker(Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT, [
       new Coordinates.Coordinate(5, 7).onVertices(
         Coordinates.VertexPosition.TOP,
         Coordinates.VertexPosition.TOP_RIGHT
-      )
-    ),
-    new Markers.Marker(
-      Markers.SETUP_SETTLEMENTS_PROHIBITION,
+      ),
+    ]),
+    new Markers.Marker(Markers.SETUP_SETTLEMENTS_PROHIBITION, [
       new Coordinates.Coordinate(4, 6).onVertices(
         Coordinates.VertexPosition.TOP_RIGHT,
         Coordinates.VertexPosition.BOTTOM
-      )
-    ),
-    new Markers.Marker(
-      Markers.SETUP_SETTLEMENTS_PROHIBITION,
+      ),
+    ]),
+    new Markers.Marker(Markers.SETUP_SETTLEMENTS_PROHIBITION, [
       new Coordinates.Coordinate(7, 7).onVertices(
         Coordinates.VertexPosition.BOTTOM_LEFT,
         Coordinates.VertexPosition.TOP
-      )
-    ),
-    new Markers.Marker(
-      Markers.GREAT_WALL_SETTLEMENTS_REQUIREMENT,
+      ),
+    ]),
+    new Markers.Marker(Markers.GREAT_WALL_SETTLEMENTS_REQUIREMENT, [
       new Coordinates.Coordinate(11, 3).onVertices(
         Coordinates.VertexPosition.TOP,
         Coordinates.VertexPosition.TOP_RIGHT,
         Coordinates.VertexPosition.BOTTOM_RIGHT
-      )
-    ),
-    new Markers.Marker(
-      Markers.GREAT_WALL_SETTLEMENTS_REQUIREMENT,
+      ),
+    ]),
+    new Markers.Marker(Markers.GREAT_WALL_SETTLEMENTS_REQUIREMENT, [
       new Coordinates.Coordinate(10, 4).onVertices(
         Coordinates.VertexPosition.TOP_RIGHT,
         Coordinates.VertexPosition.BOTTOM_RIGHT
-      )
-    )
+      ),
+    ])
   )
   .withConfigurationValidator(
     Coordinates.oddsAtCoordinatesLessThan(
@@ -1415,63 +1410,55 @@ export const SPEC_5_6_EXP_SEA_SCEN_WOC = new Specification(
   )
 )
   .withMarkers(
-    new Markers.Marker(
-      Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT,
+    new Markers.Marker(Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT, [
       new Coordinates.Coordinate(8, 2).onVertices(
         Coordinates.VertexPosition.TOP,
         Coordinates.VertexPosition.TOP_RIGHT
-      )
-    ),
-    new Markers.Marker(
-      Markers.SETUP_SETTLEMENTS_PROHIBITION,
+      ),
+    ]),
+    new Markers.Marker(Markers.SETUP_SETTLEMENTS_PROHIBITION, [
       new Coordinates.Coordinate(7, 1).onVertices(
         Coordinates.VertexPosition.TOP_RIGHT,
         Coordinates.VertexPosition.BOTTOM
-      )
-    ),
-    new Markers.Marker(
-      Markers.SETUP_SETTLEMENTS_PROHIBITION,
+      ),
+    ]),
+    new Markers.Marker(Markers.SETUP_SETTLEMENTS_PROHIBITION, [
       new Coordinates.Coordinate(10, 2).onVertices(
         Coordinates.VertexPosition.BOTTOM_LEFT,
         Coordinates.VertexPosition.TOP
-      )
-    ),
-    new Markers.Marker(
-      Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT,
+      ),
+    ]),
+    new Markers.Marker(Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT, [
       new Coordinates.Coordinate(10, 6).onVertices(
         Coordinates.VertexPosition.BOTTOM,
         Coordinates.VertexPosition.BOTTOM_LEFT
-      )
-    ),
-    new Markers.Marker(
-      Markers.SETUP_SETTLEMENTS_PROHIBITION,
+      ),
+    ]),
+    new Markers.Marker(Markers.SETUP_SETTLEMENTS_PROHIBITION, [
       new Coordinates.Coordinate(8, 6).onVertices(
         Coordinates.VertexPosition.TOP_RIGHT,
         Coordinates.VertexPosition.BOTTOM
-      )
-    ),
-    new Markers.Marker(
-      Markers.SETUP_SETTLEMENTS_PROHIBITION,
+      ),
+    ]),
+    new Markers.Marker(Markers.SETUP_SETTLEMENTS_PROHIBITION, [
       new Coordinates.Coordinate(11, 7).onVertices(
         Coordinates.VertexPosition.BOTTOM_LEFT,
         Coordinates.VertexPosition.TOP
-      )
-    ),
-    new Markers.Marker(
-      Markers.GREAT_WALL_SETTLEMENTS_REQUIREMENT,
+      ),
+    ]),
+    new Markers.Marker(Markers.GREAT_WALL_SETTLEMENTS_REQUIREMENT, [
       new Coordinates.Coordinate(15, 3).onVertices(
         Coordinates.VertexPosition.TOP,
         Coordinates.VertexPosition.TOP_RIGHT,
         Coordinates.VertexPosition.BOTTOM_RIGHT
-      )
-    ),
-    new Markers.Marker(
-      Markers.GREAT_WALL_SETTLEMENTS_REQUIREMENT,
+      ),
+    ]),
+    new Markers.Marker(Markers.GREAT_WALL_SETTLEMENTS_REQUIREMENT, [
       new Coordinates.Coordinate(16, 4).onVertices(
         Coordinates.VertexPosition.TOP_RIGHT,
         Coordinates.VertexPosition.BOTTOM_RIGHT
-      )
-    )
+      ),
+    ])
   )
   .withConfigurationValidator(
     Coordinates.oddsAtCoordinatesLessThan(
@@ -1524,78 +1511,68 @@ export const SPEC_7_8_EXP_SEA_SCEN_WOC = new Specification(
   oneToOne('main-island-producing-terrain', 'small-island-gold-terrain')
 )
   .withMarkers(
-    new Markers.Marker(
-      Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT,
+    new Markers.Marker(Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT, [
       new Coordinates.Coordinate(10, 2).onVertices(
         Coordinates.VertexPosition.TOP,
         Coordinates.VertexPosition.TOP_RIGHT
-      )
-    ),
-    new Markers.Marker(
-      Markers.SETUP_SETTLEMENTS_PROHIBITION,
+      ),
+    ]),
+    new Markers.Marker(Markers.SETUP_SETTLEMENTS_PROHIBITION, [
       new Coordinates.Coordinate(9, 1).onVertices(
         Coordinates.VertexPosition.TOP_RIGHT,
         Coordinates.VertexPosition.BOTTOM
-      )
-    ),
-    new Markers.Marker(
-      Markers.SETUP_SETTLEMENTS_PROHIBITION,
+      ),
+    ]),
+    new Markers.Marker(Markers.SETUP_SETTLEMENTS_PROHIBITION, [
       new Coordinates.Coordinate(12, 2).onVertices(
         Coordinates.VertexPosition.BOTTOM_LEFT,
         Coordinates.VertexPosition.TOP
-      )
-    ),
-    new Markers.Marker(
-      Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT,
+      ),
+    ]),
+    new Markers.Marker(Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT, [
       new Coordinates.Coordinate(10, 6).onVertices(
         Coordinates.VertexPosition.BOTTOM,
         Coordinates.VertexPosition.BOTTOM_LEFT
-      )
-    ),
-    new Markers.Marker(
-      Markers.SETUP_SETTLEMENTS_PROHIBITION,
+      ),
+    ]),
+    new Markers.Marker(Markers.SETUP_SETTLEMENTS_PROHIBITION, [
       new Coordinates.Coordinate(8, 6).onVertices(
         Coordinates.VertexPosition.TOP_RIGHT,
         Coordinates.VertexPosition.BOTTOM
-      )
-    ),
-    new Markers.Marker(
-      Markers.SETUP_SETTLEMENTS_PROHIBITION,
+      ),
+    ]),
+    new Markers.Marker(Markers.SETUP_SETTLEMENTS_PROHIBITION, [
       new Coordinates.Coordinate(11, 7).onVertices(
         Coordinates.VertexPosition.BOTTOM_LEFT,
         Coordinates.VertexPosition.TOP
-      )
-    ),
-    new Markers.Marker(
-      Markers.GREAT_WALL_SETTLEMENTS_REQUIREMENT,
+      ),
+    ]),
+    new Markers.Marker(Markers.GREAT_WALL_SETTLEMENTS_REQUIREMENT, [
       new Coordinates.Coordinate(2, 4).onVertices(
         Coordinates.VertexPosition.BOTTOM_LEFT,
         Coordinates.VertexPosition.TOP_LEFT,
         Coordinates.VertexPosition.TOP
-      )
-    ),
-    new Markers.Marker(
-      Markers.GREAT_WALL_SETTLEMENTS_REQUIREMENT,
+      ),
+    ]),
+    new Markers.Marker(Markers.GREAT_WALL_SETTLEMENTS_REQUIREMENT, [
       new Coordinates.Coordinate(3, 5).onVertices(
         Coordinates.VertexPosition.BOTTOM_LEFT,
         Coordinates.VertexPosition.TOP_LEFT
-      )
-    ),
-    new Markers.Marker(
-      Markers.GREAT_WALL_SETTLEMENTS_REQUIREMENT,
+      ),
+    ]),
+    new Markers.Marker(Markers.GREAT_WALL_SETTLEMENTS_REQUIREMENT, [
       new Coordinates.Coordinate(17, 3).onVertices(
         Coordinates.VertexPosition.TOP_RIGHT,
         Coordinates.VertexPosition.BOTTOM_RIGHT
-      )
-    ),
-    new Markers.Marker(
-      Markers.GREAT_WALL_SETTLEMENTS_REQUIREMENT,
+      ),
+    ]),
+    new Markers.Marker(Markers.GREAT_WALL_SETTLEMENTS_REQUIREMENT, [
       new Coordinates.Coordinate(18, 4).onVertices(
         Coordinates.VertexPosition.TOP_RIGHT,
         Coordinates.VertexPosition.BOTTOM_RIGHT,
         Coordinates.VertexPosition.BOTTOM
-      )
-    )
+      ),
+    ])
   )
   .withConfigurationValidator(
     Coordinates.oddsAtCoordinatesLessThan(
@@ -1822,8 +1799,8 @@ export const SPEC_3_4_EXP_TB_SCEN_BA = new Specification(
       Coordinates.BASE_3_4_EXP_TB_SCEN_BA_OUTER_PRODUCING_TERRAIN_COORDINATES,
     'inner-producing-terrain':
       Coordinates.BASE_3_4_EXP_TB_SCEN_BA_INNER_PRODUCING_TERRAIN_COORDINATES,
-    desert: [new Coordinates.Coordinate(7, 1)],
-    castle: [new Coordinates.Coordinate(3, 5)],
+    desert: Coordinates.BASE_3_4_EXP_TB_SCEN_BA_INNER_DESERT_COORDINATES,
+    castle: Coordinates.BASE_3_4_EXP_TB_SCEN_BA_INNER_CASTLE_COORDINATES,
     harbor: Coordinates.BASE_3_4_HARBOR_COORDINATES,
   },
   {

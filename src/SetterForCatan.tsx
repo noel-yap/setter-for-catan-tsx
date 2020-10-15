@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {ChangeEvent, useState} from 'react';
 import {
   Button,
   Chip,
@@ -19,7 +19,7 @@ import {Board} from './component/Boards';
 import * as Coordinates from './component/Coordinates';
 import * as Specifications from './component/Specifications';
 import {Specification} from './component/Specifications';
-import {useOktaAuth} from "@okta/okta-react";
+import {useOktaAuth} from '@okta/okta-react';
 
 interface BoardSpecifications {
   [key: string]: {
@@ -34,7 +34,9 @@ export function SetterForCatan() {
 
   const [openMenu, setOpenMenu] = useState(false);
   const [playerCount, setPlayerCount] = useState('3');
-  const [useFishermenOfCatanVariant, setUseFishermenOfCatanVariant] = useState(false);
+  const [useFishermenOfCatanVariant, setUseFishermenOfCatanVariant] = useState(
+    false
+  );
   const [scenarioName, setScenarioName] = useState(initialScenarioName);
   const [board, setBoard] = useState(new Boards.Board([]));
 
@@ -51,7 +53,9 @@ export function SetterForCatan() {
 
     if (authState.isAuthenticated) {
       // TODO(nyap): Use proto so index in `boardSpecifications` order doesn't have to be maintained to match
-      const scenarioIndex = Object.keys(boardSpecifications).indexOf(scenarioName);
+      const scenarioIndex = Object.keys(boardSpecifications).indexOf(
+        scenarioName
+      );
 
       // TODO(nyap): Use `useEffect`. https://www.smashingmagazine.com/2020/06/rest-api-react-fetch-axios/
       await BoardRestClient.generateBoardFromSchema(
@@ -89,7 +93,7 @@ export function SetterForCatan() {
 
       setBoard(board);
     }
-  }
+  };
 
   return (
     <div className="App">
@@ -103,40 +107,44 @@ export function SetterForCatan() {
           aria-label="number-of-players"
           name="number-of-players"
           value={playerCount}
-          onChange={(event: any) => {
+          onChange={(event: ChangeEvent<HTMLInputElement>) => {
             setPlayerCount(event.target.value);
           }}
           row
         >
           {playerCounts.map(playerCount => {
             return (
-              <FormControlLabel
-                key={playerCount}
-                value={playerCount}
-                label={playerCount}
-                disabled={
-                  !Object.prototype.hasOwnProperty.call(
-                    boardSpecifications[scenarioName],
-                    playerCount
-                  )
-                }
-                control={<Radio color="primary" />}
-              />
+              <Tooltip title={!authState.isAuthenticated
+              && playerCount !== '3'
+              && playerCount !== '4' ? 'Log in to enable this feature' : ''}>
+                <FormControlLabel
+                  disabled={
+                    !authState.isAuthenticated
+                    && playerCount !== '3'
+                    && playerCount !== '4'
+                  }
+                  key={playerCount}
+                  value={playerCount}
+                  label={playerCount}
+                  control={<Radio color="primary" />}
+                />
+              </Tooltip>
             );
           })}
         </RadioGroup>
-        <Chip
-          variant={
-            useFishermenOfCatanVariant ? 'default' : 'outlined'
-          }
-          label="Fishermen of Catan"
-          color={
-            useFishermenOfCatanVariant ? 'primary' : 'secondary'
-          }
-          onClick={() => {
-            setUseFishermenOfCatanVariant(!useFishermenOfCatanVariant);
-          }}
-        />
+        <Tooltip title={!authState.isAuthenticated ? 'Log in to enable this feature' : ''}>
+          <div>
+            <Chip
+              disabled={!authState.isAuthenticated}
+              variant={useFishermenOfCatanVariant ? 'default' : 'outlined'}
+              label="Fishermen of Catan"
+              color={useFishermenOfCatanVariant ? 'primary' : 'secondary'}
+              onClick={() => {
+                setUseFishermenOfCatanVariant(!useFishermenOfCatanVariant);
+              }}
+            />
+          </div>
+        </Tooltip>
         <br />
         <Tooltip title="Right click to change configuration.">
           <Button
@@ -156,9 +164,7 @@ export function SetterForCatan() {
               setOpenMenu(true);
             }}
           >
-            <Typography variant="h4">
-              Generate {scenarioName}
-            </Typography>
+            <Typography variant="h4">Generate {scenarioName}</Typography>
           </Button>
         </Tooltip>
         <Menu
@@ -170,21 +176,22 @@ export function SetterForCatan() {
           }}
         >
           {scenarios.map(scenarioName => (
-            <MenuItem
-              key={scenarioName}
-              disabled={
-                !Object.prototype.hasOwnProperty.call(
-                  boardSpecifications[scenarioName],
-                  playerCount
-                )
-              }
-              onClick={() => {
-                setOpenMenu(false);
-                setScenarioName(scenarioName);
-              }}
-            >
-              {scenarioName}
-            </MenuItem>
+            <Tooltip title={!authState.isAuthenticated && scenarioName !== 'Base' ? 'Log in to enable this feature' : ''}>
+              <div>
+                <MenuItem
+                  key={scenarioName}
+                  disabled={
+                    !authState.isAuthenticated && scenarioName !== 'Base'
+                  }
+                  onClick={() => {
+                    setOpenMenu(false);
+                    setScenarioName(scenarioName);
+                  }}
+                >
+                  {scenarioName}
+                </MenuItem>
+              </div>
+            </Tooltip>
           ))}
         </Menu>
         <GeneratedBoard board={board} />

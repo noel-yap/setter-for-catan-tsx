@@ -32,31 +32,64 @@ export async function generateBoardFromSchema(
       return response.json();
     })
     .then(json => {
-      const success = json.success;
-      const board = new Board(
-        success.board.configurations.map((c: Configuration) => {
-          const chitJson = c.chit;
+      try {
+        console.log(`response json = ${JSON.stringify(json)}`);
 
-          const tileJson = c.tile;
-          const tileType = tileTypeFromString(tileJson.type);
-          const tile = new Tile(tileType);
+        const success = json.success;
+        console.log(`board = ${JSON.stringify(success.board)}`);
+        console.log(
+          `configurations = ${JSON.stringify(success.board.configurations)}`
+        );
+        console.log(`markers = ${JSON.stringify(success.board.markers)}`);
 
-          const coordinateJson = c.coordinate;
-          const coordinates = new Coordinate(
-            coordinateJson.x,
-            coordinateJson.y,
-            coordinateJson.edgePositions,
-            coordinateJson.vertexPositions,
-            facePositionToInt(coordinateJson.facePosition)
-          );
+        const board = new Board(
+          success.board.configurations.map((c: Configuration) => {
+            const tileJson = c.tile;
+            const tileType = tileTypeFromString(tileJson.type);
+            const tile = new Tile(tileType, tileJson.specialVertices);
 
-          const chits = new Chits(chitJson.values);
+            const coordinateJson = c.coordinate;
+            const coordinates = new Coordinate(
+              coordinateJson.x,
+              coordinateJson.y,
+              coordinateJson.edgePositions,
+              coordinateJson.vertexPositions,
+              facePositionToInt(coordinateJson.facePosition)
+            );
 
-          return new Configuration(tile, coordinates, chits);
-        })
-      );
+            const chitJson = c.chit;
+            const chits = new Chits(chitJson.values);
 
-      return [json.success.specification, board] as [Specification, Board];
+            console.log(
+              `tile = ${JSON.stringify(c.tile)}, ${JSON.stringify(tile)}`
+            );
+            console.log(
+              `coordinates = ${JSON.stringify(c.coordinate)}, ${JSON.stringify(
+                coordinates
+              )}`
+            );
+            console.log(
+              `chits = ${JSON.stringify(c.chit)}, ${JSON.stringify(chits)}`
+            );
+
+            const configuration = new Configuration(tile, coordinates, chits);
+
+            console.log(`configuration = ${JSON.stringify(configuration)}`);
+
+            return configuration;
+          }),
+          success.board.markers
+        );
+
+        return [json.success.specification, board] as [Specification, Board];
+      } catch (e) {
+        console.log(e);
+
+        return [json.success.specification, null as unknown] as [
+          Specification,
+          Board
+        ];
+      }
     })
     .catch(error => {
       return error;

@@ -20,6 +20,10 @@ export class Configuration {
     );
 
     const tileEdgeCount = this.tile.edgeCount();
+
+    console.log(
+      `tileEdgeCount = ${tileEdgeCount}, edgePositions = ${this.coordinate.edgePositions}`
+    );
     if (
       this.coordinate.edgePositions.length < tileEdgeCount[0] ||
       tileEdgeCount[1] < this.coordinate.edgePositions.length
