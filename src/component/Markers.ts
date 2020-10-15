@@ -7,8 +7,17 @@ export enum Type {
   SETUP_SETTLEMENTS_PROHIBITION,
 }
 
+export function markerTypeToInt(markerType: Type | string | number): number {
+  return typeof markerType === 'string'
+    ? Type[markerType as keyof typeof Type]
+    : markerType;
+}
+
 export class Marker {
-  constructor(public type: Type, public coordinate: Coordinates.Coordinate) {}
+  constructor(
+    public type: Type,
+    public coordinates: Coordinates.Coordinate[]
+  ) {}
 }
 
 export const GREAT_BRIDGE_SETTLEMENT_REQUIREMENT =

@@ -16,6 +16,8 @@ import * as Coordinates from './component/Coordinates';
 import * as Markers from './component/Markers';
 import * as Tiles from './component/Tiles';
 import {Cartesian2D} from './util/Cartesian2D';
+import {markerTypeToInt} from "./component/Markers";
+import {edgePositionToInt} from "./component/Coordinates";
 
 interface GeneratedBoardProps {
   board: Boards.Board;
@@ -31,23 +33,34 @@ export class GeneratedBoard extends React.Component<
   private readonly canvasDivRef = React.createRef<HTMLDivElement>();
 
   render(): JSX.Element {
-    if (this.props.board === undefined) {
-      return <div>
-        The Setters of Catan seem to be having some sort of work stoppage.
-      </div>;
+    const canvasDiv = this.canvasDivRef.current;
+    if (canvasDiv) {
+      canvasDiv.childNodes.forEach((child: any) =>
+        canvasDiv.removeChild(child)
+      );
+    }
+
+    if (this.props.board == null) {
+      return (
+        <div className="row">
+          <Typography>
+            The Setters for Catan seem to be having some sort of work stoppage.
+          </Typography>
+          <div id="generated-board-div" ref={this.canvasDivRef} />
+        </div>
+      );
     }
 
     if (this.props.board.isEmpty()) {
-      return <div className="row">
-        <Typography />
-        <div id="generated-board-div" ref={this.canvasDivRef} />
-      </div>;
+      return (
+        <div className="row">
+          <Typography />
+          <div id="generated-board-div" ref={this.canvasDivRef} />
+        </div>
+      );
     }
 
-    const canvasDiv = this.canvasDivRef.current;
     if (canvasDiv) {
-      canvasDiv.childNodes.forEach((child: any) => canvasDiv.removeChild(child));
-
       canvasDiv.appendChild(this.renderBoard());
     }
 
@@ -103,8 +116,8 @@ export class GeneratedBoard extends React.Component<
       fontSize: 16,
       fg: 'black',
       bg: 'navy',
-      width: 30,
-      height: 14,
+      width: 30, // TODO: Set based on max x coordinate
+      height: 14, // TODO: Set based on max y coordinate
       spacing: 5,
     };
     const display = new ROT.Display(displayOptions as Partial<DisplayOptions>);
@@ -177,26 +190,28 @@ export class GeneratedBoard extends React.Component<
       const hexSize = (display._backend as Hex)._hexSize;
 
       this.props.board.vertexMarkersLayout.forEach(marker => {
-        const hexCenter = GeneratedBoard.hexCenter(
-          hexSize,
-          marker.coordinate.x,
-          marker.coordinate.y
-        );
-        const vertexPositionPoint = _.partial(
-          GeneratedBoard.vertexPositionPoint,
-          _,
-          hexCenter,
-          hexSize,
-          options.border
-        );
-
-        marker.coordinate.vertexPositions.forEach(vertex => {
-          GeneratedBoard.renderMarker(
-            display,
-            marker,
-            vertexPositionPoint(Coordinates.vertexPositionToInt(vertex)),
-            hexSize / 6
+        marker.coordinates.forEach(coordinate => {
+          const hexCenter = GeneratedBoard.hexCenter(
+            hexSize,
+            coordinate.x,
+            coordinate.y
           );
+          const vertexPositionPoint = _.partial(
+            GeneratedBoard.vertexPositionPoint,
+            _,
+            hexCenter,
+            hexSize,
+            options.border
+          );
+
+          coordinate.vertexPositions.forEach(vertex => {
+            GeneratedBoard.renderMarker(
+              display,
+              marker,
+              vertexPositionPoint(Coordinates.vertexPositionToInt(vertex)),
+              hexSize / 6
+            );
+          });
         });
       });
     });
@@ -283,7 +298,9 @@ export class GeneratedBoard extends React.Component<
         options.border
       );
 
-      configuration.tile.specialVertices.forEach(vertexPosition => {
+      configuration.tile.specialVertices
+        .map(p => Coordinates.vertexPositionToInt(p))
+        .forEach(vertexPosition => {
         const vertex = vertexPositionPoint(vertexPosition);
         const midpoint = vertex.translate(hexCenter.diff(vertex).scale(0.5));
 
@@ -353,7 +370,7 @@ export class GeneratedBoard extends React.Component<
       options.fg,
       hexCenter.translate(offset),
       configuration.coordinate.facePosition === Coordinates.FacePosition.FACE_UP
-        ? configuration.tile === Tiles.GENERIC_HARBOR
+        ? configuration.tile.type === Tiles.Type.GENERIC_HARBOR
           ? '3:1'
           : '2:1'
         : '?'
@@ -382,11 +399,15 @@ export class GeneratedBoard extends React.Component<
       options.border
     );
 
-    const edgePosition0 = configuration.coordinate.edgePositions[0];
+    const edgePosition0 = Coordinates.edgePositionToInt(
+      configuration.coordinate.edgePositions[0]
+    );
     const vertex0 = edgePositionStartPoint(edgePosition0);
     const vertex1 = edgePositionStartPoint((edgePosition0 + 1) % 6);
 
-    const edgePosition1 = configuration.coordinate.edgePositions[1];
+    const edgePosition1 = Coordinates.edgePositionToInt(
+      configuration.coordinate.edgePositions[1]
+    );
     const vertex2 = edgePositionStartPoint(edgePosition1);
     const vertex3 = edgePositionStartPoint((edgePosition1 + 1) % 6);
 
@@ -598,7 +619,9 @@ export class GeneratedBoard extends React.Component<
         ? GeneratedBoard.tileColor(Tiles.LAKE)
         : GeneratedBoard.tileColor(Tiles.SEA);
 
-    configuration.coordinate.edgePositions.forEach(position => {
+    configuration.coordinate.edgePositions
+      .map(p => edgePositionToInt(p))
+      .forEach(position => {
       const vertex0 = edgePositionStartPoint(position);
       const vertex1 = edgePositionStartPoint((position + 1) % 6);
 
@@ -814,7 +837,9 @@ export class GeneratedBoard extends React.Component<
   }
 
   static markerColor(marker: Markers.Marker): string {
-    switch (marker.type) {
+    console.log(`marker.type = ${marker.type}, ${markerTypeToInt(marker.type)}`);
+
+    switch (markerTypeToInt(marker.type)) {
       case Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT: {
         return 'purple';
       }
@@ -874,7 +899,7 @@ export class GeneratedBoard extends React.Component<
           return 'forestgreen';
         }
 
-        case Tiles.Type.GOLD:
+        case Tiles.Type.GOLD_FIELD:
         case Tiles.Type.GENERIC_HARBOR:
         case Tiles.Type.VICTORY_POINT: {
           return 'gold';
