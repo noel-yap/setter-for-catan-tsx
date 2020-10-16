@@ -43,7 +43,7 @@ export class GeneratedBoard extends React.Component<
     if (this.props.board == null) {
       return (
         <div className="row">
-          <Typography>
+          <Typography color="secondary">
             The Setters for Catan seem to be having some sort of work stoppage.
           </Typography>
           <div id="generated-board-div" ref={this.canvasDivRef} />
@@ -94,15 +94,17 @@ export class GeneratedBoard extends React.Component<
     return (
       <div className="row">
         <div>
-          <Typography variant="body1">Components:</Typography>
-          <Typography variant="body2">
-            {GeneratedBoard.renderBom(terrainTilesByType)}
-            {GeneratedBoard.renderBom(riverByType)}
-            {GeneratedBoard.renderBom(fisheryTilesByType)}
-            {GeneratedBoard.renderBom(chits, 'Chit')}
-            {GeneratedBoard.renderBom(harborTilesByType)}
-            {GeneratedBoard.renderBom(developmentCardsByType)}
-            {GeneratedBoard.renderBom(victoryPointsByType)}
+          <Typography color="textSecondary">
+            <Typography variant="body1">Components:</Typography>
+            <Typography variant="body2">
+              {GeneratedBoard.renderBom(terrainTilesByType)}
+              {GeneratedBoard.renderBom(riverByType)}
+              {GeneratedBoard.renderBom(fisheryTilesByType)}
+              {GeneratedBoard.renderBom(chits, 'Chit')}
+              {GeneratedBoard.renderBom(harborTilesByType)}
+              {GeneratedBoard.renderBom(developmentCardsByType)}
+              {GeneratedBoard.renderBom(victoryPointsByType)}
+            </Typography>
           </Typography>
         </div>
         <div id="generated-board-div" ref={this.canvasDivRef} />

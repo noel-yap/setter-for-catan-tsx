@@ -106,40 +106,44 @@ export function SetterForCatan() {
   return (
     <div className="App">
       <header className="App-body">
-        <Typography id="title" variant="h3">
+        <Typography id="title" variant="h3" color="textPrimary">
           Setter for Catan
         </Typography>
-        <FormLabel>Number of Players</FormLabel>
-        <RadioGroup
-          id="player-counts"
-          aria-label="number-of-players"
-          name="number-of-players"
-          value={playerCount}
-          onChange={(event: ChangeEvent<HTMLInputElement>) => {
-            setPlayerCount(event.target.value);
-          }}
-          row
-        >
-          {playerCounts.map(playerCount => {
-            return (
-              <Tooltip
-                title={
-                  !authState.isAuthenticated && playerCount !== '3-4'
-                    ? 'Log in to enable this feature'
-                    : ''
-                }
-              >
-                <FormControlLabel
-                  disabled={!authState.isAuthenticated && playerCount !== '3-4'}
-                  key={playerCount}
-                  value={playerCount}
-                  label={playerCount}
-                  control={<Radio color="primary" />}
-                />
-              </Tooltip>
-            );
-          })}
-        </RadioGroup>
+        <Typography color="textSecondary">
+          <FormLabel>Number of Players</FormLabel>
+          <RadioGroup
+            id="player-counts"
+            aria-label="number-of-players"
+            name="number-of-players"
+            value={playerCount}
+            onChange={(event: ChangeEvent<HTMLInputElement>) => {
+              setPlayerCount(event.target.value);
+            }}
+            row
+          >
+            {playerCounts.map(playerCount => {
+              return (
+                <Tooltip
+                  title={
+                    !authState.isAuthenticated && playerCount !== '3-4'
+                      ? 'Log in to enable this feature'
+                      : ''
+                  }
+                >
+                  <FormControlLabel
+                    disabled={
+                      !authState.isAuthenticated && playerCount !== '3-4'
+                    }
+                    key={playerCount}
+                    value={playerCount}
+                    label={playerCount}
+                    control={<Radio color="primary" />}
+                  />
+                </Tooltip>
+              );
+            })}
+          </RadioGroup>
+        </Typography>
         <Tooltip
           title={
             !authState.isAuthenticated ? 'Log in to enable this feature' : ''
