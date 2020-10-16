@@ -21,6 +21,7 @@ import {Coordinate} from './component/Coordinates';
 import * as Specifications from './component/Specifications';
 import {Specification} from './component/Specifications';
 import {useOktaAuth} from '@okta/okta-react';
+import {P3_P4_SPECIFICATION} from './scenarios/Base';
 
 interface BoardSpecifications {
   [key: string]: {
@@ -121,13 +122,15 @@ export function SetterForCatan() {
         >
           {playerCounts.map(playerCount => {
             return (
-              <Tooltip title={!authState.isAuthenticated
-                && playerCount !== '3-4' ? 'Log in to enable this feature' : ''}>
+              <Tooltip
+                title={
+                  !authState.isAuthenticated && playerCount !== '3-4'
+                    ? 'Log in to enable this feature'
+                    : ''
+                }
+              >
                 <FormControlLabel
-                  disabled={
-                    !authState.isAuthenticated
-                    && playerCount !== '3-4'
-                  }
+                  disabled={!authState.isAuthenticated && playerCount !== '3-4'}
                   key={playerCount}
                   value={playerCount}
                   label={playerCount}
@@ -137,7 +140,11 @@ export function SetterForCatan() {
             );
           })}
         </RadioGroup>
-        <Tooltip title={!authState.isAuthenticated ? 'Log in to enable this feature' : ''}>
+        <Tooltip
+          title={
+            !authState.isAuthenticated ? 'Log in to enable this feature' : ''
+          }
+        >
           <div>
             <Chip
               disabled={!authState.isAuthenticated}
@@ -181,7 +188,13 @@ export function SetterForCatan() {
           }}
         >
           {scenarios.map(scenarioName => (
-            <Tooltip title={!authState.isAuthenticated && scenarioName !== 'Base' ? 'Log in to enable this feature' : ''}>
+            <Tooltip
+              title={
+                !authState.isAuthenticated && scenarioName !== 'Base'
+                  ? 'Log in to enable this feature'
+                  : ''
+              }
+            >
               <div>
                 <MenuItem
                   key={scenarioName}
@@ -205,10 +218,10 @@ export function SetterForCatan() {
   );
 }
 
-const menuPlaceholder = undefined as unknown as [Specification, Coordinate[]];
+const menuPlaceholder = (undefined as unknown) as [Specification, Coordinate[]];
 const boardSpecifications: BoardSpecifications = {
   Base: {
-    '3-4': [Specifications.SPEC_3_4, Coordinates.BASE_3_4_FISHERY_COORDINATES],
+    '3-4': [P3_P4_SPECIFICATION, []],
     '5-6': menuPlaceholder,
     '7-8': menuPlaceholder,
   },

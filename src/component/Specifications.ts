@@ -6,7 +6,7 @@ import * as Coordinates from './Coordinates';
 import * as Markers from './Markers';
 import * as Tiles from './Tiles';
 
-// export module SPECs {
+// export module Specifications {
 export class Specification {
   constructor(
     public tiles: {[name: string]: Tiles.Tile[]},
@@ -213,7 +213,7 @@ export class Specification {
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-function oneToOne(...names: string[]): any {
+export function oneToOne(...names: string[]): any {
   return names.reduce(
     (result, name) => Object.assign(result, {[name]: [name]}),
     {}
@@ -243,7 +243,6 @@ export function withFisheries(
     : 0;
   const fisheryCount = fisheryCoordinates.length;
 
-  // TODO: Handle fisheryCount > 8.
   const tiles = Object.assign(
     {..._.omit(specification.tiles, 'desert-or-lake')},
     {
@@ -297,23 +296,4 @@ export function withFisheries(
     specification.filterConfigurationScorer
   );
 }
-
-export const SPEC_3_4 = new Specification(
-  {
-    'producing-terrain': Tiles.BASE_3_4_PRODUCING_TERRAIN_TILE_SET,
-    'desert-or-lake': [Tiles.DESERT_TERRAIN],
-    harbor: Tiles.BASE_3_4_HARBOR_TILE_SET,
-  },
-  {
-    terrain: Coordinates.BASE_3_4_TERRAIN_COORDINATES,
-    harbor: Coordinates.BASE_3_4_HARBOR_COORDINATES,
-  },
-  {
-    'producing-terrain': Chits.BASE_3_4_PRODUCING_TERRAIN_CHIT_SET,
-  },
-  Object.assign(oneToOne('harbor'), {
-    terrain: ['producing-terrain', 'desert-or-lake'],
-  }),
-  oneToOne('producing-terrain')
-);
 // }

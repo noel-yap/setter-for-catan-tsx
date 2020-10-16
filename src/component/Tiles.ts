@@ -104,34 +104,10 @@ export const PASTURE_TERRAIN = new Tile(Type.PASTURE);
 export const HILL_TERRAIN = new Tile(Type.HILL);
 export const MOUNTAIN_TERRAIN = new Tile(Type.MOUNTAIN);
 
-export const GOLD_TERRAIN = new Tile(Type.GOLD_FIELD);
-
-export const OASIS_TERRAIN = new Tile(Type.OASIS, [
-  Coordinates.VertexPosition.TOP_RIGHT,
-  Coordinates.VertexPosition.BOTTOM,
-  Coordinates.VertexPosition.TOP_LEFT,
-]);
-export const CASTLE_TERRAIN = new Tile(Type.CASTLE);
-export const GLASSWORKS_TERRAIN = new Tile(Type.GLASSWORKS);
-export const QUARRY_TERRAIN = new Tile(Type.QUARRY);
-
 export const SEA = new Tile(Type.SEA);
 export const LAKE = new Tile(Type.LAKE);
 export const FISHERY = new Tile(Type.FISHERY);
-export const SWAMP_TERRAIN = new Tile(Type.SWAMP);
 export const RIVER = new Tile(Type.RIVER);
 
-export const DEVELOPMENT_CARD = new Tile(Type.DEVELOPMENT_CARD);
-export const VICTORY_POINT = new Tile(Type.VICTORY_POINT);
 export const CHIT = new Tile(Type.CHIT);
-
-export const BASE_3_4_PRODUCING_TERRAIN_TILE_SET = new Array(4)
-  .fill(FIELD_TERRAIN)
-  .concat(new Array(4).fill(FOREST_TERRAIN))
-  .concat(new Array(4).fill(PASTURE_TERRAIN))
-  .concat(new Array(3).fill(HILL_TERRAIN))
-  .concat(new Array(3).fill(MOUNTAIN_TERRAIN));
-export const BASE_3_4_HARBOR_TILE_SET = new Array(4)
-  .fill(GENERIC_HARBOR)
-  .concat([GRAIN_HARBOR, LUMBER_HARBOR, WOOL_HARBOR, BRICK_HARBOR, ORE_HARBOR]);
 // }

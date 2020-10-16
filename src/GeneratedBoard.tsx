@@ -16,8 +16,8 @@ import * as Coordinates from './component/Coordinates';
 import * as Markers from './component/Markers';
 import * as Tiles from './component/Tiles';
 import {Cartesian2D} from './util/Cartesian2D';
-import {markerTypeToInt} from "./component/Markers";
-import {edgePositionToInt} from "./component/Coordinates";
+import {markerTypeToInt} from './component/Markers';
+import {edgePositionToInt} from './component/Coordinates';
 
 interface GeneratedBoardProps {
   board: Boards.Board;
@@ -35,7 +35,7 @@ export class GeneratedBoard extends React.Component<
   render(): JSX.Element {
     const canvasDiv = this.canvasDivRef.current;
     if (canvasDiv) {
-      canvasDiv.childNodes.forEach((child: any) =>
+      canvasDiv.childNodes.forEach((child: HTMLElement) =>
         canvasDiv.removeChild(child)
       );
     }
@@ -301,27 +301,27 @@ export class GeneratedBoard extends React.Component<
       configuration.tile.specialVertices
         .map(p => Coordinates.vertexPositionToInt(p))
         .forEach(vertexPosition => {
-        const vertex = vertexPositionPoint(vertexPosition);
-        const midpoint = vertex.translate(hexCenter.diff(vertex).scale(0.5));
+          const vertex = vertexPositionPoint(vertexPosition);
+          const midpoint = vertex.translate(hexCenter.diff(vertex).scale(0.5));
 
-        const specialVertexColor = ROT.Color.toHex(
-          ROT.Color.interpolate(
-            ROT.Color.fromString(
-              GeneratedBoard.tileColor(
-                configuration.tile,
-                configuration.coordinate.facePosition
-              )
-            ) as [number, number, number],
-            ROT.Color.fromString('white') as [number, number, number]
-          )
-        );
-        GeneratedBoard.renderPolygon(
-          display,
-          [midpoint, vertex],
-          specialVertexColor,
-          specialVertexColor
-        );
-      });
+          const specialVertexColor = ROT.Color.toHex(
+            ROT.Color.interpolate(
+              ROT.Color.fromString(
+                GeneratedBoard.tileColor(
+                  configuration.tile,
+                  configuration.coordinate.facePosition
+                )
+              ) as [number, number, number],
+              ROT.Color.fromString('white') as [number, number, number]
+            )
+          );
+          GeneratedBoard.renderPolygon(
+            display,
+            [midpoint, vertex],
+            specialVertexColor,
+            specialVertexColor
+          );
+        });
     });
   }
 
@@ -501,20 +501,11 @@ export class GeneratedBoard extends React.Component<
     radius: number,
     chits: Chits.Chits
   ) {
-    GeneratedBoard.renderCircle(
-      display,
-      vertex,
-      radius,
-      this.tileColor(Tiles.CHIT),
-      'black'
-    );
+    const chitColor = GeneratedBoard.tileColor(Tiles.CHIT);
+    GeneratedBoard.renderCircle(display, vertex, radius, chitColor, 'black');
     GeneratedBoard.renderText(
       display,
-      GeneratedBoard.chitTextColor(
-        chits,
-        display._options.fg,
-        GeneratedBoard.tileColor(Tiles.CHIT)
-      ),
+      GeneratedBoard.chitTextColor(chits, display._options.fg, chitColor),
       vertex,
       GeneratedBoard.chitsToString(chits)
     );
@@ -622,23 +613,23 @@ export class GeneratedBoard extends React.Component<
     configuration.coordinate.edgePositions
       .map(p => edgePositionToInt(p))
       .forEach(position => {
-      const vertex0 = edgePositionStartPoint(position);
-      const vertex1 = edgePositionStartPoint((position + 1) % 6);
+        const vertex0 = edgePositionStartPoint(position);
+        const vertex1 = edgePositionStartPoint((position + 1) % 6);
 
-      const midpoint = vertex0.translate(vertex1.diff(vertex0).scale(0.5));
+        const midpoint = vertex0.translate(vertex1.diff(vertex0).scale(0.5));
 
-      GeneratedBoard.renderPolygon(
-        display,
-        [
-          chitsExist
-            ? hexCenter.translate(midpoint.diff(hexCenter).scale(0.5))
-            : hexCenter,
-          midpoint,
-        ],
-        color,
-        color
-      );
-    });
+        GeneratedBoard.renderPolygon(
+          display,
+          [
+            chitsExist
+              ? hexCenter.translate(midpoint.diff(hexCenter).scale(0.5))
+              : hexCenter,
+            midpoint,
+          ],
+          color,
+          color
+        );
+      });
   }
 
   static renderMarker(
@@ -837,7 +828,9 @@ export class GeneratedBoard extends React.Component<
   }
 
   static markerColor(marker: Markers.Marker): string {
-    console.log(`marker.type = ${marker.type}, ${markerTypeToInt(marker.type)}`);
+    console.log(
+      `marker.type = ${marker.type}, ${markerTypeToInt(marker.type)}`
+    );
 
     switch (markerTypeToInt(marker.type)) {
       case Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT: {
