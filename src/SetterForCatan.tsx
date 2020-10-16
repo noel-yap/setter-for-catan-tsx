@@ -17,6 +17,7 @@ import * as BoardRestClient from './BoardRestClient';
 import * as Boards from './component/Boards';
 import {Board} from './component/Boards';
 import * as Coordinates from './component/Coordinates';
+import {Coordinate} from './component/Coordinates';
 import * as Specifications from './component/Specifications';
 import {Specification} from './component/Specifications';
 import {useOktaAuth} from '@okta/okta-react';
@@ -30,18 +31,24 @@ interface BoardSpecifications {
 export function SetterForCatan() {
   const {authState} = useOktaAuth();
 
-  const initialScenarioName = 'Base';
-
   const [openMenu, setOpenMenu] = useState(false);
-  const [playerCount, setPlayerCount] = useState('3');
+
+  const [scenarioName, setScenarioName] = useState('Base');
+
+  const playerCounts = Object.keys(boardSpecifications[scenarioName]);
+  const initialPlayerCount = playerCounts[0];
+  const [playerCount, setPlayerCount] = useState(initialPlayerCount);
+  if (!playerCounts.includes(playerCount)) {
+    setPlayerCount(initialPlayerCount);
+  }
+
   const [useFishermenOfCatanVariant, setUseFishermenOfCatanVariant] = useState(
     false
   );
-  const [scenarioName, setScenarioName] = useState(initialScenarioName);
+
   const [board, setBoard] = useState(new Boards.Board([]));
 
   const scenarios = Object.keys(boardSpecifications);
-  const playerCounts = Object.keys(boardSpecifications[initialScenarioName]);
 
   const generateBoard = async (
     boardSpecifications: BoardSpecifications,
@@ -115,13 +122,11 @@ export function SetterForCatan() {
           {playerCounts.map(playerCount => {
             return (
               <Tooltip title={!authState.isAuthenticated
-              && playerCount !== '3'
-              && playerCount !== '4' ? 'Log in to enable this feature' : ''}>
+                && playerCount !== '3-4' ? 'Log in to enable this feature' : ''}>
                 <FormControlLabel
                   disabled={
                     !authState.isAuthenticated
-                    && playerCount !== '3'
-                    && playerCount !== '4'
+                    && playerCount !== '3-4'
                   }
                   key={playerCount}
                   value={playerCount}
@@ -200,211 +205,71 @@ export function SetterForCatan() {
   );
 }
 
-// TODO: Reorganize to use submenus (eg Base, Seafarers, Traders and Barbarians).
+const menuPlaceholder = undefined as unknown as [Specification, Coordinate[]];
 const boardSpecifications: BoardSpecifications = {
   Base: {
-    '3': [Specifications.SPEC_3_4, Coordinates.BASE_3_4_FISHERY_COORDINATES],
-    '4': [Specifications.SPEC_3_4, Coordinates.BASE_3_4_FISHERY_COORDINATES],
-    '5-6': [Specifications.SPEC_5_6, Coordinates.EXT_5_6_FISHERY_COORDINATES],
-    '7-8': [Specifications.SPEC_7_8, Coordinates.EXT_7_8_FISHERY_COORDINATES],
+    '3-4': [Specifications.SPEC_3_4, Coordinates.BASE_3_4_FISHERY_COORDINATES],
+    '5-6': menuPlaceholder,
+    '7-8': menuPlaceholder,
   },
   'Seafarers: Heading for New Shores': {
-    '3': [
-      Specifications.SPEC_3_EXP_SEA_SCEN_HFNS,
-      Coordinates.BASE_3_EXP_SEA_SCEN_HFNS_BIG_ISLAND_FISHERY_COORDINATES,
-    ],
-    '4': [
-      Specifications.SPEC_4_EXP_SEA_SCEN_HFNS,
-      Coordinates.BASE_3_4_FISHERY_COORDINATES,
-    ],
-    '5-6': [
-      Specifications.SPEC_5_6_EXP_SEA_SCEN_HFNS,
-      Coordinates.EXT_5_6_EXP_SEA_SCEN_HFNS_BIG_ISLAND_FISHERY_COORDINATES,
-    ],
-    '7-8': [
-      Specifications.SPEC_7_8_EXP_SEA_SCEN_HFNS,
-      Coordinates.EXT_7_8_EXP_SEA_SCEN_HFNS_BIG_ISLAND_FISHERY_COORDINATES,
-    ],
+    '3': menuPlaceholder,
+    '4': menuPlaceholder,
+    '5-6': menuPlaceholder,
+    '7-8': menuPlaceholder,
   },
   'Seafarers: The Four/Six/Eight Islands': {
-    '3': [
-      Specifications.SPEC_3_EXP_SEA_SCEN_4_ISLANDS,
-      Coordinates.BASE_3_EXP_SEA_SCEN_4_ISLANDS_FISHERY_COORDINATES,
-    ],
-    '4': [
-      Specifications.SPEC_4_EXP_SEA_SCEN_4_ISLANDS,
-      Coordinates.BASE_4_EXP_SEA_SCEN_4_ISLANDS_FISHERY_COORDINATES,
-    ],
-    '5-6': [
-      Specifications.SPEC_5_6_EXP_SEA_SCEN_6_ISLANDS,
-      Coordinates.EXT_5_6_EXP_SEA_SCEN_6_ISLANDS_FISHERY_COORDINATES,
-    ],
-    '7-8': [
-      Specifications.SPEC_7_8_EXP_SEA_SCEN_6_ISLANDS,
-      Coordinates.EXT_7_8_EXP_SEA_SCEN_8_ISLANDS_FISHERY_COORDINATES,
-    ],
+    '3': menuPlaceholder,
+    '4': menuPlaceholder,
+    '5-6': menuPlaceholder,
+    '7-8': menuPlaceholder,
   },
   'Seafarers: Oceania': {
-    '3': [
-      Specifications.SPEC_3_EXP_SEA_SCEN_FI,
-      Coordinates.BASE_3_EXP_SEA_SCEN_OC_FISHERY_COORDINATES,
-    ],
-    '4': [
-      Specifications.SPEC_4_EXP_SEA_SCEN_FI,
-      Coordinates.BASE_4_EXP_SEA_SCEN_OC_FISHERY_COORDINATES,
-    ],
-    '5-6': [
-      Specifications.SPEC_5_6_EXP_SEA_SCEN_FI,
-      Coordinates.EXT_5_6_EXP_SEA_SCEN_OC_FISHERY_COORDINATES,
-    ],
-    '7-8': [
-      Specifications.SPEC_7_8_EXP_SEA_SCEN_FI,
-      Coordinates.EXT_7_8_EXP_SEA_SCEN_OC_FISHERY_COORDINATES,
-    ],
+    '3': menuPlaceholder,
+    '4': menuPlaceholder,
+    '5-6': menuPlaceholder,
+    '7-8': menuPlaceholder,
   },
   'Seafarers: Through the Desert': {
-    '3': [
-      Specifications.SPEC_3_EXP_SEA_SCEN_TD,
-      Coordinates.BASE_3_EXP_SEA_SCEN_TD_FISHERY_COORDINATES,
-    ],
-    '4': [
-      Specifications.SPEC_4_EXP_SEA_SCEN_TD,
-      Coordinates.BASE_4_EXP_SEA_SCEN_TD_FISHERY_COORDINATES,
-    ],
-    '5-6': [
-      Specifications.SPEC_5_6_EXP_SEA_SCEN_TD,
-      Coordinates.EXT_5_6_EXP_SEA_SCEN_TD_FISHERY_COORDINATES,
-    ],
-    '7-8': [
-      Specifications.SPEC_7_8_EXP_SEA_SCEN_TD,
-      Coordinates.EXT_7_8_EXP_SEA_SCEN_TD_FISHERY_COORDINATES,
-    ],
+    '3': menuPlaceholder,
+    '4': menuPlaceholder,
+    '5-6': menuPlaceholder,
+    '7-8': menuPlaceholder,
   },
   'Seafarers: The Forgotten Tribe': {
-    '3': [
-      Specifications.SPEC_3_4_EXP_SEA_SCEN_FT,
-      Coordinates.BASE_3_4_EXP_SEA_SCEN_FT_FISHERY_COORDINATES,
-    ],
-    '4': [
-      Specifications.SPEC_3_4_EXP_SEA_SCEN_FT,
-      Coordinates.BASE_3_4_EXP_SEA_SCEN_FT_FISHERY_COORDINATES,
-    ],
-    '5-6': [
-      Specifications.SPEC_5_6_EXP_SEA_SCEN_FT,
-      Coordinates.EXT_5_6_EXP_SEA_SCEN_FT_FISHERY_COORDINATES,
-    ],
-    '7-8': [
-      Specifications.SPEC_7_8_EXP_SEA_SCEN_FT,
-      Coordinates.EXT_7_8_EXP_SEA_SCEN_FT_FISHERY_COORDINATES,
-    ],
+    '3-4': menuPlaceholder,
+    '5-6': menuPlaceholder,
+    '7-8': menuPlaceholder,
   },
   'Seafarers: Cloth for Catan': {
-    '3': [
-      Specifications.SPEC_3_4_EXP_SEA_SCEN_CFC,
-      Coordinates.BASE_3_4_EXP_SEA_SCEN_CFC_FISHERY_COORDINATES,
-    ],
-    '4': [
-      Specifications.SPEC_3_4_EXP_SEA_SCEN_CFC,
-      Coordinates.BASE_3_4_EXP_SEA_SCEN_CFC_FISHERY_COORDINATES,
-    ],
-    '5-6': [
-      Specifications.SPEC_5_6_EXP_SEA_SCEN_CFC,
-      Coordinates.EXT_5_6_EXP_SEA_SCEN_CFC_FISHERY_COORDINATES,
-    ],
-    '7-8': [
-      Specifications.SPEC_7_8_EXP_SEA_SCEN_CFC,
-      Coordinates.EXT_7_8_EXP_SEA_SCEN_CFC_FISHERY_COORDINATES,
-    ],
+    '3-4': menuPlaceholder,
+    '5-6': menuPlaceholder,
+    '7-8': menuPlaceholder,
   },
   'Seafarers: Wonders of Catan': {
-    '3': [
-      Specifications.SPEC_3_4_EXP_SEA_SCEN_WOC,
-      Coordinates.BASE_3_4_EXP_SEA_SCEN_WOC_FISHERY_COORDINATES,
-    ],
-    '4': [
-      Specifications.SPEC_3_4_EXP_SEA_SCEN_WOC,
-      Coordinates.BASE_3_4_EXP_SEA_SCEN_WOC_FISHERY_COORDINATES,
-    ],
-    '5-6': [
-      Specifications.SPEC_5_6_EXP_SEA_SCEN_WOC,
-      Coordinates.EXT_5_6_EXP_SEA_SCEN_WOC_FISHERY_COORDINATES,
-    ],
-    '7-8': [
-      Specifications.SPEC_7_8_EXP_SEA_SCEN_WOC,
-      Coordinates.EXT_7_8_EXP_SEA_SCEN_WOC_FISHERY_COORDINATES,
-    ],
+    '3-4': menuPlaceholder,
+    '5-6': menuPlaceholder,
+    '7-8': menuPlaceholder,
   },
   'Traders and Barbarians: Rivers of Catan': {
-    '3': [
-      Specifications.SPEC_3_4_EXP_TB_SCEN_ROC,
-      Coordinates.BASE_3_4_FISHERY_COORDINATES,
-    ],
-    '4': [
-      Specifications.SPEC_3_4_EXP_TB_SCEN_ROC,
-      Coordinates.BASE_3_4_FISHERY_COORDINATES,
-    ],
-    '5-6': [
-      Specifications.SPEC_5_6_EXP_TB_SCEN_ROC,
-      Coordinates.EXT_5_6_FISHERY_COORDINATES,
-    ],
-    '7-8': [
-      Specifications.SPEC_7_8_EXP_TB_SCEN_ROC,
-      Coordinates.EXT_7_8_FISHERY_COORDINATES,
-    ],
+    '3-4': menuPlaceholder,
+    '5-6': menuPlaceholder,
+    '7-8': menuPlaceholder,
   },
   'Traders and Barbarians: The Caravans': {
-    '3': [
-      Specifications.SPEC_3_4_EXP_TB_SCEN_CAR_TERRAIN_COORDINATES,
-      Coordinates.BASE_3_4_FISHERY_COORDINATES,
-    ],
-    '4': [
-      Specifications.SPEC_3_4_EXP_TB_SCEN_CAR_TERRAIN_COORDINATES,
-      Coordinates.BASE_3_4_FISHERY_COORDINATES,
-    ],
-    '5-6': [
-      Specifications.SPEC_5_6_EXP_TB_SCEN_CAR_TERRAIN_COORDINATES,
-      Coordinates.EXT_5_6_FISHERY_COORDINATES,
-    ],
-    '7-8': [
-      Specifications.SPEC_7_8_EXP_TB_SCEN_CAR_TERRAIN_COORDINATES,
-      Coordinates.EXT_7_8_FISHERY_COORDINATES,
-    ],
+    '3-4': menuPlaceholder,
+    '5-6': menuPlaceholder,
+    '7-8': menuPlaceholder,
   },
   'Traders and Barbarians: Barbarian Attack': {
-    '3': [
-      Specifications.SPEC_3_4_EXP_TB_SCEN_BA,
-      Coordinates.BASE_3_4_FISHERY_COORDINATES,
-    ],
-    '4': [
-      Specifications.SPEC_3_4_EXP_TB_SCEN_BA,
-      Coordinates.BASE_3_4_FISHERY_COORDINATES,
-    ],
-    '5-6': [
-      Specifications.SPEC_5_6_EXP_TB_SCEN_BA,
-      Coordinates.EXT_5_6_FISHERY_COORDINATES,
-    ],
-    '7-8': [
-      Specifications.SPEC_7_8_EXP_TB_SCEN_BA,
-      Coordinates.EXT_7_8_FISHERY_COORDINATES,
-    ],
+    '3-4': menuPlaceholder,
+    '5-6': menuPlaceholder,
+    '7-8': menuPlaceholder,
   },
   'Traders and Barbarians: Traders and Barbarians': {
-    '3': [
-      Specifications.SPEC_3_4_EXP_TB_SCEN_TB,
-      Coordinates.BASE_3_4_FISHERY_COORDINATES,
-    ],
-    '4': [
-      Specifications.SPEC_3_4_EXP_TB_SCEN_TB,
-      Coordinates.BASE_3_4_FISHERY_COORDINATES,
-    ],
-    '5-6': [
-      Specifications.SPEC_5_6_EXP_TB_SCEN_TB,
-      Coordinates.EXT_5_6_EXP_TB_SCEN_TB_FISHERY_COORDINATES,
-    ],
-    '7-8': [
-      Specifications.SPEC_7_8_EXP_TB_SCEN_TB,
-      Coordinates.EXT_7_8_EXP_TB_SCEN_TB_FISHERY_COORDINATES,
-    ],
+    '3-4': menuPlaceholder,
+    '5-6': menuPlaceholder,
+    '7-8': menuPlaceholder,
   },
 };
 
