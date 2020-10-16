@@ -16,6 +16,8 @@ import * as Coordinates from './component/Coordinates';
 import * as Markers from './component/Markers';
 import * as Tiles from './component/Tiles';
 import {Cartesian2D} from './util/Cartesian2D';
+import {markerTypeToInt} from './component/Markers';
+import {edgePositionToInt} from './component/Coordinates';
 
 interface GeneratedBoardProps {
   board: Boards.Board;
@@ -28,64 +30,84 @@ export class GeneratedBoard extends React.Component<
   GeneratedBoardProps,
   GeneratedBoardState
 > {
-  private canvasDivRef = React.createRef<HTMLDivElement>();
+  private readonly canvasDivRef = React.createRef<HTMLDivElement>();
 
   render(): JSX.Element {
-    if (!this.props.board.isEmpty()) {
-      const canvasDiv = this.canvasDivRef.current;
-      if (canvasDiv) {
-        canvasDiv.childNodes.forEach(child => canvasDiv.removeChild(child));
+    const canvasDiv = this.canvasDivRef.current;
+    if (canvasDiv) {
+      canvasDiv.childNodes.forEach((child: HTMLElement) =>
+        canvasDiv.removeChild(child)
+      );
+    }
 
-        canvasDiv.appendChild(this.renderBoard());
-      }
-
-      const terrainTilesByType = GeneratedBoard.groupByComponentType(
-        this.props.board.terrainTilesLayout
-      );
-      const riverByType = GeneratedBoard.groupByComponentType(
-        this.props.board.riverLayout
-      );
-      const fisheryTilesByType = GeneratedBoard.groupByComponentType(
-        this.props.board.fisheryTilesLayout
-      );
-      const developmentCardsByType = GeneratedBoard.groupByComponentType(
-        this.props.board.developmentCardsLayout
-      );
-      const harborTilesByType = GeneratedBoard.groupByComponentType(
-        this.props.board.harborTilesLayout
-      );
-      const victoryPointsByType = GeneratedBoard.groupByComponentType(
-        this.props.board.victoryPointsLayout
-      );
-      const chits = _.groupBy(
-        this.props.board.terrainTilesLayout
-          .concat(this.props.board.fisheryTilesLayout)
-          .concat(this.props.board.vertexChitsLayout),
-        component => {
-          return component.chit.values;
-        }
-      );
-
+    if (this.props.board == null) {
       return (
         <div className="row">
-          <div>
-            <Typography variant="body1">Components:</Typography>
-            <Typography variant="body2">
-              {GeneratedBoard.renderBom(terrainTilesByType)}
-              {GeneratedBoard.renderBom(riverByType)}
-              {GeneratedBoard.renderBom(fisheryTilesByType)}
-              {GeneratedBoard.renderBom(chits, 'Chit')}
-              {GeneratedBoard.renderBom(harborTilesByType)}
-              {GeneratedBoard.renderBom(developmentCardsByType)}
-              {GeneratedBoard.renderBom(victoryPointsByType)}
-            </Typography>
-          </div>
+          <Typography>
+            The Setters for Catan seem to be having some sort of work stoppage.
+          </Typography>
           <div id="generated-board-div" ref={this.canvasDivRef} />
         </div>
       );
-    } else {
-      return <div />;
     }
+
+    if (this.props.board.isEmpty()) {
+      return (
+        <div className="row">
+          <Typography />
+          <div id="generated-board-div" ref={this.canvasDivRef} />
+        </div>
+      );
+    }
+
+    if (canvasDiv) {
+      canvasDiv.appendChild(this.renderBoard());
+    }
+
+    const terrainTilesByType = GeneratedBoard.groupByComponentType(
+      this.props.board.terrainTilesLayout
+    );
+    const riverByType = GeneratedBoard.groupByComponentType(
+      this.props.board.riverLayout
+    );
+    const fisheryTilesByType = GeneratedBoard.groupByComponentType(
+      this.props.board.fisheryTilesLayout
+    );
+    const developmentCardsByType = GeneratedBoard.groupByComponentType(
+      this.props.board.developmentCardsLayout
+    );
+    const harborTilesByType = GeneratedBoard.groupByComponentType(
+      this.props.board.harborTilesLayout
+    );
+    const victoryPointsByType = GeneratedBoard.groupByComponentType(
+      this.props.board.victoryPointsLayout
+    );
+    const chits = _.groupBy(
+      this.props.board.terrainTilesLayout
+        .concat(this.props.board.fisheryTilesLayout)
+        .concat(this.props.board.vertexChitsLayout),
+      component => {
+        return component.chit.values;
+      }
+    );
+
+    return (
+      <div className="row">
+        <div>
+          <Typography variant="body1">Components:</Typography>
+          <Typography variant="body2">
+            {GeneratedBoard.renderBom(terrainTilesByType)}
+            {GeneratedBoard.renderBom(riverByType)}
+            {GeneratedBoard.renderBom(fisheryTilesByType)}
+            {GeneratedBoard.renderBom(chits, 'Chit')}
+            {GeneratedBoard.renderBom(harborTilesByType)}
+            {GeneratedBoard.renderBom(developmentCardsByType)}
+            {GeneratedBoard.renderBom(victoryPointsByType)}
+          </Typography>
+        </div>
+        <div id="generated-board-div" ref={this.canvasDivRef} />
+      </div>
+    );
   }
 
   renderBoard(): HTMLCanvasElement {
@@ -94,8 +116,8 @@ export class GeneratedBoard extends React.Component<
       fontSize: 16,
       fg: 'black',
       bg: 'navy',
-      width: 30,
-      height: 14,
+      width: 30, // TODO: Set based on max x coordinate
+      height: 14, // TODO: Set based on max y coordinate
       spacing: 5,
     };
     const display = new ROT.Display(displayOptions as Partial<DisplayOptions>);
@@ -168,26 +190,28 @@ export class GeneratedBoard extends React.Component<
       const hexSize = (display._backend as Hex)._hexSize;
 
       this.props.board.vertexMarkersLayout.forEach(marker => {
-        const hexCenter = GeneratedBoard.hexCenter(
-          hexSize,
-          marker.coordinate.x,
-          marker.coordinate.y
-        );
-        const vertexPositionPoint = _.partial(
-          GeneratedBoard.vertexPositionPoint,
-          _,
-          hexCenter,
-          hexSize,
-          options.border
-        );
-
-        marker.coordinate.vertexPositions.forEach(vertex => {
-          GeneratedBoard.renderMarker(
-            display,
-            marker,
-            vertexPositionPoint(Coordinates.vertexPositionToInt(vertex)),
-            hexSize / 6
+        marker.coordinates.forEach(coordinate => {
+          const hexCenter = GeneratedBoard.hexCenter(
+            hexSize,
+            coordinate.x,
+            coordinate.y
           );
+          const vertexPositionPoint = _.partial(
+            GeneratedBoard.vertexPositionPoint,
+            _,
+            hexCenter,
+            hexSize,
+            options.border
+          );
+
+          coordinate.vertexPositions.forEach(vertex => {
+            GeneratedBoard.renderMarker(
+              display,
+              marker,
+              vertexPositionPoint(Coordinates.vertexPositionToInt(vertex)),
+              hexSize / 6
+            );
+          });
         });
       });
     });
@@ -274,28 +298,30 @@ export class GeneratedBoard extends React.Component<
         options.border
       );
 
-      configuration.tile.specialVertices.forEach(vertexPosition => {
-        const vertex = vertexPositionPoint(vertexPosition);
-        const midpoint = vertex.translate(hexCenter.diff(vertex).scale(0.5));
+      configuration.tile.specialVertices
+        .map(p => Coordinates.vertexPositionToInt(p))
+        .forEach(vertexPosition => {
+          const vertex = vertexPositionPoint(vertexPosition);
+          const midpoint = vertex.translate(hexCenter.diff(vertex).scale(0.5));
 
-        const specialVertexColor = ROT.Color.toHex(
-          ROT.Color.interpolate(
-            ROT.Color.fromString(
-              GeneratedBoard.tileColor(
-                configuration.tile,
-                configuration.coordinate.facePosition
-              )
-            ) as [number, number, number],
-            ROT.Color.fromString('white') as [number, number, number]
-          )
-        );
-        GeneratedBoard.renderPolygon(
-          display,
-          [midpoint, vertex],
-          specialVertexColor,
-          specialVertexColor
-        );
-      });
+          const specialVertexColor = ROT.Color.toHex(
+            ROT.Color.interpolate(
+              ROT.Color.fromString(
+                GeneratedBoard.tileColor(
+                  configuration.tile,
+                  configuration.coordinate.facePosition
+                )
+              ) as [number, number, number],
+              ROT.Color.fromString('white') as [number, number, number]
+            )
+          );
+          GeneratedBoard.renderPolygon(
+            display,
+            [midpoint, vertex],
+            specialVertexColor,
+            specialVertexColor
+          );
+        });
     });
   }
 
@@ -344,7 +370,7 @@ export class GeneratedBoard extends React.Component<
       options.fg,
       hexCenter.translate(offset),
       configuration.coordinate.facePosition === Coordinates.FacePosition.FACE_UP
-        ? configuration.tile === Tiles.GENERIC_HARBOR
+        ? configuration.tile.type === Tiles.Type.GENERIC_HARBOR
           ? '3:1'
           : '2:1'
         : '?'
@@ -475,20 +501,11 @@ export class GeneratedBoard extends React.Component<
     radius: number,
     chits: Chits.Chits
   ) {
-    GeneratedBoard.renderCircle(
-      display,
-      vertex,
-      radius,
-      this.tileColor(Tiles.CHIT),
-      'black'
-    );
+    const chitColor = GeneratedBoard.tileColor(Tiles.CHIT);
+    GeneratedBoard.renderCircle(display, vertex, radius, chitColor, 'black');
     GeneratedBoard.renderText(
       display,
-      GeneratedBoard.chitTextColor(
-        chits,
-        display._options.fg,
-        GeneratedBoard.tileColor(Tiles.CHIT)
-      ),
+      GeneratedBoard.chitTextColor(chits, display._options.fg, chitColor),
       vertex,
       GeneratedBoard.chitsToString(chits)
     );
@@ -593,24 +610,26 @@ export class GeneratedBoard extends React.Component<
         ? GeneratedBoard.tileColor(Tiles.LAKE)
         : GeneratedBoard.tileColor(Tiles.SEA);
 
-    configuration.coordinate.edgePositions.forEach(position => {
-      const vertex0 = edgePositionStartPoint(position);
-      const vertex1 = edgePositionStartPoint((position + 1) % 6);
+    configuration.coordinate.edgePositions
+      .map(p => edgePositionToInt(p))
+      .forEach(position => {
+        const vertex0 = edgePositionStartPoint(position);
+        const vertex1 = edgePositionStartPoint((position + 1) % 6);
 
-      const midpoint = vertex0.translate(vertex1.diff(vertex0).scale(0.5));
+        const midpoint = vertex0.translate(vertex1.diff(vertex0).scale(0.5));
 
-      GeneratedBoard.renderPolygon(
-        display,
-        [
-          chitsExist
-            ? hexCenter.translate(midpoint.diff(hexCenter).scale(0.5))
-            : hexCenter,
-          midpoint,
-        ],
-        color,
-        color
-      );
-    });
+        GeneratedBoard.renderPolygon(
+          display,
+          [
+            chitsExist
+              ? hexCenter.translate(midpoint.diff(hexCenter).scale(0.5))
+              : hexCenter,
+            midpoint,
+          ],
+          color,
+          color
+        );
+      });
   }
 
   static renderMarker(
@@ -809,7 +828,11 @@ export class GeneratedBoard extends React.Component<
   }
 
   static markerColor(marker: Markers.Marker): string {
-    switch (marker.type) {
+    console.log(
+      `marker.type = ${marker.type}, ${markerTypeToInt(marker.type)}`
+    );
+
+    switch (markerTypeToInt(marker.type)) {
       case Markers.GREAT_BRIDGE_SETTLEMENT_REQUIREMENT: {
         return 'purple';
       }
@@ -869,7 +892,7 @@ export class GeneratedBoard extends React.Component<
           return 'forestgreen';
         }
 
-        case Tiles.Type.GOLD:
+        case Tiles.Type.GOLD_FIELD:
         case Tiles.Type.GENERIC_HARBOR:
         case Tiles.Type.VICTORY_POINT: {
           return 'gold';

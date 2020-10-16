@@ -8,20 +8,21 @@ import * as Tiles from './Tiles';
 
 // export module Boards {
 export class Board {
-  private _terrainTilesLayout: Configuration.Configuration[] = [];
-  private _harborTilesLayout: Configuration.Configuration[] = [];
-  private _fisheryTilesLayout: Configuration.Configuration[] = [];
-  private _developmentCardsLayout: Configuration.Configuration[] = [];
-  private _victoryPointsLayout: Configuration.Configuration[] = [];
-  private _vertexChitsLayout: Configuration.Configuration[] = [];
-  private _riverLayout: Configuration.Configuration[] = [];
-  private _vertexMarkersLayout: Markers.Marker[] = [];
+  private readonly _terrainTilesLayout: Configuration.Configuration[] = [];
+  private readonly _harborTilesLayout: Configuration.Configuration[] = [];
+  private readonly _fisheryTilesLayout: Configuration.Configuration[] = [];
+  private readonly _developmentCardsLayout: Configuration.Configuration[] = [];
+  private readonly _victoryPointsLayout: Configuration.Configuration[] = [];
+  private readonly _vertexChitsLayout: Configuration.Configuration[] = [];
+  private readonly _riverLayout: Configuration.Configuration[] = [];
+  private readonly _vertexMarkersLayout: Markers.Marker[] = [];
 
   constructor(
     configurations: Configuration.Configuration[],
     markers: Markers.Marker[] = []
   ) {
-    console.log(`configuration = ${JSON.stringify(configurations)}`);
+    console.log(`configurations = ${JSON.stringify(configurations)}`);
+    console.log(`markers = ${JSON.stringify(markers)}`);
 
     const riverNotRiver = _.groupBy(configurations, configuration =>
       configuration.tile.type === Tiles.Type.RIVER ? 0 : 1
@@ -61,10 +62,6 @@ export class Board {
     this._vertexMarkersLayout = markers;
   }
 
-  getLayout<K extends keyof Board>(layoutName: K): Board[K] {
-    return this[layoutName];
-  }
-
   get terrainTilesLayout(): Configuration.Configuration[] {
     return this._terrainTilesLayout;
   }
@@ -100,7 +97,7 @@ export class Board {
   isEmpty(): boolean {
     return Object.keys(this)
       .filter(k => k.endsWith('Layout'))
-      .every(k => this.getLayout(k as keyof Board).length === 0);
+      .every(k => this[k as keyof Board].length === 0);
   }
 }
 
